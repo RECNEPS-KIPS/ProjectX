@@ -19,17 +19,14 @@ namespace UI
             VBind("StartBtnText",LanguageManager.Instance.GetText(LanguageManager.EStringTable.Start,"START_GAME_TEXT"));
             
 
-            MBind("OnStartBtn", () =>
-            {
-                OnStartBtn();
-                LogManager.Log("OnGameStartBtnClick");
-            });
+            MBind("OnStartBtn", OnStartBtn);
             
         }
 
         void OnStartBtn()
         {
-            
+            UIManager.Instance.Close(WindowNameDef.StartWindow);
+            LogManager.Log("OnGameStartBtnClick");
         }
         public override void OnEnter(dynamic args) {
             base.OnEnter();

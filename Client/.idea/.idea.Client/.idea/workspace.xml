@@ -5,18 +5,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="9361b420-2aac-42b3-89e8-9a1020ba95f6" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/Assets/ResourceAssets/UI/UIRoot.prefab" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ResourceAssets/UI/UIRoot.prefab.meta" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.Client/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Client/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/ResourceAssets/UI/Example/ExampleUI.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/ResourceAssets/UI/Example/ExampleUI.prefab" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/ResourceAssets/UI/Example/ExampleUI.prefab.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/ResourceAssets/UI/Example/ExampleUI.prefab.meta" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/ResourceAssets/UI/Start/StartWindow.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/ResourceAssets/UI/Start/StartWindow.prefab" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/ResourceAssets/UI/Start/StartWindow.prefab.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/ResourceAssets/UI/Start/StartWindow.prefab.meta" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Scenes/Launch.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scenes/Launch.unity" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scenes/UIEditor.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scenes/UIEditor.unity" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Framework/Core/Manager/UI/Binding/Editor/UIBindingInspector.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Framework/Core/Manager/UI/Binding/Editor/UIBindingInspector.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Scripts/Framework/Core/Manager/UI/UIManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Framework/Core/Manager/UI/UIManager.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ProjectSettings/TagManager.asset" beforeDir="false" afterPath="$PROJECT_DIR$/ProjectSettings/TagManager.asset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/UI/Start/StartWindow.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/UI/Start/StartWindow.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -99,7 +91,7 @@
       <workItem from="1729008177503" duration="1150000" />
       <workItem from="1729045809684" duration="11216000" />
       <workItem from="1729089021765" duration="803000" />
-      <workItem from="1729091103561" duration="1619000" />
+      <workItem from="1729091103561" duration="2657000" />
     </task>
     <servers />
   </component>

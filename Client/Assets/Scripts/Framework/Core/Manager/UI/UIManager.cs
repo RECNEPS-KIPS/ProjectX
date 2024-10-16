@@ -177,8 +177,8 @@ namespace Framework.Core.Manager.UI {
         private void WindowStackPush(WindowNameDef windowId, dynamic options = null) {
             var window = GetWindowById(windowId);
             LogManager.Log("Open Window === ", window.name);
-            window.Canvas.sortingOrder = 0;//WindowDataDict[windowId].Layer;
-            window.Canvas.worldCamera = UICamera;
+            // window.Canvas.sortingOrder = 0;//WindowDataDict[windowId].Layer;
+            // window.Canvas.worldCamera = UICamera;
             if (window.IsShow) {
                 return;
             }
@@ -198,6 +198,7 @@ namespace Framework.Core.Manager.UI {
         /// </summary>
         /// <param name="id"></param>
         public void Close(WindowNameDef id) {
+            LogManager.Log("Close Window === ", id);
             var window = GetWindowById(id);
             window.OnExit();
             window.gameObject.SetActive(false);
