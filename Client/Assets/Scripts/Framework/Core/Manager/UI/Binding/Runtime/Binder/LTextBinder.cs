@@ -19,6 +19,10 @@ namespace Framework.Core.Manager.UI {
         public override void SetString(Object mono, int linkerType, string value) {
             if (mono == null) return;
             var target = mono as LText;
+            if (target == null)
+            {
+                return;
+            }
             switch ((AttributeType)linkerType) {
                 case AttributeType.text:
                     target.text = value;
@@ -28,6 +32,10 @@ namespace Framework.Core.Manager.UI {
         public override void SetInt32(Object mono, int linkerType, int value) {
             if (mono == null) return;
             var target = mono as LText;
+            if (target == null)
+            {
+                return;
+            }
             switch ((AttributeType)linkerType) {
                 case AttributeType.fontSize:
                     target.fontSize = value;
@@ -37,6 +45,10 @@ namespace Framework.Core.Manager.UI {
         public override void SetColor(Object mono, int linkerType, Color value) {
             if (mono == null) return;
             var target = mono as LText;
+            if (target == null)
+            {
+                return;
+            }
             switch ((AttributeType)linkerType) {
                 case AttributeType.color:
                     target.color = value;
@@ -46,6 +58,10 @@ namespace Framework.Core.Manager.UI {
         public override void SetBoolean(Object mono, int linkerType, bool value) {
             if (mono == null) return;
             var target = mono as LText;
+            if (target == null)
+            {
+                return;
+            }
             switch ((AttributeType)linkerType) {
                 case AttributeType.raycastTarget:
                     target.raycastTarget = value;

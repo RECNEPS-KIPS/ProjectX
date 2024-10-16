@@ -33,6 +33,10 @@ namespace Framework.Core.Manager.UI {
         public override void SetVector2(Object mono, int linkerType, Vector2 value) {
             if (mono == null) return;
             var target = mono as RectTransform;
+            if (target == null)
+            {
+                return;
+            }
             switch ((AttributeType)linkerType) {
                 case AttributeType.anchorMin:
                     target.anchorMin = value;
@@ -60,6 +64,10 @@ namespace Framework.Core.Manager.UI {
         public override void SetVector3(Object mono, int linkerType, Vector3 value) {
             if (mono == null) return;
             var target = mono as RectTransform;
+            if (target == null)
+            {
+                return;
+            }
             switch ((AttributeType)linkerType) {
                 case AttributeType.anchoredPosition3D:
                     target.anchoredPosition3D = value;
@@ -93,6 +101,10 @@ namespace Framework.Core.Manager.UI {
         public override void SetQuaternion(Object mono, int linkerType, Quaternion value) {
             if (mono == null) return;
             var target = mono as RectTransform;
+            if (target == null)
+            {
+                return;
+            }
             switch ((AttributeType)linkerType) {
                 case AttributeType.rotation:
                     target.rotation = value;

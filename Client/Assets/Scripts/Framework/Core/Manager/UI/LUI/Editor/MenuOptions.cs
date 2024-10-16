@@ -67,14 +67,6 @@ namespace Framework.Core.Manager.UI {
             }
             PlaceUIElementRoot(go, menuCommand);
         }
-        [MenuItem(MenuPrefix + "ModelContainer", false, (int)MenuOptionsPriorityOrder.ModelContainer)]
-        public static void AddModelContainer(MenuCommand menuCommand) {
-            GameObject go;
-            using (new FactorySwapToEditor()) {
-                go = DefaultControls.CreateModelContainer(GetStandardResources());
-            }
-            PlaceUIElementRoot(go, menuCommand);
-        }
         
         [MenuItem(MenuPrefix + "DragButton", false, (int)MenuOptionsPriorityOrder.Button)]
         public static void AddDragButton(MenuCommand menuCommand) {

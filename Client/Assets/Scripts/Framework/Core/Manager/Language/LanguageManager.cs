@@ -2,7 +2,6 @@
 // date:2022.06.19 18:10
 // describe:多语言系统
 
-using System;
 using System.Collections.Generic;
 using Framework.Core.Singleton;
 using Framework.Core.Manager.Config;
@@ -37,7 +36,7 @@ namespace Framework.Core.Manager.Language {
                 SC = sc;
             }
         }
-        private readonly Dictionary<EStringTable, Dictionary<string, LanguageUnit>> _map = new Dictionary<EStringTable, Dictionary<string, LanguageUnit>>();
+        private readonly Dictionary<EStringTable, Dictionary<string, LanguageUnit>> _map = new ();
         /// <summary>
         /// 
         /// </summary>

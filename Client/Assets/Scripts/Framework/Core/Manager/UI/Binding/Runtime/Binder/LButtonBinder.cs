@@ -19,6 +19,10 @@ namespace Framework.Core.Manager.UI {
         public override void SetActionVector2(Object mono, int linkerType, UnityAction<Vector2> value) {
             if (mono == null) return;
             var target = mono as LButton;
+            if (target == null)
+            {
+                return;
+            }
             switch ((AttributeType)linkerType) {
                 case AttributeType.onEnter:
                     target.onPointerEnter = value;
@@ -31,7 +35,10 @@ namespace Framework.Core.Manager.UI {
         public override void SetAction(Object mono, int linkerType, UnityAction value) {
             if (mono == null) return;
             var target = mono as LButton;
-            // LogManager.Log("???","???");
+            if (target == null)
+            {
+                return;
+            }
             switch ((AttributeType)linkerType) {
                 case AttributeType.onClick:
                     target.onClick.AddListener(value);
@@ -41,6 +48,10 @@ namespace Framework.Core.Manager.UI {
         public override void SetBoolean(Object mono, int linkerType, bool value) {
             if (mono == null) return;
             var target = mono as LButton;
+            if (target == null)
+            {
+                return;
+            }
             switch ((AttributeType)linkerType) {
                 case AttributeType.enabled:
                     target.enabled = value;
@@ -50,6 +61,10 @@ namespace Framework.Core.Manager.UI {
         public override void RemoveAction(Object mono, int linkerType, UnityAction value) {
             if (mono == null) return;
             var target = mono as LButton;
+            if (target == null)
+            {
+                return;
+            }
             switch ((AttributeType)linkerType) {
                 case AttributeType.onClick:
                     target.onClick.RemoveListener(value);

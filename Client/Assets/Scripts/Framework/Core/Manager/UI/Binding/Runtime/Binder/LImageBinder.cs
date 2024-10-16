@@ -17,6 +17,10 @@ namespace Framework.Core.Manager.UI {
         public override void SetString(Object mono, int linkerType, string value) {
             if (mono == null) return;
             var target = mono as LImage;
+            if (target == null)
+            {
+                return;
+            }
             switch ((AttributeType)linkerType) {
                 case AttributeType.sprite:
                     // target.sprite = value;
@@ -27,6 +31,10 @@ namespace Framework.Core.Manager.UI {
         public override void SetColor(Object mono, int linkerType, Color value) {
             if (mono == null) return;
             var target = mono as LImage;
+            if (target == null)
+            {
+                return;
+            }
             switch ((AttributeType)linkerType) {
                 case AttributeType.color:
                     target.color = value;
@@ -36,6 +44,10 @@ namespace Framework.Core.Manager.UI {
         public override void SetBoolean(Object mono, int linkerType, bool value) {
             if (mono == null) return;
             var target = mono as LImage;
+            if (target == null)
+            {
+                return;
+            }
             switch ((AttributeType)linkerType) {
                 case AttributeType.enabled:
                     target.enabled = value;

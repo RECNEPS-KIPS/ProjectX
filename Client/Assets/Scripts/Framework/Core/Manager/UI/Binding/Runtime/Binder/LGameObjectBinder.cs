@@ -17,6 +17,10 @@ namespace Framework.Core.Manager.UI {
         public override void SetBoolean(Object mono, int linkerType, bool value) {
             if (mono == null) return;
             var target = mono as GameObject;
+            if (target == null)
+            {
+                return;
+            }
             switch ((AttributeType)linkerType) {
                 case AttributeType.active:
                     if (target.activeSelf != value) {
@@ -29,6 +33,10 @@ namespace Framework.Core.Manager.UI {
         public override void SetString(Object mono, int linkerType, string value) {
             if (mono == null) return;
             var target = mono as GameObject;
+            if (target == null)
+            {
+                return;
+            }
             switch ((AttributeType)linkerType) {
                 case AttributeType.name:
                     target.name = value;

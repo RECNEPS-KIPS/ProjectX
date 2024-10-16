@@ -6,6 +6,7 @@ using UnityEngine.UI;
 
 namespace Framework.Core.Manager.UI {
     [AddComponentMenu("LUI/LText",10),ExecuteAlways]
-    public class LText:Text {
+    public class LText:Text
+    {
     }
 }

@@ -19,6 +19,10 @@ namespace Framework.Core.Manager.UI {
         public override void SetString(Object mono, int linkerType, string value) {
             if (mono == null) return;
             var target = mono as LModelContainer;
+            if (target == null)
+            {
+                return;
+            }
             switch ((AttributeType)linkerType) {
                 case AttributeType.modelPath:
                     target.LoadModel(value);
@@ -28,6 +32,10 @@ namespace Framework.Core.Manager.UI {
         public override void SetVector3(Object mono, int linkerType, Vector3 value) {
             if (mono == null) return;
             var target = mono as LModelContainer;
+            if (target == null)
+            {
+                return;
+            }
             switch ((AttributeType)linkerType) {
                 case AttributeType.modelLocalRotation:
                     target.SetModelLocalRotation(value);
