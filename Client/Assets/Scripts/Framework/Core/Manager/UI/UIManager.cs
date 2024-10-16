@@ -94,6 +94,30 @@ namespace Framework.Core.Manager.UI {
         private UnityEngine.Camera _uiCamera;
         private static UnityEngine.Camera UICamera => CameraManager.Instance.UICamera;
 
+        public Transform CanvasRoot {
+            get {
+                if (_canvasRoot == null) {
+                    var root = UICameraRoot.Find("UIRoot");
+                    LogManager.Log(LOGTag,"root null",root == null);
+                    if (root) {
+                        _canvasRoot = root;
+                        return _canvasRoot;
+                    }
+#if UNITY_EDITOR
+                    var canvasObj = Instantiate(AssetDatabase.LoadAssetAtPath<GameObject>("Assets/ResourceAssets/UI/UIRoot.prefab"));
+#else
+                    //TODO:资源加载
+                    var canvasObj = Instantiate(ResourcesLoadManager.Instance.LoadFromFile<GameObject>("Assets/ResourceAssets/UI/UIRoot.prefab"));
+#endif
+                    var t = canvasObj.transform;
+                    t.SetParent(UICameraRoot);
+                    _canvasRoot = canvasObj.transform;
+                }
+                return _canvasRoot;
+            }
+        }
+        private Transform _canvasRoot;
+
         /// <summary>
         /// UI框架初始化
         /// </summary>
@@ -133,14 +157,18 @@ namespace Framework.Core.Manager.UI {
 
             var path = WindowDataDict[id].UIPrefabPath;
 #if UNITY_EDITOR
-            var windowObj = Instantiate(AssetDatabase.LoadAssetAtPath<GameObject>("Assets/ResourceAssets/" + WindowDataDict[id].UIPrefabPath + ".prefab"), UICameraRoot);
+            var windowObj = Instantiate(AssetDatabase.LoadAssetAtPath<GameObject>("Assets/ResourceAssets/" + WindowDataDict[id].UIPrefabPath + ".prefab"), CanvasRoot);
 #else
             //TODO:资源加载
-            var GameObject windowObj = Instantiate(ResourcesLoadManager.Instance.LoadFromFile<GameObject>(_windowDict[id].AssetTag,_windowDict[id].name),UICameraRoot);
+            var windowObj = Instantiate(ResourcesLoadManager.Instance.LoadFromFile<GameObject>(_windowDict[id].AssetTag,_windowDict[id].name),CanvasRoot);
 #endif
             window = windowObj.transform.GetComponent<BaseWindow>();
             windowObj.transform.name = WindowDataDict[id].Name;
-            // LogManager.Log(LOGTag,"window == null?",window == null);
+            // var t = windowObj.transform;
+            // var rect = t.GetComponent<RectTransform>();
+            // rect.anchoredPosition = Vector2.zero;
+            // rect.localScale = Vector3.one;
+            // LogManager.Log(LOGTag,"window == null?",t.localPosition);
             window.WindowId = id;
             _baseWindowDict.Add((int)id, window);
             window.OnInit();
@@ -149,7 +177,7 @@ namespace Framework.Core.Manager.UI {
         private void WindowStackPush(WindowNameDef windowId, dynamic options = null) {
             var window = GetWindowById(windowId);
             LogManager.Log("Open Window === ", window.name);
-            window.Canvas.sortingOrder = WindowDataDict[windowId].Layer;
+            window.Canvas.sortingOrder = 0;//WindowDataDict[windowId].Layer;
             window.Canvas.worldCamera = UICamera;
             if (window.IsShow) {
                 return;

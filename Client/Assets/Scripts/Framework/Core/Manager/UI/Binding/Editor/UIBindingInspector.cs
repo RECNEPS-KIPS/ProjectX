@@ -260,8 +260,8 @@ namespace Framework.Core.Manager.UI {
                 });
                 // }
             }
-            EditorUtility.SetDirty(_uiBinding);
-            serializedObject.ApplyModifiedProperties();
+            // EditorUtility.SetDirty(_uiBinding);
+            // serializedObject.ApplyModifiedProperties();
         }
         private void Check() {
             UIBinding.Register();

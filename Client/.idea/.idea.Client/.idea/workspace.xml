@@ -5,39 +5,18 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="9361b420-2aac-42b3-89e8-9a1020ba95f6" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/Assets/Scripts/Framework/Core/Manager/UI/Binding.meta" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/Scripts/Framework/Core/Manager/UI/Binding/Editor.meta" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/Scripts/Framework/Core/Manager/UI/Binding/Editor/UIBindingInspector.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/Scripts/Framework/Core/Manager/UI/Binding/Editor/UIBindingInspector.cs.meta" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/Scripts/Framework/Core/Manager/UI/Binding/Runtime.meta" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/Scripts/Framework/Core/Manager/UI/Binding/Runtime/Attribute.meta" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/Scripts/Framework/Core/Manager/UI/Binding/Runtime/Attribute/Binder.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/Scripts/Framework/Core/Manager/UI/Binding/Runtime/Attribute/Binder.cs.meta" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/Scripts/Framework/Core/Manager/UI/Binding/Runtime/Base.meta" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/Scripts/Framework/Core/Manager/UI/Binding/Runtime/Base/BaseBinder.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/Scripts/Framework/Core/Manager/UI/Binding/Runtime/Base/BaseBinder.cs.meta" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/Scripts/Framework/Core/Manager/UI/Binding/Runtime/Base/Bindable.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/Scripts/Framework/Core/Manager/UI/Binding/Runtime/Base/Bindable.cs.meta" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/Scripts/Framework/Core/Manager/UI/Binding/Runtime/Base/LinkerType.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/Scripts/Framework/Core/Manager/UI/Binding/Runtime/Base/LinkerType.cs.meta" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/Scripts/Framework/Core/Manager/UI/Binding/Runtime/Binder.meta" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/Scripts/Framework/Core/Manager/UI/Binding/Runtime/Binder/LButtonBinder.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/Scripts/Framework/Core/Manager/UI/Binding/Runtime/Binder/LButtonBinder.cs.meta" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/Scripts/Framework/Core/Manager/UI/Binding/Runtime/Binder/LDragButtonBinder.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/Scripts/Framework/Core/Manager/UI/Binding/Runtime/Binder/LDragButtonBinder.cs.meta" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/Scripts/Framework/Core/Manager/UI/Binding/Runtime/Binder/LGameObjectBinder.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/Scripts/Framework/Core/Manager/UI/Binding/Runtime/Binder/LGameObjectBinder.cs.meta" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/Scripts/Framework/Core/Manager/UI/Binding/Runtime/Binder/LImageBinder.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/Scripts/Framework/Core/Manager/UI/Binding/Runtime/Binder/LImageBinder.cs.meta" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/Scripts/Framework/Core/Manager/UI/Binding/Runtime/Binder/LModelContainerBinder.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/Scripts/Framework/Core/Manager/UI/Binding/Runtime/Binder/LModelContainerBinder.cs.meta" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/Scripts/Framework/Core/Manager/UI/Binding/Runtime/Binder/LRectTransformBinder.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/Scripts/Framework/Core/Manager/UI/Binding/Runtime/Binder/LRectTransformBinder.cs.meta" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/Scripts/Framework/Core/Manager/UI/Binding/Runtime/Binder/LTextBinder.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/Scripts/Framework/Core/Manager/UI/Binding/Runtime/Binder/LTextBinder.cs.meta" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/Scripts/Framework/Core/Manager/UI/Binding/Runtime/Binder/UIBindingBinder.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/Scripts/Framework/Core/Manager/UI/Binding/Runtime/Binder/UIBindingBinder.cs.meta" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ProjectSettings/QualitySettings.asset" beforeDir="false" afterPath="$PROJECT_DIR$/ProjectSettings/QualitySettings.asset" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/ResourceAssets/UI/UIRoot.prefab" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/ResourceAssets/UI/UIRoot.prefab.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/.idea.Client/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Client/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/ResourceAssets/UI/Example/ExampleUI.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/ResourceAssets/UI/Example/ExampleUI.prefab" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/ResourceAssets/UI/Example/ExampleUI.prefab.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/ResourceAssets/UI/Example/ExampleUI.prefab.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/ResourceAssets/UI/Start/StartWindow.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/ResourceAssets/UI/Start/StartWindow.prefab" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/ResourceAssets/UI/Start/StartWindow.prefab.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/ResourceAssets/UI/Start/StartWindow.prefab.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scenes/Launch.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scenes/Launch.unity" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scenes/UIEditor.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scenes/UIEditor.unity" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Framework/Core/Manager/UI/Binding/Editor/UIBindingInspector.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Framework/Core/Manager/UI/Binding/Editor/UIBindingInspector.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Framework/Core/Manager/UI/UIManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Framework/Core/Manager/UI/UIManager.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ProjectSettings/TagManager.asset" beforeDir="false" afterPath="$PROJECT_DIR$/ProjectSettings/TagManager.asset" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -48,23 +27,9 @@
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
   </component>
   <component name="HighlightingSettingsPerFile">
-    <setting file="file://$PROJECT_DIR$/Assets/Scripts/Framework/Core/Manager/AntiCheat/AntiCheatManager.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/Framework/Core/Manager/Camera/CameraManager.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/Assets/Scripts/Framework/Core/Manager/UI/Binding/Editor/UIBindingInspector.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/Assets/Scripts/Framework/Core/Manager/UI/Binding/Runtime/Attribute/Binder.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/Assets/Scripts/Framework/Core/Manager/UI/Binding/Runtime/Base/BaseBinder.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/Assets/Scripts/Framework/Core/Manager/UI/Binding/Runtime/Base/Bindable.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/Assets/Scripts/Framework/Core/Manager/UI/Binding/Runtime/Base/LinkerType.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/Assets/Scripts/Framework/Core/Manager/UI/Binding/Runtime/Binder/LButtonBinder.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/Assets/Scripts/Framework/Core/Manager/UI/LUI/Editor/MenuOptions.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/../../LandingGuy_Unity/Client/Assets/Character Movement Fundamentals/Source/Scripts/Showcase/DemoMenu.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/../../LandingGuy_Unity/Client/Assets/Scripts/Framework/UI/LUI/Runtime/LButton.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/../../LandingGuy_Unity/Client/Assets/Scripts/Framework/UI/LUI/Runtime/LImage.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/../../LandingGuy_Unity/Client/Assets/Scripts/Framework/UI/LUI/Runtime/LText.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/Scripts/Framework/Core/Manager/AntiCheat/AntiCheatManager.cs" root0="FORCE_HIGHLIGHTING" />
   </component>
-  <component name="ProjectColorInfo"><![CDATA[{
-  "associatedIndex": 3
-}]]></component>
   <component name="ProjectId" id="2nTpklUdZOC5brFwP8Jk0wKZHoF" />
   <component name="ProjectLevelVcsManager" settingsEditedManually="true">
     <ConfirmationsSetting value="2" id="Add" />
@@ -75,26 +40,15 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "settings.editor.selected.configurable": "preferences.sourceCode.C#",
-    "vue.rearranger.settings.migration": "true"
-  },
-  "keyToStringList": {
-    "rider.external.source.directories": [
-      "C:\\Users\\kipswang\\AppData\\Roaming\\JetBrains\\Rider2023.3\\resharper-host\\DecompilerCache",
-      "C:\\Users\\kipswang\\AppData\\Roaming\\JetBrains\\Rider2023.3\\resharper-host\\SourcesCache",
-      "C:\\Users\\kipswang\\AppData\\Local\\Symbols\\src"
-    ]
-  }
-}]]></component>
+  <component name="PropertiesComponent">
+    <property name="Discover.Launch.Via.Unity" value="true" />
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="node.js.detected.package.eslint" value="true" />
+    <property name="node.js.detected.package.tslint" value="true" />
+    <property name="node.js.selected.package.eslint" value="(autodetect)" />
+    <property name="node.js.selected.package.tslint" value="(autodetect)" />
+    <property name="vue.rearranger.settings.migration" value="true" />
+  </component>
   <component name="RunManager" selected="Attach to Unity Editor.Attach to Unity Editor">
     <configuration name="Start Unity" type="RunUnityExe" factoryName="Unity Executable">
       <option name="EXE_PATH" value="C:\Program Files\Unity\Hub\Editor\2022.3.50f1\Editor\Unity.exe" />
@@ -144,6 +98,8 @@
       <workItem from="1729007087220" duration="1028000" />
       <workItem from="1729008177503" duration="1150000" />
       <workItem from="1729045809684" duration="11216000" />
+      <workItem from="1729089021765" duration="803000" />
+      <workItem from="1729091103561" duration="1619000" />
     </task>
     <servers />
   </component>
@@ -162,6 +118,7 @@
         </entry>
       </map>
     </option>
+    <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="VcsManagerConfiguration">
     <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
