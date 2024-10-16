@@ -7,8 +7,8 @@ namespace Framework.Core.Manager.AnitCheat {
     /// <summary>
     /// 反作弊管理器
     /// </summary>
-    [MonoSingletonPath("[Manager]/AntiCheatManager")]
-    public class AntiCheatManager : MonoSingleton<AntiCheatManager> {
+    // [MonoSingletonPath("[Manager]/AntiCheatManager")]
+    public class AntiCheatManager : Singleton<AntiCheatManager> {
         /// <summary>
         /// 作弊委托
         /// </summary>

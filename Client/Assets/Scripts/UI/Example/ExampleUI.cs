@@ -1,13 +1,13 @@
 // author:KIPKIPS
 // date:2023.04.13 17:30
-// describe:玩家创角界面
+// describe:示例界面
 using Framework;
 using Framework.Core.Manager.UI;
 using UnityEngine;
 using UnityEngine.Events;
 
 namespace UI {
-    public class TestUI : BaseWindow {
+    public class ExampleUI : BaseWindow {
         public override void OnInit() {
             base.OnInit();
             VBind("profession1");
@@ -20,7 +20,7 @@ namespace UI {
             // });
             
             MBind("closeBtn", () => {
-                UIManager.Instance.Close(WindowNameDef.TestUI);
+                UIManager.Instance.Close(WindowNameDef.ExampleUI);
             });
             /*MBind("onDe",() => LogManager.Log("onLast"));*/
             MBind("onLast",() => LogManager.Log("onLast"));

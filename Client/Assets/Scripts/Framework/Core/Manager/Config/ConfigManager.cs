@@ -13,8 +13,8 @@ namespace Framework.Core.Manager.Config {
     /// <summary>
     /// 配置管理器
     /// </summary>
-    [MonoSingletonPath("[Manager]/ConfigManager")]
-    public class ConfigManager : MonoSingleton<ConfigManager> {
+    // [MonoSingletonPath("[Manager]/ConfigManager")]
+    public class ConfigManager : Singleton<ConfigManager> {
         private const string LOGTag = "ConfigManager";
         private const string ConfigPath = "Config/"; //配置表路径
         private readonly RestrictedDictionary<string, List<dynamic>> _configDict = new RestrictedDictionary<string, List<dynamic>>(); //配置总表
@@ -22,13 +22,15 @@ namespace Framework.Core.Manager.Config {
         /// <summary>
         /// 
         /// </summary>
-        public override void Initialize() {
+        public void Launch() {
+            LogManager.Log(LOGTag,"ConfigManager Launch");
             AnalyticsConfig();
         }
         // 解析配置表
         private void AnalyticsConfig() {
             _configDict.EnableWrite();
             _typeDict.EnableWrite();
+            //TODO:配置表加载优化,目前是全部加载
             // _configDict = new Dictionary<string, List<dynamic>>();
             //获取所有配置表
             // UIUtils.LoadJsonByPath<List<JObject>>("Data/" + tabName + ".json");
@@ -42,7 +44,7 @@ namespace Framework.Core.Manager.Config {
                 _configDict.Add(configName, new List<dynamic>());
                 _configDict[configName].Add(null); //预留一个位置
                 // configDict[configName].Add();
-                // LogManager.Log(configPath + files[i].Name);
+                LogManager.Log(LOGTag,"Load Config:",t.Name);
                 try {
                     var jObjList = JsonUtils.LoadJsonByPath<List<JObject>>(ConfigPath + t.Name);
                     var metatable = jObjList[^1];

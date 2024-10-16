@@ -32,7 +32,8 @@ namespace Framework.Core.Manager.UI {
     /// </summary>
     public enum WindowNameDef
     {
-        TestUI = 0,
+        ExampleUI = 0,
+        StartWindow = 1,
     }
     /// <summary>
     /// UI框架管理器
@@ -52,11 +53,10 @@ namespace Framework.Core.Manager.UI {
             /// 界面ID
             /// </summary>
             public WindowNameDef ID;
-            
             /// <summary>
             /// 界面资源路径
             /// </summary>
-            public string Path;
+            public string UIPrefabPath;
             /// <summary>
             /// 所属层级
             /// </summary>
@@ -68,13 +68,23 @@ namespace Framework.Core.Manager.UI {
         }
         
         /// <summary>
-        /// 
+        /// 定义各个UI界面数据
         /// </summary>
-        Dictionary<WindowNameDef, WindowData> WindowDataDict = new() {
-            { WindowNameDef.TestUI, new WindowData {
-                Path = "UI/TestUI",
-                WindowType = WindowType.Stack
-            }}
+        Dictionary<WindowNameDef, WindowData> WindowDataDict = new() { 
+            { 
+                WindowNameDef.ExampleUI, 
+                new WindowData {
+                    UIPrefabPath = "UI/Example/ExampleUI",
+                    WindowType = WindowType.Stack 
+                }
+            },
+            { 
+                WindowNameDef.StartWindow, 
+                new WindowData {
+                    UIPrefabPath = "UI/Start/StartWindow",
+                    WindowType = WindowType.Stack
+                }
+            },
         };
         private const string LOGTag = "UIManager";
         private readonly Stack<BaseWindow> _windowStack = new Stack<BaseWindow>();
@@ -121,9 +131,9 @@ namespace Framework.Core.Manager.UI {
                 return window;
             }
 
-            var path = WindowDataDict[id].Path;
+            var path = WindowDataDict[id].UIPrefabPath;
 #if UNITY_EDITOR
-            var windowObj = Instantiate(AssetDatabase.LoadAssetAtPath<GameObject>("Assets/ResourceAssets/" + WindowDataDict[id].Path + ".prefab"), UICameraRoot);
+            var windowObj = Instantiate(AssetDatabase.LoadAssetAtPath<GameObject>("Assets/ResourceAssets/" + WindowDataDict[id].UIPrefabPath + ".prefab"), UICameraRoot);
 #else
             //TODO:资源加载
             var GameObject windowObj = Instantiate(ResourcesLoadManager.Instance.LoadFromFile<GameObject>(_windowDict[id].AssetTag,_windowDict[id].name),UICameraRoot);

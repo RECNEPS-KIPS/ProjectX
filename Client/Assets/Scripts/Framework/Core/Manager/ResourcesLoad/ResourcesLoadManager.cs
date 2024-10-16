@@ -7,8 +7,8 @@ namespace Framework.Core.Manager.ResourcesLoad {
     /// <summary>
     /// 资源加载管理器
     /// </summary>
-    [MonoSingletonPath("[Manager]/ResourcesLoadManager")]
-    public class ResourcesLoadManager : MonoSingleton<ResourcesLoadManager> {
+    // [MonoSingletonPath("[Manager]/ResourcesLoadManager")]
+    public class ResourcesLoadManager : Singleton<ResourcesLoadManager> {
         private const string LOGTag = "ResourcesLoadManager";
         private readonly Dictionary<string, AssetBundle> _assetBundleDict = new Dictionary<string, AssetBundle>();
         private const string AssetBundlePath = "AssetBundles";

@@ -9,8 +9,8 @@ namespace Framework.Core.Manager.Store {
     /// <summary>
     /// 本地存储管理器
     /// </summary>
-    [MonoSingletonPath("[Manager]/StoreManager")]
-    public class StoreManager : MonoSingleton<StoreManager> {
+    // [MonoSingletonPath("[Manager]/StoreManager")]
+    public class StoreManager : Singleton<StoreManager> {
         private const string LOGTag = "StoreManager";
         private readonly string _storePath = System.Environment.CurrentDirectory + @"\Data\" + "StoreData".GetHashCode();
         [System.Serializable]
@@ -24,6 +24,11 @@ namespace Framework.Core.Manager.Store {
         /// </summary>
         public void Launch() {
             InitStorageContainer();
+        }
+
+        public StoreManager()
+        {
+            
         }
 
         // 初始化本地存储容器

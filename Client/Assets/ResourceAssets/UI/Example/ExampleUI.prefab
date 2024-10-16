@@ -887,9 +887,9 @@ GameObject:
   - component: {fileID: 2639664136978115779}
   - component: {fileID: 1779845797001034378}
   - component: {fileID: 3384762126330997520}
-  - component: {fileID: 6410325351467972769}
+  - component: {fileID: 7454482063769090777}
   m_Layer: 5
-  m_Name: TestUI
+  m_Name: ExampleUI
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -997,8 +997,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 149e5f9721d048efb82307836a18998a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _pageType: UI.TestUI
-  _scriptPath: Test/TestUI
+  _pageType: UI.ExampleUI
+  _scriptPath: Example/ExampleUI
   _binderDataList:
   - bindKey: profession1
     bindObj: {fileID: 8412854510613550388}
@@ -1040,7 +1040,7 @@ MonoBehaviour:
     bindObj: {fileID: 7994316488532801898}
     bindFieldId: 70015
     fieldType: 15
---- !u!114 &6410325351467972769
+--- !u!114 &7454482063769090777
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
