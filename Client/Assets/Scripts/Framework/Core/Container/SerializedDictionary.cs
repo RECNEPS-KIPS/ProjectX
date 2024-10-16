@@ -6,12 +6,19 @@ using System;
 using System.Collections.Generic;
 
 namespace Framework.Core.Container {
+    /// <summary>
+    /// 可序列化字典
+    /// </summary>
+    /// <typeparam name="TKey"></typeparam>
+    /// <typeparam name="TValue"></typeparam>
     [Serializable]
     public class SerializedDictionary<TKey, TValue> : Dictionary<TKey, TValue>, ISerializationCallbackReceiver {
-        [SerializeField] List<TKey> keys = new List<TKey>();
-        [SerializeField] List<TValue> values = new List<TValue>();
-
-        // OnBeforeSerialize implementation.
+        [SerializeField] private List<TKey> keys = new List<TKey>();
+        [SerializeField] private List<TValue> values = new List<TValue>();
+        
+        /// <summary>
+        /// OnBeforeSerialize implementation.
+        /// </summary>
         public void OnBeforeSerialize() {
             keys.Clear();
             values.Clear();
@@ -22,8 +29,11 @@ namespace Framework.Core.Container {
         }
 
         // OnAfterDeserialize implementation
+        /// <summary>
+        /// 序列化完成后
+        /// </summary>
         public void OnAfterDeserialize() {
-            for (int i = 0; i < keys.Count; i++) {
+            for (var i = 0; i < keys.Count; i++) {
                 Add(keys[i], values[i]);
             }
             keys.Clear();

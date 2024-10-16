@@ -7,7 +7,7 @@ using System;
 namespace Framework.Core.Singleton {
     // 普通单例创建类
     internal static class SingletonCreator {
-        static T CreateNonPublicConstructorObject<T>() where T : class {
+        private static T CreateNonPublicConstructorObject<T>() where T : class {
             var type = typeof(T);
             // 获取私有构造函数
             var constructorInfos = type.GetConstructors(BindingFlags.Instance | BindingFlags.NonPublic);
@@ -64,15 +64,14 @@ namespace Framework.Core.Singleton {
 
         // 泛型方法：创建MonoBehaviour单例
         public static T CreateMonoSingleton<T>() where T : class, ISingleton {
-            T instance = null;
             var type = typeof(T);
 
             //判断T实例存在的条件是否满足
             if (!IsUnitTestMode && !Application.isPlaying)
-                return instance;
+                return null;
 
             //判断当前场景中是否存在T实例
-            instance = UnityEngine.Object.FindObjectOfType(type) as T;
+            var instance = UnityEngine.Object.FindObjectOfType(type) as T;
             if (instance != null) {
                 instance.Initialize();
                 return instance;
@@ -98,18 +97,17 @@ namespace Framework.Core.Singleton {
                     UnityEngine.Object.DontDestroyOnLoad(obj);
                 instance = obj.AddComponent(typeof(T)) as T;
             }
-            instance.Initialize();
+            instance?.Initialize();
             return instance;
         }
 
         // 在GameObject上创建T组件（脚本）
         private static T CreateComponentOnGameObject<T>(string path, bool dontDestroy) where T : class {
             var obj = FindGameObject(path, true, dontDestroy);
-            if (obj == null) {
-                obj = new GameObject("Singleton of " + typeof(T).Name);
-                if (dontDestroy && !IsUnitTestMode) {
-                    UnityEngine.Object.DontDestroyOnLoad(obj);
-                }
+            if (obj != null) return obj.AddComponent(typeof(T)) as T;
+            obj = new GameObject("Singleton of " + typeof(T).Name);
+            if (dontDestroy && !IsUnitTestMode) {
+                UnityEngine.Object.DontDestroyOnLoad(obj);
             }
             return obj.AddComponent(typeof(T)) as T;
         }

@@ -3,6 +3,9 @@
 using System;
 
 namespace Framework.Core.Manager.AnitCheat {
+    /// <summary>
+    /// 加密浮点数
+    /// </summary>
     public struct EncryptFloat {
         private float _obscuredFloat;
         private int _obscuredKey;
@@ -24,6 +27,10 @@ namespace Framework.Core.Manager.AnitCheat {
                 }
             }
         }
+        /// <summary>
+        /// 加密浮点数构造函数
+        /// </summary>
+        /// <param name="val"></param>
         public EncryptFloat(float val = 0) {
             _obscuredFloat = 0;
             _obscuredKey = 0;

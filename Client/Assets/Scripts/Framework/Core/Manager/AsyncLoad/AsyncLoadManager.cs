@@ -5,68 +5,90 @@ using System.Collections.Generic;
 using UnityEngine;
 using Framework.Core.Singleton;
 using System;
+using Object = UnityEngine.Object;
 
 namespace Framework.Core.Manager.AsyncLoad {
+    /// <summary>
+    /// 异步加载管理器
+    /// </summary>
     [MonoSingletonPath("[Manager]/AsyncLoadManager")]
     public class AsyncLoadManager : MonoSingleton<AsyncLoadManager> {
-        private Dictionary<int, Node> assetsMap = new ();
-        private Dictionary<int, List<Action<UnityEngine.Object>>> loadingDic = new ();
-        public enum State {
+        private readonly Dictionary<int, Node> _assetsMap = new ();
+        private readonly Dictionary<int, List<Action<Object>>> _loadingDic = new ();
+        /// <summary>
+        /// 异步加载任务状态
+        /// </summary>
+        private enum State {
             Loading,
             Finish
         }
         private class Node {
-            public UnityEngine.Object asset;
-            public State state;
-            public ResourceRequest req;
+            public Object Asset;
+            public State State;
+            public ResourceRequest Req;
         }
-        public void Load(string path, Action<UnityEngine.Object> callback) {
-            int hash = path.GetHashCode();
-            if (assetsMap.ContainsKey(hash)) {
-                Node node = assetsMap[hash];
-                if (node.state == State.Loading) {
-                    var list = loadingDic[hash];
-                    if (list == null) list = new List<Action<UnityEngine.Object>>();
-                    list.Add(callback);
-                } else if (node.state == State.Finish) {
-                    callback(node.asset);
+        /// <summary>
+        /// 加载任务
+        /// </summary>
+        /// <param name="path"></param>
+        /// <param name="callback"></param>
+        public void Load(string path, Action<Object> callback) {
+            var hash = path.GetHashCode();
+            if (_assetsMap.TryGetValue(hash, out var existNode))
+            {
+                switch (existNode.State)
+                {
+                    case State.Loading:
+                    {
+                        var list = _loadingDic[hash] ?? new List<Action<Object>>();
+                        list.Add(callback);
+                        break;
+                    }
+                    case State.Finish:
+                        callback(existNode.Asset);
+                        break;
+                    default:
+                        throw new ArgumentOutOfRangeException();
                 }
             } else {
-                var list = new List<Action<UnityEngine.Object>>();
-                list.Add(callback);
-                loadingDic.Add(hash, list);
-                Node node = new Node() {
-                    state = State.Loading, req = Resources.LoadAsync<GameObject>(path)
+                var list = new List<Action<Object>> { callback };
+                _loadingDic.Add(hash, list);
+                var node = new Node {
+                    State = State.Loading, Req = Resources.LoadAsync<GameObject>(path)
                 };
-                assetsMap.Add(hash, node);
+                _assetsMap.Add(hash, node);
             }
         }
+        /// <summary>
+        /// 卸载
+        /// </summary>
+        /// <param name="path"></param>
         public void Unload(string path) {
-            int hash = path.GetHashCode();
-            if (assetsMap.ContainsKey(hash)) {
-                Node node = assetsMap[hash];
-                if (node.state == State.Finish) {
-                    UnityEngine.Object.Destroy(node.asset);
-                }
-                assetsMap.Remove(hash);
+            var hash = path.GetHashCode();
+            if (!_assetsMap.ContainsKey(hash)) return;
+            var node = _assetsMap[hash];
+            if (node.State == State.Finish) {
+                Destroy(node.Asset);
             }
+            _assetsMap.Remove(hash);
         }
-        public void Update() {
-            if (assetsMap.Count > 0) {
-                foreach (var item in assetsMap) {
-                    Node node = item.Value;
-                    if (node.state == State.Loading) {
-                        if (node.req.isDone) {
-                            node.state = State.Finish;
-                            node.asset = node.req.asset;
-                            var list = loadingDic[item.Key];
-                            for (int i = 0; i < list.Count; i++) {
-                                list[i](node.asset);
-                            }
-                            loadingDic.Remove(item.Key);
-                        }
-                    }
+        /// <summary>
+        /// 
+        /// </summary>
+        public void Update()
+        {
+            if (_assetsMap.Count <= 0) return;
+            foreach (var item in _assetsMap) {
+                var node = item.Value;
+                if (node.State != State.Loading) continue;
+                if (!node.Req.isDone) continue;
+                node.State = State.Finish;
+                node.Asset = node.Req.asset;
+                var list = _loadingDic[item.Key];
+                foreach (var t in list) {
+                    t(node.Asset);
                 }
+                _loadingDic.Remove(item.Key);
             }
         }
     }

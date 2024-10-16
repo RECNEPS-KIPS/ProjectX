@@ -1,6 +1,9 @@
 ﻿// author:KIPKIPS
 // describe:加密int类型
 namespace Framework.Core.Manager.AnitCheat {
+    /// <summary>
+    /// 加密整型
+    /// </summary>
     public struct EncryptInt {
         private int _obscuredInt;
         private int _obscuredKey;
@@ -22,6 +25,10 @@ namespace Framework.Core.Manager.AnitCheat {
                 }
             }
         }
+        /// <summary>
+        /// 加密整型构造函数
+        /// </summary>
+        /// <param name="val"></param>
         public EncryptInt(int val = 0) {
             _obscuredInt = 0;
             _obscuredKey = 0;

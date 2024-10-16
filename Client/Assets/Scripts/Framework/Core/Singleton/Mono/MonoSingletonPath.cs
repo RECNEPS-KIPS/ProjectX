@@ -3,15 +3,21 @@
 using System;
 
 namespace Framework.Core.Singleton {
-    // MonoSingleton路径
+    /// <summary>
+    /// MonoSingleton路径
+    /// </summary>
     [AttributeUsage(AttributeTargets.Class)] //这个特性只能标记在Class上
     public class MonoSingletonPath : Attribute {
-        private string _pathInHierarchy;
+        /// <summary>
+        /// 构造函数
+        /// </summary>
+        /// <param name="pathInHierarchy">Hierarchy路径</param>
         public MonoSingletonPath(string pathInHierarchy) {
-            _pathInHierarchy = pathInHierarchy;
+            PathInHierarchy = pathInHierarchy;
         }
-        public string PathInHierarchy {
-            get => _pathInHierarchy;
-        }
+        /// <summary>
+        /// Hierarchy路径
+        /// </summary>
+        public string PathInHierarchy { get; }
     }
 }

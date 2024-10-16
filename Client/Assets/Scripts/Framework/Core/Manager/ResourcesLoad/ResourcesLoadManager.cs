@@ -4,36 +4,48 @@ using Framework.Core.Singleton;
 using UnityEngine;
 
 namespace Framework.Core.Manager.ResourcesLoad {
+    /// <summary>
+    /// 资源加载管理器
+    /// </summary>
     [MonoSingletonPath("[Manager]/ResourcesLoadManager")]
     public class ResourcesLoadManager : MonoSingleton<ResourcesLoadManager> {
-        private const string logTag = "ResourcesLoadManager";
-        private Dictionary<string, AssetBundle> m_AssetBundleDict = new Dictionary<string, AssetBundle>();
-        private const string assetBundlePath = "AssetBundles";
-
-        // 加载AssetBundle FromLocalFile
+        private const string LOGTag = "ResourcesLoadManager";
+        private readonly Dictionary<string, AssetBundle> _assetBundleDict = new Dictionary<string, AssetBundle>();
+        private const string AssetBundlePath = "AssetBundles";
+        
+        /// <summary>
+        /// 加载AssetBundle FromLocalFile
+        /// </summary>
+        /// <param name="assetBundleName"></param>
         public void LoadAssetBundleFile(string assetBundleName)
         {
             assetBundleName = assetBundleName.ToLower();
-            var myLoadAssetBundle = AssetBundle.LoadFromFile($"{Application.dataPath}/{assetBundlePath}/{assetBundleName}");
+            var myLoadAssetBundle = AssetBundle.LoadFromFile($"{Application.dataPath}/{AssetBundlePath}/{assetBundleName}");
             if (null == myLoadAssetBundle) {
-                LogManager.LogError(logTag, "load AssetBundle == null");
+                LogManager.LogError(LOGTag, "load AssetBundle == null");
                 return;
             }
-            m_AssetBundleDict[assetBundleName] = myLoadAssetBundle;
+            _assetBundleDict[assetBundleName] = myLoadAssetBundle;
         }
-
-        // AssetBundles本地加载
+        
+        /// <summary>
+        /// AssetBundles本地加载
+        /// </summary>
+        /// <param name="assetBundleName"></param>
+        /// <param name="assetName"></param>
+        /// <typeparam name="T"></typeparam>
+        /// <returns></returns>
         public T LoadFromFile<T>(string assetBundleName, string assetName) where T : UnityEngine.Object 
         {
-            T temp = default(T);
+            var temp = default(T);
             assetBundleName = assetBundleName.ToLower();
-            if (!m_AssetBundleDict.ContainsKey(assetBundleName))
+            if (!_assetBundleDict.ContainsKey(assetBundleName))
             {
                 LoadAssetBundleFile(assetBundleName);
             } 
-            temp = m_AssetBundleDict[assetBundleName].LoadAsset<T>(assetName);
+            temp = _assetBundleDict[assetBundleName].LoadAsset<T>(assetName);
             if (null == temp) {
-                LogManager.LogError(logTag, String.Format("load Asset fail ! name = {0}", assetName));
+                LogManager.LogError(LOGTag, $"load Asset fail ! name = {assetName}");
             }
             return temp;
         }

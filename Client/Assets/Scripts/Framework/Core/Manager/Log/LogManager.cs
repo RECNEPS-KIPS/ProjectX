@@ -3,36 +3,41 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Framework.Common;
-using System.Reflection;
 using Framework.Core.Pool;
 
-public class LogManager {
+/// <summary>
+/// 日志管理器
+/// </summary>
+public static class LogManager {
     // Log Color HashSet防止重复颜色   例如：<"log","#ff00ff">
-    private static Dictionary<string, string> _logColorDict = new Dictionary<string, string>();
-    private static HashSet<string> _logColorHashSet = new HashSet<string>();
-    private static BasalPool<LogEntity> _logEntityPool = new BasalPool<LogEntity>();
-    private static Dictionary<int, string> _spaceDict = new Dictionary<int, string>();
-    // Log
+    private static readonly Dictionary<string, string> LOGColorDict = new Dictionary<string, string>();
+    private static readonly HashSet<string> LOGColorHashSet = new HashSet<string>();
+    private static readonly BasalPool<LogEntity> LOGEntityPool = new BasalPool<LogEntity>();
+    private static readonly Dictionary<int, string> SpaceDict = new Dictionary<int, string>();
+
+    /// <summary>
+    /// 输出日志
+    /// </summary>
+    /// <param name="messages"></param>
     public static void Log(params object[] messages) {
-        string tag = "Log";
+        var tag = "Log";
         if (messages == null || messages.Length == 0) {
             Debug.Log(GetLogFormatString(tag, "The expected value is null"));
             return;
         }
-        ;
-        int startIdx = 0;
+        
+        var startIdx = 0;
         if (messages.Length == 1) {
             startIdx = 0;
         } else if (messages[0] is string) {
             tag = (string)messages[0];
             startIdx = 1;
         }
-        string msg = "";
-        LogEntity logEntity;
-        for (int i = startIdx; i < messages.Length; i++) {
-            logEntity = GetMessageData(messages[i]);
-            msg += (logEntity.Content + "\n");
-            _logEntityPool.Recycle(logEntity);
+        var msg = "";
+        for (var i = startIdx; i < messages.Length; i++) {
+            var logEntity = GetMessageData(messages[i]);
+            msg += logEntity.Content + "\n";
+            LOGEntityPool.Recycle(logEntity);
         }
         Debug.Log(GetLogFormatString(tag, msg));
     }
@@ -41,24 +46,23 @@ public class LogManager {
         return HandleLogUnit(true, msgObj, -1);
     }
     private static LogEntity HandleLogUnit(bool firstLine, object msgObj, int layer) {
-        string msg = "";
-        bool innerLine = true;
-        if (InheritInterface<IEnumerable>(msgObj) && !(msgObj is string)) {
+        var msg = "";
+        var innerLine = true;
+        if (InheritInterface<IEnumerable>(msgObj) && msgObj is not string) {
             msg += firstLine ? "" : "\n";
-            IEnumerator ie = ((IEnumerable)msgObj).GetEnumerator();
-            string tempStr = "";
-            int length = GetEnumeratorCount(ie);
+            var ie = ((IEnumerable)msgObj).GetEnumerator();
+            using var unknown = ie as IDisposable;
+            var length = GetEnumeratorCount(ie);
             ie = ((IEnumerable)msgObj).GetEnumerator();
-            int count = 0;
-            bool last, iskvp;
+            var count = 0;
             while (ie.MoveNext()) {
                 if (ie.Current != null) {
                     dynamic data = ie.Current;
-                    iskvp = ContainProperty(data, "Key");
+                    bool iskvp = ContainProperty(data, "Key");
                     LogEntity le = HandleLogUnit(false, (iskvp ? data.Value : data), layer + 1);
-                    last = count == length - 1;
-                    tempStr = (GetTable(layer + 1) + (iskvp ? data.Key : count) + " : " + le.Content) + (le.InnerLine && !last ? "\n" : "");
-                    innerLine = last ? true : (innerLine ? false : true);
+                    var last = count == length - 1;
+                    string tempStr = (GetTable(layer + 1) + (iskvp ? data.Key : count) + " : " + le.Content) + (le.InnerLine && !last ? "\n" : "");
+                    innerLine = last || !innerLine;
                     msg += tempStr;
                 }
                 count++;
@@ -66,73 +70,86 @@ public class LogManager {
         } else {
             msg = msgObj.ToString();
         }
-        LogEntity logEntity = _logEntityPool.Allocate();
+        var logEntity = LOGEntityPool.Allocate();
         logEntity.Set(msg, innerLine);
         return logEntity;
     }
     private static int GetEnumeratorCount(IEnumerator ie) {
-        int cnt = 0;
+        var cnt = 0;
         while (ie.MoveNext()) {
             cnt++;
         }
         return cnt;
     }
     private static string GetTable(int num) {
-        if (_spaceDict.ContainsKey(num)) {
-            return _spaceDict[num];
+        if (SpaceDict.TryGetValue(num, out var table)) {
+            return table;
         }
-        string space = "";
-        for (int i = 0; i < num; i++) {
+        var space = "";
+        for (var i = 0; i < num; i++) {
             space += "    ";
         }
-        _spaceDict.Add(num, space);
+        SpaceDict.Add(num, space);
         return space;
     }
     private static bool ContainProperty(object obj, string propertyName) {
-        if (obj != null && !string.IsNullOrEmpty(propertyName)) {
-            PropertyInfo findedPropertyInfo = obj.GetType().GetProperty(propertyName);
-            return (findedPropertyInfo != null);
-        }
-        return false;
+        if (obj == null || string.IsNullOrEmpty(propertyName)) return false;
+        var findedPropertyInfo = obj.GetType().GetProperty(propertyName);
+        return (findedPropertyInfo != null);
     }
     private static bool InheritInterface<T>(object obj) {
         return typeof(T).IsAssignableFrom(obj.GetType());
     }
-
-    // LogWarning
+    
+    /// <summary>
+    /// 警告日志输出
+    /// </summary>
+    /// <param name="message"></param>
     public static void LogWarning(object message) {
         LogWarning("WARNING", message);
     }
+    /// <summary>
+    /// 警告日志输出 Tag
+    /// </summary>
+    /// <param name="tag"></param>
+    /// <param name="message"></param>
     public static void LogWarning(string tag, object message) {
         Debug.LogWarning(GetLogFormatString(tag, message));
     }
-
-    // LogError
+    
+    /// <summary>
+    /// 报错日志输出
+    /// </summary>
+    /// <param name="message"></param>
     public static void LogError(object message) {
         LogError("ERROR", message);
     }
+    /// <summary>
+    /// 报错日志输出 Tag
+    /// </summary>
+    /// <param name="tag"></param>
+    /// <param name="message"></param>
     public static void LogError(string tag, object message) {
         Debug.LogError(GetLogFormatString(tag, message));
     }
-    private static String GetLogFormatString(string tag, object message) {
+    private static string GetLogFormatString(string tag, object message) {
         string tempColorCode;
-        if (_logColorDict.ContainsKey(tag)) {
-            tempColorCode = _logColorDict[tag];
+        if (LOGColorDict.TryGetValue(tag, out var value)) {
+            tempColorCode = value;
         } else {
-            int count = 0; // 颜色循环次数上限
+            var count = 0; // 颜色循环次数上限
             do {
                 tempColorCode = CommonUtils.GetRandomColorCode();
                 count++;
-                if (count > 1000) {
-                    // 获取颜色次数超过1000次 默认返回白色
-                    Debug.LogWarning("Color Get Duplicated");
-                    return String.Format("<color=#000000>[{0}]</color>: {1}", tag, message);
-                }
-            } while (_logColorHashSet.Contains(tempColorCode));
+                if (count <= 1000) continue;
+                // 获取颜色次数超过1000次 默认返回白色
+                Debug.LogWarning("Color Get Duplicated");
+                return $"<color=#000000>[{tag}]</color>: {message}";
+            } while (LOGColorHashSet.Contains(tempColorCode));
             // 找到对应颜色
-            _logColorDict[tag] = tempColorCode;
-            _logColorHashSet.Add(tempColorCode);
+            LOGColorDict[tag] = tempColorCode;
+            LOGColorHashSet.Add(tempColorCode);
         }
-        return String.Format("<color={0}>[{1}]</color>: {2}", tempColorCode, tag, message);
+        return $"<color={tempColorCode}>[{tag}]</color>: {message}";
     }
 }

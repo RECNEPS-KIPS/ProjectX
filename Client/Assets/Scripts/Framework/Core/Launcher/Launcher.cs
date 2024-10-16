@@ -7,9 +7,12 @@ using Framework.Core.Manager.Language;
 using Framework.Core.Manager.UI;
 
 namespace Framework.Core.Launcher {
+    /// <summary>
+    /// 游戏启动器
+    /// </summary>
     public class Launcher : MonoBehaviour {
         // 调用业务逻辑
-        void Awake() {
+        private void Awake() {
             StoreManager.Instance.Launch();
             AntiCheatManager.Instance.Launch();
             LanguageManager.Instance.Launch();
