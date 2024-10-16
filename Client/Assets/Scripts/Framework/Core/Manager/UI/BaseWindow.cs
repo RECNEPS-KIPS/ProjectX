@@ -14,10 +14,11 @@ namespace Framework.Core.Manager.UI {
     /// 窗口基类
     /// </summary>
     public class BaseWindow : MonoBehaviour {
+        private const string LOGTag = "BaseWindow";
         /// <summary>
         /// window id
         /// </summary>
-        public UIWindow WindowId { get; set; }
+        public WindowNameDef WindowId { get; set; }
         private Animator _animator;
         /// <summary>
         /// 是否显示
@@ -141,10 +142,46 @@ namespace Framework.Core.Manager.UI {
         //界面生命周期流程,这里只提供虚方法,具体的逻辑由各个业务界面进行重写
         
         /// <summary>
+        /// 界面初始化
+        /// </summary>
+        public virtual void OnInit() {
+            UIBinding = GetComponent<UIBinding>();
+            LogManager.Log(LOGTag,"OnInit");
+            // UIBinding.BinderDataList
+            // foreach (var dict in UIBinding.BinderDataList)
+            // {
+            //     LogManager.Log("Layer1",dict.bindKey,dict.fieldType,dict.bindFieldId,dict.bindObj);
+            // }
+            BindDict.Clear();
+        }
+        
+        /// <summary>
+        /// 界面销毁
+        /// </summary>
+        public virtual void OnUnInit() {
+            LogManager.Log(LOGTag,"OnUnInit");
+            BindDict.Clear();
+        }
+        
+        /// <summary>
+        /// 进入界面 
+        /// </summary>
+        public virtual void OnEnter() {
+            LogManager.Log(LOGTag,"OnEnter");
+            IsShow = true;
+            gameObject.SetActive(true);
+        }
+        
+        /// <summary>
         /// 进入界面 
         /// </summary>
         /// <param name="options"></param>
-        public virtual void OnEnter(dynamic options = null) {
+        public virtual void OnEnter(dynamic options) {
+            if (options == null)
+            {
+                OnEnter();
+                return;
+            }
             IsShow = true;
             gameObject.SetActive(true);
         }
@@ -154,6 +191,7 @@ namespace Framework.Core.Manager.UI {
         /// 暂停界面
         /// </summary>
         public virtual void OnPause() {
+            LogManager.Log(LOGTag,"OnPause");
             IsShow = false;
         }
         
@@ -161,6 +199,7 @@ namespace Framework.Core.Manager.UI {
         /// 恢复界面
         /// </summary>
         public virtual void OnResume() {
+            LogManager.Log(LOGTag,"OnResume");
             //print("on resume");
             IsShow = true;
         }
@@ -169,11 +208,61 @@ namespace Framework.Core.Manager.UI {
         /// 关闭界面
         /// </summary>
         public virtual void OnExit() {
-            Destroy(gameObject);
+            LogManager.Log(LOGTag,"OnExit");
             UIManager.Instance.WindowStackPop();
             IsShow = false;
         }
 
         #endregion
+        
+        private UIBinding _uiBinding;
+        /// <summary>
+        /// 
+        /// </summary>
+        public UIBinding UIBinding {
+            get => _uiBinding;
+            set => _uiBinding = value;
+        }
+        private Dictionary<string, Bindable> BindDict = new();
+
+        /// <summary>
+        /// 更新绑定字段的值
+        /// </summary>
+        /// <param name="key">绑定字段</param>
+        /// <param name="value">绑定的值</param>
+        protected void Bind(string key, dynamic value = default) {
+            BindDict[key].Value = value;
+        }
+        
+        private void VMBind(string key, dynamic value = default) {
+            if (BindDict.TryAdd(key,new Bindable(_uiBinding, key, value))) {
+                BindDict[key].Value = value;
+            }
+        }
+        /// <summary>
+        /// 字段值绑定
+        /// </summary>
+        /// <param name="key">绑定字段</param>
+        /// <param name="value">绑定值</param>
+        protected void VBind(string key,dynamic value = default)
+        {
+            VMBind(key,value);
+        }
+        /// <summary>
+        /// 字段值绑定
+        /// </summary>
+        /// <param name="key">绑定字段</param>
+        /// <param name="value">绑定值</param>
+        protected void MBind<T>(string key,UnityAction<T> value = default) {
+            VMBind(key,value);
+        }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="key"></param>
+        /// <param name="value"></param>
+        protected void MBind(string key,UnityAction value = default) {
+            VMBind(key,value);
+        }
     }
 }

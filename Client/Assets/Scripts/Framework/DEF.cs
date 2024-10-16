@@ -7,6 +7,6 @@ namespace Framework
     /// 定义类
     /// </summary>
     public static class DEF {
-    
+        public static int BIND_ENUM_GAP = 10000;
     }
 }

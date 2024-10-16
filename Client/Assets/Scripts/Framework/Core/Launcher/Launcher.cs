@@ -17,6 +17,8 @@ namespace Framework.Core.Launcher {
             AntiCheatManager.Instance.Launch();
             LanguageManager.Instance.Launch();
             UIManager.Instance.Launch();
+            
+            UIManager.Instance.Open(WindowNameDef.TestUI);
         }
     }
 }
