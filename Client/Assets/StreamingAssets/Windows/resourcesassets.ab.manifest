@@ -1,0 +1,65 @@
+ManifestFileVersion: 0
+CRC: 2235325238
+Hashes:
+  AssetFileHash:
+    serializedVersion: 2
+    Hash: 37d727132b24892e138c82ccc40a7daa
+  TypeTreeHash:
+    serializedVersion: 2
+    Hash: 232a03c8a262babc93e4900fa7df82d9
+  IncrementalBuildHash:
+    serializedVersion: 2
+    Hash: 37d727132b24892e138c82ccc40a7daa
+HashAppended: 0
+ClassTypes:
+- Class: 1
+  Script: {instanceID: 0}
+- Class: 4
+  Script: {instanceID: 0}
+- Class: 20
+  Script: {instanceID: 0}
+- Class: 21
+  Script: {instanceID: 0}
+- Class: 23
+  Script: {instanceID: 0}
+- Class: 28
+  Script: {instanceID: 0}
+- Class: 33
+  Script: {instanceID: 0}
+- Class: 43
+  Script: {instanceID: 0}
+- Class: 48
+  Script: {instanceID: 0}
+- Class: 65
+  Script: {instanceID: 0}
+- Class: 81
+  Script: {instanceID: 0}
+- Class: 89
+  Script: {instanceID: 0}
+- Class: 104
+  Script: {instanceID: 0}
+- Class: 108
+  Script: {instanceID: 0}
+- Class: 114
+  Script: {fileID: 11500000, guid: c9c23dd89b15a2f4cb48a12f5b9e8f87, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: 7032146fe9a194453a6b16c4ab8761ad, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: 9f46ea29fd0ab49e2a3216fae7482e56, type: 3}
+- Class: 115
+  Script: {instanceID: 0}
+- Class: 124
+  Script: {instanceID: 0}
+- Class: 157
+  Script: {instanceID: 0}
+- Class: 196
+  Script: {instanceID: 0}
+- Class: 258
+  Script: {instanceID: 0}
+- Class: 850595691
+  Script: {instanceID: 0}
+SerializeReferenceClassIdentifiers: []
+Assets:
+- Assets/ResourcesAssets/InGame/Scenes/Level/Level_1.unity
+Dependencies:
+- G:/GUARDIAN_OFFICE/Client/Assets/StreamingAssets/Windows/resourcesassets.ab

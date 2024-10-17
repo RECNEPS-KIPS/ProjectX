@@ -75,8 +75,12 @@ namespace Framework.Core.Manager.UI
             {
                 DestroyImmediate(_prefabGo);
             }
-
+            
+#if UNITY_EDITOR
             var go = AssetDatabase.LoadAssetAtPath<GameObject>(modelPath);
+#else
+            var go = new GameObject();
+#endif
             _prefabGo = Instantiate(go, Vector3.zero, Quaternion.identity, ContainerGo.transform);
             _prefabGo.transform.localScale = Vector3.one;
         }

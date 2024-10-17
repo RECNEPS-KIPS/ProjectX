@@ -125,17 +125,14 @@ namespace Framework.Core.Manager.UI
                         return _canvasRoot;
                     }
 #if UNITY_EDITOR
-                    var canvasObj =
-                        Instantiate(
-                            AssetDatabase.LoadAssetAtPath<GameObject>("Assets/ResourcesAssets/UI/UIRoot.prefab"));
+                    var go = Instantiate( AssetDatabase.LoadAssetAtPath<GameObject>("Assets/ResourcesAssets/UI/UIRoot.prefab"));
 #else
                     //TODO:资源加载
-                    var canvasObj =
- Instantiate(ResourcesLoadManager.Instance.LoadFromFile<GameObject>("Assets/ResourcesAssets/UI/UIRoot.prefab"));
+                    var go = new GameObject();
 #endif
-                    var t = canvasObj.transform;
+                    var t = go.transform;
                     t.SetParent(UICameraRoot);
-                    _canvasRoot = canvasObj.transform;
+                    _canvasRoot = go.transform;
                 }
 
                 return _canvasRoot;
@@ -191,22 +188,13 @@ namespace Framework.Core.Manager.UI
 
             var path = WindowDataDict[id].UIPrefabPath;
 #if UNITY_EDITOR
-            var windowObj =
-                Instantiate(
-                    AssetDatabase.LoadAssetAtPath<GameObject>("Assets/ResourcesAssets/" +
-                                                              WindowDataDict[id].UIPrefabPath + ".prefab"), CanvasRoot);
+            var go = Instantiate(AssetDatabase.LoadAssetAtPath<GameObject>($"Assets/ResourcesAssets/{WindowDataDict[id].UIPrefabPath}.prefab"), CanvasRoot);
 #else
             //TODO:资源加载
-            var windowObj =
- Instantiate(ResourcesLoadManager.Instance.LoadFromFile<GameObject>(_windowDict[id].AssetTag,_windowDict[id].name),CanvasRoot);
+            var go = new GameObject();//Instantiate(ResourcesLoadManager.Instance.LoadFromFile<GameObject>(_windowDict[id].AssetTag,_windowDict[id].name),CanvasRoot);
 #endif
-            window = windowObj.transform.GetComponent<BaseWindow>();
-            windowObj.transform.name = WindowDataDict[id].Name;
-            // var t = windowObj.transform;
-            // var rect = t.GetComponent<RectTransform>();
-            // rect.anchoredPosition = Vector2.zero;
-            // rect.localScale = Vector3.one;
-            // LogManager.Log(LOGTag,"window == null?",t.localPosition);
+            window = go.transform.GetComponent<BaseWindow>();
+            go.transform.name = WindowDataDict[id].Name;
             window.WindowId = id;
             _baseWindowDict.Add((int)id, window);
             window.OnInit();

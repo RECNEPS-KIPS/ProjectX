@@ -1,0 +1,28 @@
+ManifestFileVersion: 0
+CRC: 3566291102
+AssetBundleManifest:
+  AssetBundleInfos:
+    Info_0:
+      Name: resourcesassets.ab
+      Dependencies: {}
+    Info_1:
+      Name: resourcesassets.ab
+      Dependencies: {}
+    Info_2:
+      Name: resourcesassets.ab
+      Dependencies:
+        Dependency_0: resourcesassets.ab
+    Info_3:
+      Name: resourcesassets.ab
+      Dependencies:
+        Dependency_0: resourcesassets.ab
+        Dependency_1: resourcesassets.ab
+    Info_4:
+      Name: resourcesassets.ab
+      Dependencies: {}
+    Info_5:
+      Name: resourcesassets.ab
+      Dependencies: {}
+    Info_6:
+      Name: resourcesassets.ab
+      Dependencies: {}

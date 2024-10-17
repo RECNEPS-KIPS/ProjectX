@@ -8,114 +8,136 @@ namespace Framework.Core.ResourcesAssets
     public class CreateAB : MonoBehaviour
     {
         private static string abOutPath;
-        private static List<AssetBundleBuild> listassets = new List<AssetBundleBuild>();
-        private static List<DirectoryInfo> listfileinfo = new List<DirectoryInfo>();
-        private static bool isover = false; //是否检查完成，可以打包
-        static private string selectPath;
+        private static List<AssetBundleBuild> ListAssets = new List<AssetBundleBuild>();
+        private static List<DirectoryInfo> ListFileInfo = new List<DirectoryInfo>();
+        private static bool IsFinished; //是否检查完成 可以打包
+        private static string selectPath;
+
+        private const string LOGTag = "ResourcesAssets CreateAB";
 
         public static bool GetState()
         {
-            return isover;
+            return IsFinished;
         }
 
         public static AssetBundleBuild[] GetAssetBundleBuilds()
         {
-            return listassets.ToArray();
+            foreach (var AssetBundleBuild in ListAssets.ToArray())
+            {
+                foreach (var name in AssetBundleBuild.assetNames)
+                {
+                    LogManager.Log(LOGTag,$"AssetBundleBuild BundleName:{AssetBundleBuild.assetBundleName} - Path:{name}");
+                }
+            }
+            return ListAssets.ToArray();
         }
 
         [MenuItem("ABTools/CreatAB &_Q", false)]
         public static void CreateModelAB()
         {
-            abOutPath = Application.streamingAssetsPath;
+            ListAssets.Clear();
+            abOutPath = PathTools.GetABOutPath();
+            // LogManager.Log(LOGTag,"GetABOutPath",abOutPath);
+            if (Directory.Exists(abOutPath))
+            {
+                Directory.Delete(abOutPath,true);
+            }
+            Directory.CreateDirectory(abOutPath);
 
-            if (!Directory.Exists(abOutPath))
-                Directory.CreateDirectory(abOutPath);
-
-            UnityEngine.Object obj = Selection.activeObject;
+            var obj = Selection.activeObject;
             selectPath = AssetDatabase.GetAssetPath(obj);
+            // LogManager.Log(LOGTag,selectPath,abOutPath);
+            
             SearchFileAssetBundleBuild(selectPath);
-
-            BuildPipeline.BuildAssetBundles(abOutPath,
-                CreateAB.GetAssetBundleBuilds(), BuildAssetBundleOptions.None,
-                EditorUserBuildSettings.activeBuildTarget);
-            Debug.Log("AssetBundle打包完毕");
+            var assetBundleBuilds = GetAssetBundleBuilds();
+            
+            // BuildPipeline.BuildAssetBundles(abOutPath,assetBundleBuilds , BuildAssetBundleOptions.None,EditorUserBuildSettings.activeBuildTarget);
+            LogManager.Log(LOGTag,"AssetBundle打包完毕");
         }
 
         [MenuItem("ABTools/CreatAB &_Q", true)]
         public static bool CanCreatAB()
         {
-            if (Selection.objects.Length > 0)
-            {
-                return true;
-            }
-            else
-                return false;
+            // LogManager.Log("CanCreatAB",Selection.objects.Length);
+            return Selection.objects.Length > 0;
         }
 
-//是文件，继续向下
+        //是文件 继续向下
         public static void SearchFileAssetBundleBuild(string path)
         {
-            DirectoryInfo directory = new DirectoryInfo(@path);
-            FileSystemInfo[] fileSystemInfos = directory.GetFileSystemInfos();
-            listfileinfo.Clear();
+            var directory = new DirectoryInfo(path);
+            // LogManager.Log("SearchFileAssetBundleBuild",Application.dataPath,path,directory == null);
+            var fileSystemInfos = directory.GetFileSystemInfos();
+            ListFileInfo.Clear();
+            // LogManager.Log(LOGTag,"fileSystemInfos Length:",fileSystemInfos.Length);
             //遍历所有文件夹中所有文件
             foreach (var item in fileSystemInfos)
             {
-                int idx = item.ToString().LastIndexOf(@"\");
-                string name = item.ToString().Substring(idx + 1);
-                //item为文件夹，添加进listfileinfo，递归调用
-                if ((item as DirectoryInfo) != null)
-                    listfileinfo.Add(item as DirectoryInfo);
+                var str = item.ToString();
+                var idx = str.LastIndexOf(@"\");
+                var name = str.Substring(idx + 1);
+                //item为文件夹 添加进ListFileInfo 递归调用
+                if (item is DirectoryInfo info)
+                {
+                    // LogManager.Log(LOGTag,"SearchFileAssetBundleBuild Info:",info.FullName);
+                    ListFileInfo.Add(info);
+                }
 
-                //剔除meta文件，其他文件都创建AssetBundleBuild,添加进listassets；
+                //剔除meta文件 其他文件都创建AssetBundleBuild,添加进ListAssets；
                 if (!name.Contains(".meta"))
                 {
                     CheckFileOrDirectoryReturnBundleName(item, path + "/" + name);
                 }
             }
 
-            if (listfileinfo.Count == 0)
-                isover = true;
+            if (ListFileInfo.Count == 0)
+            {
+                IsFinished = true;
+            }
             else
             {
-                Debug.LogError(listfileinfo.Count);
+                LogManager.LogError(ListFileInfo.Count);
             }
         }
 
         //判断是文件还是文件夹
-        public static string CheckFileOrDirectoryReturnBundleName(FileSystemInfo fileSystemInfo, string path)
+        public static void CheckFileOrDirectoryReturnBundleName(FileSystemInfo fileSystemInfo, string path)
         {
-            FileInfo fileInfo = fileSystemInfo as FileInfo;
-            if (fileInfo != null)
+            if (fileSystemInfo is FileInfo)
             {
-                string[] strs = path.Split('.');
-                string[] dictors = strs[0].Split('/');
-                string name = "";
-                for (int i = 1; i < dictors.Length; i++)
+                // var strs = path.Split('.');
+                // var dictors = strs[0].Split('/');
+                // var name = "";
+                // for (var i = 1; i < dictors.Length; i++)
+                // {
+                //     if (i < dictors.Length - 1)
+                //     {
+                //         name += dictors[i] + "/";
+                //     }
+                //     else
+                //     {
+                //         name += dictors[i];
+                //     }
+                // }
+                var t= path.Replace("Assets/ResourcesAssets/", "");
+                var tag = t.Split("/")[0];
+                AssetImporter tmpImportObj = AssetImporter.GetAtPath(path);
+                tmpImportObj.assetBundleName = tag;
+                // var strName = selectPath.Split('/');
+                var assetBundleBuild = new AssetBundleBuild
                 {
-                    if (i < dictors.Length - 1)
-                    {
-                        name += dictors[i] + "/";
-                    }
-                    else
-                    {
-                        name += dictors[i];
-                    }
-                }
-
-                string[] strName = selectPath.Split('/');
-                AssetBundleBuild assetBundleBuild = new AssetBundleBuild();
-                assetBundleBuild.assetBundleName = strName[strName.Length - 1];
-                assetBundleBuild.assetBundleVariant = "ab";
-                assetBundleBuild.assetNames = new string[] { path };
-                listassets.Add(assetBundleBuild);
-                return name;
+                    assetBundleName = tag,//strName[strName.Length - 1],
+                    assetBundleVariant = "ab",
+                    assetNames = new[] { path }
+                };
+                ListAssets.Add(assetBundleBuild);
+                // return name;
             }
             else
             {
                 //递归调用
                 SearchFileAssetBundleBuild(path);
-                return null;
+                // return null;
             }
         }
     }
