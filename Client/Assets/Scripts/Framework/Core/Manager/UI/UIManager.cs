@@ -9,6 +9,7 @@ using Framework.Core.Singleton;
 using UnityEditor;
 using Framework.Core.Manager.Camera;
 using Framework.Core.Manager.ResourcesLoad;
+using Framework.Core.ResourcesAssets;
 
 namespace Framework.Core.Manager.UI
 {
@@ -115,26 +116,8 @@ namespace Framework.Core.Manager.UI
         {
             get
             {
-                if (_canvasRoot == null)
-                {
-                    var root = UICameraRoot.Find("UIRoot");
-                    LogManager.Log(LOGTag, "root null", root == null);
-                    if (root)
-                    {
-                        _canvasRoot = root;
-                        return _canvasRoot;
-                    }
-#if UNITY_EDITOR
-                    var go = Instantiate( AssetDatabase.LoadAssetAtPath<GameObject>("Assets/ResourcesAssets/UI/UIRoot.prefab"));
-#else
-                    //TODO:资源加载
-                    var go = new GameObject();
-#endif
-                    var t = go.transform;
-                    t.SetParent(UICameraRoot);
-                    _canvasRoot = go.transform;
-                }
-
+                if (_canvasRoot != null) return _canvasRoot;
+                _canvasRoot = UICameraRoot.Find("UIRoot");
                 return _canvasRoot;
             }
         }
@@ -178,7 +161,7 @@ namespace Framework.Core.Manager.UI
             WindowStackPush(id, options);
         }
 
-        private BaseWindow GetWindowById(WindowNameDef id)
+        private BaseWindow GetWindowById(WindowNameDef id,bool IsAsync = false)
         {
             _baseWindowDict.TryGetValue((int)id, out var window);
             if (window != null)
@@ -190,9 +173,10 @@ namespace Framework.Core.Manager.UI
 #if UNITY_EDITOR
             var go = Instantiate(AssetDatabase.LoadAssetAtPath<GameObject>($"Assets/ResourcesAssets/{WindowDataDict[id].UIPrefabPath}.prefab"), CanvasRoot);
 #else
-            //TODO:资源加载
+            //TODO:ab包加载
             var go = new GameObject();//Instantiate(ResourcesLoadManager.Instance.LoadFromFile<GameObject>(_windowDict[id].AssetTag,_windowDict[id].name),CanvasRoot);
 #endif
+            // Instantiate(ResourcesLoadManager.Instance.LoadFromFile<GameObject>(AssetBundlesPathTools.GetABOutPath()+"/ui",WindowDataDict[id].UIPrefabPath),CanvasRoot);
             window = go.transform.GetComponent<BaseWindow>();
             go.transform.name = WindowDataDict[id].Name;
             window.WindowId = id;

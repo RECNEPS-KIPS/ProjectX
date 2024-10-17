@@ -3,17 +3,17 @@ using UnityEngine;
 
 namespace Framework.Core.ResourcesAssets
 {
-    public class PathTools
+    public class AssetBundlesPathTools
     {
         // 打包AB包根路径
         public const string AB_RESOURCES = "ResourcesAssets";
 
-        private const string LOGTag = "ResourcesAssets PathTools";
+        private const string LOGTag = "AssetBundlesPathTools";
         // 得到 AB 资源的输入目录
         public static string GetABResourcesPath()
         {
             var resourcesPath = Application.dataPath + "/" + AB_RESOURCES;
-            LogManager.Log(LOGTag,"GetABResourcesPath:",resourcesPath);
+            // LogManager.Log(LOGTag,"GetABResourcesPath:",resourcesPath);
             return resourcesPath;
         }
 
@@ -21,7 +21,7 @@ namespace Framework.Core.ResourcesAssets
         public static string GetABOutPath()
         {
             var outPath = GetPlatformPath() + "/" + GetPlatformName();
-            LogManager.Log(LOGTag,"GetABOutPath:",outPath);
+            // LogManager.Log(LOGTag,"GetABOutPath:",outPath);
             return outPath;
         }
 
@@ -36,7 +36,7 @@ namespace Framework.Core.ResourcesAssets
 #elif UNITY_ANDROID
             strReturenPlatformPath = Application.persistentDataPath;
 #endif
-            LogManager.Log(LOGTag,"GetPlatformPath:",strReturenPlatformPath);
+            // LogManager.Log(LOGTag,"GetPlatformPath:",strReturenPlatformPath);
             return strReturenPlatformPath;
         }
 
@@ -51,7 +51,7 @@ namespace Framework.Core.ResourcesAssets
 #elif UNITY_ANDROID
             strReturenPlatformName = "Android";
 #endif
-            LogManager.Log(LOGTag,"GetPlatformName:",strReturenPlatformName);
+            // LogManager.Log(LOGTag,"GetPlatformName:",strReturenPlatformName);
             return strReturenPlatformName;
         }
 
