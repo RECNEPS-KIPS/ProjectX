@@ -1,8 +1,11 @@
 // author:KIPKIPS
 // date:2023.04.17 20:01
 // describe:可绑定类型
-namespace Framework.Core.Manager.UI {
-    public enum LinkerType {
+
+namespace Framework.Core.Manager.UI
+{
+    public enum LinkerType
+    {
         Vector2,
         Vector3,
         Quaternion,

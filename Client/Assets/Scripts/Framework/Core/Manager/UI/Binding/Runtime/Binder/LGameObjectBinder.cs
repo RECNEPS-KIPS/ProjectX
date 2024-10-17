@@ -3,41 +3,53 @@
 // describe:GameObject绑定类
 // ReSharper disable InconsistentNaming
 // ReSharper disable MemberCanBePrivate.Global
+
 using UnityEngine;
 
-namespace Framework.Core.Manager.UI {
+namespace Framework.Core.Manager.UI
+{
     [BinderComponent(typeof(GameObject))]
-    public class LGameObjectBinder : BaseBinder {
+    public class LGameObjectBinder : BaseBinder
+    {
         [BinderField(typeof(GameObject))]
-        public enum AttributeType : int {
+        public enum AttributeType : int
+        {
             active = 10000 + LinkerType.Boolean,
             name = 20000 + LinkerType.String,
         }
 
-        public override void SetBoolean(Object mono, int linkerType, bool value) {
+        public override void SetBoolean(Object mono, int linkerType, bool value)
+        {
             if (mono == null) return;
             var target = mono as GameObject;
             if (target == null)
             {
                 return;
             }
-            switch ((AttributeType)linkerType) {
+
+            switch ((AttributeType)linkerType)
+            {
                 case AttributeType.active:
-                    if (target.activeSelf != value) {
+                    if (target.activeSelf != value)
+                    {
                         target.SetActive(value);
                     }
+
                     break;
             }
         }
 
-        public override void SetString(Object mono, int linkerType, string value) {
+        public override void SetString(Object mono, int linkerType, string value)
+        {
             if (mono == null) return;
             var target = mono as GameObject;
             if (target == null)
             {
                 return;
             }
-            switch ((AttributeType)linkerType) {
+
+            switch ((AttributeType)linkerType)
+            {
                 case AttributeType.name:
                     target.name = value;
                     break;

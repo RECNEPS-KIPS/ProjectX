@@ -1,17 +1,21 @@
 ﻿using Framework.Core.Pool;
 
-namespace Framework.Core.Manager.Timer {
+namespace Framework.Core.Manager.Timer
+{
     /// <summary>
     /// 
     /// </summary>
-    public struct TimerSlice : IPoolAble {
+    public struct TimerSlice : IPoolAble
+    {
         /// <summary>
         /// 回收函数
         /// </summary>
-        public void OnRecycled() {
+        public void OnRecycled()
+        {
             ID = -1;
             Times = 0;
         }
+
         /// <summary>
         /// 时间片是否被回收
         /// </summary>
@@ -27,7 +31,8 @@ namespace Framework.Core.Manager.Timer {
         /// </summary>
         public int Times { get; internal set; }
 
-        internal TimerSlice(int id, int times) {
+        internal TimerSlice(int id, int times)
+        {
             ID = id;
             Times = times;
             IsRecycled = false;

@@ -1,12 +1,14 @@
 ﻿// author:KIPKIPS
 // date:2023.04.28 14:33
 // describe:扩展RawImage
+
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace Framework.Core.Manager.UI {
+namespace Framework.Core.Manager.UI
+{
     [AddComponentMenu("LUI/LRawImage", 12)]
-    public class LRawImage:RawImage {
-        
+    public class LRawImage : RawImage
+    {
     }
 }

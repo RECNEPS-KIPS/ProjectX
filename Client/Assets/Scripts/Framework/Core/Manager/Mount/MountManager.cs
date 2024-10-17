@@ -1,16 +1,23 @@
 ﻿// author:KIPKIPS
 // date:2023.04.28 12:12
 // describe:挂载管理器
+
 using Framework.Core.Singleton;
 using UnityEngine;
 
-namespace Framework.Core.Manager.Mount {
-    public class MountManager: Singleton<MountManager> {
+namespace Framework.Core.Manager.Mount
+{
+    public class MountManager : Singleton<MountManager>
+    {
         private Transform _modelMountRoot;
-        public Transform ModelMountRoot {
-            get {
+
+        public Transform ModelMountRoot
+        {
+            get
+            {
                 if (_modelMountRoot != null) return _modelMountRoot;
-                var go = new GameObject {
+                var go = new GameObject
+                {
                     name = "[ModelMountRoot]"
                 };
                 _modelMountRoot = go.transform;
@@ -20,7 +27,9 @@ namespace Framework.Core.Manager.Mount {
                 return _modelMountRoot;
             }
         }
-        public override void Dispose() {
+
+        public override void Dispose()
+        {
             Object.Destroy(_modelMountRoot);
         }
     }

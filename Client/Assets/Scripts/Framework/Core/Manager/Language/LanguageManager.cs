@@ -5,42 +5,54 @@
 using System.Collections.Generic;
 using Framework.Core.Singleton;
 using Framework.Core.Manager.Config;
-namespace Framework.Core.Manager.Language {
+
+namespace Framework.Core.Manager.Language
+{
     /// <summary>
     /// 多语言管理器
     /// </summary>
     // [MonoSingletonPath("[Manager]/LanguageManager")]
-    public class LanguageManager : Singleton<LanguageManager> {
+    public class LanguageManager : Singleton<LanguageManager>
+    {
         private const string LOGTag = "LanguageManager";
 
         public enum EStringTable
         {
             Start,
         }
+
         /// <summary>
         /// 语言类型
         /// </summary>
         public LanguageType Language { get; set; }
+
         /// <summary>
         /// 初始化
         /// </summary>
-        public override void Initialize() {
+        public override void Initialize()
+        {
             Language = LanguageType.English;
         }
 
-        private struct LanguageUnit {
+        private struct LanguageUnit
+        {
             public readonly string EN;
             public readonly string SC;
-            public LanguageUnit(string en, string sc) {
+
+            public LanguageUnit(string en, string sc)
+            {
                 EN = en;
                 SC = sc;
             }
         }
-        private readonly Dictionary<EStringTable, Dictionary<string, LanguageUnit>> _map = new ();
+
+        private readonly Dictionary<EStringTable, Dictionary<string, LanguageUnit>> _map = new();
+
         /// <summary>
         /// 
         /// </summary>
-        public void Launch() {
+        public void Launch()
+        {
             // var cf = ConfigManager.Instance.GetConfig("language");
             // for (var i = 1; i < cf.Count; i++) {
             //     _map.Add(cf[i]["textKey"], new LanguageUnit(cf[i]["en"], cf[i]["sc"]));
@@ -54,7 +66,7 @@ namespace Framework.Core.Manager.Language {
         /// <param name="stringTableType"></param>
         /// <param name="key"></param>
         /// <returns></returns>
-        public string GetText(EStringTable stringTableType,string key)
+        public string GetText(EStringTable stringTableType, string key)
         {
             LanguageUnit unit = default;
             var find = false;
@@ -69,18 +81,21 @@ namespace Framework.Core.Manager.Language {
                     else
                     {
                         var stringTable = ConfigManager.Instance.GetConfig("StartStringTable");
-                        _map.Add(EStringTable.Start,new Dictionary<string, LanguageUnit>());
-                        for (var i = 1; i < stringTable.Count; i++) {
-                            _map[EStringTable.Start].Add(stringTable[i]["textKey"], new LanguageUnit(stringTable[i]["en"], stringTable[i]["sc"]));
+                        _map.Add(EStringTable.Start, new Dictionary<string, LanguageUnit>());
+                        for (var i = 1; i < stringTable.Count; i++)
+                        {
+                            _map[EStringTable.Start].Add(stringTable[i]["textKey"],
+                                new LanguageUnit(stringTable[i]["en"], stringTable[i]["sc"]));
                         }
-                        
+
                         unit = _map[EStringTable.Start][key];
                         find = true;
                     }
+
                     break;
                 default:
-                    LogManager.LogError(LOGTag,"StringTableType not defined!");
-                    break; 
+                    LogManager.LogError(LOGTag, "StringTableType not defined!");
+                    break;
             }
 
             if (find)
@@ -92,6 +107,7 @@ namespace Framework.Core.Manager.Language {
                     _ => string.Empty
                 };
             }
+
             return string.Empty;
         }
     }

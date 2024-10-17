@@ -3,13 +3,17 @@
 // describe:RectTransform绑定类
 // ReSharper disable InconsistentNaming
 // ReSharper disable MemberCanBePrivate.Global
+
 using UnityEngine;
 
-namespace Framework.Core.Manager.UI {
+namespace Framework.Core.Manager.UI
+{
     [BinderComponent(typeof(RectTransform))]
-    public class LRectTransformBinder : BaseBinder {
-        [BinderField(typeof(RectTransform))] 
-        public enum AttributeType {
+    public class LRectTransformBinder : BaseBinder
+    {
+        [BinderField(typeof(RectTransform))]
+        public enum AttributeType
+        {
             anchorMin = 10000 + LinkerType.Vector2,
             anchorMax = 20000 + LinkerType.Vector2,
             anchoredPosition = 30000 + LinkerType.Vector2,
@@ -30,14 +34,17 @@ namespace Framework.Core.Manager.UI {
             localScale = 180000 + LinkerType.Vector3,
         }
 
-        public override void SetVector2(Object mono, int linkerType, Vector2 value) {
+        public override void SetVector2(Object mono, int linkerType, Vector2 value)
+        {
             if (mono == null) return;
             var target = mono as RectTransform;
             if (target == null)
             {
                 return;
             }
-            switch ((AttributeType)linkerType) {
+
+            switch ((AttributeType)linkerType)
+            {
                 case AttributeType.anchorMin:
                     target.anchorMin = value;
                     break;
@@ -61,14 +68,18 @@ namespace Framework.Core.Manager.UI {
                     break;
             }
         }
-        public override void SetVector3(Object mono, int linkerType, Vector3 value) {
+
+        public override void SetVector3(Object mono, int linkerType, Vector3 value)
+        {
             if (mono == null) return;
             var target = mono as RectTransform;
             if (target == null)
             {
                 return;
             }
-            switch ((AttributeType)linkerType) {
+
+            switch ((AttributeType)linkerType)
+            {
                 case AttributeType.anchoredPosition3D:
                     target.anchoredPosition3D = value;
                     break;
@@ -98,14 +109,18 @@ namespace Framework.Core.Manager.UI {
                     break;
             }
         }
-        public override void SetQuaternion(Object mono, int linkerType, Quaternion value) {
+
+        public override void SetQuaternion(Object mono, int linkerType, Quaternion value)
+        {
             if (mono == null) return;
             var target = mono as RectTransform;
             if (target == null)
             {
                 return;
             }
-            switch ((AttributeType)linkerType) {
+
+            switch ((AttributeType)linkerType)
+            {
                 case AttributeType.rotation:
                     target.rotation = value;
                     break;

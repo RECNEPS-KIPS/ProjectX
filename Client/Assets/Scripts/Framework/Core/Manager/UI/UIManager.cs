@@ -9,24 +9,30 @@ using Framework.Core.Singleton;
 using UnityEditor;
 using Framework.Core.Manager.Camera;
 using Framework.Core.Manager.ResourcesLoad;
-namespace Framework.Core.Manager.UI {
+
+namespace Framework.Core.Manager.UI
+{
     /// <summary>
     /// 窗口类型
     /// </summary>
-    public enum WindowType {
+    public enum WindowType
+    {
         /// <summary>
         /// 自由弹窗
         /// </summary>
         Freedom = 1,
+
         /// <summary>
         /// 固定弹窗
         /// </summary>
         Fixed = 2,
+
         /// <summary>
         /// 栈类型弹窗
         /// </summary>
         Stack = 3,
     }
+
     /// <summary>
     /// 
     /// </summary>
@@ -35,57 +41,68 @@ namespace Framework.Core.Manager.UI {
         ExampleUI = 0,
         StartWindow = 1,
     }
+
     /// <summary>
     /// UI框架管理器
     /// </summary>
     [MonoSingletonPath("[Manager]/UIManager")]
-    public class UIManager : MonoSingleton<UIManager> {
+    public class UIManager : MonoSingleton<UIManager>
+    {
         /// <summary>
         /// Window数据类
         /// </summary>
         [Serializable]
-        public class WindowData {
+        public class WindowData
+        {
             /// <summary>
             /// 界面名称
             /// </summary>
             public string Name;
+
             /// <summary>
             /// 界面ID
             /// </summary>
             public WindowNameDef ID;
+
             /// <summary>
             /// 界面资源路径
             /// </summary>
             public string UIPrefabPath;
+
             /// <summary>
             /// 所属层级
             /// </summary>
             public int Layer;
+
             /// <summary>
             /// 界面类型
             /// </summary>
             public WindowType WindowType;
         }
-        
+
         /// <summary>
         /// 定义各个UI界面数据
         /// </summary>
-        Dictionary<WindowNameDef, WindowData> WindowDataDict = new() { 
-            { 
-                WindowNameDef.ExampleUI, 
-                new WindowData {
+        private readonly Dictionary<WindowNameDef, WindowData> WindowDataDict = new()
+        {
+            {
+                WindowNameDef.ExampleUI,
+                new WindowData
+                {
                     UIPrefabPath = "UI/Example/ExampleUI",
-                    WindowType = WindowType.Stack 
+                    WindowType = WindowType.Stack
                 }
             },
-            { 
-                WindowNameDef.StartWindow, 
-                new WindowData {
+            {
+                WindowNameDef.StartWindow,
+                new WindowData
+                {
                     UIPrefabPath = "UI/Start/StartWindow",
                     WindowType = WindowType.Stack
                 }
             },
         };
+
         private const string LOGTag = "UIManager";
         private readonly Stack<BaseWindow> _windowStack = new Stack<BaseWindow>();
         private readonly Dictionary<int, BaseWindow> _baseWindowDict = new Dictionary<int, BaseWindow>();
@@ -94,28 +111,37 @@ namespace Framework.Core.Manager.UI {
         private UnityEngine.Camera _uiCamera;
         private static UnityEngine.Camera UICamera => CameraManager.Instance.UICamera;
 
-        public Transform CanvasRoot {
-            get {
-                if (_canvasRoot == null) {
+        public Transform CanvasRoot
+        {
+            get
+            {
+                if (_canvasRoot == null)
+                {
                     var root = UICameraRoot.Find("UIRoot");
-                    LogManager.Log(LOGTag,"root null",root == null);
-                    if (root) {
+                    LogManager.Log(LOGTag, "root null", root == null);
+                    if (root)
+                    {
                         _canvasRoot = root;
                         return _canvasRoot;
                     }
 #if UNITY_EDITOR
-                    var canvasObj = Instantiate(AssetDatabase.LoadAssetAtPath<GameObject>("Assets/ResourceAssets/UI/UIRoot.prefab"));
+                    var canvasObj =
+                        Instantiate(
+                            AssetDatabase.LoadAssetAtPath<GameObject>("Assets/ResourcesAssets/UI/UIRoot.prefab"));
 #else
                     //TODO:资源加载
-                    var canvasObj = Instantiate(ResourcesLoadManager.Instance.LoadFromFile<GameObject>("Assets/ResourceAssets/UI/UIRoot.prefab"));
+                    var canvasObj =
+ Instantiate(ResourcesLoadManager.Instance.LoadFromFile<GameObject>("Assets/ResourcesAssets/UI/UIRoot.prefab"));
 #endif
                     var t = canvasObj.transform;
                     t.SetParent(UICameraRoot);
                     _canvasRoot = canvasObj.transform;
                 }
+
                 return _canvasRoot;
             }
         }
+
         private Transform _canvasRoot;
 
         /// <summary>
@@ -132,35 +158,47 @@ namespace Framework.Core.Manager.UI {
             UIBinding.Register();
         }
 
-        private void InitUICamera() {
+        private void InitUICamera()
+        {
             DontDestroyOnLoad(UICameraRoot);
         }
+
         /// <summary>
         /// UI框架启动
         /// </summary>
-        public void Launch() {
+        public void Launch()
+        {
             InitUICamera();
         }
+
         /// <summary>
         /// 
         /// </summary>
         /// <param name="id"></param>
         /// <param name="options"></param>
-        public void Open(WindowNameDef id, dynamic options = null) {
+        public void Open(WindowNameDef id, dynamic options = null)
+        {
             WindowStackPush(id, options);
         }
-        private BaseWindow GetWindowById(WindowNameDef id) {
+
+        private BaseWindow GetWindowById(WindowNameDef id)
+        {
             _baseWindowDict.TryGetValue((int)id, out var window);
-            if (window != null) {
+            if (window != null)
+            {
                 return window;
             }
 
             var path = WindowDataDict[id].UIPrefabPath;
 #if UNITY_EDITOR
-            var windowObj = Instantiate(AssetDatabase.LoadAssetAtPath<GameObject>("Assets/ResourceAssets/" + WindowDataDict[id].UIPrefabPath + ".prefab"), CanvasRoot);
+            var windowObj =
+                Instantiate(
+                    AssetDatabase.LoadAssetAtPath<GameObject>("Assets/ResourcesAssets/" +
+                                                              WindowDataDict[id].UIPrefabPath + ".prefab"), CanvasRoot);
 #else
             //TODO:资源加载
-            var windowObj = Instantiate(ResourcesLoadManager.Instance.LoadFromFile<GameObject>(_windowDict[id].AssetTag,_windowDict[id].name),CanvasRoot);
+            var windowObj =
+ Instantiate(ResourcesLoadManager.Instance.LoadFromFile<GameObject>(_windowDict[id].AssetTag,_windowDict[id].name),CanvasRoot);
 #endif
             window = windowObj.transform.GetComponent<BaseWindow>();
             windowObj.transform.name = WindowDataDict[id].Name;
@@ -174,17 +212,21 @@ namespace Framework.Core.Manager.UI {
             window.OnInit();
             return window;
         }
-        private void WindowStackPush(WindowNameDef windowId, dynamic options = null) {
+
+        private void WindowStackPush(WindowNameDef windowId, dynamic options = null)
+        {
             var window = GetWindowById(windowId);
             LogManager.Log("Open Window === ", window.name);
             // window.Canvas.sortingOrder = 0;//WindowDataDict[windowId].Layer;
             // window.Canvas.worldCamera = UICamera;
-            if (window.IsShow) {
+            if (window.IsShow)
+            {
                 return;
             }
 
             //显示当前界面时,应该先去判断当前栈是否为空,不为空说明当前有界面显示,把当前的界面OnPause掉
-            if (_windowStack.Count > 0) {
+            if (_windowStack.Count > 0)
+            {
                 _windowStack.Peek().OnPause();
             }
 
@@ -193,17 +235,20 @@ namespace Framework.Core.Manager.UI {
             window.gameObject.SetActive(true);
             _windowStack.Push(window);
         }
+
         /// <summary>
         /// 关闭窗口
         /// </summary>
         /// <param name="id"></param>
-        public void Close(WindowNameDef id) {
+        public void Close(WindowNameDef id)
+        {
             LogManager.Log("Close Window === ", id);
             var window = GetWindowById(id);
             window.OnExit();
             window.gameObject.SetActive(false);
             LogManager.Log("Close Window === ", window.name);
         }
+
         /// <summary>
         /// 
         /// </summary>
@@ -212,15 +257,20 @@ namespace Framework.Core.Manager.UI {
             if (_windowStack.Count <= 0) return;
             _windowStack.Pop(); //关闭栈顶界面
             // Destroy(window.gameObject);
-            if (_windowStack.Count > 0) {
+            if (_windowStack.Count > 0)
+            {
                 _windowStack.Peek().OnResume(); //恢复原先的界面
             }
         }
-        private void InitWindowData() {
-            foreach (var kvp in WindowDataDict) {
+
+        private void InitWindowData()
+        {
+            foreach (var kvp in WindowDataDict)
+            {
                 kvp.Value.ID = kvp.Key;
                 kvp.Value.Name = kvp.Key.ToString();
             }
+
             LogManager.Log(LOGTag, "Window data is parsed");
         }
     }

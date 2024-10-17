@@ -3,14 +3,18 @@
 // describe:拖拽按钮Binder
 // ReSharper disable InconsistentNaming
 // ReSharper disable MemberCanBePrivate.Global
+
 using UnityEngine;
 using UnityEngine.Events;
 
-namespace Framework.Core.Manager.UI {
+namespace Framework.Core.Manager.UI
+{
     [BinderComponent(typeof(LDragButton))]
-    public class LDragButtonBinder : BaseBinder {
+    public class LDragButtonBinder : BaseBinder
+    {
         [BinderField(typeof(LDragButton))]
-        public enum AttributeType {
+        public enum AttributeType
+        {
             onClick = 10000 + LinkerType.UnityAction,
             enabled = 20000 + LinkerType.Boolean,
             onEnter = 30000 + LinkerType.UnityActionVector2,
@@ -19,14 +23,18 @@ namespace Framework.Core.Manager.UI {
             onDrag = 60000 + LinkerType.UnityActionVector2,
             onDragEnd = 70000 + LinkerType.UnityActionVector2,
         }
-        public override void SetActionVector2(Object mono, int linkerType, UnityAction<Vector2> value) {
+
+        public override void SetActionVector2(Object mono, int linkerType, UnityAction<Vector2> value)
+        {
             if (mono == null) return;
             var target = mono as LDragButton;
             if (target == null)
             {
                 return;
             }
-            switch ((AttributeType)linkerType) {
+
+            switch ((AttributeType)linkerType)
+            {
                 case AttributeType.onEnter:
                     target.onPointerEnter = value;
                     break;
@@ -44,27 +52,35 @@ namespace Framework.Core.Manager.UI {
                     break;
             }
         }
-        public override void SetAction(Object mono, int linkerType, UnityAction value) {
+
+        public override void SetAction(Object mono, int linkerType, UnityAction value)
+        {
             if (mono == null) return;
             var target = mono as LDragButton;
             if (target == null)
             {
                 return;
             }
-            switch ((AttributeType)linkerType) {
+
+            switch ((AttributeType)linkerType)
+            {
                 case AttributeType.onClick:
                     target.onClick.AddListener(value);
                     break;
             }
         }
-        public override void SetBoolean(Object mono, int linkerType, bool value) {
+
+        public override void SetBoolean(Object mono, int linkerType, bool value)
+        {
             if (mono == null) return;
             var target = mono as LDragButton;
             if (target == null)
             {
                 return;
             }
-            switch ((AttributeType)linkerType) {
+
+            switch ((AttributeType)linkerType)
+            {
                 case AttributeType.enabled:
                     target.enabled = value;
                     break;

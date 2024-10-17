@@ -1,5 +1,6 @@
 ﻿// author:KIPKIPS
 // describe:BaseWindow UI面板的基类
+
 using System;
 using System.Collections.Generic;
 using UnityEngine;
@@ -9,36 +10,46 @@ using UnityEngine.Events;
 using Framework.Common;
 using Framework.Core.Manager.Timer;
 
-namespace Framework.Core.Manager.UI {
+namespace Framework.Core.Manager.UI
+{
     /// <summary>
     /// 窗口基类
     /// </summary>
-    public class BaseWindow : MonoBehaviour {
+    public class BaseWindow : MonoBehaviour
+    {
         private const string LOGTag = "BaseWindow";
+
         /// <summary>
         /// window id
         /// </summary>
         public WindowNameDef WindowId { get; set; }
+
         private Animator _animator;
+
         /// <summary>
         /// 是否显示
         /// </summary>
         public bool IsShow { get; private set; }
 
         private Canvas _canvas;
+
         /// <summary>
         /// 
         /// </summary>
-        public Canvas Canvas {
-            get {
+        public Canvas Canvas
+        {
+            get
+            {
                 _canvas ??= GetComponent<Canvas>();
-                _canvas.additionalShaderChannels = AdditionalCanvasShaderChannels.Tangent | AdditionalCanvasShaderChannels.TexCoord1 | AdditionalCanvasShaderChannels.Normal;
+                _canvas.additionalShaderChannels = AdditionalCanvasShaderChannels.Tangent |
+                                                   AdditionalCanvasShaderChannels.TexCoord1 |
+                                                   AdditionalCanvasShaderChannels.Normal;
                 return _canvas;
             }
         }
 
         #region Find接口列表
-        
+
         /// <summary>
         /// 
         /// </summary>
@@ -46,7 +57,8 @@ namespace Framework.Core.Manager.UI {
         /// <param name="func"></param>
         /// <typeparam name="T"></typeparam>
         /// <returns></returns>
-        public T Find<T>(string namePath, Action func) where T : Button {
+        public T Find<T>(string namePath, Action func) where T : Button
+        {
             return Find<T>(namePath, transform, func);
         }
 
@@ -58,13 +70,18 @@ namespace Framework.Core.Manager.UI {
         /// <param name="func"></param>
         /// <typeparam name="T"></typeparam>
         /// <returns></returns>
-        public T Find<T>(string namePath, Transform trs, Action func) where T : Button {
+        public T Find<T>(string namePath, Transform trs, Action func) where T : Button
+        {
             var resObj = CommonUtils.Find<T>(trs ? trs : transform, namePath);
-            if (typeof(T) == typeof(Button)) { //button支持绑定函数方法
+            if (typeof(T) == typeof(Button))
+            {
+                //button支持绑定函数方法
                 resObj.onClick.AddListener(() => { func(); });
             }
+
             return resObj;
         }
+
         /// <summary>
         /// 
         /// </summary>
@@ -74,22 +91,28 @@ namespace Framework.Core.Manager.UI {
         /// <param name="mouseExit"></param>
         /// <typeparam name="T"></typeparam>
         /// <returns></returns>
-        public T Find<T>(string namePath, Transform trs = null, UnityAction<BaseEventData> mouseEnter = null, UnityAction<BaseEventData> mouseExit = null) where T : Button {
+        public T Find<T>(string namePath, Transform trs = null, UnityAction<BaseEventData> mouseEnter = null,
+            UnityAction<BaseEventData> mouseExit = null) where T : Button
+        {
             var resObj = CommonUtils.Find<T>(trs ? trs : transform, namePath);
             if (mouseEnter == null && mouseExit == null)
             {
                 return resObj;
             }
-            if (typeof(T) == typeof(Button)) { //button支持绑定函数方法
+
+            if (typeof(T) == typeof(Button))
+            {
+                //button支持绑定函数方法
                 BindBtn(resObj, mouseEnter, mouseExit);
             }
+
             return resObj;
         }
 
         #endregion
 
         #region Bind接口列表
-        
+
         /// <summary>
         /// 
         /// </summary>
@@ -97,19 +120,25 @@ namespace Framework.Core.Manager.UI {
         /// <param name="click"></param>
         /// <param name="mouseEnter"></param>
         /// <param name="mouseExit"></param>
-        public void Bind(Button btn, Action click, UnityAction<BaseEventData> mouseEnter = null, UnityAction<BaseEventData> mouseExit = null) {
+        public void Bind(Button btn, Action click, UnityAction<BaseEventData> mouseEnter = null,
+            UnityAction<BaseEventData> mouseExit = null)
+        {
             btn.onClick.AddListener(() => { click(); });
             BindBtn(btn, mouseEnter, mouseExit);
         }
 
-        private void BindBtn(Button btn, UnityAction<BaseEventData> mouseEnter= null, UnityAction<BaseEventData> mouseExit = null) {
+        private void BindBtn(Button btn, UnityAction<BaseEventData> mouseEnter = null,
+            UnityAction<BaseEventData> mouseExit = null)
+        {
             var trigger = btn.gameObject.GetComponent<EventTrigger>();
             trigger = trigger ? trigger : btn.gameObject.AddComponent<EventTrigger>();
             // 实例化delegates(trigger.trigger是注册在EventTrigger组件上的所有功能)  
             trigger.triggers = new List<EventTrigger.Entry>();
             // 在EventSystem委托列表中进行登记 
-            if (mouseEnter != null) {
-                var enterEntry = new EventTrigger.Entry {
+            if (mouseEnter != null)
+            {
+                var enterEntry = new EventTrigger.Entry
+                {
                     // 设置 事件类型  
                     eventID = EventTriggerType.PointerEnter,
                     // 实例化回调函数  
@@ -121,8 +150,11 @@ namespace Framework.Core.Manager.UI {
                 // 添加事件触发记录到GameObject的事件触发组件  
                 trigger.triggers.Add(enterEntry);
             }
-            if (mouseExit != null) {
-                var exitEntry = new EventTrigger.Entry {
+
+            if (mouseExit != null)
+            {
+                var exitEntry = new EventTrigger.Entry
+                {
                     // 设置 事件类型  
                     eventID = EventTriggerType.PointerExit,
                     // 实例化回调函数  
@@ -140,13 +172,14 @@ namespace Framework.Core.Manager.UI {
         #region Window life cycle
 
         //界面生命周期流程,这里只提供虚方法,具体的逻辑由各个业务界面进行重写
-        
+
         /// <summary>
         /// 界面初始化
         /// </summary>
-        public virtual void OnInit() {
+        public virtual void OnInit()
+        {
             UIBinding = GetComponent<UIBinding>();
-            LogManager.Log(LOGTag,"OnInit");
+            LogManager.Log(LOGTag, "OnInit");
             // UIBinding.BinderDataList
             // foreach (var dict in UIBinding.BinderDataList)
             // {
@@ -154,52 +187,58 @@ namespace Framework.Core.Manager.UI {
             // }
             BindDict.Clear();
         }
-        
+
         /// <summary>
         /// 界面销毁
         /// </summary>
-        public virtual void OnUnInit() {
-            LogManager.Log(LOGTag,"OnUnInit");
+        public virtual void OnUnInit()
+        {
+            LogManager.Log(LOGTag, "OnUnInit");
             BindDict.Clear();
         }
-        
+
         /// <summary>
         /// 进入界面 
         /// </summary>
-        public virtual void OnEnter() {
-            LogManager.Log(LOGTag,"OnEnter");
+        public virtual void OnEnter()
+        {
+            LogManager.Log(LOGTag, "OnEnter");
             IsShow = true;
             gameObject.SetActive(true);
         }
-        
+
         /// <summary>
         /// 进入界面 
         /// </summary>
         /// <param name="options"></param>
-        public virtual void OnEnter(dynamic options) {
+        public virtual void OnEnter(dynamic options)
+        {
             if (options == null)
             {
                 OnEnter();
                 return;
             }
+
             IsShow = true;
             gameObject.SetActive(true);
         }
-        
-        
+
+
         /// <summary>
         /// 暂停界面
         /// </summary>
-        public virtual void OnPause() {
-            LogManager.Log(LOGTag,"OnPause");
+        public virtual void OnPause()
+        {
+            LogManager.Log(LOGTag, "OnPause");
             IsShow = false;
         }
-        
+
         /// <summary>
         /// 恢复界面
         /// </summary>
-        public virtual void OnResume() {
-            LogManager.Log(LOGTag,"OnResume");
+        public virtual void OnResume()
+        {
+            LogManager.Log(LOGTag, "OnResume");
             //print("on resume");
             IsShow = true;
         }
@@ -207,22 +246,26 @@ namespace Framework.Core.Manager.UI {
         /// <summary>
         /// 关闭界面
         /// </summary>
-        public virtual void OnExit() {
-            LogManager.Log(LOGTag,"OnExit");
+        public virtual void OnExit()
+        {
+            LogManager.Log(LOGTag, "OnExit");
             UIManager.Instance.WindowStackPop();
             IsShow = false;
         }
 
         #endregion
-        
+
         private UIBinding _uiBinding;
+
         /// <summary>
         /// 
         /// </summary>
-        public UIBinding UIBinding {
+        public UIBinding UIBinding
+        {
             get => _uiBinding;
             set => _uiBinding = value;
         }
+
         private Dictionary<string, Bindable> BindDict = new();
 
         /// <summary>
@@ -230,39 +273,47 @@ namespace Framework.Core.Manager.UI {
         /// </summary>
         /// <param name="key">绑定字段</param>
         /// <param name="value">绑定的值</param>
-        protected void Bind(string key, dynamic value = default) {
+        protected void Bind(string key, dynamic value = default)
+        {
             BindDict[key].Value = value;
         }
-        
-        private void VMBind(string key, dynamic value = default) {
-            if (BindDict.TryAdd(key,new Bindable(_uiBinding, key, value))) {
+
+        private void VMBind(string key, dynamic value = default)
+        {
+            if (BindDict.TryAdd(key, new Bindable(_uiBinding, key, value)))
+            {
                 BindDict[key].Value = value;
             }
         }
+
         /// <summary>
         /// 字段值绑定
         /// </summary>
         /// <param name="key">绑定字段</param>
         /// <param name="value">绑定值</param>
-        protected void VBind(string key,dynamic value = default)
+        protected void VBind(string key, dynamic value = default)
         {
-            VMBind(key,value);
+            VMBind(key, value);
         }
+
         /// <summary>
         /// 字段值绑定
         /// </summary>
         /// <param name="key">绑定字段</param>
         /// <param name="value">绑定值</param>
-        protected void MBind<T>(string key,UnityAction<T> value = default) {
-            VMBind(key,value);
+        protected void MBind<T>(string key, UnityAction<T> value = default)
+        {
+            VMBind(key, value);
         }
+
         /// <summary>
         /// 
         /// </summary>
         /// <param name="key"></param>
         /// <param name="value"></param>
-        protected void MBind(string key,UnityAction value = default) {
-            VMBind(key,value);
+        protected void MBind(string key, UnityAction value = default)
+        {
+            VMBind(key, value);
         }
     }
 }

@@ -1,10 +1,13 @@
 ﻿// author:KIPKIPS
 // describe:消息类型枚举
-namespace Framework.Core.Manager {
+
+namespace Framework.Core.Manager
+{
     /// <summary>
     /// 事件枚举ID
     /// </summary>
-    public enum EventType {
+    public enum EventType
+    {
         #region PlayerCharacter
 
         PLAYERCHARACTER_JUMP,

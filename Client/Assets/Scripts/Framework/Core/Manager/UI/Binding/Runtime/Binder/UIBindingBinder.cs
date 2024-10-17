@@ -3,17 +3,22 @@
 // describe:UIBinding绑定类
 // ReSharper disable InconsistentNaming
 // ReSharper disable MemberCanBePrivate.Global
+
 using UnityEngine;
 
-namespace Framework.Core.Manager.UI {
+namespace Framework.Core.Manager.UI
+{
     [BinderComponent(typeof(UIBinding))]
-    public class UIBindingBinder : BaseBinder {
+    public class UIBindingBinder : BaseBinder
+    {
         [BinderField(typeof(UIBinding))]
-        public enum AttributeType {
+        public enum AttributeType
+        {
             UIBinding = 10000 + LinkerType.UIBinding
         }
 
-        public override void SetSystemObject(Object mono, int linkerType, object value) {
+        public override void SetSystemObject(Object mono, int linkerType, object value)
+        {
         }
     }
 }
