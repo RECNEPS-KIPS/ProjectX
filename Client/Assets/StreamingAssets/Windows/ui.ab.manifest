@@ -1,0 +1,71 @@
+ManifestFileVersion: 0
+CRC: 1630142313
+Hashes:
+  AssetFileHash:
+    serializedVersion: 2
+    Hash: 67b7a6fb8a0897cb4ee8ee96d8274980
+  TypeTreeHash:
+    serializedVersion: 2
+    Hash: 7173f16b7d684b91edc15288ecf86f26
+  IncrementalBuildHash:
+    serializedVersion: 2
+    Hash: 67b7a6fb8a0897cb4ee8ee96d8274980
+HashAppended: 0
+ClassTypes:
+- Class: 1
+  Script: {instanceID: 0}
+- Class: 21
+  Script: {instanceID: 0}
+- Class: 28
+  Script: {instanceID: 0}
+- Class: 48
+  Script: {instanceID: 0}
+- Class: 114
+  Script: {fileID: 11500000, guid: dc42784cf147c0c48a680349fa168899, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: 149e5f9721d048efb82307836a18998a, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: 80b15d191c744178b093a0f6f56053ed, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: aea581c896e1468c98d1072a718f1be9, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: 5994ee9c799644c1b392e31e5cc39f8c, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: 07dbed2b3e094a34cb56930ddd109ef9, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: 531d24f0378a419b8d1a09013d24d59b, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: d23a9f88497e4ea5b5877710721d4421, type: 3}
+- Class: 115
+  Script: {instanceID: 0}
+- Class: 128
+  Script: {instanceID: 0}
+- Class: 222
+  Script: {instanceID: 0}
+- Class: 223
+  Script: {instanceID: 0}
+- Class: 224
+  Script: {instanceID: 0}
+SerializeReferenceClassIdentifiers:
+- AssemblyName: Assembly-CSharp
+  ClassName: Framework.Core.Manager.UI.BinderData
+- AssemblyName: UnityEngine.CoreModule
+  ClassName: UnityEngine.Events.PersistentCallGroup
+- AssemblyName: UnityEngine.UI
+  ClassName: UnityEngine.UI.AnimationTriggers
+- AssemblyName: UnityEngine.UI
+  ClassName: UnityEngine.UI.Button/ButtonClickedEvent
+- AssemblyName: UnityEngine.UI
+  ClassName: UnityEngine.UI.ColorBlock
+- AssemblyName: UnityEngine.UI
+  ClassName: UnityEngine.UI.FontData
+- AssemblyName: UnityEngine.UI
+  ClassName: UnityEngine.UI.MaskableGraphic/CullStateChangedEvent
+- AssemblyName: UnityEngine.UI
+  ClassName: UnityEngine.UI.Navigation
+- AssemblyName: UnityEngine.UI
+  ClassName: UnityEngine.UI.SpriteState
+Assets:
+- Assets/ResourcesAssets/UI/Example/ExampleUI.prefab
+- Assets/ResourcesAssets/UI/Start/StartWindow.prefab
+Dependencies: []

@@ -10,6 +10,12 @@ namespace Framework
     public static class DEF
     {
         //UIbinding枚举值的间隔
-        public static int BIND_ENUM_GAP = 10000;
+        public static readonly int BIND_ENUM_GAP = 10000;
+
+        public static readonly string ASSET_BUNDLE_PATH = "Assets/ResourcesAssets/Misc/asset_bundles_map.asset";
+
+        public static readonly string RESOURCES_ASSETS_PATH = "Assets/ResourcesAssets";
+        
+        public static readonly string ASSET_BUNDLE_SUFFIX = "ab";
     }
 }

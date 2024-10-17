@@ -1,0 +1,24 @@
+ManifestFileVersion: 0
+CRC: 3780453213
+Hashes:
+  AssetFileHash:
+    serializedVersion: 2
+    Hash: 39ac99e694c0a116da6d179d39cbeab6
+  TypeTreeHash:
+    serializedVersion: 2
+    Hash: 1031a4fd7683ee34163e45d5ab330782
+  IncrementalBuildHash:
+    serializedVersion: 2
+    Hash: 39ac99e694c0a116da6d179d39cbeab6
+HashAppended: 0
+ClassTypes:
+- Class: 114
+  Script: {fileID: 11500000, guid: 6eb5fb74ad54423cb51acd6371145e5e, type: 3}
+- Class: 115
+  Script: {instanceID: 0}
+SerializeReferenceClassIdentifiers:
+- AssemblyName: Assembly-CSharp
+  ClassName: Framework.Core.ResourcesAssets.AssetBundle
+Assets:
+- Assets/ResourcesAssets/Misc/asset_bundles_map.asset
+Dependencies: []

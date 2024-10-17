@@ -5,26 +5,40 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="9361b420-2aac-42b3-89e8-9a1020ba95f6" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/Assets/ResourcesAssets/InGame/Scenes/Launch.unity" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/ResourcesAssets/InGame/Scenes/Launch.unity.meta" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/StreamingAssets.meta" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/StreamingAssets/Windows.meta" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/Assets/StreamingAssets/Windows/Windows" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/Assets/StreamingAssets/Windows/Windows.manifest" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/Assets/StreamingAssets/Windows/Windows.manifest.meta" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/Assets/StreamingAssets/Windows/Windows.meta" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/StreamingAssets/Windows/resourcesassets.ab" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/StreamingAssets/Windows/resourcesassets.ab.manifest" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/StreamingAssets/Windows/resourcesassets.ab.manifest.meta" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/StreamingAssets/Windows/resourcesassets.ab.meta" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/ResourcesAssets/InGame/Materials/Breakable.mat" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/ResourcesAssets/InGame/Materials/Breakable.mat" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scenes/Launch.unity" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scenes/Launch.unity.meta" beforeDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/StreamingAssets/Windows/ingame.ab" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/StreamingAssets/Windows/ingame.ab.manifest" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/StreamingAssets/Windows/ingame.ab.manifest.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/StreamingAssets/Windows/ingame.ab.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/StreamingAssets/Windows/launch.ab" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/StreamingAssets/Windows/launch.ab.manifest" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/StreamingAssets/Windows/launch.ab.manifest.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/StreamingAssets/Windows/launch.ab.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/StreamingAssets/Windows/misc.ab" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/StreamingAssets/Windows/misc.ab.manifest" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/StreamingAssets/Windows/misc.ab.manifest.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/StreamingAssets/Windows/misc.ab.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/StreamingAssets/Windows/ui.ab" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/StreamingAssets/Windows/ui.ab.manifest" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/StreamingAssets/Windows/ui.ab.manifest.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/StreamingAssets/Windows/ui.ab.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/.idea.Client/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Client/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/ResourcesAssets/Misc/asset_bundles_map.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/ResourcesAssets/Misc/asset_bundles_map.asset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/ResourcesAssets/Misc/asset_bundles_map.asset.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/ResourcesAssets/Misc/asset_bundles_map.asset.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Framework/Core/Launcher/Launcher.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Framework/Core/Launcher/Launcher.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Framework/Core/Manager/AsyncLoad/AsyncLoadManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Framework/Core/Manager/AsyncLoad/AsyncLoadManager.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Framework/Core/Manager/ResourcesLoad/ResourcesLoadManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Framework/Core/Manager/ResourcesLoad/ResourcesLoadManager.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Scripts/Framework/Core/Manager/UI/LUI/Runtime/PrefabMounter.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Framework/Core/Manager/UI/LUI/Runtime/PrefabMounter.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Scripts/Framework/Core/Manager/UI/UIManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Framework/Core/Manager/UI/UIManager.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Framework/Core/ResourcesAssets/AssetsBundle/Editor/ClearABLable.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Framework/Core/ResourcesAssets/AssetsBundle/Editor/ClearABLable.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Framework/Core/ResourcesAssets/AssetsBundle/Editor/CreateAB.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Framework/Core/ResourcesAssets/AssetsBundle/Editor/CreateAB.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Framework/Core/ResourcesAssets/AssetsBundle/Editor/PathTools.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Framework/Core/ResourcesAssets/AssetsBundle/Editor/PathTools.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Framework/Core/ResourcesAssets/AssetBundles/Editor/AssetBundlesBuilderWindow.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Framework/Core/ResourcesAssets/AssetBundles/Editor/AssetBundlesBuilderWindow.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Framework/Core/ResourcesAssets/AssetBundles/Editor/AssetBundlesMapInspector.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Framework/Core/ResourcesAssets/AssetBundles/Editor/AssetBundlesMapInspector.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Framework/Core/ResourcesAssets/AssetBundles/Runtime/AssetBundlesMap.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Framework/Core/ResourcesAssets/AssetBundles/Runtime/AssetBundlesMap.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Framework/Core/Singleton/Simple/SingletonCreator.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Framework/Core/Singleton/Simple/SingletonCreator.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Framework/DEF.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Framework/DEF.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Client.sln.DotSettings" beforeDir="false" afterPath="$PROJECT_DIR$/Client.sln.DotSettings" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ProjectSettings/EditorBuildSettings.asset" beforeDir="false" afterPath="$PROJECT_DIR$/ProjectSettings/EditorBuildSettings.asset" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -35,42 +49,41 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
   </component>
+  <component name="GitSEFilterConfiguration">
+    <file-type-list>
+      <filtered-out-file-type name="LOCAL_BRANCH" />
+      <filtered-out-file-type name="REMOTE_BRANCH" />
+      <filtered-out-file-type name="TAG" />
+      <filtered-out-file-type name="COMMIT_BY_MESSAGE" />
+    </file-type-list>
+  </component>
   <component name="HighlightingSettingsPerFile">
-    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/5e53ad466ce74a6082606d7fa046fc9b95c800/9f/6bd3f456/BuildPipeline.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/Assets/Scripts/Framework/Core/Manager/AntiCheat/AntiCheatManager.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/Assets/Scripts/Framework/Core/Manager/Camera/CameraManager.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/Assets/Scripts/Framework/Core/Manager/UI/Binding/Editor/UIBindingInspector.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/Assets/Scripts/Framework/Core/Manager/UI/Binding/Runtime/Attribute/Binder.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/Assets/Scripts/Framework/Core/Manager/UI/Binding/Runtime/Base/BaseBinder.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/Assets/Scripts/Framework/Core/Manager/UI/Binding/Runtime/Base/Bindable.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/Assets/Scripts/Framework/Core/Manager/UI/Binding/Runtime/Base/LinkerType.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/Assets/Scripts/Framework/Core/Manager/UI/Binding/Runtime/Binder/LButtonBinder.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/Assets/Scripts/Framework/Core/Manager/UI/Binding/Runtime/Binder/LModelContainerBinder.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/Assets/Scripts/Framework/Core/Manager/UI/LUI/Editor/MenuOptions.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/Assets/Scripts/Framework/Core/Manager/UI/LUI/Runtime/DefaultControls.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/Assets/Scripts/Framework/Core/ResourcesAssets/AssetsBundle/Editor/PathTools.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/Assets/Scripts/GamePlay/UI/Example/ExampleUI.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.ide.vscode@1.2.5/Editor/VSCodeDiscovery.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.ide.vscode@1.2.5/Editor/VSCodeScriptEditor.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.testtools.codecoverage@1.2.6/Editor/ReportGenerator/CoverageReportGenerator.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.textmeshpro@3.0.7/Scripts/Editor/TMP_SpriteAssetEditor.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.textmeshpro@3.0.7/Scripts/Editor/TMP_StyleSheetEditor.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.ugui@1.0.0/Editor/UI/MenuOptions.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.ugui@1.0.0/Runtime/UI/Core/Image.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.ugui@1.0.0/Runtime/UI/Core/RawImage.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.ugui@1.0.0/Runtime/UI/Core/Text.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/Scripts/Framework/Core/Manager/UI/Binding/Runtime/Binder/LModelContainerBinder.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.ugui@1.0.0/Runtime/UI/Core/Toggle.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/Scripts/Framework/Core/Manager/UI/Binding/Runtime/Base/LinkerType.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/Scripts/Framework/Core/Manager/UI/Binding/Runtime/Binder/LButtonBinder.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/Scripts/Framework/Core/Manager/UI/Binding/Runtime/Base/BaseBinder.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/Scripts/Framework/Core/Manager/UI/Binding/Runtime/Base/Bindable.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/../../UNDEFINED/Client/Assets/Scripts/Framework/Tools/AssetBundleBuilder/Editor/AssetBundlesBuilderWindow.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/Scripts/Framework/Core/Manager/UI/LUI/Runtime/DefaultControls.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/../../UNDEFINED/Client/Assets/Scripts/Framework/Tools/AssetBundleBuilder/Editor/BundleMapEditor.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/Scripts/Framework/Core/Manager/UI/Binding/Editor/UIBindingInspector.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/Scripts/Framework/Core/Manager/UI/LUI/Editor/MenuOptions.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/Scripts/Framework/Core/Manager/UI/Binding/Runtime/Attribute/Binder.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.ugui@1.0.0/Runtime/UI/Core/Image.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.textmeshpro@3.0.7/Scripts/Editor/TMP_SpriteAssetEditor.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/Scripts/Framework/Core/Manager/Camera/CameraManager.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.ugui@1.0.0/Tests/Runtime/Canvas/CanvasSizeCorrectInAwakeAndStart.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.visualscripting@1.9.4/Editor/VisualScripting.Core/Dependencies/ReorderableList/Internal/ReorderableListResources.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/../../LandingGuy_Unity/Client/Assets/Character Movement Fundamentals/Source/Scripts/Showcase/DemoMenu.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/../../LandingGuy_Unity/Client/Assets/Scripts/Framework/UI/Binding/Editor/UIBindingInspector.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/../../LandingGuy_Unity/Client/Assets/Scripts/Framework/UI/LUI/Editor/MenuOptions.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/../../LandingGuy_Unity/Client/Assets/Scripts/Framework/UI/LUI/Runtime/LButton.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/../../LandingGuy_Unity/Client/Assets/Scripts/Framework/UI/LUI/Runtime/LImage.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/../../LandingGuy_Unity/Client/Assets/Scripts/Framework/UI/LUI/Runtime/LText.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/../../LandingGuy_Unity/Client/Assets/Scripts/Framework/UI/LUI/Runtime/Utilities/DefaultControls.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/../../UNDEFINED/Client/Assets/Scripts/Framework/Tools/AssetBundleBuilder/Editor/AssetBundlesBuilderWindow.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/../../UNDEFINED/Client/Assets/Scripts/Framework/Tools/AssetBundleBuilder/Editor/BundleMapEditor.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.ugui@1.0.0/Editor/UI/MenuOptions.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.textmeshpro@3.0.7/Scripts/Editor/TMP_StyleSheetEditor.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.testtools.codecoverage@1.2.6/Editor/ReportGenerator/CoverageReportGenerator.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/Scripts/Framework/Core/Manager/AntiCheat/AntiCheatManager.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/Scripts/Framework/Core/ResourcesAssets/AssetBundles/AssetBundlesPathTools.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.ide.vscode@1.2.5/Editor/VSCodeScriptEditor.cs" root0="SKIP_HIGHLIGHTING" />
   </component>
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
@@ -85,12 +98,15 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "Attach to Unity Editor.Attach to Unity Editor.executor": "Debug",
-    "node.js.selected.package.tslint": "(autodetect)"
-  }
-}]]></component>
+  <component name="PropertiesComponent">
+    <property name="Discover.Launch.Via.Unity" value="true" />
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="node.js.detected.package.eslint" value="true" />
+    <property name="node.js.detected.package.tslint" value="true" />
+    <property name="node.js.selected.package.eslint" value="(autodetect)" />
+    <property name="node.js.selected.package.tslint" value="(autodetect)" />
+    <property name="vue.rearranger.settings.migration" value="true" />
+  </component>
   <component name="RunManager" selected="Attach to Unity Editor.Attach to Unity Editor">
     <configuration name="Start Unity" type="RunUnityExe" factoryName="Unity Executable">
       <option name="EXE_PATH" value="C:\Program Files\Unity\Hub\Editor\2022.3.50f1\Editor\Unity.exe" />
@@ -118,10 +134,10 @@
       </option>
       <method v="2" />
     </configuration>
-    <configuration name="Attach to Unity Editor" type="UNITY_DEBUG_RUN_CONFIGURATION" factoryName="Unity Debug" show_console_on_std_err="false" show_console_on_std_out="false" port="50000" address="localhost" ignored-value-for-modified-check="58124">
+    <configuration name="Attach to Unity Editor" type="UNITY_DEBUG_RUN_CONFIGURATION" factoryName="Unity Debug" show_console_on_std_err="false" show_console_on_std_out="false" port="50000" address="localhost">
       <option name="allowRunningInParallel" value="false" />
       <option name="listenPortForConnections" value="false" />
-      <option name="pid" value="58124" />
+      <option name="pid" />
       <option name="projectPathOnTarget" />
       <option name="selectedOptions">
         <list />
@@ -142,6 +158,7 @@
       <workItem from="1729045809684" duration="11216000" />
       <workItem from="1729089021765" duration="803000" />
       <workItem from="1729091103561" duration="2657000" />
+      <workItem from="1729176709124" duration="7030000" />
     </task>
     <servers />
   </component>
@@ -160,6 +177,7 @@
         </entry>
       </map>
     </option>
+    <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="VcsManagerConfiguration">
     <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />

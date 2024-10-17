@@ -1,7 +1,7 @@
 ﻿// author:KIPKIPS
 // date:2023.04.28 14:08
 // describe:扩展Image
-
+using Framework.Core.Manager.ResourcesLoad;
 using UnityEditor;
 using UnityEngine;
 
@@ -76,13 +76,7 @@ namespace Framework.Core.Manager.UI
                 DestroyImmediate(_prefabGo);
             }
             
-#if UNITY_EDITOR
-            var go = AssetDatabase.LoadAssetAtPath<GameObject>(modelPath);
-#else
-            //TODO:ab包加载
-            var go = new GameObject();
-#endif
-            _prefabGo = Instantiate(go, Vector3.zero, Quaternion.identity, ContainerGo.transform);
+            _prefabGo = Instantiate(ResourcesLoadManager.Instance.LoadAsset<GameObject>(modelPath), Vector3.zero, Quaternion.identity, ContainerGo.transform);
             _prefabGo.transform.localScale = Vector3.one;
         }
 

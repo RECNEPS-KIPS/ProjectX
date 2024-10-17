@@ -30,7 +30,7 @@ namespace Framework.Core.Singleton
         public static T CreateSingleton<T>() where T : class, ISingleton
         {
             var type = typeof(T);
-            LogManager.Log("CreateSingleton", type);
+            // LogManager.Log("CreateSingleton", type);
             var monoBehaviourType = typeof(MonoBehaviour);
             if (monoBehaviourType.IsAssignableFrom(type))
             {

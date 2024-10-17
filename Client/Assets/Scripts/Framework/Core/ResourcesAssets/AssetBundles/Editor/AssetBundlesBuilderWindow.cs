@@ -38,27 +38,25 @@ namespace Framework.Core.ResourcesAssets
                 AssetsDict["Misc"].assetBundleName = "Misc";
             }
             
-            var assetMapPath = "Assets/ResourcesAssets/Misc/asset_bundles_map.asset";
+            var assetMapPath = DEF.ASSET_BUNDLE_PATH;
             var assetMap = AssetDatabase.LoadAssetAtPath<AssetBundlesMap>(assetMapPath);
-            if (assetMap)
-            {
-                assetMap.map.Clear();
+            if (assetMap) {
+                assetMap.Map.Clear();
             }
             else
             {
                 AssetsDict["Misc"].assetNames.Add(assetMapPath);
                 assetMap = ScriptableObject.CreateInstance<AssetBundlesMap>();
                 AssetDatabase.CreateAsset(assetMap,assetMapPath);
-                AssetDatabase.Refresh();
             }
             var tmpImportObj = AssetImporter.GetAtPath(assetMapPath);
             tmpImportObj.assetBundleName = "Misc";
             
             foreach (var kvp in AssetsDict)
             {
-                assetMap.map.Add(new AssetBundle(kvp.Key,kvp.Value.assetNames));
-                LogManager.Log(LOGTag,kvp.Key);
+                assetMap.Map.Add(new AssetBundle(kvp.Key,kvp.Value.assetNames));
             }
+            EditorUtility.SetDirty(assetMap);
             AssetDatabase.SaveAssetIfDirty(assetMap);
             AssetDatabase.Refresh();
         }
@@ -97,8 +95,11 @@ namespace Framework.Core.ResourcesAssets
             SearchFileAssetBundleBuild(AssetBundlesPathTools.GetABResourcesPath());
             var assetBundleBuilds = GetAssetBundleBuilds();
    
-            // BuildPipeline.BuildAssetBundles(abOutPath,assetBundleBuilds , BuildAssetBundleOptions.None,EditorUserBuildSettings.activeBuildTarget);
+            BuildPipeline.BuildAssetBundles(abOutPath,assetBundleBuilds , BuildAssetBundleOptions.None,EditorUserBuildSettings.activeBuildTarget);
             LogManager.Log(LOGTag,"AssetBundle打包完毕");
+            // var assetMapPath = DEF.ASSET_BUNDLE_PATH;
+            // var assetMap = AssetDatabase.LoadAssetAtPath<AssetBundlesMap>(assetMapPath);
+            // LogManager.Log(LOGTag,assetMap.Map.Count);
         }
 
         //是文件 继续向下
@@ -163,7 +164,7 @@ namespace Framework.Core.ResourcesAssets
                     AssetsDict.Add(tag,new InnerAssetBundleBuild());
                     AssetsDict[tag].assetNames = new List<string> { path };
                     AssetsDict[tag].assetBundleName = tag;
-                    AssetsDict[tag].assetBundleVariant = "ab";
+                    AssetsDict[tag].assetBundleVariant = DEF.ASSET_BUNDLE_SUFFIX;
                 }
             }
             else

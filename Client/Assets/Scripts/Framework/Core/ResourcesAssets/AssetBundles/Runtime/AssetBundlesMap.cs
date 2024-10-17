@@ -15,12 +15,16 @@ namespace Framework.Core.ResourcesAssets
         public AssetBundle(string name,List<string> map)
         {
             bundleName = name;
-            assetBundlesMap = map;
+            assetBundlesMap = new List<string>();
+            foreach (var t in map) {
+                assetBundlesMap.Add(t);
+            }
         }
     }
     [Serializable]
     [CreateAssetMenu(fileName = "AssetBundlesMap", menuName = "Tools/ResourcesAssets/AssetBundlesMap")]
     public class AssetBundlesMap : ScriptableObject {
-        public List<AssetBundle> map = new List<AssetBundle>();
+        public List<AssetBundle> map;
+        public List<AssetBundle> Map => map ??= new List<AssetBundle>();
     }
 }

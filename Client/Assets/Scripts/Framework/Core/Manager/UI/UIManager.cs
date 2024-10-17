@@ -170,13 +170,7 @@ namespace Framework.Core.Manager.UI
             }
 
             var path = WindowDataDict[id].UIPrefabPath;
-#if UNITY_EDITOR
-            var go = Instantiate(AssetDatabase.LoadAssetAtPath<GameObject>($"Assets/ResourcesAssets/{WindowDataDict[id].UIPrefabPath}.prefab"), CanvasRoot);
-#else
-            //TODO:ab包加载
-            var go = new GameObject();//Instantiate(ResourcesLoadManager.Instance.LoadFromFile<GameObject>(_windowDict[id].AssetTag,_windowDict[id].name),CanvasRoot);
-#endif
-            // Instantiate(ResourcesLoadManager.Instance.LoadFromFile<GameObject>(AssetBundlesPathTools.GetABOutPath()+"/ui",WindowDataDict[id].UIPrefabPath),CanvasRoot);
+            var go = Instantiate(ResourcesLoadManager.Instance.LoadAsset<GameObject>($"{DEF.RESOURCES_ASSETS_PATH}/{WindowDataDict[id].UIPrefabPath}.prefab"),CanvasRoot);
             window = go.transform.GetComponent<BaseWindow>();
             go.transform.name = WindowDataDict[id].Name;
             window.WindowId = id;

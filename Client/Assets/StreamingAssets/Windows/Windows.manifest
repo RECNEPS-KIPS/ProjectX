@@ -1,0 +1,16 @@
+ManifestFileVersion: 0
+CRC: 1139059332
+AssetBundleManifest:
+  AssetBundleInfos:
+    Info_0:
+      Name: ingame.ab
+      Dependencies: {}
+    Info_1:
+      Name: launch.ab
+      Dependencies: {}
+    Info_2:
+      Name: misc.ab
+      Dependencies: {}
+    Info_3:
+      Name: ui.ab
+      Dependencies: {}

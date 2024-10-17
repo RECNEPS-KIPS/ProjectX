@@ -12,4 +12,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6eb5fb74ad54423cb51acd6371145e5e, type: 3}
   m_Name: asset_bundles_map
   m_EditorClassIdentifier: 
-  map: []
+  map:
+  - assetBundlesMap:
+    - Assets/ResourcesAssets/InGame/Levels/Level1/Level.unity
+    bundleName: InGame
+  - assetBundlesMap:
+    - Assets/ResourcesAssets/Launch/Launch.unity
+    bundleName: Launch
+  - assetBundlesMap:
+    - Assets/ResourcesAssets/Misc/asset_bundles_map.asset
+    bundleName: Misc
+  - assetBundlesMap:
+    - Assets/ResourcesAssets/UI/Example/ExampleUI.prefab
+    - Assets/ResourcesAssets/UI/Start/StartWindow.prefab
+    bundleName: UI
