@@ -20,6 +20,14 @@ namespace GamePlay.InGame
         private void Start()
         {
             var regions = CreateRegions(out var offset);
+            for (int i = 0; i < regions.Count; i++)
+            {
+                LogManager.Log($"SimpleBreakableItem i:{i}");
+                for (int j = 0; j < regions[i].Count; j++)
+                {
+                    LogManager.Log($"SimpleBreakableItem j:{j}",regions[i][j]);
+                }
+            }
             Subdivide(regions, transform.localScale, offset);
             //原物体隐藏掉
             GetComponent<MeshRenderer>().enabled = false;
@@ -69,38 +77,30 @@ namespace GamePlay.InGame
                 var trisCount = 12 * (len - 1);
                 var tris = new int[trisCount];
                 var verts = new Vector3[3 * len];
-                var uvs = new Vector2[3 * len];
 
-                AppendVerticesAndUVs(verts, uvs, region, Scale, Offset);
+                AppendVertices(verts, region, Scale, Offset);
                 AppendTriangles(tris, len);
-                CreateShard(tris, verts, uvs);
+                CreateShard(tris, verts);
             }
         }
 
         /// <summary>
-        /// 生成新网格的顶点和uv
+        /// 生成新网格的顶点
         /// </summary>
         /// <param name="Vertices">Mesh顶点</param>
-        /// <param name="UVs">Mesh UVs</param>
         /// <param name="Region">delaunay三角切分算法生成的区域</param>
         /// <param name="Scale">切分网格的scale</param>
         /// <param name="Offset">偏移量</param>
-        private void AppendVerticesAndUVs(Vector3[] Vertices, Vector2[] UVs, List<Vector2f> Region, Vector3 Scale,
-            Vector2 Offset)
+        private void AppendVertices(Vector3[] Vertices, List<Vector2f> Region, Vector3 Scale, Vector2 Offset)
         {
             for (var i = 0; i < Region.Count; ++i)
             {
                 var coord = Region[i];
                 int one = i, two = Region.Count + i, three = 2 * Region.Count + i;
+                LogManager.Log($"Region.Count{i}",Region[i],coord);
                 Vertices[one] = new Vector3(coord.x + Offset.x, coord.y + Offset.y, Scale.z / 2.0f);
                 Vertices[two] = new Vector3(coord.x + Offset.x, coord.y + Offset.y, -Scale.z / 2.0f);
                 Vertices[three] = new Vector3(coord.x + Offset.x, coord.y + Offset.y, -Scale.z / 2.0f);
-
-                var scaleX = (float)1f / Scale.x;
-                var scaleY = (float)1f / Scale.y;
-                UVs[one] = new Vector2(scaleX, scaleY);
-                UVs[two] = new Vector2(coord.x * -scaleX, coord.y * -scaleY);
-                UVs[three] = new Vector2(scaleX, scaleY);
             }
         }
 
@@ -111,6 +111,7 @@ namespace GamePlay.InGame
         /// <param name="Len">区域数组的长度</param>
         private void AppendTriangles(int[] Tris, int Len)
         {
+            // LogManager.Log(Len,Tris.Length);
             var t = 0;
             //添加正面多边形的碎片
             for (var v = 1; v < Len - 1; v++)
@@ -123,7 +124,6 @@ namespace GamePlay.InGame
                 Tris[t++] = 2 * Len + v;
                 Tris[t++] = 2 * Len + v + 1;
             }
-
             //如果未启用OnlySurface表面优化 添加剩余的面,这里没有加背面
             if (OnlySurface) return;
             //创建其余的面
@@ -146,10 +146,9 @@ namespace GamePlay.InGame
         /// </summary>
         /// <param name="Tris">Mesh</param>
         /// <param name="Vertices">Mesh顶点数组</param>
-        /// <param name="UVs">Mesh UV数组</param>
-        private void CreateShard(int[] Tris, Vector3[] Vertices, Vector2[] UVs)
+        private void CreateShard(int[] Tris, Vector3[] Vertices)
         {
-            var mesh = BuildMeshWithoutSharedVertices(Tris, Vertices, UVs);
+            var mesh = BuildMeshWithoutSharedVertices(Tris, Vertices);
             var shard = new GameObject();
             var t = transform;
             shard.name = t.name + "_Shard";
@@ -158,14 +157,13 @@ namespace GamePlay.InGame
             shard.transform.localRotation = Quaternion.identity;
             shard.transform.localScale = Vector3.one;
             shard.layer = LayerMaskToLayer(ShardLayer);
-            shard.AddComponent<MeshCollider>();
-            shard.AddComponent<MeshFilter>();
+            var mc = shard.AddComponent<MeshCollider>();
+            mc.convex = true;
+            mc.sharedMesh = mesh;
+            
+            shard.AddComponent<MeshFilter>().sharedMesh = mesh;
+            shard.AddComponent<Rigidbody>().isKinematic = true;
             shard.AddComponent<MeshRenderer>();
-            shard.AddComponent<Rigidbody>();
-            shard.GetComponent<Rigidbody>().isKinematic = true;
-            shard.GetComponent<MeshCollider>().convex = true;
-            shard.GetComponent<MeshCollider>().sharedMesh = mesh;
-            shard.GetComponent<MeshFilter>().sharedMesh = mesh;
             shard.GetComponent<Renderer>().material = t.GetComponent<Renderer>().material;
             t.localScale = Vector3.one;
         }
@@ -176,7 +174,7 @@ namespace GamePlay.InGame
             var mask = 0;
             while (n > 1)
             {
-                n = n >> 1;
+                n >>= 1;
                 mask++;
             }
 
@@ -184,16 +182,15 @@ namespace GamePlay.InGame
         }
 
         /// <summary>
-        /// 创建一个没有共享顶点的网格 每个三角形都可以有独立的法线
+        /// 创建一个没有共享顶点的网格 每个三角形法线独立
         /// </summary>
         /// <param name="Tris">Mesh</param>
         /// <param name="Vertices">Mesh顶点数组</param>
-        /// <param name="UVs">Mesh UV数组</param>
         /// <returns>Mesh对象</returns>
-        private Mesh BuildMeshWithoutSharedVertices(int[] Tris, Vector3[] Vertices, Vector2[] UVs)
+        private Mesh BuildMeshWithoutSharedVertices(int[] Tris, Vector3[] Vertices)
         {
             var newVertices = new List<Vector3>(Vertices);
-            var newUVs = new List<Vector2>(UVs);
+ 
             var visited = new HashSet<int>();
             //遍历所有三角形,如果两个三角形共享一个顶点,只创建一个相同的顶点
             for (var i = 0; i < Tris.Length; ++i)
@@ -202,7 +199,6 @@ namespace GamePlay.InGame
                 {
                     //复制顶点 不再被共享
                     newVertices.Add(Vertices[Tris[i]]);
-                    newUVs.Add(UVs[Tris[i]]);
                     Tris[i] = newVertices.Count - 1;
                 }
 
@@ -213,7 +209,6 @@ namespace GamePlay.InGame
             var mesh = new Mesh
             {
                 vertices = newVertices.ToArray(),
-                uv = newUVs.ToArray(),
                 triangles = Tris
             };
             //计算法线。

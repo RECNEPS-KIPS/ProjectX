@@ -168,7 +168,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9f46ea29fd0ab49e2a3216fae7482e56, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Detail: 100
+  Detail: 3
   OnlySurface: 0
   ShardLayer:
     serializedVersion: 2
