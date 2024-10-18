@@ -27,12 +27,12 @@ namespace GameFramework
 
         public Vector2 GetNormalLeftJoyStickValue()
         {
-            return m_leftJoyStickValue.sqrMagnitude > 2 ?  m_leftJoyStickValue.normalized :new Vector2(m_horizontalInput, m_verticalInput);
+            return m_leftJoyStickValue.magnitude > 1 ?  m_leftJoyStickValue.normalized :new Vector2(m_horizontalInput, m_verticalInput);
         }
         
         public Vector2 GetNormalRightJoyStickValue()
         {
-            return m_rightJoyStickValue.sqrMagnitude > 2 ?  m_rightJoyStickValue.normalized :new Vector2(m_viewHorizontalInput, m_viewVerticalInput);
+            return m_rightJoyStickValue.magnitude > 1 ?  m_rightJoyStickValue.normalized :new Vector2(m_viewHorizontalInput, m_viewVerticalInput);
         }
 
         public bool GetJumpKeyPressed()
