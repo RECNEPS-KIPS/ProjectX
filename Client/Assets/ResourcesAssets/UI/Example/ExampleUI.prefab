@@ -592,7 +592,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 213.99994, y: 88}
+  m_AnchoredPosition: {x: 214, y: 88}
   m_SizeDelta: {x: 155.595, y: 76.8347}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &8933193838807481726
@@ -1059,47 +1059,57 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _pageType: UI.ExampleUI
   _scriptPath: Example/ExampleUI
-  _binderDataList:
+  binderDataList:
   - bindKey: profession1
-    bindObj: {fileID: 6856619050674472487}
-    bindFieldId: 10005
-    fieldType: 5
+    bindObj: {fileID: 3947100176307244761}
+    bindFieldId: 10003
+    fieldType: 3
+    isMethod: 0
   - bindKey: profession2
-    bindObj: {fileID: 7313500873529282116}
-    bindFieldId: 10005
-    fieldType: 5
+    bindObj: {fileID: 0}
+    bindFieldId: 2147483647
+    fieldType: 3647
+    isMethod: 0
   - bindKey: profession3
-    bindObj: {fileID: 2335671042753907770}
-    bindFieldId: 10005
-    fieldType: 5
+    bindObj: {fileID: 0}
+    bindFieldId: 2147483647
+    fieldType: 3647
+    isMethod: 0
   - bindKey: profession4
-    bindObj: {fileID: 4195456147555367381}
-    bindFieldId: 10005
-    fieldType: 5
+    bindObj: {fileID: 0}
+    bindFieldId: 2147483647
+    fieldType: 3647
+    isMethod: 0
   - bindKey: closeBtn
     bindObj: {fileID: 8046583043622475552}
     bindFieldId: 10014
     fieldType: 14
+    isMethod: 1
   - bindKey: onLast
-    bindObj: {fileID: 24088591219166396}
-    bindFieldId: 10014
-    fieldType: 14
+    bindObj: {fileID: 0}
+    bindFieldId: 2147483647
+    fieldType: 3647
+    isMethod: 1
   - bindKey: onNext
-    bindObj: {fileID: 626824984711226188}
-    bindFieldId: 10014
-    fieldType: 14
+    bindObj: {fileID: 0}
+    bindFieldId: 2147483647
+    fieldType: 3647
+    isMethod: 1
   - bindKey: onDragBegin
-    bindObj: {fileID: 1609630113192732198}
-    bindFieldId: 50015
-    fieldType: 15
+    bindObj: {fileID: 0}
+    bindFieldId: 2147483647
+    fieldType: 3647
+    isMethod: 1
   - bindKey: onDrag
-    bindObj: {fileID: 1609630113192732198}
-    bindFieldId: 60015
-    fieldType: 15
+    bindObj: {fileID: 0}
+    bindFieldId: 2147483647
+    fieldType: 3647
+    isMethod: 1
   - bindKey: onDragEnd
-    bindObj: {fileID: 1609630113192732198}
-    bindFieldId: 70015
-    fieldType: 15
+    bindObj: {fileID: 0}
+    bindFieldId: 2147483647
+    fieldType: 3647
+    isMethod: 1
 --- !u!114 &3070573057405671590
 MonoBehaviour:
   m_ObjectHideFlags: 0

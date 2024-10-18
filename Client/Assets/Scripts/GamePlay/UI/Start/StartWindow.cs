@@ -38,6 +38,7 @@ namespace GamePlay.UI
 
         public override void OnEnter(dynamic args)
         {
+            Bind("TitleText", LanguageManager.Instance.GetText(LanguageManager.EStringTable.Start, "GAME_NAME"));
             base.OnEnter();
             LogManager.Log("StartWindow -> OnEnter");
         }
