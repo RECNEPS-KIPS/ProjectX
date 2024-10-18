@@ -170,7 +170,7 @@ namespace Framework.Core.Manager.UI
             }
 
             var path = WindowDataDict[id].UIPrefabPath;
-            var go = Instantiate(ResourcesLoadManager.Instance.LoadAsset<GameObject>($"{DEF.RESOURCES_ASSETS_PATH}/{WindowDataDict[id].UIPrefabPath}.prefab"),CanvasRoot);
+            var go = Instantiate(ResourcesLoadManager.LoadAsset<GameObject>($"{DEF.RESOURCES_ASSETS_PATH}/{WindowDataDict[id].UIPrefabPath}.prefab"),CanvasRoot);
             window = go.transform.GetComponent<BaseWindow>();
             go.transform.name = WindowDataDict[id].Name;
             window.WindowId = id;

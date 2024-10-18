@@ -22,14 +22,14 @@ namespace Framework.Core.Manager.Camera
         /// </summary>
         public UnityEngine.Camera UICamera => _uiCamera ? _uiCamera : UICameraRoot.GetComponent<UnityEngine.Camera>();
 
-        private Transform _mainCameraRoot;
-        private Transform MainCameraRoot => _mainCameraRoot ??= GameObject.Find("[Main Camera]").transform;
-        private UnityEngine.Camera _mainCamera;
+        // private Transform _mainCameraRoot;
+        // private Transform MainCameraRoot => _mainCameraRoot ??= GameObject.Find("[Main Camera]").transform;
+        // private UnityEngine.Camera _mainCamera;
 
-        /// <summary>
-        /// 主相机
-        /// </summary>
-        public UnityEngine.Camera MainCamera => _mainCamera ??= MainCameraRoot.GetComponent<UnityEngine.Camera>();
+        // /// <summary>
+        // /// 主相机
+        // /// </summary>
+        // public UnityEngine.Camera MainCamera => _mainCamera ??= MainCameraRoot.GetComponent<UnityEngine.Camera>();
 
         /// <summary>
         /// 初始化
@@ -37,7 +37,6 @@ namespace Framework.Core.Manager.Camera
         public override void Initialize()
         {
             DontDestroyOnLoad(UICameraRoot);
-            DontDestroyOnLoad(MainCameraRoot);
         }
     }
 }

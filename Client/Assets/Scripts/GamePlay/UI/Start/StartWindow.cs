@@ -3,8 +3,11 @@
 // describe:开始界面
 
 using Framework;
+using Framework.Core.Manager.Config;
 using Framework.Core.Manager.Language;
+using Framework.Core.Manager.ResourcesLoad;
 using Framework.Core.Manager.UI;
+using Framework.GamePlay;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Events;
@@ -17,9 +20,9 @@ namespace GamePlay.UI
         public override void OnInit()
         {
             base.OnInit();
+            // LogManager.Log("StartWindow",LanguageManager.Instance.GetText(LanguageManager.EStringTable.Start, "GAME_NAME"));
             VBind("TitleText", LanguageManager.Instance.GetText(LanguageManager.EStringTable.Start, "GAME_NAME"));
-            VBind("StartBtnText",
-                LanguageManager.Instance.GetText(LanguageManager.EStringTable.Start, "START_GAME_TEXT"));
+            VBind("StartBtnText", LanguageManager.Instance.GetText(LanguageManager.EStringTable.Start, "START_GAME_TEXT"));
 
 
             MBind("OnStartBtn", OnStartBtn);
@@ -29,8 +32,8 @@ namespace GamePlay.UI
         {
             UIManager.Instance.Close(WindowNameDef.StartWindow);
             LogManager.Log("OnGameStartBtnClick");
-
-            SceneManager.LoadScene("Level_1");
+            
+            LevelManager.LoadSceneByID(10001);
         }
 
         public override void OnEnter(dynamic args)

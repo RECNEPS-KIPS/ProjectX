@@ -76,7 +76,7 @@ namespace Framework.Core.Manager.UI
                 DestroyImmediate(_prefabGo);
             }
             
-            _prefabGo = Instantiate(ResourcesLoadManager.Instance.LoadAsset<GameObject>(modelPath), Vector3.zero, Quaternion.identity, ContainerGo.transform);
+            _prefabGo = Instantiate(ResourcesLoadManager.LoadAsset<GameObject>(modelPath), Vector3.zero, Quaternion.identity, ContainerGo.transform);
             _prefabGo.transform.localScale = Vector3.one;
         }
 

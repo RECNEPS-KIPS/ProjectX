@@ -93,7 +93,7 @@ namespace Framework.Common
         /// <returns></returns>
         public static string GetColor(int colorIndex)
         {
-            return ConfigManager.Instance.GetConfig("color")[colorIndex]["hexCode"].ToString();
+            return ConfigManager.GetConfig(ConfigNameDef.Color)[colorIndex]["hexCode"].ToString();
         }
 
         //color下划线颜色 line 线厚度

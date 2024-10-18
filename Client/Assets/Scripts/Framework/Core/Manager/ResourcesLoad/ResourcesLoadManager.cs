@@ -13,8 +13,8 @@ namespace Framework.Core.Manager.ResourcesLoad {
     // [MonoSingletonPath("[Manager]/ResourcesLoadManager")]
     public class ResourcesLoadManager : Singleton<ResourcesLoadManager> {
         private const string LOGTag = "ResourcesLoadManager";
-        private readonly Dictionary<string, AssetBundle> _assetBundleDict = new Dictionary<string, AssetBundle>();
-        private readonly Dictionary<string, string> _assetDict = new Dictionary<string, string>();
+        private static readonly Dictionary<string, AssetBundle> _assetBundleDict = new Dictionary<string, AssetBundle>();
+        private static readonly Dictionary<string, string> _assetDict = new Dictionary<string, string>();
 
         public void Launch() 
         {
@@ -36,20 +36,33 @@ namespace Framework.Core.Manager.ResourcesLoad {
         /// 加载AssetBundle FromLocalFile
         /// </summary>
         /// <param name="assetBundleName"></param>
-        public AssetBundle LoadAssetBundleFile(string assetBundleName) {
-            if (_assetBundleDict.ContainsKey(assetBundleName)) {
-                return _assetBundleDict[assetBundleName] ;
+        public static AssetBundle LoadAssetBundleFile(string assetBundleName) {
+            if (_assetBundleDict.TryGetValue(assetBundleName, out var file)) {
+                LogManager.Log(LOGTag,$"LoadAssetBundleFile assetBundleName has loaded");
+                return file;
             }
             _assetBundleDict[assetBundleName] = AssetBundle.LoadFromFile($"{AssetBundlesPathTools.GetABOutPath()}/{assetBundleName}.{DEF.ASSET_BUNDLE_SUFFIX}");
+            LogManager.Log(LOGTag,$"LoadAssetBundleFile assetBundleName has loaded first");
             return _assetBundleDict[assetBundleName];
         }
+        
+        public static string GetAssetBundleName(string assetPath) {
+            if (_assetDict.TryGetValue(assetPath, out var name))
+            {
+                LogManager.Log(LOGTag,$"资源{assetPath} is in {name}.ab");
+                return name;
+            }
+            LogManager.Log(LOGTag,"资源不在assetbundle中");
+            return string.Empty;
+        }
+        
         /// <summary>
         /// AssetBundles本地加载
         /// </summary>
         /// <param name="assetPath"></param>
         /// <typeparam name="T"></typeparam>
         /// <returns></returns>
-        public T LoadAsset<T>(string assetPath) where T : UnityEngine.Object {
+        public static T LoadAsset<T>(string assetPath) where T : UnityEngine.Object {
             LogManager.Log(LOGTag,$"LoadAsset->assetPath:{assetPath}");
             var temp = default(T);
 #if UNITY_EDITOR

@@ -42,22 +42,18 @@ namespace Framework.Core.Manager.UI
             get
             {
                 _pathSerializedProperty ??= serializedObject.FindProperty("_scriptPath");
-                return !string.IsNullOrEmpty(_pathSerializedProperty.stringValue) && File.Exists(
-                    Path.Combine(Application.dataPath, $"{ScriptPathPreffix}{_pathSerializedProperty.stringValue}.cs"));
+                return !string.IsNullOrEmpty(_pathSerializedProperty.stringValue) && File.Exists(Path.Combine(Application.dataPath, $"{ScriptPathPreffix}{_pathSerializedProperty.stringValue}.cs"));
             }
         }
 
         public override void OnInspectorGUI()
         {
-            // GUILayout.BeginHorizontal();
             EditorGUILayout.PropertyField(_pathSerializedProperty);
-            // GUILayout.EndHorizontal();
             if (!IsValid)
             {
                 EditorGUILayout.HelpBox("Invalid script path!", MessageType.Warning, true);
                 return;
             }
-
             GUILayout.BeginVertical();
             GUILayout.Space(5);
             if (GUILayout.Button("Check"))
@@ -70,7 +66,8 @@ namespace Framework.Core.Manager.UI
             var methods = new List<BindDataWrapper>();
             foreach (var wrapper in _bindDataWrapperList)
             {
-                (!wrapper.isMethod ? fields : methods).Add(wrapper);
+                // LogManager.Log("???",wrapper.bindData.bindKey,wrapper.isMethod);
+                (wrapper.isMethod ? methods : fields).Add(wrapper);
             }
 
             EditorGUILayout.LabelField($"Bind Fields ({fields.Count})", new GUIStyle
@@ -101,10 +98,6 @@ namespace Framework.Core.Manager.UI
             }
 
             GUILayout.EndVertical();
-            // if (GUI.changed) {
-            //     EditorUtility.SetDirty(_uiBinding);
-            // }
-            // EditorGUI.EndChangeCheck()
             if (GUI.changed)
             {
                 EditorUtility.SetDirty(_uiBinding);
@@ -268,7 +261,6 @@ namespace Framework.Core.Manager.UI
             if (string.IsNullOrEmpty(_pathSerializedProperty.stringValue)) return;
             var path = Path.Combine(Application.dataPath, $"Scripts/UI/{_pathSerializedProperty.stringValue}.cs");
             var bindKeyDict = new HashSet<string>();
-            var methodMap = new HashSet<string>();
             if (File.Exists(path))
             {
                 var content = File.ReadAllText(path, Encoding.UTF8);
@@ -289,29 +281,13 @@ namespace Framework.Core.Manager.UI
                     var m = Regex.Match(@match.ToString(), VariableNamePattern);
                     var key = m.Value.Replace(QuotationPattern, "");
                     bindKeyDict.Add(key);
-                    methodMap.Add(key);
                 }
-
-                var namespaceName = Regex
-                    .Match(content, @"namespace\s+([a-zA-Z_][0-9a-zA-Z_]*)(\.[a-zA-Z_][0-9a-zA-Z_]*)*\s*\{").Value
-                    .Replace("namespace", "").Replace("{", "").Replace(" ", "");
-                var className = Regex.Match(content, @"class\s+[a-zA-Z_][0-9a-zA-Z_]*\s*:\s*BaseWindow\s*\{").Value
-                    .Replace("class", "").Replace("BaseWindow", "").Replace(":", "").Replace("{", "").Replace(" ", "");
-                // LUtil.Log(namespaceName,className);
-                var pageType = $"{namespaceName}.{className}";
-                if (pageType != _uiBinding.PageType)
-                {
-                    EditorUtility.SetDirty(_uiBinding);
-                }
-
-                _uiBinding.PageType = pageType;
             }
-
-            var list = _uiBinding.BinderDataList.Where(binderData => bindKeyDict.Contains(binderData.bindKey)).ToList();
-            _uiBinding.BinderDataList = list;
+            
             _lastBindComponentDict.Clear();
             _lastSelectObjDict.Clear();
-            foreach (var binderData in _uiBinding.BinderDataList)
+            // LogManager.Log("BinderDataList",_uiBinding.binderDataList.Count);
+            foreach (var binderData in _uiBinding.binderDataList)
             {
                 Dictionary<string, int> dict = new();
                 var componentDict = new Dictionary<int, Object>();
@@ -335,8 +311,7 @@ namespace Framework.Core.Manager.UI
                             var compoName = UIBinding.GetType(component);
                             if (!UIBinding.IsRegisterComponent(compoName)) continue;
                             componentDict.Add(UIBinding.GetRegisterBinderId(compoName), component);
-                            componentDisplayDict.Add(UIBinding.GetRegisterBinderId(compoName),
-                                UIBinding.GetType(component));
+                            componentDisplayDict.Add(UIBinding.GetRegisterBinderId(compoName),UIBinding.GetType(component));
                         }
 
                         componentDict.Add("UnityEngine.GameObject".GetHashCode(), trs.gameObject);
@@ -357,10 +332,9 @@ namespace Framework.Core.Manager.UI
                     fieldEnumDict = dict,
                     componentEnumDict = componentDict,
                     componentDisplayDict = componentDisplayDict,
-                    isMethod = methodMap.Contains(binderData.bindKey),
+                    isMethod = binderData.isMethod,
                     bindComponentId = UIBinding.GetRegisterBinderId(compoType),
                 });
-                // }
             }
             // EditorUtility.SetDirty(_uiBinding);
             // serializedObject.ApplyModifiedProperties();
@@ -369,18 +343,17 @@ namespace Framework.Core.Manager.UI
         private void Check()
         {
             UIBinding.Register();
-            var cacheBindMap = _uiBinding.BinderDataList.ToDictionary(data => data.bindKey, data => new BinderData
+            var cacheBindMap = _uiBinding.binderDataList.ToDictionary(data => data.bindKey, data => new BinderData
             {
                 bindKey = data.bindKey, bindFieldId = data.bindFieldId, bindObj = data.bindObj,
                 fieldType = data.bindFieldId % DEF.BIND_ENUM_GAP,
             });
             //查字段
             if (string.IsNullOrEmpty(_pathSerializedProperty.stringValue)) return;
-            var path = Path.Combine(Application.dataPath,
-                $"{ScriptPathPreffix}{_pathSerializedProperty.stringValue}.cs");
+            var path = Path.Combine(Application.dataPath, $"{ScriptPathPreffix}{_pathSerializedProperty.stringValue}.cs");
             if (File.Exists(path))
             {
-                _uiBinding.BinderDataList.Clear();
+                _uiBinding.binderDataList.Clear();
                 _bindDataWrapperList.Clear();
                 _lastBindComponentDict.Clear();
                 _lastSelectObjDict.Clear();
@@ -389,9 +362,7 @@ namespace Framework.Core.Manager.UI
                 content = Regex.Replace(content, @"(?<!/)/\*([^*/]|\*(?!/)|/(?<!\*))*((?=\*/))(\*/)", "");
                 content = Regex.Replace(content, @"//(.*)", "");
                 content = Regex.Replace(content.Replace("\n", " "), @"\s{2,}", " ");
-                // LogManager.Log(content);
-                // var valuesMatch = GetValuesContent(content);
-                // // var valuesMatch = Regex.Match(content, @"override\s+void\s+Values\s*\(.*\)\s*\{.*(.*\{.*\}.*)*}");
+
                 var fields = Regex.Matches(content, @"VBind\s*\(\s*""[a-zA-Z_][0-9a-zA-Z_]*""\s*,?");
                 var checkDict = new HashSet<string>();
                 var list = new List<string>();
@@ -408,7 +379,6 @@ namespace Framework.Core.Manager.UI
                     if (!Regex.IsMatch(@match.ToString(), VariableNamePattern)) continue;
                     var key = Regex.Match(@match.ToString(), VariableNamePattern).Value.Replace(QuotationPattern, "");
                     list.Add(key);
-                    // LogManager.Log(key);
                     checkDict.Add(key);
                 }
 
@@ -421,9 +391,10 @@ namespace Framework.Core.Manager.UI
                         bindKey = key,
                         bindFieldId = isExist ? cache.bindFieldId : int.MaxValue,
                         bindObj = isExist ? cache.bindObj : null,
-                        fieldType = isExist ? cache.bindFieldId % DEF.BIND_ENUM_GAP : -1
+                        fieldType = isExist ? cache.bindFieldId % DEF.BIND_ENUM_GAP : -1,
+                        isMethod = checkDict.Contains(key),
                     };
-                    _uiBinding.BinderDataList.Add(data);
+                    _uiBinding.binderDataList.Add(data);
                     var componentDict = new Dictionary<int, Object>();
                     var componentDisplayDict = new Dictionary<int, string>();
                     if (cache != null && cache.bindObj != null)
@@ -445,8 +416,7 @@ namespace Framework.Core.Manager.UI
                                 var compoName = UIBinding.GetType(component);
                                 if (!UIBinding.IsRegisterComponent(compoName)) continue;
                                 componentDict.Add(UIBinding.GetRegisterBinderId(compoName), component);
-                                componentDisplayDict.Add(UIBinding.GetRegisterBinderId(compoName),
-                                    UIBinding.GetType(component));
+                                componentDisplayDict.Add(UIBinding.GetRegisterBinderId(compoName), UIBinding.GetType(component));
                             }
 
                             componentDict.Add("UnityEngine.GameObject".GetHashCode(), trs.gameObject);
@@ -477,36 +447,8 @@ namespace Framework.Core.Manager.UI
                     });
                 }
             }
-
             EditorUtility.SetDirty(_uiBinding);
+            AssetDatabase.SaveAssetIfDirty(_uiBinding);
         }
-
-        // string GetValuesContent(string content) {
-        //     var match = Regex.Match(content, @"override\s+void\s+Values\s*\(\s*\)\s?\{");
-        //     return GetMatch(content,match);
-        // }
-        //
-        // string GetMethodsContent(string content) {
-        //     var match = Regex.Match(content, @"override\s+void\s+Methods\s*\(\s*\)\s?\{");
-        //     return GetMatch(content,match);
-        // }
-        // string GetMatch(string content,Match match) {
-        //     var idx = match.Index;
-        //     var rst = "";
-        //     var count = 0;
-        //     for (int i = idx + match.Value.Length - 1; i < content.Length; i++) {
-        //         if (content[i] == '{') {
-        //             count++;
-        //         }
-        //         if (content[i] == '}') {
-        //             count--;
-        //         }
-        //         rst += content[i];
-        //         if (count == 0) {
-        //             return rst;
-        //         }
-        //     }
-        //     return "";
-        // }
     }
 }

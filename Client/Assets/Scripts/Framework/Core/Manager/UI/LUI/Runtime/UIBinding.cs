@@ -17,6 +17,7 @@ namespace Framework.Core.Manager.UI
         [SerializeField] public Object bindObj;
         [SerializeField] public int bindFieldId;
         [SerializeField] public int fieldType;
+        [SerializeField] public bool isMethod;
     }
 
     public class UIBinding : MonoBehaviour
@@ -31,13 +32,7 @@ namespace Framework.Core.Manager.UI
 
         [SerializeField] private string _pageType;
         [SerializeField] private string _scriptPath;
-        [SerializeField, NonReorderable] private List<BinderData> _binderDataList;
-
-        public List<BinderData> BinderDataList
-        {
-            get => _binderDataList ??= new List<BinderData>();
-            set => _binderDataList = value;
-        }
+        [SerializeField] public List<BinderData> binderDataList = new List<BinderData>();
 
         private Dictionary<string, BinderData> _binderDataDict;
 
@@ -47,7 +42,7 @@ namespace Framework.Core.Manager.UI
             {
                 if (_binderDataDict != null) return _binderDataDict;
                 _binderDataDict = new Dictionary<string, BinderData>();
-                foreach (var data in BinderDataList)
+                foreach (var data in binderDataList)
                 {
                     _binderDataDict.Add(data.bindKey, data);
                 }
@@ -56,8 +51,7 @@ namespace Framework.Core.Manager.UI
             }
         }
 
-        private static readonly Dictionary<string, BindInfo>
-            _registerBinderDict = new(); //Framework.Core.Manager.UI.LImage:BindInfo
+        private static readonly Dictionary<string, BindInfo> _registerBinderDict = new();
 
         private class BindInfo
         {
@@ -138,30 +132,17 @@ namespace Framework.Core.Manager.UI
                     }
                 }
             }
-
-            // foreach (var dict in _registerBinderDict)
-            // {
-            //     LogManager.Log("Layer1",dict.Key);
-            //     foreach (var d in dict.Value.bindableFieldDict)
-            //     {
-            //         LogManager.Log("Layer2",d.Key,d.Value);
-            //     }
-            // }
         }
 
         public static BaseBinder GetBaseBinder(string componentType)
         {
             // LogManager.Log("GetBaseBinder",componentType,_registerBinderDict[componentType].baseBinder == null);
-            return _registerBinderDict.ContainsKey(componentType)
-                ? _registerBinderDict[componentType].baseBinder
-                : null;
+            return _registerBinderDict.TryGetValue(componentType, out var value) ? value.baseBinder : null;
         }
 
         public static Dictionary<string, int> GetComponentBindableField(string componentType)
         {
-            return _registerBinderDict.ContainsKey(componentType)
-                ? _registerBinderDict[componentType].bindableFieldDict
-                : new Dictionary<string, int>();
+            return _registerBinderDict.TryGetValue(componentType, out var value) ? value.bindableFieldDict : new Dictionary<string, int>();
         }
 
         public static bool IsRegisterComponent(string binderName)
@@ -171,15 +152,14 @@ namespace Framework.Core.Manager.UI
 
         public static int GetRegisterBinderId(string bindName)
         {
-            return _registerBinderDict.ContainsKey(bindName) ? _registerBinderDict[bindName].id : -1;
+            return _registerBinderDict.TryGetValue(bindName, out var value) ? value.id : -1;
         }
 
         public static Type GetPageType(string pageType)
         {
-            return _pageDict.ContainsKey(pageType) ? _pageDict[pageType] : typeof(BaseWindow);
+            return _pageDict.TryGetValue(pageType, out var value) ? value : typeof(BaseWindow);
         }
 
-        public static string GetType(Object obj) =>
-            obj is Component ? obj.GetType().ToString() : "UnityEngine.GameObject";
+        public static string GetType(Object obj) => obj is Component ? obj.GetType().ToString() : "UnityEngine.GameObject";
     }
 }

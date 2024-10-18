@@ -12,19 +12,38 @@ using Framework.Core.Container;
 
 namespace Framework.Core.Manager.Config
 {
+    public enum ConfigNameDef
+    {
+        Color = 0,
+        StartStringTable = 1,
+        LevelSetting = 2,
+    }
     /// <summary>
     /// 配置管理器
     /// </summary>
     // [MonoSingletonPath("[Manager]/ConfigManager")]
     public class ConfigManager : Singleton<ConfigManager>
     {
+        private static readonly Dictionary<ConfigNameDef, string> ConfigNameDict = new()
+        {
+            {
+                ConfigNameDef.Color, "Color"
+            },
+            {
+                ConfigNameDef.StartStringTable,"StartStringTable"
+            },
+            {
+                ConfigNameDef.LevelSetting,"LevelSetting"
+            },
+        };
+        
         private const string LOGTag = "ConfigManager";
         private const string ConfigPath = "Config/"; //配置表路径
 
-        private readonly RestrictedDictionary<string, List<dynamic>> _configDict =
+        private static readonly RestrictedDictionary<string, List<dynamic>> _configDict =
             new RestrictedDictionary<string, List<dynamic>>(); //配置总表
 
-        private readonly RestrictedDictionary<string, RestrictedDictionary<string, string>> _typeDict =
+        private static readonly RestrictedDictionary<string, RestrictedDictionary<string, string>> _typeDict =
             new RestrictedDictionary<string, RestrictedDictionary<string, string>>();
 
         /// <summary>
@@ -53,7 +72,7 @@ namespace Framework.Core.Manager.Config
                 // fullName = configPath + files[i].Name;
                 if (_configDict.ContainsKey(configName)) continue;
                 _configDict.Add(configName, new List<dynamic>());
-                _configDict[configName].Add(null); //预留一个位置
+                // _configDict[configName].Add(null); //预留一个位置
                 // configDict[configName].Add();
                 LogManager.Log(LOGTag, "Load Config:", t.Name);
                 try
@@ -171,24 +190,24 @@ namespace Framework.Core.Manager.Config
         {
             dynamic table = new RestrictedDictionary<int, dynamic>();
             table.EnableWrite();
-            for (var i = 1; i <= array.Count; i++)
+            for (var i = 0; i <= array.Count; i++)
             {
-                switch (array[i - 1].Type.ToString())
+                switch (array[i].Type.ToString())
                 {
                     case "Integer":
-                        table.Add(i, (int)array[i - 1]);
+                        table.Add(i, (int)array[i]);
                         break;
                     case "Float":
-                        table.Add(i, (float)array[i - 1]);
+                        table.Add(i, (float)array[i]);
                         break;
                     case "Boolean":
-                        table.Add(i, (bool)array[i - 1]);
+                        table.Add(i, (bool)array[i]);
                         break;
                     case "String":
-                        table.Add(i, array[i - 1].ToString());
+                        table.Add(i, array[i].ToString());
                         break;
                     case "Array":
-                        table.Add(i, HandleArray(array[i - 1].ToArray()));
+                        table.Add(i, HandleArray(array[i].ToArray()));
                         break;
                 }
             }
@@ -202,13 +221,16 @@ namespace Framework.Core.Manager.Config
         /// </summary>
         /// <param name="configName"></param>
         /// <returns></returns>
-        public List<dynamic> GetConfig(string configName)
+        public static List<dynamic> GetConfig(ConfigNameDef configName)
         {
             try
             {
-                if (_configDict.TryGetValue(configName, out var config))
+                if (ConfigNameDict.TryGetValue(configName, out var name))
                 {
-                    return config;
+                    if (_configDict.TryGetValue(name, out var config))
+                    {
+                        return config;
+                    }
                 }
             }
             catch (Exception)
@@ -226,15 +248,18 @@ namespace Framework.Core.Manager.Config
         /// <param name="configName"></param>
         /// <param name="id"></param>
         /// <returns></returns>
-        public dynamic GetConfig(string configName, int id)
+        public static dynamic GetConfigByID(ConfigNameDef configName, int id)
         {
             try
             {
-                if (_configDict.ContainsKey(configName))
+                if (ConfigNameDict.TryGetValue(configName, out var name))
                 {
-                    if (_configDict[configName] != null && _configDict[configName][id] != null)
+                    if (_configDict.ContainsKey(name))
                     {
-                        return _configDict[configName][id];
+                        if (_configDict[name] != null && _configDict[name][id - 1] != null)
+                        {
+                            return _configDict[name][id - 1];
+                        }
                     }
                 }
             }

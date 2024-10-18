@@ -80,12 +80,14 @@ namespace Framework.Core.Manager.Language
                     }
                     else
                     {
-                        var stringTable = ConfigManager.Instance.GetConfig("StartStringTable");
+                        var stringTable = ConfigManager.GetConfig(ConfigNameDef.StartStringTable);
                         _map.Add(EStringTable.Start, new Dictionary<string, LanguageUnit>());
-                        for (var i = 1; i < stringTable.Count; i++)
+                        
+                        LogManager.Log(LOGTag, "stringTable Count",stringTable.Count);
+                        for (var i = 0; i < stringTable.Count; i++)
                         {
-                            _map[EStringTable.Start].Add(stringTable[i]["textKey"],
-                                new LanguageUnit(stringTable[i]["en"], stringTable[i]["sc"]));
+                            LogManager.Log(LOGTag, $"stringTable {i}",stringTable[i]);
+                            _map[EStringTable.Start].Add(stringTable[i]["textKey"], new LanguageUnit(stringTable[i]["en"], stringTable[i]["sc"]));
                         }
 
                         unit = _map[EStringTable.Start][key];
