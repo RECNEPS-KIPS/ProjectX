@@ -40,11 +40,9 @@ namespace Framework.Core.Manager.Config
         private const string LOGTag = "ConfigManager";
         private const string ConfigPath = "Config/"; //配置表路径
 
-        private static readonly RestrictedDictionary<string, List<dynamic>> _configDict =
-            new RestrictedDictionary<string, List<dynamic>>(); //配置总表
+        private static readonly RestrictedDictionary<string, List<dynamic>> _configDict = new (); //配置总表
 
-        private static readonly RestrictedDictionary<string, RestrictedDictionary<string, string>> _typeDict =
-            new RestrictedDictionary<string, RestrictedDictionary<string, string>>();
+        private static readonly RestrictedDictionary<string, RestrictedDictionary<string, string>> _typeDict = new ();
 
         /// <summary>
         /// 

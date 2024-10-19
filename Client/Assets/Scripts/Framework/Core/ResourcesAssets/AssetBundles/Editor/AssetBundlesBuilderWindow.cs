@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using UnityEditor;
 using UnityEngine;
@@ -20,6 +21,11 @@ namespace Framework.Core.ResourcesAssets
             public List<string> assetNames;
         }
         private const string LOGTag = "AssetBundlesBuilder";
+
+        private static readonly HashSet<string> BundleFileTypeMap = new()
+        {
+            "unity","prefab","asset"
+        };
 
         public static bool GetState()
         {
@@ -114,8 +120,8 @@ namespace Framework.Core.ResourcesAssets
             foreach (var item in fileSystemInfos)
             {
                 var str = item.ToString();
-                var idx = str.LastIndexOf(@"\");
-                var name = str.Substring(idx + 1);
+                var idx = str.LastIndexOf(@"\", StringComparison.Ordinal);
+                var name = str[(idx + 1)..];
                 //item为文件夹 添加进ListFileInfo 递归调用
                 if (item is DirectoryInfo info)
                 {
@@ -136,8 +142,19 @@ namespace Framework.Core.ResourcesAssets
             }
             else
             {
-                LogManager.LogError(ListFileInfo.Count);
+                // LogManager.LogError(ListFileInfo.Count);
             }
+        }
+
+        public static bool CheckBuildAssetBundle(string str)
+        {
+            if (str.EndsWith(".meta"))
+            {
+                return false;
+            }
+            var idx = str.LastIndexOf(@".", StringComparison.Ordinal);
+            var type = str[(idx + 1)..];
+            return BundleFileTypeMap.Contains(type);
         }
 
         //判断是文件还是文件夹
@@ -147,13 +164,12 @@ namespace Framework.Core.ResourcesAssets
             {
                 path = $"Assets/{path.Replace($"{Application.dataPath}/", "")}";
                 var tag = path.Replace($"Assets/{AssetBundlesPathTools.AB_RESOURCES}/","").Split("/")[0];
-                AssetImporter tmpImportObj = AssetImporter.GetAtPath(path);
+                var tmpImportObj = AssetImporter.GetAtPath(path);
                 tmpImportObj.assetBundleName = tag;
-                // if (path.EndsWith(".unity"))
-                // {
-                //     
-                // }
                 
+                var Build = CheckBuildAssetBundle(path);
+                LogManager.Log(LOGTag,$"Check File{path} {Build}");
+                if (!Build) return;
                 LogManager.Log(LOGTag,$"path:{path},tag:{tag}");
                 if (AssetsDict.ContainsKey(tag))
                 {
@@ -166,6 +182,7 @@ namespace Framework.Core.ResourcesAssets
                     AssetsDict[tag].assetBundleName = tag;
                     AssetsDict[tag].assetBundleVariant = DEF.ASSET_BUNDLE_SUFFIX;
                 }
+
             }
             else
             {

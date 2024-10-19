@@ -64,7 +64,7 @@ namespace Framework.Core.Manager.ResourcesLoad {
         /// <returns></returns>
         public static T LoadAsset<T>(string assetPath) where T : UnityEngine.Object {
             LogManager.Log(LOGTag,$"LoadAsset->assetPath:{assetPath}");
-            T temp;
+            T temp = default;
 #if UNITY_EDITOR
             temp = AssetDatabase.LoadAssetAtPath<T>(assetPath);
 #else

@@ -23,41 +23,6 @@ namespace GamePlay.InGame
             Subdivide(regions, transform.localScale, offset);
             //原物体隐藏掉
             GetComponent<MeshRenderer>().enabled = false;
-
-
-            var tris = new [] { 6, 5, 4, 8, 9, 10, 7, 6, 4, 8, 10, 11, 0, 4, 5, 0, 5, 1, 1, 5, 6, 1, 6, 2, 2, 6, 7, 2, 7, 3, 3, 7, 4, 3, 4, 0 };
-            var vers = new Vector3[] {
-                new (-0.39f, -0.06f, 0.05f),
-                new (2.50f, -0.62f, 0.05f),
-                new (2.50f, 2.50f, 0.05f),
-                new (-1.19f, 2.50f, 0.05f),
-                new (-0.39f, -0.06f, -0.05f),
-                new (2.50f, -0.62f, -0.05f),
-                new (2.50f, 2.50f, -0.05f),
-                new (-1.19f, 2.50f, -0.05f),
-                new (-0.39f, -0.06f, -0.05f),
-                new (2.50f, -0.62f, -0.05f),
-                new (2.50f, 2.50f, -0.05f),
-                new (-1.19f, 2.50f, -0.05f),
-            };
-            var mesh = BuildMeshWithoutSharedVertices(tris, vers);
-            var shard = new GameObject();
-            var t = transform;
-            shard.name = t.name + "_test";
-            shard.transform.SetParent(t, false);
-            shard.transform.localPosition = new Vector3(10,10,10);
-            shard.transform.localRotation = Quaternion.identity;
-            shard.transform.localScale = Vector3.one;
-            shard.layer = LayerMaskToLayer(ShardLayer);
-            var mc = shard.AddComponent<MeshCollider>();
-            mc.convex = true;
-            mc.sharedMesh = mesh;
-            
-            shard.AddComponent<MeshFilter>().sharedMesh = mesh;
-            shard.AddComponent<Rigidbody>().isKinematic = true;
-            shard.AddComponent<MeshRenderer>();
-            shard.GetComponent<Renderer>().material = t.GetComponent<Renderer>().material;
-            t.localScale = Vector3.one;
         }
 
         /// <summary>
@@ -124,13 +89,15 @@ namespace GamePlay.InGame
             {
                 var coord = Region[i];
                 int one = i, two = Region.Count + i, three = 2 * Region.Count + i;
-                Vertices[one] = new Vector3(coord.x + Offset.x, coord.y + Offset.y, Scale.z / 2.0f);
-                Vertices[two] = new Vector3(coord.x + Offset.x, coord.y + Offset.y, -Scale.z / 2.0f);
-                Vertices[three] = new Vector3(coord.x + Offset.x, coord.y + Offset.y, -Scale.z / 2.0f);
+                // Vertices[one] = new Vector3(coord.x + Offset.x, coord.y + Offset.y, Scale.z / 2.0f);
+                // Vertices[two] = new Vector3(coord.x + Offset.x, coord.y + Offset.y, -Scale.z / 2.0f);
+                // Vertices[three] = new Vector3(coord.x + Offset.x, coord.y + Offset.y, -Scale.z / 2.0f);
+                Vertices[one] = new Vector3(coord.x+ Offset.x , coord.y + Offset.y, Scale.z / 2.0f);
+                Vertices[two] = new Vector3(coord.x+ Offset.x , coord.y + Offset.y, -Scale.z / 2.0f);
+                Vertices[three] = new Vector3(coord.x + Offset.x, coord.y + Offset.y, Scale.z / 2.0f);
             }
-            LogManager.Log("Vertices",Vertices);
+            // LogManager.Log("Vertices",Vertices);
         }
-
         /// <summary>
         /// 生成切分网格的三角形
         /// </summary>
@@ -154,6 +121,7 @@ namespace GamePlay.InGame
             //如果未启用OnlySurface表面优化 添加剩余的面,这里没有加背面
             if (OnlySurface) return;
             //创建其余的面
+            // for (var v = 0; v < Len; v++)
             for (var v = 0; v < Len; v++)
             {
                 var n = v == (Len - 1) ? 0 : v + 1;
@@ -166,7 +134,7 @@ namespace GamePlay.InGame
                 Tris[t++] = Len + n;
                 Tris[t++] = n;
             }
-            LogManager.Log("Tris",Tris,Len);
+            // LogManager.Log("Tris",Tris,Len);
         }
 
         /// <summary>
