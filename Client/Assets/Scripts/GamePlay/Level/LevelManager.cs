@@ -4,7 +4,7 @@ using Framework.Core.Manager.Config;
 using Framework.Core.Manager.ResourcesLoad;
 using UnityEngine.SceneManagement;
 
-namespace Framework.GamePlay
+namespace GamePlay
 {
     /// <summary>
     /// 多语言管理器
@@ -41,13 +41,15 @@ namespace Framework.GamePlay
         }
 
         //同步从assetbundle中加载场景
-        public static void LoadSceneByID(int sceneID)
+        public static void LoadSceneByID(int levelID)
         {
-            var levelCf = GetLevelCfByID(sceneID);
-            string path = levelCf["path"];
-            LogManager.Log("LOGTag",levelCf,path);
+            var levelCf = GetLevelCfByID(levelID);
+            int sceneID = levelCf["sceneID"];
+            var sceneCf = SceneManager.GetSceneConfig(sceneID);
+            LogManager.Log("LOGTag",levelCf,sceneCf);
+            string path = sceneCf["path"];
             ResourcesLoadManager.LoadAssetBundleFile(ResourcesLoadManager.GetAssetBundleName(path));
-            SceneManager.LoadScene(path);
+            UnityEngine.SceneManagement.SceneManager.LoadScene(path);
         }
     }
 }

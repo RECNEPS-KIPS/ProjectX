@@ -2,12 +2,12 @@
 	{
 		"id":10001,
 		"levelName":"第一关",
-		"path":"Assets/ResourcesAssets/InGame/Levels/Level1/Level.unity"
+		"sceneID":10002
 	},
 	{
 		"__metatable":"true",
 		"id":"int",
 		"levelName":"string",
-		"path":"string"
+		"sceneID":"int"
 	}
 ]

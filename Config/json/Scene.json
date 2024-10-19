@@ -1,0 +1,15 @@
+[
+	{
+		"id":10001,
+		"path":"Assets/ResourcesAssets/Scenes/Lobby.unity"
+	},
+	{
+		"id":10002,
+		"path":"Assets/ResourcesAssets/InGame/Levels/Level1/Level.unity"
+	},
+	{
+		"__metatable":"true",
+		"id":"int",
+		"path":"string"
+	}
+]

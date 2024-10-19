@@ -41,6 +41,7 @@ namespace Framework.Core.Manager.UI
     {
         ExampleUI = 0,
         StartWindow = 1,
+        PlotWindow = 2,
     }
 
     /// <summary>
@@ -102,6 +103,15 @@ namespace Framework.Core.Manager.UI
                     WindowType = WindowType.Stack
                 }
             },
+            {
+                WindowNameDef.PlotWindow,
+                new WindowData
+                {
+                    UIPrefabPath = "UI/Plot/PlotWindow",
+                    WindowType = WindowType.Stack
+                }
+                
+            }
         };
 
         private const string LOGTag = "UIManager";
@@ -168,8 +178,7 @@ namespace Framework.Core.Manager.UI
             {
                 return window;
             }
-
-            var path = WindowDataDict[id].UIPrefabPath;
+            
             var go = Instantiate(ResourcesLoadManager.LoadAsset<GameObject>($"{DEF.RESOURCES_ASSETS_PATH}/{WindowDataDict[id].UIPrefabPath}.prefab"),CanvasRoot);
             window = go.transform.GetComponent<BaseWindow>();
             go.transform.name = WindowDataDict[id].Name;
@@ -198,7 +207,7 @@ namespace Framework.Core.Manager.UI
 
             //每次入栈(显示页面的时候),触发window的OnEnter方法
             window.OnEnter(options);
-            window.gameObject.SetActive(true);
+            window.transform.gameObject.SetActive(true);
             _windowStack.Push(window);
         }
 
@@ -208,10 +217,9 @@ namespace Framework.Core.Manager.UI
         /// <param name="id"></param>
         public void Close(WindowNameDef id)
         {
-            LogManager.Log("Close Window === ", id);
             var window = GetWindowById(id);
             window.OnExit();
-            window.gameObject.SetActive(false);
+            window.transform.gameObject.SetActive(false);
             LogManager.Log("Close Window === ", window.name);
         }
 

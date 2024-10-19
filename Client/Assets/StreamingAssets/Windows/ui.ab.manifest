@@ -1,15 +1,15 @@
 ManifestFileVersion: 0
-CRC: 3574187836
+CRC: 1415733325
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: e03d357420b0ffa71e80907871ee9b7f
+    Hash: a2a740866bca2d32d6e4d0ddf53a74f0
   TypeTreeHash:
     serializedVersion: 2
-    Hash: 21d5e53232dcbd12dcde7cb402d1b8df
+    Hash: b37116471bc15a3eef6113d364a0f213
   IncrementalBuildHash:
     serializedVersion: 2
-    Hash: e03d357420b0ffa71e80907871ee9b7f
+    Hash: a2a740866bca2d32d6e4d0ddf53a74f0
 HashAppended: 0
 ClassTypes:
 - Class: 1
@@ -36,6 +36,8 @@ ClassTypes:
   Script: {fileID: 11500000, guid: 531d24f0378a419b8d1a09013d24d59b, type: 3}
 - Class: 114
   Script: {fileID: 11500000, guid: d23a9f88497e4ea5b5877710721d4421, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: 99670e92736fc8942bf812df0020b385, type: 3}
 - Class: 115
   Script: {instanceID: 0}
 - Class: 128
@@ -68,4 +70,5 @@ SerializeReferenceClassIdentifiers:
 Assets:
 - Assets/ResourcesAssets/UI/Example/ExampleUI.prefab
 - Assets/ResourcesAssets/UI/Start/StartWindow.prefab
+- Assets/ResourcesAssets/UI/Plot/PlotWindow.prefab
 Dependencies: []

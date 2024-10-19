@@ -17,6 +17,7 @@ namespace Framework.Core.Manager.Config
         Color = 0,
         StartStringTable = 1,
         LevelSetting = 2,
+        Scene = 3,
     }
     /// <summary>
     /// 配置管理器
@@ -34,6 +35,9 @@ namespace Framework.Core.Manager.Config
             },
             {
                 ConfigNameDef.LevelSetting,"LevelSetting"
+            },
+            {
+                ConfigNameDef.Scene,"Scene"
             },
         };
         

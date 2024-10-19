@@ -7,7 +7,7 @@ using Framework.Core.Manager.Config;
 using Framework.Core.Manager.Language;
 using Framework.Core.Manager.ResourcesLoad;
 using Framework.Core.Manager.UI;
-using Framework.GamePlay;
+using GamePlay;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Events;

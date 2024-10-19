@@ -1,16 +1,16 @@
 ManifestFileVersion: 0
-CRC: 3695701429
+CRC: 497949211
 AssetBundleManifest:
   AssetBundleInfos:
     Info_0:
       Name: ingame.ab
       Dependencies: {}
     Info_1:
-      Name: launch.ab
-      Dependencies: {}
-    Info_2:
       Name: misc.ab
       Dependencies: {}
-    Info_3:
+    Info_2:
       Name: ui.ab
+      Dependencies: {}
+    Info_3:
+      Name: scenes.ab
       Dependencies: {}

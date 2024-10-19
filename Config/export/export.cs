@@ -10,9 +10,11 @@ namespace export {
         private static string splicerT = "";
         private static Dictionary<string, string> typeDict = new Dictionary<string, string>();
         static void Main(string[] args) {
+            // args = new string[] { "s"};
             splicerN = isMinify ? "" : "\n";
             splicerT = isMinify ? "" : "\t";
             if (args.Length > 0) {
+                //string root = "G:/GUARDIAN_OFFICE/Config/";
                 string root = args[0].Replace('\\', '/');
                 string csvPath = root + "csv";
                 string jsonPath = root + "json";
@@ -72,7 +74,7 @@ namespace export {
                             }
                             HashSet<int> validKeyIndexs = new HashSet<int>();
                             while ((strLine = formatCsvSR.ReadLine()) != null) {
-                                // Console.WriteLine(strLine);
+                                //Console.WriteLine(strLine);
                                 if (row != ignoreLine && row != 0) {
                                     if (row == 1) {
                                         keys = SplitCSVLineStr(strLine);
@@ -88,6 +90,11 @@ namespace export {
                                     }
                                     if (row == 2) {
                                         types = SplitCSVLineStr(strLine);
+                                        //foreach (var it in types)
+                                        //{
+                                        //    Console.WriteLine("it" + it);
+                                        //}
+
                                         List<string> typeList = new List<string>();
                                         for (int i = 0; i < types.Length; i++) {
                                             if (validKeyIndexs.Contains(i)) {
@@ -300,18 +307,19 @@ namespace export {
                     }
                 } else {
                     if (c == ',') {
-                        if (temp != string.Empty) {
+                        //if (temp != string.Empty) {
                             strList.Add(temp);
                             temp = string.Empty;
-                        }
+                        //}
                     } else {
                         temp += c;
                     }
                 }
             }
-            if (temp != string.Empty) {
-                strList.Add(temp);
-            }
+            //if (temp != string.Empty) {
+
+            //}
+            strList.Add(temp);
             return strList.ToArray();
         }
 

@@ -1,0 +1,6 @@
+索引id,场景描述,路径
+id,_desc,path
+int,,string
+,,
+10001,玩家大厅,Assets/ResourcesAssets/Scenes/Lobby.unity
+10002,关卡场景,Assets/ResourcesAssets/InGame/Levels/Level1/Level.unity
