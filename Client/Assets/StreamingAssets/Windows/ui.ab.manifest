@@ -1,15 +1,15 @@
 ManifestFileVersion: 0
-CRC: 1415733325
+CRC: 1384688287
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: a2a740866bca2d32d6e4d0ddf53a74f0
+    Hash: ac0131715fcbb1c3f046ab66ae52672e
   TypeTreeHash:
     serializedVersion: 2
-    Hash: b37116471bc15a3eef6113d364a0f213
+    Hash: 84adf23c62167ed0e29079cde6266f8b
   IncrementalBuildHash:
     serializedVersion: 2
-    Hash: a2a740866bca2d32d6e4d0ddf53a74f0
+    Hash: ac0131715fcbb1c3f046ab66ae52672e
 HashAppended: 0
 ClassTypes:
 - Class: 1
@@ -38,6 +38,8 @@ ClassTypes:
   Script: {fileID: 11500000, guid: d23a9f88497e4ea5b5877710721d4421, type: 3}
 - Class: 114
   Script: {fileID: 11500000, guid: 99670e92736fc8942bf812df0020b385, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: 7f6e514f60a549d89115be19e20309cc, type: 3}
 - Class: 115
   Script: {instanceID: 0}
 - Class: 128
@@ -68,7 +70,8 @@ SerializeReferenceClassIdentifiers:
 - AssemblyName: UnityEngine.UI
   ClassName: UnityEngine.UI.SpriteState
 Assets:
+- Assets/ResourcesAssets/UI/Lobby/LobbyMainUI.prefab
 - Assets/ResourcesAssets/UI/Example/ExampleUI.prefab
-- Assets/ResourcesAssets/UI/Start/StartWindow.prefab
-- Assets/ResourcesAssets/UI/Plot/PlotWindow.prefab
+- Assets/ResourcesAssets/UI/Start/StartUI.prefab
+- Assets/ResourcesAssets/UI/Plot/PlotUI.prefab
 Dependencies: []

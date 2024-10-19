@@ -25,6 +25,7 @@ MonoBehaviour:
     bundleName: Scenes
   - assetBundlesMap:
     - Assets/ResourcesAssets/UI/Example/ExampleUI.prefab
-    - Assets/ResourcesAssets/UI/Plot/PlotWindow.prefab
-    - Assets/ResourcesAssets/UI/Start/StartWindow.prefab
+    - Assets/ResourcesAssets/UI/Lobby/LobbyMainUI.prefab
+    - Assets/ResourcesAssets/UI/Plot/PlotUI.prefab
+    - Assets/ResourcesAssets/UI/Start/StartUI.prefab
     bundleName: UI
