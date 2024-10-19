@@ -26,7 +26,7 @@ namespace Framework.Core.Launcher
             LanguageManager.Instance.Launch();
             UIManager.Instance.Launch();
 
-            UIManager.Instance.Open(WindowNameDef.PlotWindow);
+            UIManager.Instance.OpenUI(UIDef.PlotUI);
         }
     }
 }

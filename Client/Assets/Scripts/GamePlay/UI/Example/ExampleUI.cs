@@ -9,7 +9,7 @@ using UnityEngine.Events;
 
 namespace GamePlay.UI
 {
-    public class ExampleUI : BaseWindow
+    public class ExampleUI : BaseUI
     {
         public override void OnInit()
         {
@@ -24,7 +24,7 @@ namespace GamePlay.UI
             //     UIManager.Instance.Close(WindowNameDef.TestUI);
             // });
 
-            MBind("closeBtn", () => { UIManager.Instance.Close(WindowNameDef.ExampleUI); });
+            MBind("closeBtn", () => { UIManager.Instance.Close(UIDef.ExampleUI); });
             /*MBind("onDe",() => LogManager.Log("onLast"));*/
             MBind("onLast", () => LogManager.Log("onLast"));
             MBind("onNext", () => LogManager.Log("onNext"));

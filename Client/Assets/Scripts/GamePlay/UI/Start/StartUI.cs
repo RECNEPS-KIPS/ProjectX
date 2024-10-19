@@ -15,7 +15,7 @@ using UnityEngine.SceneManagement;
 
 namespace GamePlay.UI
 {
-    public class StartWindow : BaseWindow
+    public class StartUI : BaseUI
     {
         public override void OnInit()
         {
@@ -30,10 +30,10 @@ namespace GamePlay.UI
 
         void OnStartBtn()
         {
-            UIManager.Instance.Close(WindowNameDef.StartWindow);
+            UIManager.Instance.Close(UIDef.StartUI);
             LogManager.Log("OnGameStartBtnClick");
             
-            LevelManager.LoadSceneByID(10001);
+            LevelManager.Instance.LoadSceneByID(10001);
         }
 
         public override void OnEnter(dynamic args)

@@ -16,7 +16,7 @@ namespace Framework.Core.Manager.UI
     /// <summary>
     /// 窗口类型
     /// </summary>
-    public enum WindowType
+    public enum UIType
     {
         /// <summary>
         /// 自由弹窗
@@ -37,11 +37,12 @@ namespace Framework.Core.Manager.UI
     /// <summary>
     /// 
     /// </summary>
-    public enum WindowNameDef
+    public enum UIDef
     {
         ExampleUI = 0,
-        StartWindow = 1,
-        PlotWindow = 2,
+        StartUI = 1,
+        PlotUI = 2,
+        LobbyMainUI = 3,
     }
 
     /// <summary>
@@ -51,10 +52,10 @@ namespace Framework.Core.Manager.UI
     public class UIManager : MonoSingleton<UIManager>
     {
         /// <summary>
-        /// Window数据类
+        /// UI数据类
         /// </summary>
         [Serializable]
-        public class WindowData
+        public class UIData
         {
             /// <summary>
             /// 界面名称
@@ -64,7 +65,7 @@ namespace Framework.Core.Manager.UI
             /// <summary>
             /// 界面ID
             /// </summary>
-            public WindowNameDef ID;
+            public  UIDef ID;
 
             /// <summary>
             /// 界面资源路径
@@ -79,44 +80,51 @@ namespace Framework.Core.Manager.UI
             /// <summary>
             /// 界面类型
             /// </summary>
-            public WindowType WindowType;
+            public UIType UIType;
         }
 
         /// <summary>
         /// 定义各个UI界面数据
         /// </summary>
-        private readonly Dictionary<WindowNameDef, WindowData> WindowDataDict = new()
+        private readonly Dictionary< UIDef, UIData> UIDataDict = new()
         {
             {
-                WindowNameDef.ExampleUI,
-                new WindowData
+                UIDef.ExampleUI,
+                new UIData
                 {
                     UIPrefabPath = "UI/Example/ExampleUI",
-                    WindowType = WindowType.Stack
+                    UIType = UIType.Stack
                 }
             },
             {
-                WindowNameDef.StartWindow,
-                new WindowData
+                UIDef.StartUI,
+                new UIData
                 {
-                    UIPrefabPath = "UI/Start/StartWindow",
-                    WindowType = WindowType.Stack
+                    UIPrefabPath = "UI/Start/StartUI",
+                    UIType = UIType.Stack
                 }
             },
             {
-                WindowNameDef.PlotWindow,
-                new WindowData
+                UIDef.PlotUI,
+                new UIData
                 {
-                    UIPrefabPath = "UI/Plot/PlotWindow",
-                    WindowType = WindowType.Stack
+                    UIPrefabPath = "UI/Plot/PlotUI",
+                    UIType = UIType.Stack
                 }
-                
+            },
+            {
+                UIDef.LobbyMainUI,
+                new UIData
+                {
+                    UIPrefabPath = "UI/Lobby/LobbyMainUI",
+                    UIType = UIType.Stack
+                }
             }
         };
 
         private const string LOGTag = "UIManager";
-        private readonly Stack<BaseWindow> _windowStack = new Stack<BaseWindow>();
-        private readonly Dictionary<int, BaseWindow> _baseWindowDict = new Dictionary<int, BaseWindow>();
+        private readonly Stack<BaseUI> _uiStack = new Stack<BaseUI>();
+        private readonly Dictionary<int, BaseUI> _baseUIDict = new Dictionary<int, BaseUI>();
 
         private static Transform UICameraRoot => CameraManager.Instance.UICamera.transform;
         private UnityEngine.Camera _uiCamera;
@@ -140,7 +148,7 @@ namespace Framework.Core.Manager.UI
         public override void Initialize()
         {
             RegistUIBinding();
-            InitWindowData();
+            InitUIData();
         }
 
         void RegistUIBinding()
@@ -166,86 +174,86 @@ namespace Framework.Core.Manager.UI
         /// </summary>
         /// <param name="id"></param>
         /// <param name="options"></param>
-        public void Open(WindowNameDef id, dynamic options = null)
+        public void OpenUI( UIDef id, dynamic options = null)
         {
-            WindowStackPush(id, options);
+            UIStackPush(id, options);
         }
 
-        private BaseWindow GetWindowById(WindowNameDef id,bool IsAsync = false)
+        private BaseUI GetUIById( UIDef id,bool IsAsync = false)
         {
-            _baseWindowDict.TryGetValue((int)id, out var window);
-            if (window != null)
+            _baseUIDict.TryGetValue((int)id, out var ui);
+            if (ui != null)
             {
-                return window;
+                return ui;
             }
             
-            var go = Instantiate(ResourcesLoadManager.LoadAsset<GameObject>($"{DEF.RESOURCES_ASSETS_PATH}/{WindowDataDict[id].UIPrefabPath}.prefab"),CanvasRoot);
-            window = go.transform.GetComponent<BaseWindow>();
-            go.transform.name = WindowDataDict[id].Name;
-            window.WindowId = id;
-            _baseWindowDict.Add((int)id, window);
-            window.OnInit();
-            return window;
+            var go = Instantiate(ResourcesLoadManager.LoadAsset<GameObject>($"{DEF.RESOURCES_ASSETS_PATH}/{UIDataDict[id].UIPrefabPath}.prefab"),CanvasRoot);
+            ui = go.transform.GetComponent<BaseUI>();
+            go.transform.name = UIDataDict[id].Name;
+            ui.UIId = id;
+            _baseUIDict.Add((int)id, ui);
+            ui.OnInit();
+            return ui;
         }
 
-        private void WindowStackPush(WindowNameDef windowId, dynamic options = null)
+        private void UIStackPush( UIDef uiId, dynamic options = null)
         {
-            var window = GetWindowById(windowId);
-            LogManager.Log("Open Window === ", window.name);
-            // window.Canvas.sortingOrder = 0;//WindowDataDict[windowId].Layer;
-            // window.Canvas.worldCamera = UICamera;
-            if (window.IsShow)
+            var ui = GetUIById(uiId);
+            LogManager.Log("Open UI === ", ui.name);
+            // ui.Canvas.sortingOrder = 0;//UIDataDict[uiId].Layer;
+            // ui.Canvas.worldCamera = UICamera;
+            if (ui.IsShow)
             {
                 return;
             }
 
             //显示当前界面时,应该先去判断当前栈是否为空,不为空说明当前有界面显示,把当前的界面OnPause掉
-            if (_windowStack.Count > 0)
+            if (_uiStack.Count > 0)
             {
-                _windowStack.Peek().OnPause();
+                _uiStack.Peek().OnPause();
             }
 
-            //每次入栈(显示页面的时候),触发window的OnEnter方法
-            window.OnEnter(options);
-            window.transform.gameObject.SetActive(true);
-            _windowStack.Push(window);
+            //每次入栈(显示页面的时候),触发ui的OnEnter方法
+            ui.OnEnter(options);
+            ui.transform.gameObject.SetActive(true);
+            _uiStack.Push(ui);
         }
 
         /// <summary>
         /// 关闭窗口
         /// </summary>
         /// <param name="id"></param>
-        public void Close(WindowNameDef id)
+        public void Close( UIDef id)
         {
-            var window = GetWindowById(id);
-            window.OnExit();
-            window.transform.gameObject.SetActive(false);
-            LogManager.Log("Close Window === ", window.name);
+            var ui = GetUIById(id);
+            ui.OnExit();
+            ui.transform.gameObject.SetActive(false);
+            LogManager.Log("Close UI === ", ui.name);
         }
 
         /// <summary>
         /// 
         /// </summary>
-        public void WindowStackPop()
+        public void UIStackPop()
         {
-            if (_windowStack.Count <= 0) return;
-            _windowStack.Pop(); //关闭栈顶界面
-            // Destroy(window.gameObject);
-            if (_windowStack.Count > 0)
+            if (_uiStack.Count <= 0) return;
+            _uiStack.Pop(); //关闭栈顶界面
+            // Destroy(ui.gameObject);
+            if (_uiStack.Count > 0)
             {
-                _windowStack.Peek().OnResume(); //恢复原先的界面
+                _uiStack.Peek().OnResume(); //恢复原先的界面
             }
         }
 
-        private void InitWindowData()
+        private void InitUIData()
         {
-            foreach (var kvp in WindowDataDict)
+            foreach (var kvp in UIDataDict)
             {
                 kvp.Value.ID = kvp.Key;
                 kvp.Value.Name = kvp.Key.ToString();
             }
 
-            LogManager.Log(LOGTag, "Window data is parsed");
+            LogManager.Log(LOGTag, "UI data is parsed");
         }
     }
 }

@@ -15,7 +15,7 @@ using UnityEngine.SceneManagement;
 
 namespace GamePlay.UI
 {
-    public class PlotWindow : BaseWindow
+    public class PlotUI : BaseUI
     {
         public override void OnInit()
         {
@@ -27,8 +27,11 @@ namespace GamePlay.UI
         void OnSkipBtn()
         {
             LogManager.Log("PlotWindow","OnSkipBtn");
-            UIManager.Instance.Close(WindowNameDef.PlotWindow);
-            SceneManager.LoadSceneByID(SceneDef.Lobby);
+            UIManager.Instance.Close(UIDef.PlotUI);
+            SceneManager.Instance.LoadSceneByID(SceneDef.Lobby, () =>
+            {
+                UIManager.Instance.OpenUI(UIDef.LobbyMainUI);
+            });
         }
 
         public override void OnEnter(dynamic args)

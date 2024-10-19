@@ -2,6 +2,7 @@
 using Framework.Core.Manager.Config;
 using Framework.Core.Manager.ResourcesLoad;
 using Framework.Core.Singleton;
+using UnityEngine.Events;
 
 namespace GamePlay
 {
@@ -11,11 +12,11 @@ namespace GamePlay
     }
     public class SceneManager: Singleton<SceneManager>
     {
-        private const string LOGTag = "LevelManager";
+        private const string LOGTag = "SceneManager";
 
-        private static Dictionary<int, dynamic> _sceneCfMap;
+        private Dictionary<int, dynamic> _sceneCfMap;
 
-        private static Dictionary<int, dynamic> SceneCfMap
+        private Dictionary<int, dynamic> SceneCfMap
         {
             get
             {
@@ -33,22 +34,62 @@ namespace GamePlay
             }
         }
 
-        public static dynamic GetSceneConfig(int sceneID)
+        UnityAction<UnityEngine.SceneManagement.Scene, UnityEngine.SceneManagement.LoadSceneMode> SceneLoadFinished;
+        private Dictionary<string, UnityAction> _loadedCallbackMap;
+
+        private Dictionary<string, UnityAction> LoadedCallbackMap
+        {
+            get
+            {
+                _loadedCallbackMap ??= new Dictionary<string, UnityAction>();
+                return _loadedCallbackMap;
+            }
+        }
+        public void Launch(){}
+        public override void Initialize()
+        {
+            LogManager.Log(LOGTag,$"Register scene load finished callback");
+            SceneLoadFinished = (scene, mode) =>
+            {
+                LogManager.Log(LOGTag,$"Scene load finished === name:{scene.path}");
+                if (LoadedCallbackMap.TryGetValue(scene.path,out var callback))
+                {
+                    callback?.Invoke();
+                }
+            };
+            UnityEngine.SceneManagement.SceneManager.sceneLoaded += SceneLoadFinished;
+        }
+
+        public override void Dispose()
+        {
+            UnityEngine.SceneManagement.SceneManager.sceneLoaded -= SceneLoadFinished;
+        }
+
+        public dynamic GetSceneConfig(int sceneID)
         {
             SceneCfMap.TryGetValue(sceneID,out var cf);
             return cf;
         }
 
-        public static void LoadSceneByID(SceneDef sceneID)
+        public void LoadSceneByID(SceneDef sceneID,UnityAction callback = null)
         {
-            LoadSceneByID((int)sceneID);
+            LoadSceneByID((int)sceneID,callback);
         }
 
         //同步从assetbundle中加载场景
-        public static void LoadSceneByID(int sceneID)
+        public void LoadSceneByID(int sceneID,UnityAction callback = null)
         {
+            LogManager.Log(LOGTag,$"Scene load start === name:{sceneID}");
             var sceneCf = GetSceneConfig(sceneID);
             string path = sceneCf["path"];
+            if (callback != null)
+            {
+                if (LoadedCallbackMap.ContainsKey(path))
+                {
+                    LoadedCallbackMap.Remove(path);
+                }
+                LoadedCallbackMap.Add(path,callback);
+            }
             ResourcesLoadManager.LoadAssetBundleFile(ResourcesLoadManager.GetAssetBundleName(path));
             UnityEngine.SceneManagement.SceneManager.LoadScene(path);
         }

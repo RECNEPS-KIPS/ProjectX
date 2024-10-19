@@ -14,9 +14,9 @@ namespace GamePlay
     {
         private const string LOGTag = "LevelManager";
 
-        private static Dictionary<int, dynamic> _levelCfMap;
+        private Dictionary<int, dynamic> _levelCfMap;
 
-        private static Dictionary<int, dynamic> LevelCfMap
+        private Dictionary<int, dynamic> LevelCfMap
         {
             get
             {
@@ -34,18 +34,18 @@ namespace GamePlay
             }
         }
 
-        public static dynamic GetLevelCfByID(int LevelID)
+        public dynamic GetLevelCfByID(int LevelID)
         {
             LevelCfMap.TryGetValue(LevelID,out var cf);
             return cf;
         }
 
         //同步从assetbundle中加载场景
-        public static void LoadSceneByID(int levelID)
+        public void LoadSceneByID(int levelID)
         {
             var levelCf = GetLevelCfByID(levelID);
             int sceneID = levelCf["sceneID"];
-            var sceneCf = SceneManager.GetSceneConfig(sceneID);
+            var sceneCf = SceneManager.Instance.GetSceneConfig(sceneID);
             LogManager.Log("LOGTag",levelCf,sceneCf);
             string path = sceneCf["path"];
             ResourcesLoadManager.LoadAssetBundleFile(ResourcesLoadManager.GetAssetBundleName(path));

@@ -22,7 +22,7 @@ namespace Framework.Core.Manager.UI
 
     public class UIBinding : MonoBehaviour
     {
-        public BaseWindow Page { get; set; }
+        public BaseUI Page { get; set; }
 
         public string PageType
         {
@@ -68,7 +68,7 @@ namespace Framework.Core.Manager.UI
             _pageDict.Clear();
             foreach (var t in Assembly.GetAssembly(typeof(BinderComponent)).GetExportedTypes())
             {
-                if (t.BaseType == typeof(BaseWindow))
+                if (t.BaseType == typeof(BaseUI))
                 {
                     if (t.FullName != null && !_pageDict.ContainsKey(t.FullName))
                     {
@@ -157,7 +157,7 @@ namespace Framework.Core.Manager.UI
 
         public static Type GetPageType(string pageType)
         {
-            return _pageDict.TryGetValue(pageType, out var value) ? value : typeof(BaseWindow);
+            return _pageDict.TryGetValue(pageType, out var value) ? value : typeof(BaseUI);
         }
 
         public static string GetType(Object obj) => obj is Component ? obj.GetType().ToString() : "UnityEngine.GameObject";

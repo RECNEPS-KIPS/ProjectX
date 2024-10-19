@@ -1,5 +1,5 @@
 ﻿// author:KIPKIPS
-// describe:BaseWindow UI面板的基类
+// describe:BaseUI UI面板的基类
 
 using System;
 using System.Collections.Generic;
@@ -15,14 +15,14 @@ namespace Framework.Core.Manager.UI
     /// <summary>
     /// 窗口基类
     /// </summary>
-    public class BaseWindow : MonoBehaviour
+    public class BaseUI : MonoBehaviour
     {
-        private const string LOGTag = "BaseWindow";
+        private const string LOGTag = "BaseUI";
 
         /// <summary>
         /// window id
         /// </summary>
-        public WindowNameDef WindowId { get; set; }
+        public UIDef UIId { get; set; }
 
         private Animator _animator;
 
@@ -249,7 +249,7 @@ namespace Framework.Core.Manager.UI
         public virtual void OnExit()
         {
             LogManager.Log(LOGTag, "OnExit");
-            UIManager.Instance.WindowStackPop();
+            UIManager.Instance.UIStackPop();
             IsShow = false;
         }
 
