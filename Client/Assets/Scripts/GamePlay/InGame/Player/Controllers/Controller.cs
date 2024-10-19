@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace CMF
+namespace GamePlay.InGame.Player
 {
 	//This abstract class is the base for all other controller components (such as 'AdvancedWalkerController');
 	//It can be extended to create a custom controller class;

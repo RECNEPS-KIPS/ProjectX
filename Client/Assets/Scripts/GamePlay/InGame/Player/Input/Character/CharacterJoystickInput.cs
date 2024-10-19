@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace CMF
+namespace GamePlay.InGame.Player
 {
 	//This character movement input class is an example of how to get input from a gamepad/joystick to control the character;
 	//It comes with a dead zone threshold setting to bypass any unwanted joystick "jitter";

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace CMF
+namespace GamePlay.InGame.Player
 {
 	//This simple script continually rotates the gameobject it is attached to around a chosen axis;
 	//It is used in the 'ExternalCameraScene' to demonstrate a camera setup where camera and character are separate gameobjects;

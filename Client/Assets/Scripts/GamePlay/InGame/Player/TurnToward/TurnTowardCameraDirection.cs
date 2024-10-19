@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace CMF
+namespace GamePlay.InGame.Player
 {
 	//This script turns a gameobject toward the look direction of a chosen 'CameraController' component;
 	public class TurnTowardCameraDirection : MonoBehaviour {

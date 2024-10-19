@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEditor;
 using UnityEditor.SceneManagement;
 
-namespace CMF
+namespace GamePlay.InGame.Player
 {
 	//This editor script displays some additional information in the mover inspector, like a preview of the current raycast array;
 	[CustomEditor(typeof(Mover))]

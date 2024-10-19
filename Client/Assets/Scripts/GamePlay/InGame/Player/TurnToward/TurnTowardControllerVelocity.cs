@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace CMF
+namespace GamePlay.InGame.Player
 {
 	//This script turns a gameobject toward the target controller's velocity direction;
 	public class TurnTowardControllerVelocity : MonoBehaviour {

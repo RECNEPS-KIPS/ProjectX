@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace CMF
+namespace GamePlay.InGame.Player
 {
 	//This script uses raycasts (or spherecasts) to detect obstacles between this transform and the camera;
 	//The camera transform is then moved closer to this transform based on the obstacle's proximity;

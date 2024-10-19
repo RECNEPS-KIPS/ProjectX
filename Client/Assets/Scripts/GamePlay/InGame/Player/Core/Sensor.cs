@@ -2,7 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 
-namespace CMF
+namespace GamePlay.InGame.Player
 {
 	//This script is responsible for casting rays and spherecasts;
 	//It is instantiated by the 'Mover' component at runtime;

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace CMF
+namespace GamePlay.InGame.Player
 {
 	//This script controls whether a scene light casts shadows;
 	//It is used by the 'DemoMenu' script to toggle the shadows;

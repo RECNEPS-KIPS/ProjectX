@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-namespace CMF
+namespace GamePlay.InGame.Player
 {
 	//This script smoothes the position of a gameobject;
 	public class SmoothPosition : MonoBehaviour {

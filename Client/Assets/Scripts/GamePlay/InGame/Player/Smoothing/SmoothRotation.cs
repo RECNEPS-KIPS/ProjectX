@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-namespace CMF
+namespace GamePlay.InGame.Player
 {
 	//This script smoothes the rotation of a gameobject;
 	public class SmoothRotation : MonoBehaviour {

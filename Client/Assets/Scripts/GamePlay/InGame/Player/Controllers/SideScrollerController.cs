@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace CMF
+namespace GamePlay.InGame.Player
 {
 	//This controller script is based on 'AdvancedWalkerController' and limits player movement to a 2D plane;
 	//It can be used to build 2D platformers or other games using 2D controls;

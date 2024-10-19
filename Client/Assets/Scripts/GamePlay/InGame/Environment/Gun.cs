@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace GamePlay.InGame
+namespace GamePlay.InGame.Enviorment
 {
     public class Gun : MonoBehaviour
     {

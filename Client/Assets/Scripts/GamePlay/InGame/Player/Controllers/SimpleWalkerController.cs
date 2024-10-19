@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace CMF
+namespace GamePlay.InGame.Player
 {
     //A very simplified controller script;
 	//This script is an example of a very simple walker controller that covers only the basics of character movement;

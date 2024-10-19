@@ -2,7 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 
-namespace CMF
+namespace GamePlay.InGame.Player
 {
 	//This script rotates all gameobjects inside the attached trigger collider around a central axis (the forward axis of this gameobject);
 	//In combination with a tube-shaped collider, this script can be used to let a player walk around on the inside walls of a tunnel;

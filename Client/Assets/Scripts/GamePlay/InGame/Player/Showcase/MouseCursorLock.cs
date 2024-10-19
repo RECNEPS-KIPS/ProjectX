@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace CMF
+namespace GamePlay.InGame.Player
 {
 	//This script provides simple mouse cursor locking functionality;
 	public class MouseCursorLock : MonoBehaviour {

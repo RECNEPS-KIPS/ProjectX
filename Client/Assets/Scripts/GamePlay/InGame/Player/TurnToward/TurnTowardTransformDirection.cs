@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace CMF
+namespace GamePlay.InGame.Player
 {
 	//This script rotates an object toward the 'forward' direction of another target transform;
 	public class TurnTowardTransformDirection : MonoBehaviour {

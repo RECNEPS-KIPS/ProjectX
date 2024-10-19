@@ -2,7 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 
-namespace GamePlay.InGame
+namespace GamePlay.InGame.Enviorment
 {
     public class SmoothMouse : MonoBehaviour
     {

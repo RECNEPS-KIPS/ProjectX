@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace CMF
+namespace GamePlay.InGame.Player
 {
     //This abstract camera input class serves as a base for all other camera input classes;
     //The 'CameraController' component will access this script at runtime to get input for the camera's rotation;

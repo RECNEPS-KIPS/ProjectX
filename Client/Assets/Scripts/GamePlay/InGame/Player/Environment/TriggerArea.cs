@@ -2,7 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 
-namespace CMF
+namespace GamePlay.InGame.Player
 {
 	//This script keeps track of all controllers that enter or leave the trigger collider attached to this gameobject;
 	//It is used by 'MovingPlatform' to detect and move controllers standing on top of it;

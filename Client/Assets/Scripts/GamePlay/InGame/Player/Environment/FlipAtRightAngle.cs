@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace CMF
+namespace GamePlay.InGame.Player
 {
 	//This script flips any rigidbody (which also has a 'Controller' attached) that touches its trigger around a 90 degree angle;
 	public class FlipAtRightAngle : MonoBehaviour {

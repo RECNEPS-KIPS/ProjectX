@@ -2,7 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 
-namespace CMF
+namespace GamePlay.InGame.Player
 {
 	//This script moves a rigidbody along a set of waypoints;
 	//It also moves any controllers on top along with it;

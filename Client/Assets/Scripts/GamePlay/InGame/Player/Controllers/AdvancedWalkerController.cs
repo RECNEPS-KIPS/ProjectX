@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace CMF
+namespace GamePlay.InGame.Player
 {
 	//Advanced walker controller script;
 	//This controller is used as a basis for other controller types ('SidescrollerController');

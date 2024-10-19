@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace CMF
+namespace GamePlay.InGame.Player
 {
 	//This static script is used by the 'DemoMenu' script to keep track of the currently selected options;
 	public static class PlayerData {

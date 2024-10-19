@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace CMF
+namespace GamePlay.InGame.Player
 {
     //This camera input class is an example of how to get input from a connected mouse using Unity's default input system;
     //It also includes an optional mouse sensitivity setting;

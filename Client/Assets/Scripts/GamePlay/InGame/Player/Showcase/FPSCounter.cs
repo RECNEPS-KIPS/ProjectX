@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace CMF
+namespace GamePlay.InGame.Player
 {
 	//This script calculates the average framerate and displays it in the upper right corner of the screen;
 	public class FPSCounter : MonoBehaviour {

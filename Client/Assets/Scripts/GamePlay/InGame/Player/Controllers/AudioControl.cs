@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace CMF
+namespace GamePlay.InGame.Player
 {
 	//This script handles and plays audio cues like footsteps, jump and land audio clips based on character movement speed and events; 
 	public class AudioControl : MonoBehaviour {

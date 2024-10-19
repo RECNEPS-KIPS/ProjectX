@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
-namespace CMF
+namespace GamePlay.InGame.Player
 {
 	//This script is used in the showcase scene to control the controller selection/settings menu;
 	public class DemoMenu : MonoBehaviour {
