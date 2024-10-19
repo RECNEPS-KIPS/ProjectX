@@ -28,6 +28,7 @@ namespace GamePlay.UI
         {
             LogManager.Log("PlotWindow","OnSkipBtn");
             UIManager.Instance.Close(WindowNameDef.PlotWindow);
+            SceneManager.LoadSceneByID(SceneDef.Lobby);
         }
 
         public override void OnEnter(dynamic args)

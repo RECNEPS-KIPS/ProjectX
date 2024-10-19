@@ -1,9 +1,14 @@
 ﻿using System.Collections.Generic;
 using Framework.Core.Manager.Config;
+using Framework.Core.Manager.ResourcesLoad;
 using Framework.Core.Singleton;
 
 namespace GamePlay
 {
+    public enum SceneDef
+    {
+        Lobby = 10001,
+    }
     public class SceneManager: Singleton<SceneManager>
     {
         private const string LOGTag = "LevelManager";
@@ -32,6 +37,20 @@ namespace GamePlay
         {
             SceneCfMap.TryGetValue(sceneID,out var cf);
             return cf;
+        }
+
+        public static void LoadSceneByID(SceneDef sceneID)
+        {
+            LoadSceneByID((int)sceneID);
+        }
+
+        //同步从assetbundle中加载场景
+        public static void LoadSceneByID(int sceneID)
+        {
+            var sceneCf = GetSceneConfig(sceneID);
+            string path = sceneCf["path"];
+            ResourcesLoadManager.LoadAssetBundleFile(ResourcesLoadManager.GetAssetBundleName(path));
+            UnityEngine.SceneManagement.SceneManager.LoadScene(path);
         }
     }
 }
