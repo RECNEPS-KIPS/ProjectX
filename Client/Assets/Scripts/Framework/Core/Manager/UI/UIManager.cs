@@ -43,6 +43,7 @@ namespace Framework.Core.Manager.UI
         StartUI = 1,
         PlotUI = 2,
         LobbyMainUI = 3,
+        MainUI = 4,
     }
 
     /// <summary>
@@ -51,38 +52,6 @@ namespace Framework.Core.Manager.UI
     [MonoSingletonPath("[Manager]/UIManager")]
     public class UIManager : MonoSingleton<UIManager>
     {
-        /// <summary>
-        /// UI数据类
-        /// </summary>
-        [Serializable]
-        public class UIData
-        {
-            /// <summary>
-            /// 界面名称
-            /// </summary>
-            public string Name;
-
-            /// <summary>
-            /// 界面ID
-            /// </summary>
-            public  UIDef ID;
-
-            /// <summary>
-            /// 界面资源路径
-            /// </summary>
-            public string UIPrefabPath;
-
-            /// <summary>
-            /// 所属层级
-            /// </summary>
-            public int Layer;
-
-            /// <summary>
-            /// 界面类型
-            /// </summary>
-            public UIType UIType;
-        }
-
         /// <summary>
         /// 定义各个UI界面数据
         /// </summary>
@@ -117,6 +86,14 @@ namespace Framework.Core.Manager.UI
                 new UIData
                 {
                     UIPrefabPath = "UI/Lobby/LobbyMainUI",
+                    UIType = UIType.Stack
+                }
+            },
+            {
+                UIDef.MainUI,
+                new UIData
+                {
+                    UIPrefabPath = "UI/Main/MainUI",
                     UIType = UIType.Stack
                 }
             }
@@ -254,6 +231,37 @@ namespace Framework.Core.Manager.UI
             }
 
             LogManager.Log(LOGTag, "UI data is parsed");
+        }
+        /// <summary>
+        /// UI数据类
+        /// </summary>
+        [Serializable]
+        public class UIData
+        {
+            /// <summary>
+            /// 界面名称
+            /// </summary>
+            public string Name;
+
+            /// <summary>
+            /// 界面ID
+            /// </summary>
+            public  UIDef ID;
+
+            /// <summary>
+            /// 界面资源路径
+            /// </summary>
+            public string UIPrefabPath;
+
+            /// <summary>
+            /// 所属层级
+            /// </summary>
+            public int Layer;
+
+            /// <summary>
+            /// 界面类型
+            /// </summary>
+            public UIType UIType;
         }
     }
 }

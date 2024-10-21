@@ -30,7 +30,7 @@ namespace GamePlay.UI
             UIManager.Instance.Close(UIDef.PlotUI);
             SceneManager.Instance.LoadSceneByID(SceneDef.Lobby, () =>
             {
-                UIManager.Instance.OpenUI(UIDef.LobbyMainUI);
+                UIManager.Instance.OpenUI(UIDef.MainUI);
             });
         }
 

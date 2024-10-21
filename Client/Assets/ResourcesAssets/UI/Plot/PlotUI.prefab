@@ -212,7 +212,7 @@ GameObject:
   - component: {fileID: 2604044270205721754}
   - component: {fileID: 6189243294200026597}
   - component: {fileID: 6070109226935955007}
-  - component: {fileID: 431644061148804125}
+  - component: {fileID: 3231335687913615908}
   m_Layer: 5
   m_Name: PlotUI
   m_TagString: Untagged
@@ -301,7 +301,7 @@ MonoBehaviour:
     bindFieldId: 10014
     fieldType: 14
     isMethod: 1
---- !u!114 &431644061148804125
+--- !u!114 &3231335687913615908
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}

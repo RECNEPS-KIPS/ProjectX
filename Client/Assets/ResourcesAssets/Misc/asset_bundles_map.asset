@@ -26,6 +26,7 @@ MonoBehaviour:
   - assetBundlesMap:
     - Assets/ResourcesAssets/UI/Example/ExampleUI.prefab
     - Assets/ResourcesAssets/UI/Lobby/LobbyMainUI.prefab
+    - Assets/ResourcesAssets/UI/Main/MainUI.prefab
     - Assets/ResourcesAssets/UI/Plot/PlotUI.prefab
     - Assets/ResourcesAssets/UI/Start/StartUI.prefab
     bundleName: UI

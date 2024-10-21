@@ -1,15 +1,15 @@
 ManifestFileVersion: 0
-CRC: 1384688287
+CRC: 2069817976
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: ac0131715fcbb1c3f046ab66ae52672e
+    Hash: df5ad32d617ebd74152e4bda311910c7
   TypeTreeHash:
     serializedVersion: 2
-    Hash: 36f0a2d20605dbfbda188b2a59c7cc38
+    Hash: e7302725007d178c3a3de3599593db90
   IncrementalBuildHash:
     serializedVersion: 2
-    Hash: ac0131715fcbb1c3f046ab66ae52672e
+    Hash: df5ad32d617ebd74152e4bda311910c7
 HashAppended: 0
 ClassTypes:
 - Class: 1
@@ -20,6 +20,8 @@ ClassTypes:
   Script: {instanceID: 0}
 - Class: 48
   Script: {instanceID: 0}
+- Class: 114
+  Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
 - Class: 114
   Script: {fileID: 11500000, guid: 7f6e514f60a549d89115be19e20309cc, type: 3}
 - Class: 114
@@ -40,9 +42,13 @@ ClassTypes:
   Script: {fileID: 11500000, guid: 531d24f0378a419b8d1a09013d24d59b, type: 3}
 - Class: 114
   Script: {fileID: 11500000, guid: d23a9f88497e4ea5b5877710721d4421, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: 9379786b9b2b5734ea394167d29fe3c6, type: 3}
 - Class: 115
   Script: {instanceID: 0}
 - Class: 128
+  Script: {instanceID: 0}
+- Class: 213
   Script: {instanceID: 0}
 - Class: 222
   Script: {instanceID: 0}
@@ -73,5 +79,6 @@ Assets:
 - Assets/ResourcesAssets/UI/Lobby/LobbyMainUI.prefab
 - Assets/ResourcesAssets/UI/Example/ExampleUI.prefab
 - Assets/ResourcesAssets/UI/Start/StartUI.prefab
+- Assets/ResourcesAssets/UI/Main/MainUI.prefab
 - Assets/ResourcesAssets/UI/Plot/PlotUI.prefab
 Dependencies: []
