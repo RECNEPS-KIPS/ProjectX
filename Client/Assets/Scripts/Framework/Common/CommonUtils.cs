@@ -156,5 +156,9 @@ namespace Framework.Common
         {
             TimerManager.Instance.ClearTimer(id);
         }
+
+        public static string SetRichFontSize(string txt,int fontSize) {
+            return $"<size={fontSize}>{txt}</size>";
+        }
     }
 }

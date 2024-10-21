@@ -57,6 +57,18 @@ namespace Framework.Core.Manager.UI
 
             PlaceUIElementRoot(go, menuCommand);
         }
+        [MenuItem(MenuPrefix + "TextMeshProUI", false, (int)MenuOptionsPriorityOrder.Text)]
+        public static void AddTextMeshPro(MenuCommand menuCommand)
+        {
+            GameObject go;
+            using (new FactorySwapToEditor())
+            {
+                go = DefaultControls.CreateTextMeshProUI(GetStandardResources());
+            }
+
+            PlaceUIElementRoot(go, menuCommand);
+        }
+        
 
         [MenuItem(MenuPrefix + "Image", false, (int)MenuOptionsPriorityOrder.Image)]
         public static void AddImage(MenuCommand menuCommand)

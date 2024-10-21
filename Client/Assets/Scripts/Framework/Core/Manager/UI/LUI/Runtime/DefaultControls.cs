@@ -3,6 +3,7 @@
 // describe:扩展Image
 
 using System;
+using TMPro;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.UI;
@@ -88,6 +89,13 @@ namespace Framework.Core.Manager.UI
             var obj = CreateUIElementRoot("Text", ThickElementSize, typeof(LText));
             var lbl = obj.GetComponent<LText>();
             SetDefaultTextValues(lbl);
+            return obj;
+        }
+        public static GameObject CreateTextMeshProUI(Resources resources)
+        {
+            var obj = CreateUIElementRoot("TextMeshProUI", ThickElementSize, typeof(LTextMeshProUGUI));
+            var lbl = obj.GetComponent<LTextMeshProUGUI>();
+            SetDefaultTextMeshProUIValues(lbl);
             return obj;
         }
 
@@ -187,6 +195,12 @@ namespace Framework.Core.Manager.UI
             lbl.text = string.IsNullOrEmpty(text) ? "New Text" : text;
             lbl.raycastTarget = false;
             lbl.alignment = TextAnchor.MiddleCenter;
+        }
+        private static void SetDefaultTextMeshProUIValues(LTextMeshProUGUI lbl, string text = "")
+        {
+            lbl.text = string.IsNullOrEmpty(text) ? "New Text" : text;
+            lbl.raycastTarget = false;
+            lbl.alignment =  TextAlignmentOptions.Left;
         }
 
         private static GameObject CreateUIElementRoot(string name, Vector2 size, params Type[] components)

@@ -1,5 +1,5 @@
 ManifestFileVersion: 0
-CRC: 2670897218
+CRC: 463279808
 AssetBundleManifest:
   AssetBundleInfos:
     Info_0:
@@ -9,8 +9,8 @@ AssetBundleManifest:
       Name: misc.ab
       Dependencies: {}
     Info_2:
-      Name: ui.ab
+      Name: scenes.ab
       Dependencies: {}
     Info_3:
-      Name: scenes.ab
+      Name: ui.ab
       Dependencies: {}

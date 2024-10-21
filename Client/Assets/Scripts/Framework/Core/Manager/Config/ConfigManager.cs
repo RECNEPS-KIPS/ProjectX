@@ -18,6 +18,7 @@ namespace Framework.Core.Manager.Config
         StartStringTable = 1,
         LevelSetting = 2,
         Scene = 3,
+        ColorDef = 4,
     }
     /// <summary>
     /// 配置管理器
@@ -27,18 +28,11 @@ namespace Framework.Core.Manager.Config
     {
         private static readonly Dictionary<ConfigNameDef, string> ConfigNameDict = new()
         {
-            {
-                ConfigNameDef.Color, "Color"
-            },
-            {
-                ConfigNameDef.StartStringTable,"StartStringTable"
-            },
-            {
-                ConfigNameDef.LevelSetting,"LevelSetting"
-            },
-            {
-                ConfigNameDef.Scene,"Scene"
-            },
+            {ConfigNameDef.Color, "Color" },
+            {ConfigNameDef.StartStringTable,"StartStringTable" },
+            {ConfigNameDef.LevelSetting,"LevelSetting"},
+            {ConfigNameDef.Scene,"Scene"},
+            {ConfigNameDef.ColorDef,"ColorDef"}
         };
         
         private const string LOGTag = "ConfigManager";

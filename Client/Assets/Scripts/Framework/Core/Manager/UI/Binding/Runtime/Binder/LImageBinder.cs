@@ -16,7 +16,8 @@ namespace Framework.Core.Manager.UI
         {
             sprite = 10000 + LinkerType.String,
             color = 20000 + LinkerType.Color,
-            enabled = 30000 + LinkerType.Boolean
+            enabled = 30000 + LinkerType.Boolean,
+            fillAmount = 40000 + LinkerType.Single,
         }
 
         public override void SetString(Object mono, int linkerType, string value)
@@ -35,7 +36,21 @@ namespace Framework.Core.Manager.UI
                     break;
             }
         }
+        public override void SetSingle(Object mono, int linkerType, float value) {
+            if (mono == null) return;
+            var target = mono as LImage;
+            if (target == null)
+            {
+                return;
+            }
 
+            switch ((AttributeType)linkerType)
+            {
+                case AttributeType.fillAmount:
+                    target.fillAmount = value;
+                    break;
+            }
+        }
         public override void SetColor(Object mono, int linkerType, Color value)
         {
             if (mono == null) return;

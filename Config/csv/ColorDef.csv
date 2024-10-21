@@ -1,0 +1,6 @@
+describe,程序用枚举key值,16进制色码,备注
+id,key,hexCode,_hexCode
+int,string,string,
+,,,
+1,HEALTHY_HP,ffffff,健康血量颜色
+2,LOW_HP,d3455a,低血量颜色
