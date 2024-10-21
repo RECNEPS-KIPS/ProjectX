@@ -8,6 +8,7 @@ using Framework.Core.Manager.Config;
 using Framework.Core.Manager.Language;
 using Framework.Core.Manager.ResourcesLoad;
 using Framework.Core.Manager.UI;
+using Framework.Core.Manager;
 
 namespace Framework.Core.Launcher
 {
@@ -19,6 +20,7 @@ namespace Framework.Core.Launcher
         // 调用业务逻辑
         private void Awake()
         {
+            GameManager.Instance.Launch();
             ResourcesLoadManager.Instance.Launch();
             ConfigManager.Instance.Launch();
             StoreManager.Instance.Launch();

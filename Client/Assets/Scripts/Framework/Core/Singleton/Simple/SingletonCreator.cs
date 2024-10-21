@@ -14,8 +14,7 @@ namespace Framework.Core.Singleton
         {
             var type = typeof(T);
             // 获取构造函数
-            var constructorInfos =
-                type.GetConstructors(BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public);
+            var constructorInfos = type.GetConstructors(BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public);
 
             // 获取无参构造函数
             var ctor = Array.Find(constructorInfos, c => c.GetParameters().Length == 0);
@@ -48,8 +47,7 @@ namespace Framework.Core.Singleton
         public static bool IsUnitTestMode { get; set; }
 
         // 查找Obj（一个嵌套查找Obj的过程）
-        private static GameObject FindGameObject(GameObject root, string[] subPath, int index, bool build,
-            bool dontDestroy)
+        private static GameObject FindGameObject(GameObject root, string[] subPath, int index, bool build, bool dontDestroy)
         {
             GameObject client = null;
             if (root == null)
