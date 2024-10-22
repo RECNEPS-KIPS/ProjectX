@@ -51,14 +51,18 @@ namespace GamePlay.InGame.Character
         void Update()
         {
             if (updateType == UpdateType.LateUpdate)
+            {
                 return;
+            }
             SmoothUpdate();
         }
 
         void LateUpdate()
         {
             if (updateType == UpdateType.Update)
+            {
                 return;
+            }
             SmoothUpdate();
         }
 
