@@ -273,8 +273,12 @@ namespace Framework.Core.Manager.UI
         /// </summary>
         /// <param name="key">绑定字段</param>
         /// <param name="value">绑定的值</param>
-        protected void Bind(string key, dynamic value = default)
+        protected void Bind(string key, dynamic value = null)
         {
+            if (value == null)
+            {
+                return;
+            }
             BindDict[key].Value = value;
         }
 
@@ -282,8 +286,7 @@ namespace Framework.Core.Manager.UI
         {
             if (BindDict.TryAdd(key, new Bindable(_uiBinding, key, value)))
             {
-                LogManager.Log(LOGTag,key,value);
-                BindDict[key].Value = value;
+                Bind(key, value);
             }
         }
 

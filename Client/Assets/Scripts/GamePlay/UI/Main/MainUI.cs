@@ -24,35 +24,48 @@ namespace GamePlay.UI
         public override void OnInit()
         {
             base.OnInit();
-            var hp = 20;
-            var lowHP = hp / 100f <= .3;
-            VBind("HP_Percent",.2f);
-            VBind("Hungry_Percent",.2f);
-            VBind("Stamina_Percent",.2f);
-            VBind("Thirsty_Percent",.2f);
+
+            VBind("HP_Percent");
+            VBind("Hungry_Percent");
+            VBind("Stamina_Percent");
+            VBind("Thirsty_Percent");
             
-            VBind("HP_Text",$"{hp}/{CommonUtils.GetFormatNum(10000000)}");
-            VBind("Hungry_Text",$"{hp}{CommonUtils.SetRichFontSize("%",9)}");
-            VBind("Stamina_Text",$"{hp}{CommonUtils.SetRichFontSize("%",9)}");
-            VBind("Thirsty_Text",$"{hp}{CommonUtils.SetRichFontSize("%",9)}");
+            VBind("HP_Text");
+            VBind("Hungry_Text");
+            VBind("Stamina_Text");
+            VBind("Thirsty_Text");
             
-            VBind("HP_Inner_Color",ColorUtils.GetColorByKey(lowHP ? ColorDef.LOW_HP :ColorDef.HEALTHY_HP));
-            VBind("HP_Wrapper_Color",ColorUtils.GetColorByKey(lowHP ? ColorDef.LOW_HP :ColorDef.HEALTHY_HP));
+            VBind("HP_Inner_Color");
+            VBind("HP_Wrapper_Color");
         }
 
-        private void OnPlayerAttrUpdate()
+        private void UpdatePlayerAttr()
         {
             var attr = PlayerManager.Instance.PlayerAttr;
+            Bind("HP_Percent", (float)attr.CurHP / attr.CurMaxHP);
+            Bind("Hungry_Percent", (float)attr.CurHungry / attr.CurMaxHungry);
+            Bind("Stamina_Percent", (float)attr.CurStamina / attr.CurMaxStamina);
+            Bind("Thirsty_Percent", (float)attr.CurThirsty / attr.CurMaxThirsty);
+            
+            Bind("HP_Text",$"{CommonUtils.GetFormatNum(attr.CurHP)}/{CommonUtils.GetFormatNum(attr.CurMaxHP)}");
+            Bind("Hungry_Text",$"{attr.CurHungry * 100 / attr.CurMaxHungry}{CommonUtils.SetRichFontSize("%",9)}");
+            Bind("Stamina_Text",$"{attr.CurStamina * 100 / attr.CurMaxStamina}{CommonUtils.SetRichFontSize("%",9)}");
+            Bind("Thirsty_Text",$"{attr.CurThirsty * 100 / attr.CurMaxThirsty}{CommonUtils.SetRichFontSize("%",9)}");
+            
+            var lowHP = attr.CurHP / 100f <= .3;//todo:走配置
+            Bind("HP_Inner_Color",ColorUtils.GetColorByKey(lowHP ? ColorDef.LOW_HP :ColorDef.HEALTHY_HP));
+            Bind("HP_Wrapper_Color",ColorUtils.GetColorByKey(lowHP ? ColorDef.LOW_HP :ColorDef.HEALTHY_HP));
         }
 
         public override void OnEnter(dynamic args)
         {
-            EventManager.Register(EEvent.PLAYER_ATTR_UPDATE, OnPlayerAttrUpdate);
+            EventManager.Register(EEvent.PLAYER_ATTR_UPDATE, UpdatePlayerAttr);
+            UpdatePlayerAttr();
         }
         
         public override void OnExit()
         {
-            EventManager.Remove(EEvent.PLAYER_ATTR_UPDATE,OnPlayerAttrUpdate);
+            EventManager.Remove(EEvent.PLAYER_ATTR_UPDATE,UpdatePlayerAttr);
         }
     }
 }

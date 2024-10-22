@@ -165,11 +165,17 @@ namespace Framework.Common
         {
             var str = num.ToString();
             var rst = string.Empty;
-            for (var i = str.Length - 1; i >= 0; i--)
+            for (int i = str.Length - 1, l = 1; i >= 0; i--)
             {
-                
-                rst = $"{rst}{((str.Length - i) % 3 == 0 ? ',' : string.Empty)}{str[i]}";
+                rst = $"{str[i]}{rst}";
+                if (l > 0 && i > 0 && l % 3 == 0)
+                {
+                    rst = $",{rst}";
+                    l = 0;
+                }
+                l++;
             }
+
             return rst;
         }
 

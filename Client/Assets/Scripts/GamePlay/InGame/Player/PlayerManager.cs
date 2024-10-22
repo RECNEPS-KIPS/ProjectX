@@ -22,7 +22,19 @@ namespace GamePlay.InGame.Player
         [SerializeField]
         private PlayerAttr _playerAttr;
 
-        public PlayerAttr PlayerAttr => _playerAttr ??= new PlayerAttr();
+        public PlayerAttr PlayerAttr
+        {
+            get
+            {
+                if (_playerAttr == null)
+                {
+                    _playerAttr = new PlayerAttr();
+                    _playerAttr.InitAttrValues();
+                }
+
+                return _playerAttr;
+            }
+        }
 
         public void Launch()
         {
