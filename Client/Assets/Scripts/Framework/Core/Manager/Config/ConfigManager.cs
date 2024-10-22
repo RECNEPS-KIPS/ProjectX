@@ -12,27 +12,23 @@ using Framework.Core.Container;
 
 namespace Framework.Core.Manager.Config
 {
-    public enum ConfigNameDef
-    {
-        Color = 0,
-        StartStringTable = 1,
-        LevelSetting = 2,
-        Scene = 3,
-        ColorDef = 4,
-    }
+    
     /// <summary>
     /// 配置管理器
     /// </summary>
     // [MonoSingletonPath("[Manager]/ConfigManager")]
     public class ConfigManager : Singleton<ConfigManager>
     {
-        private static readonly Dictionary<ConfigNameDef, string> ConfigNameDict = new()
+        private static readonly Dictionary<EConfig, string> ConfigNameDict = new()
         {
-            {ConfigNameDef.Color, "Color" },
-            {ConfigNameDef.StartStringTable,"StartStringTable" },
-            {ConfigNameDef.LevelSetting,"LevelSetting"},
-            {ConfigNameDef.Scene,"Scene"},
-            {ConfigNameDef.ColorDef,"ColorDef"}
+            {EConfig.Color, "Color" },
+            {EConfig.StartStringTable,"StartStringTable" },
+            {EConfig.LevelSetting,"LevelSetting"},
+            {EConfig.Scene,"Scene"},
+            {EConfig.ColorDef,"ColorDef"},
+            {EConfig.Character,"Character"},
+            {EConfig.CharacterController,"CharacterController"},
+            {EConfig.GrowthTemp,"GrowthTemp"},
         };
         
         private const string LOGTag = "ConfigManager";
@@ -217,7 +213,7 @@ namespace Framework.Core.Manager.Config
         /// </summary>
         /// <param name="configName"></param>
         /// <returns></returns>
-        public static List<dynamic> GetConfig(ConfigNameDef configName)
+        public static List<dynamic> GetConfig(EConfig configName)
         {
             try
             {
@@ -244,7 +240,7 @@ namespace Framework.Core.Manager.Config
         /// <param name="configName"></param>
         /// <param name="id"></param>
         /// <returns></returns>
-        public static dynamic GetConfigByID(ConfigNameDef configName, int id)
+        public static dynamic GetConfigByID(EConfig configName, int id)
         {
             try
             {
@@ -252,9 +248,13 @@ namespace Framework.Core.Manager.Config
                 {
                     if (_configDict.ContainsKey(name))
                     {
-                        if (_configDict[name] != null && _configDict[name][id - 1] != null)
+                        //待优化
+                        foreach (var cf in _configDict[name])
                         {
-                            return _configDict[name][id - 1];
+                            if (cf["id"] == id)
+                            {
+                                return cf;
+                            }
                         }
                     }
                 }

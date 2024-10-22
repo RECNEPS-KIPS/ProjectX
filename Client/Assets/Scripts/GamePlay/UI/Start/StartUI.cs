@@ -30,7 +30,7 @@ namespace GamePlay.UI
 
         void OnStartBtn()
         {
-            UIManager.Instance.Close(UIDef.StartUI);
+            UIManager.Instance.Close(EUI.StartUI);
             LogManager.Log("OnGameStartBtnClick");
             
             LevelManager.Instance.LoadSceneByID(10001);

@@ -30,7 +30,7 @@ namespace Framework.Common {
             get {
                 if (_colorMap == null) {
                     _colorMap = new Dictionary<string, Color>();
-                    var list = ConfigManager.GetConfig(ConfigNameDef.ColorDef);
+                    var list = ConfigManager.GetConfig(EConfig.ColorDef);
                     foreach (var cf in list) {
                         _colorMap.Add(cf["key"],Hex2Color(cf["hexCode"]));
                     }

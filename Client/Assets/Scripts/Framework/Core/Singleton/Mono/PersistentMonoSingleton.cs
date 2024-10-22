@@ -21,8 +21,7 @@ namespace Framework.Core.Singleton
         /// <summary>
         /// Singleton design pattern
         /// </summary>
-        public static T Instance =>
-            _instance = (_instance ??= FindObjectOfType<T>()) ?? new GameObject().AddComponent<T>();
+        public static T Instance => _instance = (_instance ??= FindObjectOfType<T>()) ?? new GameObject().AddComponent<T>();
 
         /// <summary>
         /// On awake, we check if there's already a copy of the object in the scene. If there's one, we destroy it.

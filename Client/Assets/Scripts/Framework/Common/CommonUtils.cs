@@ -93,7 +93,7 @@ namespace Framework.Common
         /// <returns></returns>
         public static string GetColor(int colorIndex)
         {
-            return ConfigManager.GetConfig(ConfigNameDef.Color)[colorIndex]["hexCode"].ToString();
+            return ConfigManager.GetConfig(EConfig.Color)[colorIndex]["hexCode"].ToString();
         }
 
         //color下划线颜色 line 线厚度
@@ -159,6 +159,29 @@ namespace Framework.Common
 
         public static string SetRichFontSize(string txt,int fontSize) {
             return $"<size={fontSize}>{txt}</size>";
+        }
+        
+        public static string GetFormatNum(int num)
+        {
+            var str = num.ToString();
+            var rst = string.Empty;
+            for (var i = str.Length - 1; i >= 0; i--)
+            {
+                
+                rst = $"{rst}{((str.Length - i) % 3 == 0 ? ',' : string.Empty)}{str[i]}";
+            }
+            return rst;
+        }
+
+        public static void ResetGO(Transform t,Transform parent = null)
+        {
+            if (parent)
+            {
+                t.SetParent(parent);
+            }
+            t.localPosition = Vector3.zero;
+            t.localScale = Vector3.one;
+            t.localRotation = Quaternion.identity;
         }
     }
 }

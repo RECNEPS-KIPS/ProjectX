@@ -24,7 +24,7 @@ namespace GamePlay.UI
             //     UIManager.Instance.Close(WindowNameDef.TestUI);
             // });
 
-            MBind("closeBtn", () => { UIManager.Instance.Close(UIDef.ExampleUI); });
+            MBind("closeBtn", () => { UIManager.Instance.Close(EUI.ExampleUI); });
             /*MBind("onDe",() => LogManager.Log("onLast"));*/
             MBind("onLast", () => LogManager.Log("onLast"));
             MBind("onNext", () => LogManager.Log("onNext"));

@@ -12,18 +12,18 @@ namespace Framework.Core.Manager.Event
     /// 事件管理器
     /// </summary>
     [MonoSingletonPath("[Manager]/EventManager")]
-    public class EventManager : MonoSingleton<EventManager>
+    public class EventManager : Singleton<EventManager>
     {
         private const string LOGTag = "EventManager";
-        private readonly BasalPool<EventEntity> _eventEntityPool = new BasalPool<EventEntity>();
-        private readonly Dictionary<EventType, EventEntity> _eventDict = new Dictionary<EventType, EventEntity>();
+        private static readonly BasalPool<EventEntity> _eventEntityPool = new BasalPool<EventEntity>();
+        private static readonly Dictionary<EEvent, EventEntity> _eventDict = new Dictionary<EEvent, EventEntity>();
 
         /// <summary>
         /// 注册事件
         /// </summary>
         /// <param name="type"></param>
         /// <param name="callback"></param>
-        public void Register(EventType type, Action<dynamic> callback)
+        public static void Register(EEvent type, Action<dynamic> callback)
         {
             if (!_eventDict.ContainsKey(type))
             {
@@ -42,7 +42,7 @@ namespace Framework.Core.Manager.Event
         /// </summary>
         /// <param name="type"></param>
         /// <param name="callback"></param>
-        public void Register(EventType type, Action callback)
+        public static void Register(EEvent type, Action callback)
         {
             if (!_eventDict.ContainsKey(type))
             {
@@ -61,7 +61,7 @@ namespace Framework.Core.Manager.Event
         /// </summary>
         /// <param name="type"></param>
         /// <param name="callback"></param>
-        public void Remove(EventType type, Action<dynamic> callback)
+        public static void Remove(EEvent type, Action<dynamic> callback)
         {
             if (!_eventDict.ContainsKey(type)) return;
             _eventDict[type].RemoveCallback(callback);
@@ -77,7 +77,7 @@ namespace Framework.Core.Manager.Event
         /// </summary>
         /// <param name="type"></param>
         /// <param name="callback"></param>
-        public void Remove(EventType type, Action callback)
+        public static void Remove(EEvent type, Action callback)
         {
             if (!_eventDict.ContainsKey(type)) return;
             _eventDict[type].RemoveCallback(callback);
@@ -93,8 +93,9 @@ namespace Framework.Core.Manager.Event
         /// </summary>
         /// <param name="type"></param>
         /// <param name="data"></param>
-        public void Dispatch(EventType type, dynamic data = null)
+        public static void Dispatch(EEvent type, dynamic data = null)
         {
+            LogManager.Log(LOGTag,$"Event Dispatch:{type.ToString()},{_eventDict.ContainsKey(type)}");
             if (_eventDict != null && _eventDict.TryGetValue(type, out var value))
             {
                 value.Execute(data);

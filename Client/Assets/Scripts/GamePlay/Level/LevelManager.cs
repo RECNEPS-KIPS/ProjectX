@@ -22,7 +22,7 @@ namespace GamePlay
             {
                 if (_levelCfMap != null) return _levelCfMap;
                 _levelCfMap = new Dictionary<int, dynamic>();
-                var cfList = ConfigManager.GetConfig(ConfigNameDef.LevelSetting);
+                var cfList = ConfigManager.GetConfig(EConfig.LevelSetting);
                 // LogManager.Log(LOGTag,cfList.Count);
                 foreach (var cf in cfList)
                 {

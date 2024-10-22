@@ -1,15 +1,12 @@
 ﻿using System.Collections.Generic;
 using Framework.Core.Manager.Config;
+using Framework.Core.Manager.Event;
 using Framework.Core.Manager.ResourcesLoad;
 using Framework.Core.Singleton;
 using UnityEngine.Events;
 
 namespace GamePlay
 {
-    public enum SceneDef
-    {
-        Lobby = 10001,
-    }
     public class SceneManager: Singleton<SceneManager>
     {
         private const string LOGTag = "SceneManager";
@@ -22,7 +19,7 @@ namespace GamePlay
             {
                 if (_sceneCfMap != null) return _sceneCfMap;
                 _sceneCfMap = new Dictionary<int, dynamic>();
-                var cfList = ConfigManager.GetConfig(ConfigNameDef.Scene);
+                var cfList = ConfigManager.GetConfig(EConfig.Scene);
                 // LogManager.Log(LOGTag,cfList.Count);
                 foreach (var cf in cfList)
                 {
@@ -56,6 +53,7 @@ namespace GamePlay
                 {
                     callback?.Invoke();
                 }
+                EventManager.Dispatch(EEvent.SCENE_LOAD_FINISHED);
             };
             UnityEngine.SceneManagement.SceneManager.sceneLoaded += SceneLoadFinished;
         }
@@ -71,7 +69,7 @@ namespace GamePlay
             return cf;
         }
 
-        public void LoadSceneByID(SceneDef sceneID,UnityAction callback = null)
+        public void LoadSceneByID(EScene sceneID,UnityAction callback = null)
         {
             LoadSceneByID((int)sceneID,callback);
         }

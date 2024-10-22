@@ -80,7 +80,7 @@ namespace Framework.Core.Manager.Language
                     }
                     else
                     {
-                        var stringTable = ConfigManager.GetConfig(ConfigNameDef.StartStringTable);
+                        var stringTable = ConfigManager.GetConfig(EConfig.StartStringTable);
                         _map.Add(EStringTable.Start, new Dictionary<string, LanguageUnit>());
                         
                         LogManager.Log(LOGTag, "stringTable Count",stringTable.Count);

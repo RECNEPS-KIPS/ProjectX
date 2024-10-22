@@ -1,0 +1,5 @@
+索引id,描述,模型资源路径,控制器类型,基础血量,基础体力,基础蓄水量,基础饱食度,基础防御,基础攻击,成长模板
+id,_desc,modelPath,ctrlType,baseHP,baseStamina,baseThirsty,baseHungry,baseDefense,baseAttack,growthTemp
+int,,string,int,int,int,int,int,int,int,int
+,,,,,,,,,,
+10001,主角,Assets/ResourcesAssets/Characters/Main/Robot.prefab,1,1000,1000,1000,1000,100,50,0

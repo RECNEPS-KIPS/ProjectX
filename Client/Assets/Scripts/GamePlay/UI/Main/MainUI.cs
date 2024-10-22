@@ -4,11 +4,14 @@
 
 using Framework;
 using Framework.Common;
+using Framework.Core.Manager;
 using Framework.Core.Manager.Config;
+using Framework.Core.Manager.Event;
 using Framework.Core.Manager.Language;
 using Framework.Core.Manager.ResourcesLoad;
 using Framework.Core.Manager.UI;
 using GamePlay;
+using GamePlay.InGame.Player;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Events;
@@ -28,6 +31,7 @@ namespace GamePlay.UI
             VBind("Stamina_Percent",.2f);
             VBind("Thirsty_Percent",.2f);
             
+            VBind("HP_Text",$"{hp}/{CommonUtils.GetFormatNum(10000000)}");
             VBind("Hungry_Text",$"{hp}{CommonUtils.SetRichFontSize("%",9)}");
             VBind("Stamina_Text",$"{hp}{CommonUtils.SetRichFontSize("%",9)}");
             VBind("Thirsty_Text",$"{hp}{CommonUtils.SetRichFontSize("%",9)}");
@@ -36,21 +40,19 @@ namespace GamePlay.UI
             VBind("HP_Wrapper_Color",ColorUtils.GetColorByKey(lowHP ? ColorDef.LOW_HP :ColorDef.HEALTHY_HP));
         }
 
+        private void OnPlayerAttrUpdate()
+        {
+            var attr = PlayerManager.Instance.PlayerAttr;
+        }
+
         public override void OnEnter(dynamic args)
         {
-            var hp = 20;
-            var lowHP = hp / 100f <= .3;
-            Bind("HP_Percent",.2f);
-            Bind("Hungry_Percent",.2f);
-            Bind("Stamina_Percent",.2f);
-            Bind("Thirsty_Percent",.2f);
-            
-            Bind("Hungry_Text",$"{hp}{CommonUtils.SetRichFontSize("%",9)}");
-            Bind("Stamina_Text",$"{hp}{CommonUtils.SetRichFontSize("%",9)}");
-            Bind("Thirsty_Text",$"{hp}{CommonUtils.SetRichFontSize("%",9)}");
-            
-            Bind("HP_Inner_Color",ColorUtils.GetColorByKey(lowHP ? ColorDef.LOW_HP :ColorDef.HEALTHY_HP));
-            Bind("HP_Wrapper_Color",ColorUtils.GetColorByKey(lowHP ? ColorDef.LOW_HP :ColorDef.HEALTHY_HP));
+            EventManager.Register(EEvent.PLAYER_ATTR_UPDATE, OnPlayerAttrUpdate);
+        }
+        
+        public override void OnExit()
+        {
+            EventManager.Remove(EEvent.PLAYER_ATTR_UPDATE,OnPlayerAttrUpdate);
         }
     }
 }

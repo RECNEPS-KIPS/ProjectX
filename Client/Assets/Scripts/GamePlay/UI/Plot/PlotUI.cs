@@ -27,10 +27,10 @@ namespace GamePlay.UI
         void OnSkipBtn()
         {
             LogManager.Log("PlotWindow","OnSkipBtn");
-            UIManager.Instance.Close(UIDef.PlotUI);
-            SceneManager.Instance.LoadSceneByID(SceneDef.Lobby, () =>
+            UIManager.Instance.Close(EUI.PlotUI);
+            SceneManager.Instance.LoadSceneByID(EScene.Lobby, () =>
             {
-                UIManager.Instance.OpenUI(UIDef.MainUI);
+                UIManager.Instance.OpenUI(EUI.MainUI);
             });
         }
 

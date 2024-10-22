@@ -22,7 +22,7 @@ namespace Framework.Core.Manager.UI
         /// <summary>
         /// window id
         /// </summary>
-        public UIDef UIId { get; set; }
+        public EUI UIId { get; set; }
 
         private Animator _animator;
 
@@ -282,6 +282,7 @@ namespace Framework.Core.Manager.UI
         {
             if (BindDict.TryAdd(key, new Bindable(_uiBinding, key, value)))
             {
+                LogManager.Log(LOGTag,key,value);
                 BindDict[key].Value = value;
             }
         }

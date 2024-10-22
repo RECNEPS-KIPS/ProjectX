@@ -35,18 +35,6 @@ namespace Framework.Core.Manager.UI
     }
 
     /// <summary>
-    /// 
-    /// </summary>
-    public enum UIDef
-    {
-        ExampleUI = 0,
-        StartUI = 1,
-        PlotUI = 2,
-        LobbyMainUI = 3,
-        MainUI = 4,
-    }
-
-    /// <summary>
     /// UI框架管理器
     /// </summary>
     [MonoSingletonPath("[Manager]/UIManager")]
@@ -55,45 +43,45 @@ namespace Framework.Core.Manager.UI
         /// <summary>
         /// 定义各个UI界面数据
         /// </summary>
-        private readonly Dictionary< UIDef, UIData> UIDataDict = new()
+        private readonly Dictionary< EUI, UIData> UIDataDict = new()
         {
             {
-                UIDef.ExampleUI,
+                EUI.ExampleUI,
                 new UIData
                 {
-                    UIPrefabPath = "UI/Example/ExampleUI",
+                    UIPrefabPath = "UI/Pages/Example/ExampleUI",
                     UIType = UIType.Stack
                 }
             },
             {
-                UIDef.StartUI,
+                EUI.StartUI,
                 new UIData
                 {
-                    UIPrefabPath = "UI/Start/StartUI",
+                    UIPrefabPath = "UI/Pages/Start/StartUI",
                     UIType = UIType.Stack
                 }
             },
             {
-                UIDef.PlotUI,
+                EUI.PlotUI,
                 new UIData
                 {
-                    UIPrefabPath = "UI/Plot/PlotUI",
+                    UIPrefabPath = "UI/Pages/Plot/PlotUI",
                     UIType = UIType.Stack
                 }
             },
             {
-                UIDef.LobbyMainUI,
+                EUI.LobbyMainUI,
                 new UIData
                 {
-                    UIPrefabPath = "UI/Lobby/LobbyMainUI",
+                    UIPrefabPath = "UI/Pages/Lobby/LobbyMainUI",
                     UIType = UIType.Stack
                 }
             },
             {
-                UIDef.MainUI,
+                EUI.MainUI,
                 new UIData
                 {
-                    UIPrefabPath = "UI/Main/MainUI",
+                    UIPrefabPath = "UI/Pages/Main/MainUI",
                     UIType = UIType.Stack
                 }
             }
@@ -151,12 +139,12 @@ namespace Framework.Core.Manager.UI
         /// </summary>
         /// <param name="id"></param>
         /// <param name="options"></param>
-        public void OpenUI( UIDef id, dynamic options = null)
+        public void OpenUI( EUI id, dynamic options = null)
         {
             UIStackPush(id, options);
         }
 
-        private BaseUI GetUIById( UIDef id,bool IsAsync = false)
+        private BaseUI GetUIById( EUI id,bool IsAsync = false)
         {
             _baseUIDict.TryGetValue((int)id, out var ui);
             if (ui != null)
@@ -173,7 +161,7 @@ namespace Framework.Core.Manager.UI
             return ui;
         }
 
-        private void UIStackPush( UIDef uiId, dynamic options = null)
+        private void UIStackPush( EUI uiId, dynamic options = null)
         {
             var ui = GetUIById(uiId);
             LogManager.Log("Open UI === ", ui.name);
@@ -200,7 +188,7 @@ namespace Framework.Core.Manager.UI
         /// 关闭窗口
         /// </summary>
         /// <param name="id"></param>
-        public void Close( UIDef id)
+        public void Close( EUI id)
         {
             var ui = GetUIById(id);
             ui.OnExit();
@@ -246,7 +234,7 @@ namespace Framework.Core.Manager.UI
             /// <summary>
             /// 界面ID
             /// </summary>
-            public  UIDef ID;
+            public  EUI ID;
 
             /// <summary>
             /// 界面资源路径

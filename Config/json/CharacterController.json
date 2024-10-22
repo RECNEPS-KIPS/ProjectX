@@ -1,0 +1,33 @@
+[
+	{
+		"id":10001,
+		"ctrlType":0,
+		"path":"Assets/ResourcesAssets/Controllers/FirstPersonController.prefab"
+	},
+	{
+		"id":10002,
+		"ctrlType":1,
+		"path":"Assets/ResourcesAssets/Controllers/ThirdPersonControllerA.prefab"
+	},
+	{
+		"id":10003,
+		"ctrlType":2,
+		"path":"Assets/ResourcesAssets/Controllers/ThirdPersonControllerB.prefab"
+	},
+	{
+		"id":10004,
+		"ctrlType":3,
+		"path":"Assets/ResourcesAssets/Controllers/ThirdPersonControllerC.prefab"
+	},
+	{
+		"id":10005,
+		"ctrlType":4,
+		"path":"Assets/ResourcesAssets/Controllers/TopDownController.prefab"
+	},
+	{
+		"__metatable":"true",
+		"id":"int",
+		"ctrlType":"int",
+		"path":"string"
+	}
+]

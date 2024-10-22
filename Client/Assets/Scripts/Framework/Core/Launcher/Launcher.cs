@@ -9,6 +9,7 @@ using Framework.Core.Manager.Language;
 using Framework.Core.Manager.ResourcesLoad;
 using Framework.Core.Manager.UI;
 using Framework.Core.Manager;
+using GamePlay.InGame.Player;
 
 namespace Framework.Core.Launcher
 {
@@ -24,11 +25,12 @@ namespace Framework.Core.Launcher
             ResourcesLoadManager.Instance.Launch();
             ConfigManager.Instance.Launch();
             StoreManager.Instance.Launch();
+            PlayerManager.Instance.Launch();
             AntiCheatManager.Instance.Launch();
             LanguageManager.Instance.Launch();
             UIManager.Instance.Launch();
 
-            UIManager.Instance.OpenUI(UIDef.PlotUI);
+            UIManager.Instance.OpenUI(EUI.PlotUI);
         }
     }
 }

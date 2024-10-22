@@ -1,0 +1,36 @@
+ManifestFileVersion: 0
+CRC: 3965855569
+Hashes:
+  AssetFileHash:
+    serializedVersion: 2
+    Hash: c0345d915aa9ac19bfb281a9d6dcee99
+  TypeTreeHash:
+    serializedVersion: 2
+    Hash: f6718c3d2064345c152313fc958ebad8
+  IncrementalBuildHash:
+    serializedVersion: 2
+    Hash: c0345d915aa9ac19bfb281a9d6dcee99
+HashAppended: 0
+ClassTypes:
+- Class: 1
+  Script: {instanceID: 0}
+- Class: 4
+  Script: {instanceID: 0}
+- Class: 21
+  Script: {instanceID: 0}
+- Class: 28
+  Script: {instanceID: 0}
+- Class: 43
+  Script: {instanceID: 0}
+- Class: 48
+  Script: {instanceID: 0}
+- Class: 90
+  Script: {instanceID: 0}
+- Class: 95
+  Script: {instanceID: 0}
+- Class: 137
+  Script: {instanceID: 0}
+SerializeReferenceClassIdentifiers: []
+Assets:
+- Assets/ResourcesAssets/Characters/Main/Robot.prefab
+Dependencies: []

@@ -1,0 +1,5 @@
+模板id,描述,血量成长每级,体力成长,蓄水量成长,饱食度成长,防御成长,攻击成长
+id,_desc,hp,stamina,thirsty,hungry,defense,attack
+int,,int,int,int,int,int,int
+,,,,,,,
+0,主角成长体系,100,100,100,100,10,5

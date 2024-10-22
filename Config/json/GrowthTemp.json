@@ -1,0 +1,21 @@
+[
+	{
+		"id":0,
+		"hp":100,
+		"stamina":100,
+		"thirsty":100,
+		"hungry":100,
+		"defense":10,
+		"attack":5
+	},
+	{
+		"__metatable":"true",
+		"id":"int",
+		"hp":"int",
+		"stamina":"int",
+		"thirsty":"int",
+		"hungry":"int",
+		"defense":"int",
+		"attack":"int"
+	}
+]

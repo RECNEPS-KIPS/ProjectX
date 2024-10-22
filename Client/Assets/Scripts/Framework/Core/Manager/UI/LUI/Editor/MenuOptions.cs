@@ -24,12 +24,13 @@ namespace Framework.Core.Manager.UI
         private const string CheckmarkPath = "UI/Skin/Checkmark.psd";
         private const string DropdownArrowPath = "UI/Skin/DropdownArrow.psd";
         private const string MaskPath = "UI/Skin/UIMask.psd";
-        private const string MenuPrefix = "GameObject/UI/";
+        private const string MenuPrefix = "GameObject/LUI/";
 
         private static DefaultControls.Resources _standardResources;
 
         enum MenuOptionsPriorityOrder
         {
+            TextMeshProUGUI = -1001,
             Text = -1000,
             Image = -999,
             Button = -998,
@@ -46,7 +47,7 @@ namespace Framework.Core.Manager.UI
             InputField = 2083,
         };
 
-        [MenuItem(MenuPrefix + "Text", false, (int)MenuOptionsPriorityOrder.Text)]
+        [MenuItem(MenuPrefix + "LText", false, (int)MenuOptionsPriorityOrder.Text)]
         public static void AddText(MenuCommand menuCommand)
         {
             GameObject go;
@@ -57,8 +58,8 @@ namespace Framework.Core.Manager.UI
 
             PlaceUIElementRoot(go, menuCommand);
         }
-        [MenuItem(MenuPrefix + "TextMeshProUI", false, (int)MenuOptionsPriorityOrder.Text)]
-        public static void AddTextMeshPro(MenuCommand menuCommand)
+        [MenuItem(MenuPrefix + "LTextMeshProUGUI", false, (int)MenuOptionsPriorityOrder.TextMeshProUGUI)]
+        public static void AddTextMeshProUGUI(MenuCommand menuCommand)
         {
             GameObject go;
             using (new FactorySwapToEditor())
@@ -70,7 +71,7 @@ namespace Framework.Core.Manager.UI
         }
         
 
-        [MenuItem(MenuPrefix + "Image", false, (int)MenuOptionsPriorityOrder.Image)]
+        [MenuItem(MenuPrefix + "LImage", false, (int)MenuOptionsPriorityOrder.Image)]
         public static void AddImage(MenuCommand menuCommand)
         {
             GameObject go;
@@ -82,7 +83,7 @@ namespace Framework.Core.Manager.UI
             PlaceUIElementRoot(go, menuCommand);
         }
 
-        [MenuItem(MenuPrefix + "Button", false, (int)MenuOptionsPriorityOrder.Button)]
+        [MenuItem(MenuPrefix + "LButton", false, (int)MenuOptionsPriorityOrder.Button)]
         public static void AddButton(MenuCommand menuCommand)
         {
             GameObject go;
@@ -94,7 +95,7 @@ namespace Framework.Core.Manager.UI
             PlaceUIElementRoot(go, menuCommand);
         }
 
-        [MenuItem(MenuPrefix + "DragButton", false, (int)MenuOptionsPriorityOrder.Button)]
+        [MenuItem(MenuPrefix + "LDragButton", false, (int)MenuOptionsPriorityOrder.Button)]
         public static void AddDragButton(MenuCommand menuCommand)
         {
             GameObject go;
@@ -106,7 +107,7 @@ namespace Framework.Core.Manager.UI
             PlaceUIElementRoot(go, menuCommand);
         }
 
-        [MenuItem(MenuPrefix + "RawImage", false, (int)MenuOptionsPriorityOrder.RawImage)]
+        [MenuItem(MenuPrefix + "LRawImage", false, (int)MenuOptionsPriorityOrder.RawImage)]
         public static void AddRawImage(MenuCommand menuCommand)
         {
             GameObject go;

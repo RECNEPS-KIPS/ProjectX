@@ -1,0 +1,27 @@
+[
+	{
+		"id":10001,
+		"modelPath":"Assets/ResourcesAssets/Characters/Main/Robot.prefab",
+		"ctrlType":1,
+		"baseHP":1000,
+		"baseStamina":1000,
+		"baseThirsty":1000,
+		"baseHungry":1000,
+		"baseDefense":100,
+		"baseAttack":50,
+		"growthTemp":0
+	},
+	{
+		"__metatable":"true",
+		"id":"int",
+		"modelPath":"string",
+		"ctrlType":"int",
+		"baseHP":"int",
+		"baseStamina":"int",
+		"baseThirsty":"int",
+		"baseHungry":"int",
+		"baseDefense":"int",
+		"baseAttack":"int",
+		"growthTemp":"int"
+	}
+]

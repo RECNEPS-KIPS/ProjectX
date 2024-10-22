@@ -15,8 +15,8 @@ namespace Framework.Core.Manager.Event
     {
         private List<Action<dynamic>> _dynamicCallbackList;
         private List<Action> _callbackList;
-        private List<Action<dynamic>> DynamicCallbackList => _dynamicCallbackList ?? new List<Action<dynamic>>();
-        private List<Action> CallbackList => _callbackList ?? new List<Action>();
+        private List<Action<dynamic>> DynamicCallbackList => _dynamicCallbackList ??= new List<Action<dynamic>>();
+        private List<Action> CallbackList => _callbackList ??= new List<Action>();
 
         /// <summary>
         /// 
@@ -25,14 +25,15 @@ namespace Framework.Core.Manager.Event
 
         private List<Action<dynamic>> _dynamicRemoveList;
         private List<Action> _removeList;
-        private List<Action<dynamic>> DynamicRemoveList => _dynamicRemoveList ?? new List<Action<dynamic>>();
-        private List<Action> RemoveList => _removeList ?? new List<Action>();
+        private List<Action<dynamic>> DynamicRemoveList => _dynamicRemoveList ??= new List<Action<dynamic>>();
+        private List<Action> RemoveList => _removeList ??= new List<Action>();
 
         /// <summary>
         /// 回收事件实例
         /// </summary>
         public void OnRecycled()
         {
+            LogManager.Log("EventEntity","OnRecycled");
             DynamicCallbackList.Clear();
             CallbackList.Clear();
             DynamicRemoveList.Clear();
@@ -52,14 +53,17 @@ namespace Framework.Core.Manager.Event
         /// <param name="data"></param>
         public void Execute(dynamic data)
         {
+            LogManager.Log("EventEntity",$"Execute data:{data == null},{DynamicCallbackList.Count},{CallbackList.Count},{RemoveList.Count}");
             _lockRemove = true;
             foreach (var dcb in DynamicCallbackList.Where(dcb => !DynamicRemoveList.Contains(dcb)))
             {
+                LogManager.Log("EventEntity","DynamicCallbackList");
                 dcb?.Invoke(data);
             }
 
             foreach (var cb in CallbackList.Where(cb => !RemoveList.Contains(cb)))
             {
+                LogManager.Log("EventEntity","CallbackList");
                 cb?.Invoke();
             }
 
@@ -85,6 +89,7 @@ namespace Framework.Core.Manager.Event
         /// <param name="dynamicCallback"></param>
         public void AddCallback(Action<dynamic> dynamicCallback)
         {
+            LogManager.Log("EventEntity","add dynamicCallback",DynamicCallbackList.Contains(dynamicCallback));
             if (!DynamicCallbackList.Contains(dynamicCallback))
             {
                 DynamicCallbackList.Add(dynamicCallback);
@@ -97,6 +102,7 @@ namespace Framework.Core.Manager.Event
         /// <param name="callback"></param>
         public void AddCallback(Action callback)
         {
+            LogManager.Log("EventEntity","add callback",CallbackList.Contains(callback));
             if (!CallbackList.Contains(callback))
             {
                 CallbackList.Add(callback);
@@ -109,6 +115,7 @@ namespace Framework.Core.Manager.Event
         /// <param name="dynamicCallback"></param>
         public void RemoveCallback(Action<dynamic> dynamicCallback)
         {
+            LogManager.Log("EventEntity","Remove dynamicCallback");
             if (_lockRemove)
             {
                 DynamicRemoveList.Add(dynamicCallback);
@@ -128,6 +135,7 @@ namespace Framework.Core.Manager.Event
         /// <param name="callback"></param>
         public void RemoveCallback(Action callback)
         {
+            LogManager.Log("EventEntity","Remove callback");
             if (_lockRemove)
             {
                 RemoveList.Add(callback);

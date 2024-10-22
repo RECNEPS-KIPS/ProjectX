@@ -17,5 +17,14 @@ namespace Framework
         public static readonly string RESOURCES_ASSETS_PATH = "Assets/ResourcesAssets";
         
         public static readonly string ASSET_BUNDLE_SUFFIX = "ab";
+
+        public enum ECharacterControllerType
+        {
+            FPS = 0,
+            TPS_A = 1,
+            TPS_B = 2,
+            TPS_C = 3,
+            TOPDOWN = 4,
+        }
     }
 }

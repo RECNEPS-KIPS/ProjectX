@@ -1,15 +1,15 @@
 ManifestFileVersion: 0
-CRC: 4125453462
+CRC: 4061075844
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: ba9d8a3486b6e204ce5c953a38f0008d
+    Hash: 56623b3f15ebf84ab7df166548e2543a
   TypeTreeHash:
     serializedVersion: 2
-    Hash: 5aee5f25d5472a47e76b5c43f6239d76
+    Hash: edf0c5d139eb9319cf76fde8be2b591e
   IncrementalBuildHash:
     serializedVersion: 2
-    Hash: ba9d8a3486b6e204ce5c953a38f0008d
+    Hash: 56623b3f15ebf84ab7df166548e2543a
 HashAppended: 0
 ClassTypes:
 - Class: 1
@@ -39,21 +39,21 @@ ClassTypes:
 - Class: 114
   Script: {fileID: 11500000, guid: aea581c896e1468c98d1072a718f1be9, type: 3}
 - Class: 114
+  Script: {fileID: 11500000, guid: 9379786b9b2b5734ea394167d29fe3c6, type: 3}
+- Class: 114
   Script: {fileID: 11500000, guid: 71c1514a6bd24e1e882cebbe1904ce04, type: 3}
 - Class: 114
   Script: {fileID: 11500000, guid: 5994ee9c799644c1b392e31e5cc39f8c, type: 3}
 - Class: 114
   Script: {fileID: 11500000, guid: 07dbed2b3e094a34cb56930ddd109ef9, type: 3}
 - Class: 114
+  Script: {fileID: 11500000, guid: 90249d0278304e438308c7b0b81e8bcf, type: 3}
+- Class: 114
   Script: {fileID: 11500000, guid: 99670e92736fc8942bf812df0020b385, type: 3}
 - Class: 114
   Script: {fileID: 11500000, guid: 531d24f0378a419b8d1a09013d24d59b, type: 3}
 - Class: 114
   Script: {fileID: 11500000, guid: d23a9f88497e4ea5b5877710721d4421, type: 3}
-- Class: 114
-  Script: {fileID: 11500000, guid: 9379786b9b2b5734ea394167d29fe3c6, type: 3}
-- Class: 114
-  Script: {fileID: 11500000, guid: 90249d0278304e438308c7b0b81e8bcf, type: 3}
 - Class: 115
   Script: {instanceID: 0}
 - Class: 128
@@ -108,9 +108,9 @@ SerializeReferenceClassIdentifiers:
 - AssemblyName: UnityEngine.UI
   ClassName: UnityEngine.UI.SpriteState
 Assets:
-- Assets/ResourcesAssets/UI/Lobby/LobbyMainUI.prefab
-- Assets/ResourcesAssets/UI/Example/ExampleUI.prefab
-- Assets/ResourcesAssets/UI/Start/StartUI.prefab
-- Assets/ResourcesAssets/UI/Main/MainUI.prefab
-- Assets/ResourcesAssets/UI/Plot/PlotUI.prefab
+- Assets/ResourcesAssets/UI/Pages/Lobby/LobbyMainUI.prefab
+- Assets/ResourcesAssets/UI/Pages/Example/ExampleUI.prefab
+- Assets/ResourcesAssets/UI/Pages/Start/StartUI.prefab
+- Assets/ResourcesAssets/UI/Pages/Main/MainUI.prefab
+- Assets/ResourcesAssets/UI/Pages/Plot/PlotUI.prefab
 Dependencies: []
