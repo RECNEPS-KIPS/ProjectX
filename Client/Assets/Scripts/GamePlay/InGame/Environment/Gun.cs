@@ -31,7 +31,7 @@ namespace GamePlay.InGame.Enviorment
                 var rb = shard.GetComponent<Rigidbody>();
                 rb.isKinematic = false;
                 rb.AddExplosionForce(ExplosionForce, position, ExplosionRadius);
-                shard.gameObject.AddComponent<AutoDestruct>().Time = 300.0f;
+                shard.gameObject.AddComponent<AutoDestruct>().Time = 3.0f;
             }
         }
     }

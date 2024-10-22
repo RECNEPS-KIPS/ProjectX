@@ -20,8 +20,8 @@ public class AlignRigidbodyToTarget : MonoBehaviour {
 
         if(target == null)
         {
-            Debug.LogWarning("No target has been assigned.", this);
-            this.enabled = false;
+            LogManager.LogWarning("AlignRigidbodyToTarget","No target has been assigned.");
+            enabled = false;
         }
 	}
 	

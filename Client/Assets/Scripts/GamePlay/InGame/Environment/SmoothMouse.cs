@@ -46,14 +46,15 @@ namespace GamePlay.InGame.Enviorment
             const float size = 0.25f;
             float xMin = Screen.width / 2 - crosshairImage.width * size / 2;
             float yMin = Screen.height / 2 - crosshairImage.height * size / 2;
-            GUI.DrawTexture(new Rect(xMin, yMin, crosshairImage.width * size, crosshairImage.height * size),
-                crosshairImage);
+            GUI.DrawTexture(new Rect(xMin, yMin, crosshairImage.width * size, crosshairImage.height * size), crosshairImage);
         }
 
         void Update()
         {
             if (_lockCursor)
+            {
                 HandleCamera();
+            }
             HandleCursor();
         }
 
@@ -165,26 +166,43 @@ namespace GamePlay.InGame.Enviorment
         {
             var speed = 4f;
             if (Input.GetKey(KeyCode.W))
-                transform.position += transform.forward * Time.deltaTime * speed;
+            {
+                var transform1 = transform;
+                transform1.position += transform1.forward * Time.deltaTime * speed;
+            }
+
             if (Input.GetKey(KeyCode.A))
-                transform.position -= transform.right * Time.deltaTime * speed;
+            {
+                var transform1 = transform;
+                transform1.position -= transform1.right * Time.deltaTime * speed;
+            }
+
             if (Input.GetKey(KeyCode.S))
-                transform.position -= transform.forward * Time.deltaTime * speed;
+            {
+                var transform1 = transform;
+                transform1.position -= transform1.forward * Time.deltaTime * speed;
+            }
+
             if (Input.GetKey(KeyCode.D))
-                transform.position += transform.right * Time.deltaTime * speed;
+            {
+                var transform1 = transform;
+                transform1.position += transform1.right * Time.deltaTime * speed;
+            }
         }
 
         void Start()
         {
             Rigidbody rb = GetComponent<Rigidbody>();
             if (rb)
+            {
                 rb.freezeRotation = true;
+            }
             originalRotation = transform.localRotation;
         }
 
         public static float ClampAngle(float angle, float min, float max)
         {
-            angle = angle % 360;
+            angle %= 360;
             if ((angle >= -360F) && (angle <= 360F))
             {
                 if (angle < -360F)

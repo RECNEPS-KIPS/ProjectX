@@ -5,7 +5,7 @@ using UnityEngine;
 namespace GamePlay.InGame.Character
 {
     //A very simplified controller script;
-	//This script is an example of a very simple walker controller that covers only the basics of character movement;
+    //This script is an example of a very simple walker controller that covers only the basics of character movement;
     public class SimpleWalkerController : Controller
     {
         private Mover mover;
@@ -15,9 +15,9 @@ namespace GamePlay.InGame.Character
         public float jumpSpeed = 10f;
         public float gravity = 10f;
 
-		Vector3 lastVelocity = Vector3.zero;
+        Vector3 lastVelocity = Vector3.zero;
 
-		public Transform cameraTransform;
+        public Transform cameraTransform;
         CharacterInput characterInput;
         Transform tr;
 
@@ -35,8 +35,10 @@ namespace GamePlay.InGame.Character
             mover.CheckForGround();
 
             //If character was not grounded int the last frame and is now grounded, call 'OnGroundContactRegained' function;
-            if(isGrounded == false && mover.IsGrounded() == true)
+            if (isGrounded == false && mover.IsGrounded())
+            {
                 OnGroundContactRegained(lastVelocity);
+            }
 
             //Check whether the character is grounded and store result;
             isGrounded = mover.IsGrounded();
@@ -45,7 +47,7 @@ namespace GamePlay.InGame.Character
 
             //Add player movement to velocity;
             _velocity += CalculateMovementDirection() * movementSpeed;
-            
+
             //Handle gravity;
             if (!isGrounded)
             {
@@ -54,11 +56,13 @@ namespace GamePlay.InGame.Character
             else
             {
                 if (currentVerticalSpeed <= 0f)
+                {
                     currentVerticalSpeed = 0f;
+                }
             }
 
             //Handle jumping;
-            if ((characterInput != null) && isGrounded && characterInput.IsJumpKeyPressed())
+            if (characterInput != null && isGrounded && characterInput.IsJumpKeyPressed())
             {
                 OnJumpStart();
                 currentVerticalSpeed = jumpSpeed;
@@ -68,8 +72,8 @@ namespace GamePlay.InGame.Character
             //Add vertical velocity;
             _velocity += tr.up * currentVerticalSpeed;
 
-			//Save current velocity for next frame;
-			lastVelocity = _velocity;
+            //Save current velocity for next frame;
+            lastVelocity = _velocity;
 
             mover.SetExtendSensorRange(isGrounded);
             mover.SetVelocity(_velocity);
@@ -78,46 +82,54 @@ namespace GamePlay.InGame.Character
         private Vector3 CalculateMovementDirection()
         {
             //If no character input script is attached to this object, return no input;
-			if(characterInput == null)
-				return Vector3.zero;
+            if (characterInput == null)
+            {
+                return Vector3.zero;
+            }
 
-			Vector3 _direction = Vector3.zero;
+            Vector3 _direction = Vector3.zero;
 
-			//If no camera transform has been assigned, use the character's transform axes to calculate the movement direction;
-			if(cameraTransform == null)
-			{
-				_direction += tr.right * characterInput.GetHorizontalMovementInput();
-				_direction += tr.forward * characterInput.GetVerticalMovementInput();
-			}
-			else
-			{
-				//If a camera transform has been assigned, use the assigned transform's axes for movement direction;
-				//Project movement direction so movement stays parallel to the ground;
-				_direction += Vector3.ProjectOnPlane(cameraTransform.right, tr.up).normalized * characterInput.GetHorizontalMovementInput();
-				_direction += Vector3.ProjectOnPlane(cameraTransform.forward, tr.up).normalized * characterInput.GetVerticalMovementInput();
-			}
+            //If no camera transform has been assigned, use the character's transform axes to calculate the movement direction;
+            if (cameraTransform == null)
+            {
+                _direction += tr.right * characterInput.GetHorizontalMovementInput();
+                _direction += tr.forward * characterInput.GetVerticalMovementInput();
+            }
+            else
+            {
+                //If a camera transform has been assigned, use the assigned transform's axes for movement direction;
+                //Project movement direction so movement stays parallel to the ground;
+                _direction += Vector3.ProjectOnPlane(cameraTransform.right, tr.up).normalized * characterInput.GetHorizontalMovementInput();
+                _direction += Vector3.ProjectOnPlane(cameraTransform.forward, tr.up).normalized * characterInput.GetVerticalMovementInput();
+            }
 
-			//If necessary, clamp movement vector to magnitude of 1f;
-			if(_direction.magnitude > 1f)
-				_direction.Normalize();
+            //If necessary, clamp movement vector to magnitude of 1f;
+            if (_direction.magnitude > 1f)
+            {
+                _direction.Normalize();
+            }
 
-			return _direction;
+            return _direction;
         }
 
         //This function is called when the controller has landed on a surface after being in the air;
-		void OnGroundContactRegained(Vector3 _collisionVelocity)
-		{
-			//Call 'OnLand' delegate function;
-			if(OnLand != null)
-				OnLand(_collisionVelocity);
-		}
+        void OnGroundContactRegained(Vector3 _collisionVelocity)
+        {
+            //Call 'OnLand' delegate function;
+            if (OnLand != null)
+            {
+                OnLand(_collisionVelocity);
+            }
+        }
 
         //This function is called when the controller has started a jump;
         void OnJumpStart()
         {
             //Call 'OnJump' delegate function;
-            if(OnJump != null)
+            if (OnJump != null)
+            {
                 OnJump(lastVelocity);
+            }
         }
 
         //Return the current velocity of the character;
@@ -137,8 +149,5 @@ namespace GamePlay.InGame.Character
         {
             return isGrounded;
         }
-
     }
-
 }
-

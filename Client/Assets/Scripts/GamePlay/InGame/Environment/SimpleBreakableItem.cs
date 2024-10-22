@@ -92,12 +92,13 @@ namespace GamePlay.InGame.Enviorment
                 // Vertices[one] = new Vector3(coord.x + Offset.x, coord.y + Offset.y, Scale.z / 2.0f);
                 // Vertices[two] = new Vector3(coord.x + Offset.x, coord.y + Offset.y, -Scale.z / 2.0f);
                 // Vertices[three] = new Vector3(coord.x + Offset.x, coord.y + Offset.y, -Scale.z / 2.0f);
-                Vertices[one] = new Vector3(coord.x+ Offset.x , coord.y + Offset.y, Scale.z / 2.0f);
-                Vertices[two] = new Vector3(coord.x+ Offset.x , coord.y + Offset.y, -Scale.z / 2.0f);
+                Vertices[one] = new Vector3(coord.x + Offset.x, coord.y + Offset.y, Scale.z / 2.0f);
+                Vertices[two] = new Vector3(coord.x + Offset.x, coord.y + Offset.y, -Scale.z / 2.0f);
                 Vertices[three] = new Vector3(coord.x + Offset.x, coord.y + Offset.y, Scale.z / 2.0f);
             }
             // LogManager.Log("Vertices",Vertices);
         }
+
         /// <summary>
         /// 生成切分网格的三角形
         /// </summary>
@@ -113,11 +114,12 @@ namespace GamePlay.InGame.Enviorment
                 Tris[t++] = Len + v + 1;
                 Tris[t++] = Len + v;
                 Tris[t++] = Len;
-            
+
                 Tris[t++] = 2 * Len;
                 Tris[t++] = 2 * Len + v;
                 Tris[t++] = 2 * Len + v + 1;
             }
+
             //如果未启用OnlySurface表面优化 添加剩余的面,这里没有加背面
             if (OnlySurface) return;
             //创建其余的面
@@ -125,11 +127,11 @@ namespace GamePlay.InGame.Enviorment
             for (var v = 0; v < Len; v++)
             {
                 var n = v == (Len - 1) ? 0 : v + 1;
-            
+
                 Tris[t++] = v;
                 Tris[t++] = Len + v;
                 Tris[t++] = Len + n;
-            
+
                 Tris[t++] = v;
                 Tris[t++] = Len + n;
                 Tris[t++] = n;
@@ -156,7 +158,7 @@ namespace GamePlay.InGame.Enviorment
             var mc = shard.AddComponent<MeshCollider>();
             mc.convex = true;
             mc.sharedMesh = mesh;
-            
+
             shard.AddComponent<MeshFilter>().sharedMesh = mesh;
             shard.AddComponent<Rigidbody>().isKinematic = true;
             shard.AddComponent<MeshRenderer>();
@@ -186,7 +188,7 @@ namespace GamePlay.InGame.Enviorment
         private Mesh BuildMeshWithoutSharedVertices(int[] Tris, Vector3[] Vertices)
         {
             var newVertices = new List<Vector3>(Vertices);
- 
+
             var visited = new HashSet<int>();
             //遍历所有三角形,如果两个三角形共享一个顶点,只创建一个相同的顶点
             for (var i = 0; i < Tris.Length; ++i)

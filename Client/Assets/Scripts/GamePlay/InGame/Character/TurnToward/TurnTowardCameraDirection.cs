@@ -14,15 +14,19 @@ namespace GamePlay.InGame.Character
 		void Start () {
 			tr = transform;
 
-			if(cameraController == null)
-				Debug.LogWarning("No camera controller reference has been assigned to this script.", this);
+			if (cameraController == null)
+			{
+				LogManager.LogWarning("TurnTowardCameraDirection","No camera controller reference has been assigned to this script.");
+			}
 		}
 		
 		//Update;
 		void LateUpdate () {
 
-			if(!cameraController)
+			if (!cameraController)
+			{
 				return;
+			}
 
 			//Calculate up and forwward direction;
 			Vector3 _forwardDirection = cameraController.GetFacingDirection();

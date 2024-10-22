@@ -2,7 +2,7 @@
 
 namespace GamePlay.InGame.Character
 {
-    public class CharacterController: MonoBehaviour
+    public class CharacterController : MonoBehaviour
     {
         public Transform ModelMountTrs;
     }

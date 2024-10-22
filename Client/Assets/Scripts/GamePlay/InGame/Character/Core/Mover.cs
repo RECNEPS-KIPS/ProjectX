@@ -3,378 +3,416 @@ using System.Collections;
 
 namespace GamePlay.InGame.Character
 {
-	//This script handles all physics, collision detection and ground detection;
-	//It expects a movement velocity (via 'SetVelocity') every 'FixedUpdate' frame from an external script (like a controller script) to work;
-	//It also provides several getter methods for important information (whether the mover is grounded, the current surface normal [...]);
-	public class Mover : MonoBehaviour {
+    //This script handles all physics, collision detection and ground detection;
+    //It expects a movement velocity (via 'SetVelocity') every 'FixedUpdate' frame from an external script (like a controller script) to work;
+    //It also provides several getter methods for important information (whether the mover is grounded, the current surface normal [...]);
+    public class Mover : MonoBehaviour
+    {
+        //Collider variables;
+        [Header("Mover Options :")] [Range(0f, 1f)] [SerializeField]
+        float stepHeightRatio = 0.25f;
 
-		//Collider variables;
-		[Header("Mover Options :")]
-		[Range(0f, 1f)][SerializeField] float stepHeightRatio = 0.25f;
-		[Header("Collider Options :")]
-		[SerializeField] float colliderHeight = 2f;
-		[SerializeField] float colliderThickness = 1f;
-		[SerializeField] Vector3 colliderOffset = Vector3.zero;
+        [Header("Collider Options :")] [SerializeField]
+        float colliderHeight = 2f;
 
-		//References to attached collider(s);
-		BoxCollider boxCollider;
-		SphereCollider sphereCollider;
-		CapsuleCollider capsuleCollider;
+        [SerializeField] float colliderThickness = 1f;
+        [SerializeField] Vector3 colliderOffset = Vector3.zero;
 
-		//Sensor variables;
-		[Header("Sensor Options :")]
-		[SerializeField] public Sensor.CastType sensorType = Sensor.CastType.Raycast;
-		private float sensorRadiusModifier = 0.8f;
-		private int currentLayer;
-		[SerializeField] bool isInDebugMode = false;
-		[Header("Sensor Array Options :")]
-		[SerializeField] [Range(1, 5)] int sensorArrayRows = 1;
-		[SerializeField] [Range(3, 10)] int sensorArrayRayCount = 6;
-		[SerializeField] bool sensorArrayRowsAreOffset = false;
+        //References to attached collider(s);
+        BoxCollider boxCollider;
+        SphereCollider sphereCollider;
+        CapsuleCollider capsuleCollider;
 
-		[HideInInspector] public Vector3[] raycastArrayPreviewPositions;
+        //Sensor variables;
+        [Header("Sensor Options :")] [SerializeField]
+        public Sensor.CastType sensorType = Sensor.CastType.Raycast;
 
-		//Ground detection variables;
-		bool isGrounded = false;
+        private float sensorRadiusModifier = 0.8f;
+        private int currentLayer;
+        [SerializeField] bool isInDebugMode = false;
 
-		//Sensor range variables;
-		bool IsUsingExtendedSensorRange  = true;
-		float baseSensorRange = 0f;
+        [Header("Sensor Array Options :")] [SerializeField] [Range(1, 5)]
+        int sensorArrayRows = 1;
 
-		//Current upwards (or downwards) velocity necessary to keep the correct distance to the ground;
-		Vector3 currentGroundAdjustmentVelocity = Vector3.zero;
+        [SerializeField] [Range(3, 10)] int sensorArrayRayCount = 6;
+        [SerializeField] bool sensorArrayRowsAreOffset = false;
 
-		//References to attached components;
-		Collider col;
-		Rigidbody rig;
-		Transform tr;
-		Sensor sensor;
+        [HideInInspector] public Vector3[] raycastArrayPreviewPositions;
 
-		void Awake()
-		{
-			Setup();
+        //Ground detection variables;
+        bool isGrounded = false;
 
-			//Initialize sensor;
-			sensor = new Sensor(this.tr, col);
-			RecalculateColliderDimensions();
-			RecalibrateSensor();
-		}
+        //Sensor range variables;
+        bool IsUsingExtendedSensorRange = true;
+        float baseSensorRange = 0f;
 
-		void Reset () {
-			Setup();
-		}
+        //Current upwards (or downwards) velocity necessary to keep the correct distance to the ground;
+        Vector3 currentGroundAdjustmentVelocity = Vector3.zero;
 
-		void OnValidate()
-		{
-			//Recalculate collider dimensions;
-			if(this.gameObject.activeInHierarchy)
-				RecalculateColliderDimensions();
+        //References to attached components;
+        Collider col;
+        Rigidbody rig;
+        Transform tr;
+        Sensor sensor;
 
-			//Recalculate raycast array preview positions;
-			if(sensorType == Sensor.CastType.RaycastArray)
-				raycastArrayPreviewPositions = 
-					Sensor.GetRaycastStartPositions(sensorArrayRows, sensorArrayRayCount, sensorArrayRowsAreOffset, 1f);
-		}
+        void Awake()
+        {
+            Setup();
 
-		//Setup references to components;
-		void Setup()
-		{
-			tr = transform;
-			col = GetComponent<Collider>();
+            //Initialize sensor;
+            sensor = new Sensor(this.tr, col);
+            RecalculateColliderDimensions();
+            RecalibrateSensor();
+        }
 
-			//If no collider is attached to this gameobject, add a collider;
-			if(col == null)
-			{
-				tr.gameObject.AddComponent<CapsuleCollider>();
-				col = GetComponent<Collider>();
-			}
+        void Reset()
+        {
+            Setup();
+        }
 
-			rig = GetComponent<Rigidbody>();
+        void OnValidate()
+        {
+            //Recalculate collider dimensions;
+            if (this.gameObject.activeInHierarchy)
+            {
+                RecalculateColliderDimensions();
+            }
 
-			//If no rigidbody is attached to this gameobject, add a rigidbody;
-			if(rig == null)
-			{
-				tr.gameObject.AddComponent<Rigidbody>();
-				rig = GetComponent<Rigidbody>();
-			}
+            //Recalculate raycast array preview positions;
+            if (sensorType == Sensor.CastType.RaycastArray)
+            {
+                raycastArrayPreviewPositions = Sensor.GetRaycastStartPositions(sensorArrayRows, sensorArrayRayCount, sensorArrayRowsAreOffset, 1f);
+            }
+        }
 
-			boxCollider = GetComponent<BoxCollider>();
-			sphereCollider = GetComponent<SphereCollider>();
-			capsuleCollider = GetComponent<CapsuleCollider>();
+        //Setup references to components;
+        void Setup()
+        {
+            tr = transform;
+            col = GetComponent<Collider>();
 
-			//Freeze rigidbody rotation and disable rigidbody gravity;
-			rig.freezeRotation = true;
-			rig.useGravity = false;
-		}
+            //If no collider is attached to this gameobject, add a collider;
+            if (col == null)
+            {
+                tr.gameObject.AddComponent<CapsuleCollider>();
+                col = GetComponent<Collider>();
+            }
 
-		//Draw debug information if debug mode is enabled;
-		void LateUpdate()
-		{
-			if(isInDebugMode)
-				sensor.DrawDebug();
-		}
+            rig = GetComponent<Rigidbody>();
 
-		//Recalculate collider height/width/thickness;
-		public void RecalculateColliderDimensions()
-		{
-			//Check if a collider is attached to this gameobject;
-			if(col == null)
-			{
-				//Try to get a reference to the attached collider by calling Setup();
-				Setup();
+            //If no rigidbody is attached to this gameobject, add a rigidbody;
+            if (rig == null)
+            {
+                tr.gameObject.AddComponent<Rigidbody>();
+                rig = GetComponent<Rigidbody>();
+            }
 
-				//Check again;
-				if(col == null)
-				{
-					Debug.LogWarning("There is no collider attached to " + this.gameObject.name + "!");
-					return;
-				}				
-			}
+            boxCollider = GetComponent<BoxCollider>();
+            sphereCollider = GetComponent<SphereCollider>();
+            capsuleCollider = GetComponent<CapsuleCollider>();
 
-			//Set collider dimensions based on collider variables;
-			if(boxCollider)
-			{
-				Vector3 _size = Vector3.zero;
-				_size.x = colliderThickness;
-				_size.z = colliderThickness;
+            //Freeze rigidbody rotation and disable rigidbody gravity;
+            rig.freezeRotation = true;
+            rig.useGravity = false;
+        }
 
-				boxCollider.center = colliderOffset * colliderHeight;
+        //Draw debug information if debug mode is enabled;
+        void LateUpdate()
+        {
+            if (isInDebugMode)
+            {
+                sensor.DrawDebug();
+            }
+        }
 
-				_size.y = colliderHeight * (1f - stepHeightRatio);
-				boxCollider.size = _size;
+        //Recalculate collider height/width/thickness;
+        public void RecalculateColliderDimensions()
+        {
+            //Check if a collider is attached to this gameobject;
+            if (col == null)
+            {
+                //Try to get a reference to the attached collider by calling Setup();
+                Setup();
 
-				boxCollider.center = boxCollider.center + new Vector3(0f, stepHeightRatio * colliderHeight/2f, 0f);
-			}
-			else if(sphereCollider)
-			{
-				sphereCollider.radius = colliderHeight/2f;
-				sphereCollider.center = colliderOffset * colliderHeight;
+                //Check again;
+                if (col == null)
+                {
+                    Debug.LogWarning("There is no collider attached to " + this.gameObject.name + "!");
+                    return;
+                }
+            }
 
-				sphereCollider.center = sphereCollider.center + new Vector3(0f, stepHeightRatio * sphereCollider.radius, 0f);
-				sphereCollider.radius *= (1f - stepHeightRatio);
-			}
-			else if(capsuleCollider)
-			{
-				capsuleCollider.height = colliderHeight;
-				capsuleCollider.center = colliderOffset * colliderHeight;
-				capsuleCollider.radius = colliderThickness/2f;
+            //Set collider dimensions based on collider variables;
+            if (boxCollider)
+            {
+                Vector3 _size = Vector3.zero;
+                _size.x = colliderThickness;
+                _size.z = colliderThickness;
 
-				capsuleCollider.center = capsuleCollider.center + new Vector3(0f, stepHeightRatio * capsuleCollider.height/2f, 0f);
-				capsuleCollider.height *= (1f - stepHeightRatio);
+                boxCollider.center = colliderOffset * colliderHeight;
 
-				if(capsuleCollider.height/2f < capsuleCollider.radius)
-					capsuleCollider.radius = capsuleCollider.height/2f;
-			}
+                _size.y = colliderHeight * (1f - stepHeightRatio);
+                boxCollider.size = _size;
 
-			//Recalibrate sensor variables to fit new collider dimensions;
-			if(sensor != null)
-				RecalibrateSensor();
-		}
+                boxCollider.center = boxCollider.center + new Vector3(0f, stepHeightRatio * colliderHeight / 2f, 0f);
+            }
+            else if (sphereCollider)
+            {
+                sphereCollider.radius = colliderHeight / 2f;
+                sphereCollider.center = colliderOffset * colliderHeight;
 
-		//Recalibrate sensor variables;
-		void RecalibrateSensor()
-		{
-			//Set sensor ray origin and direction;
-			sensor.SetCastOrigin(GetColliderCenter());
-			sensor.SetCastDirection(Sensor.CastDirection.Down);
+                sphereCollider.center =
+                    sphereCollider.center + new Vector3(0f, stepHeightRatio * sphereCollider.radius, 0f);
+                sphereCollider.radius *= (1f - stepHeightRatio);
+            }
+            else if (capsuleCollider)
+            {
+                capsuleCollider.height = colliderHeight;
+                capsuleCollider.center = colliderOffset * colliderHeight;
+                capsuleCollider.radius = colliderThickness / 2f;
 
-			//Calculate sensor layermask;
-			RecalculateSensorLayerMask();
+                capsuleCollider.center = capsuleCollider.center +
+                                         new Vector3(0f, stepHeightRatio * capsuleCollider.height / 2f, 0f);
+                capsuleCollider.height *= (1f - stepHeightRatio);
 
-			//Set sensor cast type;
-			sensor.castType = sensorType;
+                if (capsuleCollider.height / 2f < capsuleCollider.radius)
+                {
+                    capsuleCollider.radius = capsuleCollider.height / 2f;
+                }
+            }
 
-			//Calculate sensor radius/width;
-			float _radius = colliderThickness/2f * sensorRadiusModifier;
+            //Recalibrate sensor variables to fit new collider dimensions;
+            if (sensor != null)
+            {
+                RecalibrateSensor();
+            }
+        }
 
-			//Multiply all sensor lengths with '_safetyDistanceFactor' to compensate for floating point errors;
-			float _safetyDistanceFactor = 0.001f;
+        //Recalibrate sensor variables;
+        void RecalibrateSensor()
+        {
+            //Set sensor ray origin and direction;
+            sensor.SetCastOrigin(GetColliderCenter());
+            sensor.SetCastDirection(Sensor.CastDirection.Down);
 
-			//Fit collider height to sensor radius;
-			if(boxCollider)
-				_radius = Mathf.Clamp(_radius, _safetyDistanceFactor, (boxCollider.size.y/2f) * (1f - _safetyDistanceFactor));
-			else if(sphereCollider)
-				_radius = Mathf.Clamp(_radius, _safetyDistanceFactor, sphereCollider.radius * (1f - _safetyDistanceFactor));
-			else if(capsuleCollider)
-				_radius = Mathf.Clamp(_radius, _safetyDistanceFactor, (capsuleCollider.height/2f) * (1f - _safetyDistanceFactor));
+            //Calculate sensor layermask;
+            RecalculateSensorLayerMask();
 
-			//Set sensor variables;
+            //Set sensor cast type;
+            sensor.castType = sensorType;
 
-			//Set sensor radius;
-			sensor.sphereCastRadius = _radius * tr.localScale.x;
+            //Calculate sensor radius/width;
+            float _radius = colliderThickness / 2f * sensorRadiusModifier;
 
-			//Calculate and set sensor length;
-			float _length = 0f;
-			_length += (colliderHeight * (1f - stepHeightRatio)) * 0.5f;
-			_length += colliderHeight * stepHeightRatio;
-			baseSensorRange = _length * (1f + _safetyDistanceFactor) * tr.localScale.x;
-			sensor.castLength = _length * tr.localScale.x;
+            //Multiply all sensor lengths with '_safetyDistanceFactor' to compensate for floating point errors;
+            float _safetyDistanceFactor = 0.001f;
 
-			//Set sensor array variables;
-			sensor.ArrayRows = sensorArrayRows;
-			sensor.arrayRayCount = sensorArrayRayCount;
-			sensor.offsetArrayRows = sensorArrayRowsAreOffset;
-			sensor.isInDebugMode = isInDebugMode;
+            //Fit collider height to sensor radius;
+            if (boxCollider)
+            {
+                _radius = Mathf.Clamp(_radius, _safetyDistanceFactor, (boxCollider.size.y / 2f) * (1f - _safetyDistanceFactor));
+            }
+            else if (sphereCollider)
+            {
+                _radius = Mathf.Clamp(_radius, _safetyDistanceFactor, sphereCollider.radius * (1f - _safetyDistanceFactor));
+            }
+            else if (capsuleCollider)
+            {
+                _radius = Mathf.Clamp(_radius, _safetyDistanceFactor, (capsuleCollider.height / 2f) * (1f - _safetyDistanceFactor));
+            }
 
-			//Set sensor spherecast variables;
-			sensor.calculateRealDistance = true;
-			sensor.calculateRealSurfaceNormal = true;
+            //Set sensor variables;
 
-			//Recalibrate sensor to the new values;
-			sensor.RecalibrateRaycastArrayPositions();
-		}
+            //Set sensor radius;
+            sensor.sphereCastRadius = _radius * tr.localScale.x;
 
-		//Recalculate sensor layermask based on current physics settings;
-		void RecalculateSensorLayerMask()
-		{
-			int _layerMask = 0;
-			int _objectLayer = this.gameObject.layer;
- 
-			//Calculate layermask;
+            //Calculate and set sensor length;
+            float _length = 0f;
+            _length += (colliderHeight * (1f - stepHeightRatio)) * 0.5f;
+            _length += colliderHeight * stepHeightRatio;
+            baseSensorRange = _length * (1f + _safetyDistanceFactor) * tr.localScale.x;
+            sensor.castLength = _length * tr.localScale.x;
+
+            //Set sensor array variables;
+            sensor.ArrayRows = sensorArrayRows;
+            sensor.arrayRayCount = sensorArrayRayCount;
+            sensor.offsetArrayRows = sensorArrayRowsAreOffset;
+            sensor.isInDebugMode = isInDebugMode;
+
+            //Set sensor spherecast variables;
+            sensor.calculateRealDistance = true;
+            sensor.calculateRealSurfaceNormal = true;
+
+            //Recalibrate sensor to the new values;
+            sensor.RecalibrateRaycastArrayPositions();
+        }
+
+        //Recalculate sensor layermask based on current physics settings;
+        void RecalculateSensorLayerMask()
+        {
+            int _layerMask = 0;
+            int _objectLayer = this.gameObject.layer;
+
+            //Calculate layermask;
             for (int i = 0; i < 32; i++)
             {
-                if (!Physics.GetIgnoreLayerCollision(_objectLayer, i)) 
-					_layerMask = _layerMask | (1 << i);
-			}
+                if (!Physics.GetIgnoreLayerCollision(_objectLayer, i))
+                {
+                    _layerMask = _layerMask | (1 << i);
+                }
+            }
 
-			//Make sure that the calculated layermask does not include the 'Ignore Raycast' layer;
-			if(_layerMask == (_layerMask | (1 << LayerMask.NameToLayer("Ignore Raycast"))))
-			{
-				_layerMask ^= (1 << LayerMask.NameToLayer("Ignore Raycast"));
-			}
- 
-			//Set sensor layermask;
+            //Make sure that the calculated layermask does not include the 'Ignore Raycast' layer;
+            if (_layerMask == (_layerMask | (1 << LayerMask.NameToLayer("Ignore Raycast"))))
+            {
+                _layerMask ^= (1 << LayerMask.NameToLayer("Ignore Raycast"));
+            }
+
+            //Set sensor layermask;
             sensor.layermask = _layerMask;
 
-			//Save current layer;
-			currentLayer = _objectLayer;
-		}
+            //Save current layer;
+            currentLayer = _objectLayer;
+        }
 
-		//Returns the collider's center in world coordinates;
-		Vector3 GetColliderCenter()
-		{
-			if(col == null)
-				Setup();
+        //Returns the collider's center in world coordinates;
+        Vector3 GetColliderCenter()
+        {
+            if (col == null)
+            {
+                Setup();
+            }
 
-			return col.bounds.center;
-		}
+            return col.bounds.center;
+        }
 
-		//Check if mover is grounded;
-		//Store all relevant collision information for later;
-		//Calculate necessary adjustment velocity to keep the correct distance to the ground;
-		void Check()
-		{
-			//Reset ground adjustment velocity;
-			currentGroundAdjustmentVelocity = Vector3.zero;
+        //Check if mover is grounded;
+        //Store all relevant collision information for later;
+        //Calculate necessary adjustment velocity to keep the correct distance to the ground;
+        void Check()
+        {
+            //Reset ground adjustment velocity;
+            currentGroundAdjustmentVelocity = Vector3.zero;
 
-			//Set sensor length;
-			if(IsUsingExtendedSensorRange)
-				sensor.castLength = baseSensorRange + (colliderHeight * tr.localScale.x) * stepHeightRatio;
-			else
-				sensor.castLength = baseSensorRange;
-			
-			sensor.Cast();
+            //Set sensor length;
+            if (IsUsingExtendedSensorRange)
+            {
+                sensor.castLength = baseSensorRange + (colliderHeight * tr.localScale.x) * stepHeightRatio;
+            }
+            else
+            {
+                sensor.castLength = baseSensorRange;
+            }
 
-			//If sensor has not detected anything, set flags and return;
-			if(!sensor.HasDetectedHit())
-			{
-				isGrounded = false;
-				return;
-			}
+            sensor.Cast();
 
-			//Set flags for ground detection;
-			isGrounded = true;
+            //If sensor has not detected anything, set flags and return;
+            if (!sensor.HasDetectedHit())
+            {
+                isGrounded = false;
+                return;
+            }
 
-			//Get distance that sensor ray reached;
-			float _distance = sensor.GetDistance();
+            //Set flags for ground detection;
+            isGrounded = true;
 
-			//Calculate how much mover needs to be moved up or down;
-			float _upperLimit = ((colliderHeight * tr.localScale.x) * (1f - stepHeightRatio)) * 0.5f;
-			float _middle = _upperLimit + (colliderHeight * tr.localScale.x) * stepHeightRatio;
-			float _distanceToGo = _middle - _distance;
+            //Get distance that sensor ray reached;
+            float _distance = sensor.GetDistance();
 
-			//Set new ground adjustment velocity for the next frame;
-			currentGroundAdjustmentVelocity = tr.up * (_distanceToGo/Time.fixedDeltaTime);
-		}
+            //Calculate how much mover needs to be moved up or down;
+            float _upperLimit = ((colliderHeight * tr.localScale.x) * (1f - stepHeightRatio)) * 0.5f;
+            float _middle = _upperLimit + (colliderHeight * tr.localScale.x) * stepHeightRatio;
+            float _distanceToGo = _middle - _distance;
 
-		//Check if mover is grounded;
-		public void CheckForGround()
-		{
-			//Check if object layer has been changed since last frame;
-			//If so, recalculate sensor layer mask;
-			if(currentLayer != this.gameObject.layer)
-				RecalculateSensorLayerMask();
+            //Set new ground adjustment velocity for the next frame;
+            currentGroundAdjustmentVelocity = tr.up * (_distanceToGo / Time.fixedDeltaTime);
+        }
 
-			Check();
-		}
+        //Check if mover is grounded;
+        public void CheckForGround()
+        {
+            //Check if object layer has been changed since last frame;
+            //If so, recalculate sensor layer mask;
+            if (currentLayer != gameObject.layer)
+            {
+                RecalculateSensorLayerMask();
+            }
 
-		//Set mover velocity;
-		public void SetVelocity(Vector3 _velocity)
-		{
-			rig.velocity = _velocity + currentGroundAdjustmentVelocity;	
-		}	
+            Check();
+        }
 
-		//Returns 'true' if mover is touching ground and the angle between hte 'up' vector and ground normal is not too steep (e.g., angle < slope_limit);
-		public bool IsGrounded()
-		{
-			return isGrounded;
-		}
+        //Set mover velocity;
+        public void SetVelocity(Vector3 _velocity)
+        {
+            rig.velocity = _velocity + currentGroundAdjustmentVelocity;
+        }
 
-		//Setters;
+        //Returns 'true' if mover is touching ground and the angle between hte 'up' vector and ground normal is not too steep (e.g., angle < slope_limit);
+        public bool IsGrounded()
+        {
+            return isGrounded;
+        }
 
-		//Set whether sensor range should be extended;
-		public void SetExtendSensorRange(bool _isExtended)
-		{
-			IsUsingExtendedSensorRange = _isExtended;
-		}
+        //Setters;
 
-		//Set height of collider;
-		public void SetColliderHeight(float _newColliderHeight)
-		{
-			if(colliderHeight == _newColliderHeight)
-				return;
+        //Set whether sensor range should be extended;
+        public void SetExtendSensorRange(bool _isExtended)
+        {
+            IsUsingExtendedSensorRange = _isExtended;
+        }
 
-			colliderHeight = _newColliderHeight;
-			RecalculateColliderDimensions();
-		}
+        //Set height of collider;
+        public void SetColliderHeight(float _newColliderHeight)
+        {
+            if (colliderHeight == _newColliderHeight)
+            {
+                return;
+            }
 
-		//Set thickness/width of collider;
-		public void SetColliderThickness(float _newColliderThickness)
-		{
-			if(colliderThickness == _newColliderThickness)
-				return;
+            colliderHeight = _newColliderHeight;
+            RecalculateColliderDimensions();
+        }
 
-			if(_newColliderThickness < 0f)
-				_newColliderThickness = 0f;
+        //Set thickness/width of collider;
+        public void SetColliderThickness(float _newColliderThickness)
+        {
+            if (colliderThickness == _newColliderThickness)
+            {
+                return;
+            }
 
-			colliderThickness = _newColliderThickness;
-			RecalculateColliderDimensions();
-		}
+            if (_newColliderThickness < 0f)
+            {
+                _newColliderThickness = 0f;
+            }
 
-		//Set acceptable step height;
-		public void SetStepHeightRatio(float _newStepHeightRatio)
-		{
-			_newStepHeightRatio = Mathf.Clamp(_newStepHeightRatio, 0f, 1f);
-			stepHeightRatio = _newStepHeightRatio;
-			RecalculateColliderDimensions();
-		}
+            colliderThickness = _newColliderThickness;
+            RecalculateColliderDimensions();
+        }
 
-		//Getters;
+        //Set acceptable step height;
+        public void SetStepHeightRatio(float _newStepHeightRatio)
+        {
+            _newStepHeightRatio = Mathf.Clamp(_newStepHeightRatio, 0f, 1f);
+            stepHeightRatio = _newStepHeightRatio;
+            RecalculateColliderDimensions();
+        }
 
-		public Vector3 GetGroundNormal()
-		{
-			return sensor.GetNormal();
-		}
+        //Getters;
 
-		public Vector3 GetGroundPoint()
-		{
-			return sensor.GetPosition();
-		}
+        public Vector3 GetGroundNormal()
+        {
+            return sensor.GetNormal();
+        }
 
-		public Collider GetGroundCollider()
-		{
-			return sensor.GetCollider();
-		}
-		
-	}
+        public Vector3 GetGroundPoint()
+        {
+            return sensor.GetPosition();
+        }
+
+        public Collider GetGroundCollider()
+        {
+            return sensor.GetCollider();
+        }
+    }
 }

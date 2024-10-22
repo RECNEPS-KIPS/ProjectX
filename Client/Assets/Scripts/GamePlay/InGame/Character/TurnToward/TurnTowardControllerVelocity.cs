@@ -34,8 +34,8 @@ namespace GamePlay.InGame.Character
 			//Throw warning if no controller has been assigned;
 			if(controller == null)
 			{
-				Debug.LogWarning("No controller script has been assigned to this 'TurnTowardControllerVelocity' component!", this);
-				this.enabled = false;
+				LogManager.LogWarning("TurnTowardControllerVelocity","No controller script has been assigned to this 'TurnTowardControllerVelocity' component!");
+				enabled = false;
 			}	
 		}
 
@@ -43,10 +43,14 @@ namespace GamePlay.InGame.Character
 
 			//Get controller velocity;
 			Vector3 _velocity;
-			if(ignoreControllerMomentum)
+			if (ignoreControllerMomentum)
+			{
 				_velocity = controller.GetMovementVelocity();
+			}
 			else
+			{
 				_velocity = controller.GetVelocity();
+			}
 
 			//Project velocity onto a plane defined by the 'up' direction of the parent transform;
 			_velocity = Vector3.ProjectOnPlane(_velocity, parentTransform.up);
@@ -54,8 +58,10 @@ namespace GamePlay.InGame.Character
 			float _magnitudeThreshold = 0.001f;
 
 			//If the velocity's magnitude is smaller than the threshold, return;
-			if(_velocity.magnitude < _magnitudeThreshold)
+			if (_velocity.magnitude < _magnitudeThreshold)
+			{
 				return;
+			}
 
 			//Normalize velocity direction;
 			_velocity.Normalize();
@@ -73,19 +79,28 @@ namespace GamePlay.InGame.Character
 			float _step = Mathf.Sign(_angleDifference) * _factor * Time.deltaTime * turnSpeed;
 
 			//Clamp step;
-			if(_angleDifference < 0f && _step < _angleDifference)
+			if (_angleDifference < 0f && _step < _angleDifference)
+			{
 				_step = _angleDifference;
-			else if(_angleDifference > 0f && _step > _angleDifference)
+			}
+			else if (_angleDifference > 0f && _step > _angleDifference)
+			{
 				_step = _angleDifference;
+			}
 
 			//Add step to current y angle;
 			currentYRotation += _step;
 
 			//Clamp y angle;
-			if(currentYRotation > 360f)
+			if (currentYRotation > 360f)
+			{
 				currentYRotation -= 360f;
-			if(currentYRotation < -360f)
+			}
+
+			if (currentYRotation < -360f)
+			{
 				currentYRotation += 360f;
+			}
 
 			//Set transform rotation using Quaternion.Euler;
 			tr.localRotation = Quaternion.Euler(0f, currentYRotation, 0f);

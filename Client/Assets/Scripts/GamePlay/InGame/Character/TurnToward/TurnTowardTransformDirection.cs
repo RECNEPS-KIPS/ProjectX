@@ -16,15 +16,19 @@ namespace GamePlay.InGame.Character
 			tr = transform;
 			parentTransform = transform.parent;
 
-			if(targetTransform == null)
-				Debug.LogWarning("No target transform has been assigned to this script.", this);
+			if (targetTransform == null)
+			{
+				LogManager.LogWarning("TurnTowardTransformDirection","No target transform has been assigned to this script.");
+			}
 		}
 		
 		//Update;
 		void LateUpdate () {
 
-			if(!targetTransform)
+			if (!targetTransform)
+			{
 				return;
+			}
 
 			//Calculate up and forward direction;
 			Vector3 _forwardDirection = Vector3.ProjectOnPlane(targetTransform.forward, parentTransform.up).normalized;
