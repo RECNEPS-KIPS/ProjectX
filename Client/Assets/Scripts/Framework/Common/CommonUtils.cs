@@ -189,5 +189,23 @@ namespace Framework.Common
             t.localScale = Vector3.one;
             t.localRotation = Quaternion.identity;
         }
+
+        public static void Clear<T>(this T[] array)
+        {
+            if (array == null)
+                return;
+            for (int i = 0, length = array.Length; i < length; i++)
+            {
+                array[i] = default;
+            }
+        }
+        
+        private static Collider[] m_checkColliders = new Collider[10];
+        public static Collider[] OverlapSphere_Max10(Vector3 center,float radius,int layerValue)
+        {
+            m_checkColliders.Clear();
+            Physics.OverlapSphereNonAlloc(center, radius,m_checkColliders,layerValue);
+            return m_checkColliders;
+        }
     }
 }
