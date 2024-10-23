@@ -34,6 +34,9 @@ MonoBehaviour:
     - Assets/ResourcesAssets/Scenes/Launch.unity
     bundleName: Scenes
   - assetBundlesMap:
+    - Assets/ResourcesAssets/Terrains/DeepDesert/DeepDesertTerrain.asset
+    bundleName: Terrains
+  - assetBundlesMap:
     - Assets/ResourcesAssets/UI/Pages/Example/ExampleUI.prefab
     - Assets/ResourcesAssets/UI/Pages/Lobby/LobbyMainUI.prefab
     - Assets/ResourcesAssets/UI/Pages/Main/MainUI.prefab

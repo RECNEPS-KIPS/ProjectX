@@ -1,15 +1,15 @@
 ManifestFileVersion: 0
-CRC: 142889249
+CRC: 544410740
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: 9b025a78e38facf32c24ef1272aaa084
+    Hash: 5c7239a2b7bf63e3da4c37f1ebb780d2
   TypeTreeHash:
     serializedVersion: 2
-    Hash: e422a73b4511c0e6dd16f04435cec9ce
+    Hash: 2ba6e1dda87927d19602de43c81e6e30
   IncrementalBuildHash:
     serializedVersion: 2
-    Hash: 9b025a78e38facf32c24ef1272aaa084
+    Hash: 5c7239a2b7bf63e3da4c37f1ebb780d2
 HashAppended: 0
 ClassTypes:
 - Class: 1
@@ -32,9 +32,41 @@ ClassTypes:
   Script: {instanceID: 0}
 - Class: 95
   Script: {instanceID: 0}
+- Class: 114
+  Script: {fileID: 11500000, guid: a70e525c82ce9413fa4d940ad7fcf1db, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: 6c72e1df647af4c0098866e944a04b01, type: 3}
+- Class: 115
+  Script: {instanceID: 0}
 - Class: 137
   Script: {instanceID: 0}
-SerializeReferenceClassIdentifiers: []
+SerializeReferenceClassIdentifiers:
+- AssemblyName: RootMotion
+  ClassName: Plugins.RootMotion.BipedReferences
+- AssemblyName: RootMotion
+  ClassName: Plugins.RootMotion.FinalIK.FBIKChain
+- AssemblyName: RootMotion
+  ClassName: Plugins.RootMotion.FinalIK.FBIKChain/ChildConstraint
+- AssemblyName: RootMotion
+  ClassName: Plugins.RootMotion.FinalIK.FBIKChain/Smoothing
+- AssemblyName: RootMotion
+  ClassName: Plugins.RootMotion.FinalIK.Grounding
+- AssemblyName: RootMotion
+  ClassName: Plugins.RootMotion.FinalIK.Grounding/Quality
+- AssemblyName: RootMotion
+  ClassName: Plugins.RootMotion.FinalIK.IKConstraintBend
+- AssemblyName: RootMotion
+  ClassName: Plugins.RootMotion.FinalIK.IKEffector
+- AssemblyName: RootMotion
+  ClassName: Plugins.RootMotion.FinalIK.IKMappingBone
+- AssemblyName: RootMotion
+  ClassName: Plugins.RootMotion.FinalIK.IKMappingLimb
+- AssemblyName: RootMotion
+  ClassName: Plugins.RootMotion.FinalIK.IKMappingSpine
+- AssemblyName: RootMotion
+  ClassName: Plugins.RootMotion.FinalIK.IKSolver/Node
+- AssemblyName: RootMotion
+  ClassName: Plugins.RootMotion.FinalIK.IKSolverFullBodyBiped
 Assets:
 - Assets/ResourcesAssets/Characters/Main/Robot.prefab
 Dependencies: []

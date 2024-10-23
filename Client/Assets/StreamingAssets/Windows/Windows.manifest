@@ -1,5 +1,5 @@
 ManifestFileVersion: 0
-CRC: 1391576523
+CRC: 2245538900
 AssetBundleManifest:
   AssetBundleInfos:
     Info_0:
@@ -19,4 +19,8 @@ AssetBundleManifest:
       Dependencies: {}
     Info_5:
       Name: scenes.ab
+      Dependencies:
+        Dependency_0: terrains.ab
+    Info_6:
+      Name: terrains.ab
       Dependencies: {}
