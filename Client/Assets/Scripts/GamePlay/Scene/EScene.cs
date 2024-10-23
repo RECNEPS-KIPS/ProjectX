@@ -2,6 +2,6 @@
 {
     public enum EScene
     {
-        Lobby = 10001,
+        DeepDesert = 10001,
     }
 }

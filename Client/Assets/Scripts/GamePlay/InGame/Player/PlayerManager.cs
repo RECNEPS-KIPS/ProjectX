@@ -50,14 +50,14 @@ namespace GamePlay.InGame.Player
             EventManager.Remove(EEvent.SCENE_LOAD_FINISHED,OnSceneLoadFinished);
         }
 
-        void OnSceneLoadFinished()
+        void OnSceneLoadFinished(dynamic sceneCf)
         {
-            LoadPlayerController();
+            LoadPlayerController(sceneCf);
         }
 
         private Transform CharacterControllerRoot;
 
-        void LoadPlayerController()
+        void LoadPlayerController(dynamic sceneCf)
         {
             LogManager.Log(LOGTag,"LoadPlayerController");
             var playerCf = ConfigManager.GetConfigByID(EConfig.Character, PlayerManager.PROTAGONIST_ID);
@@ -76,7 +76,17 @@ namespace GamePlay.InGame.Player
 
             if (ctrlCf != null)
             {
-                GameObject ctrlGo = Instantiate(ResourcesLoadManager.LoadAsset<GameObject>(ctrlCf["path"]), Vector3.zero, Quaternion.identity);
+                var initPos = Vector3.zero;
+                if (sceneCf != null)
+                {
+                    var cfInitPos = sceneCf["initPos"];
+                    if (cfInitPos != null)
+                    {
+                        initPos = cfInitPos;
+                        LogManager.Log(LOGTag,"CharacterCtrl initPos:",initPos);
+                    }
+                }
+                GameObject ctrlGo = Instantiate(ResourcesLoadManager.LoadAsset<GameObject>(ctrlCf["path"]), initPos, Quaternion.identity);
                 CharacterController cc = ctrlGo.GetComponent<CharacterController>();
                 ctrlGo.name = "CharacterController";
                 CharacterControllerRoot = ctrlGo.transform;

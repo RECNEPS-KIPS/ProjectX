@@ -30,8 +30,8 @@ MonoBehaviour:
     - Assets/ResourcesAssets/Misc/asset_bundles_map.asset
     bundleName: Misc
   - assetBundlesMap:
+    - Assets/ResourcesAssets/Scenes/DeepDesert.unity
     - Assets/ResourcesAssets/Scenes/Launch.unity
-    - Assets/ResourcesAssets/Scenes/Lobby.unity
     bundleName: Scenes
   - assetBundlesMap:
     - Assets/ResourcesAssets/UI/Pages/Example/ExampleUI.prefab

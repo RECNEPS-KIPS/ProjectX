@@ -1,15 +1,15 @@
 ManifestFileVersion: 0
-CRC: 495184865
+CRC: 425425836
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: 873ed30b6b59469e233f70ed3356d12e
+    Hash: 164e7db83db17019c28ce449ba577b97
   TypeTreeHash:
     serializedVersion: 2
-    Hash: 6238da4b15e602cfe814d86621a15dcb
+    Hash: 8e1587094829ae90eb6a160e8a730466
   IncrementalBuildHash:
     serializedVersion: 2
-    Hash: 873ed30b6b59469e233f70ed3356d12e
+    Hash: 164e7db83db17019c28ce449ba577b97
 HashAppended: 0
 ClassTypes:
 - Class: 1
@@ -20,17 +20,9 @@ ClassTypes:
   Script: {instanceID: 0}
 - Class: 21
   Script: {instanceID: 0}
-- Class: 23
-  Script: {instanceID: 0}
 - Class: 28
   Script: {instanceID: 0}
-- Class: 33
-  Script: {instanceID: 0}
-- Class: 43
-  Script: {instanceID: 0}
 - Class: 48
-  Script: {instanceID: 0}
-- Class: 64
   Script: {instanceID: 0}
 - Class: 89
   Script: {instanceID: 0}
@@ -50,16 +42,24 @@ ClassTypes:
   Script: {fileID: 11500000, guid: 4f231c4fb786f3946a6b90b886c48677, type: 3}
 - Class: 115
   Script: {instanceID: 0}
+- Class: 154
+  Script: {instanceID: 0}
+- Class: 156
+  Script: {instanceID: 0}
 - Class: 157
   Script: {instanceID: 0}
 - Class: 196
+  Script: {instanceID: 0}
+- Class: 218
   Script: {instanceID: 0}
 - Class: 223
   Script: {instanceID: 0}
 - Class: 224
   Script: {instanceID: 0}
+- Class: 1953259897
+  Script: {instanceID: 0}
 SerializeReferenceClassIdentifiers: []
 Assets:
 - Assets/ResourcesAssets/Scenes/Launch.unity
-- Assets/ResourcesAssets/Scenes/Lobby.unity
+- Assets/ResourcesAssets/Scenes/DeepDesert.unity
 Dependencies: []

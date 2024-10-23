@@ -31,10 +31,11 @@ G:\GUARDIAN_OFFICE\Config\export\bin\Debug\netcoreapp3.1\export.runtimeconfig.js
 G:\GUARDIAN_OFFICE\Config\export\bin\Debug\netcoreapp3.1\export.runtimeconfig.dev.json
 G:\GUARDIAN_OFFICE\Config\export\bin\Debug\netcoreapp3.1\export.dll
 G:\GUARDIAN_OFFICE\Config\export\bin\Debug\netcoreapp3.1\export.pdb
-G:\GUARDIAN_OFFICE\Config\export\obj\Debug\netcoreapp3.1\export.csprojAssemblyReference.cache
 G:\GUARDIAN_OFFICE\Config\export\obj\Debug\netcoreapp3.1\export.AssemblyInfoInputs.cache
 G:\GUARDIAN_OFFICE\Config\export\obj\Debug\netcoreapp3.1\export.AssemblyInfo.cs
 G:\GUARDIAN_OFFICE\Config\export\obj\Debug\netcoreapp3.1\export.csproj.CoreCompileInputs.cache
 G:\GUARDIAN_OFFICE\Config\export\obj\Debug\netcoreapp3.1\export.dll
 G:\GUARDIAN_OFFICE\Config\export\obj\Debug\netcoreapp3.1\export.pdb
 G:\GUARDIAN_OFFICE\Config\export\obj\Debug\netcoreapp3.1\export.genruntimeconfig.cache
+G:\GUARDIAN_OFFICE\Config\export\obj\Debug\netcoreapp3.1\export.GeneratedMSBuildEditorConfig.editorconfig
+G:\GUARDIAN_OFFICE\Config\export\obj\Debug\netcoreapp3.1\export.sourcelink.json

@@ -135,6 +135,12 @@ namespace export {
                                                 case "string":
                                                     value = $"\"{values[i]}\"";
                                                     break;
+                                                case "vector2":
+                                                    value = GetNormalList(values[i], ',');
+                                                    break;
+                                                case "vector3":
+                                                    value = GetNormalList(values[i], ',');
+                                                    break;
                                                 case "list<int>":
                                                     value = GetNormalList(values[i], '|');
                                                     break;

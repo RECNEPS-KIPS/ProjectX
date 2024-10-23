@@ -10,9 +10,25 @@ namespace GamePlay
     public class SceneManager: Singleton<SceneManager>
     {
         private const string LOGTag = "SceneManager";
+        
+        private Dictionary<string, int> _scenePathIDMap;
+
+        private Dictionary<string, int> ScenePathIDMap
+        {
+            get
+            {
+                if (_scenePathIDMap == null)
+                {
+                    _scenePathIDMap = new Dictionary<string, int>();
+                }
+
+                return _scenePathIDMap;
+            }
+        }
 
         private Dictionary<int, dynamic> _sceneCfMap;
 
+        //sceneid-cf
         private Dictionary<int, dynamic> SceneCfMap
         {
             get
@@ -24,6 +40,7 @@ namespace GamePlay
                 foreach (var cf in cfList)
                 {
                     _sceneCfMap.Add(cf["id"],cf);
+                    ScenePathIDMap.TryAdd(cf["path"],cf["id"]);
                     // LogManager.Log(LOGTag,cf);
                 }
 
@@ -53,7 +70,13 @@ namespace GamePlay
                 {
                     callback?.Invoke();
                 }
-                EventManager.Dispatch(EEvent.SCENE_LOAD_FINISHED);
+
+                dynamic cf = null;
+                if (ScenePathIDMap.TryGetValue(scene.path, out var sceneID))
+                {
+                    cf = GetSceneConfig(sceneID);
+                }
+                EventManager.Dispatch(EEvent.SCENE_LOAD_FINISHED,cf);
             };
             UnityEngine.SceneManagement.SceneManager.sceneLoaded += SceneLoadFinished;
         }

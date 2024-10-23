@@ -1,15 +1,18 @@
 [
 	{
 		"id":10001,
-		"path":"Assets/ResourcesAssets/Scenes/Lobby.unity"
+		"path":"Assets/ResourcesAssets/Scenes/DeepDesert.unity",
+		"initPos":[4.5,1.6,12]
 	},
 	{
 		"id":10002,
-		"path":"Assets/ResourcesAssets/InGame/Levels/Level1/Level.unity"
+		"path":"Assets/ResourcesAssets/InGame/Levels/Level1/Level.unity",
+		"initPos":[]
 	},
 	{
 		"__metatable":"true",
 		"id":"int",
-		"path":"string"
+		"path":"string",
+		"initPos":"vector3"
 	}
 ]

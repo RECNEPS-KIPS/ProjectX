@@ -28,7 +28,7 @@ namespace GamePlay.UI
         {
             LogManager.Log("PlotWindow","OnSkipBtn");
             UIManager.Instance.Close(EUI.PlotUI);
-            SceneManager.Instance.LoadSceneByID(EScene.Lobby, () =>
+            SceneManager.Instance.LoadSceneByID(EScene.DeepDesert, () =>
             {
                 UIManager.Instance.OpenUI(EUI.MainUI);
             });
