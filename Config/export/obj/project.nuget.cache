@@ -1,8 +1,11 @@
 {
   "version": 2,
-  "dgSpecHash": "Pz/xz9jOrqqkqIrMjZt49TZczc1rrWJc17Z7dO9gY8eqmEOxTHZp6j4B8X+FXSf9yFS7c84CH460zxqlc6S5mg==",
+  "dgSpecHash": "rW27eRyWC+hTFSVNftw66QAUeUOk9ZQQM2ip73QSIVo8eltyRyYSFJBBAt//kojspnekrWcZ0x+SlgwpUaDw+w==",
   "success": true,
-  "projectFilePath": "G:\\GUARDIAN_OFFICE\\Config\\export\\export.csproj",
-  "expectedPackageFiles": [],
+  "projectFilePath": "C:\\GUARDIAN_OFFICE\\Config\\export\\export.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\KIPKIPS\\.nuget\\packages\\csvhelper\\33.0.1\\csvhelper.33.0.1.nupkg.sha512",
+    "C:\\Users\\KIPKIPS\\.nuget\\packages\\microsoft.csharp\\4.7.0\\microsoft.csharp.4.7.0.nupkg.sha512"
+  ],
   "logs": []
 }

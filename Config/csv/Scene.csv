@@ -1,6 +1,6 @@
-索引id,场景描述,路径,初始位置
-id,_desc,path,initPos
-int,,string,vector3
-,,,
-10001,荒漠,Assets/ResourcesAssets/Scenes/DeepDesert.unity,"4.5,1.6,12"
-10002,关卡场景,Assets/ResourcesAssets/InGame/Levels/Level1/Level.unity,
+索引id,场景描述,路径,初始位置,地形资源
+id,_desc,path,initPos,terrainAssetPath
+int,,string,vector3,string
+,,,,
+10001,荒漠,Assets/ResourcesAssets/Scenes/DeepDesert.unity,"4.5,1.6,12",Assets/ResourcesAssets/Terrains/DeepDesert/Terrain.asset
+10002,关卡场景,Assets/ResourcesAssets/InGame/Levels/Level1/Level.unity,,

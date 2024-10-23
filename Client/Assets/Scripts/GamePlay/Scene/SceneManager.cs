@@ -94,7 +94,14 @@ namespace GamePlay
 
         public void LoadSceneByID(EScene sceneID,UnityAction callback = null)
         {
-            LoadSceneByID((int)sceneID,callback);
+            var sceneCf = GetSceneConfig((int)sceneID);
+            if (sceneCf != null) {
+                //先加载依赖的terrain
+                LogManager.Log(LOGTag,$"Load terrain name:{sceneCf["terrainAssetPath"]}");
+                
+                ResourcesLoadManager.LoadAssetBundleFile(ResourcesLoadManager.GetAssetBundleName(sceneCf["terrainAssetPath"]));
+                LoadSceneByID((int)sceneID,callback);
+            }
         }
 
         //同步从assetbundle中加载场景

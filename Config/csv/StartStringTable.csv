@@ -3,4 +3,3 @@ id,textKey,sc,en
 int,string,string,string
 ,,,
 1,START_GAME_TEXT,开始游戏,Start Game
-2,GAME_NAME,办公室大逃杀,GUARDIAN OFFICE
