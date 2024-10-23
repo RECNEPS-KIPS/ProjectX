@@ -39,3 +39,6 @@ G:\GUARDIAN_OFFICE\Config\export\obj\Debug\netcoreapp3.1\export.pdb
 G:\GUARDIAN_OFFICE\Config\export\obj\Debug\netcoreapp3.1\export.genruntimeconfig.cache
 G:\GUARDIAN_OFFICE\Config\export\obj\Debug\netcoreapp3.1\export.GeneratedMSBuildEditorConfig.editorconfig
 G:\GUARDIAN_OFFICE\Config\export\obj\Debug\netcoreapp3.1\export.sourcelink.json
+C:\GUARDIAN_OFFICE\Config\export\bin\Debug\netcoreapp3.1\CsvHelper.dll
+C:\GUARDIAN_OFFICE\Config\export\obj\Debug\netcoreapp3.1\export.csproj.AssemblyReference.cache
+C:\GUARDIAN_OFFICE\Config\export\obj\Debug\netcoreapp3.1\export.csproj.CopyComplete

@@ -6,12 +6,6 @@
 		"en":"Start Game"
 	},
 	{
-		"id":2,
-		"textKey":"GAME_NAME",
-		"sc":"办公室大逃杀",
-		"en":"GUARDIAN OFFICE"
-	},
-	{
 		"__metatable":"true",
 		"id":"int",
 		"textKey":"string",

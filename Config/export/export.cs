@@ -2,19 +2,21 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
+
 namespace export {
-    class export {
-        static int maxLayer = 0;
+    internal class export {
+        private static int maxLayer;
         private static readonly bool isMinify = false;
         private static string splicerN = "";
         private static string splicerT = "";
-        private static Dictionary<string, string> typeDict = new Dictionary<string, string>();
-        static void Main(string[] args) {
-            // args = new string[] { "s"};
+        private static readonly Dictionary<string, string> typeDict = new Dictionary<string, string>();
+        private static void Main(string[] args) {
+            // args = new string[] { "s" }; //TODO:test
             splicerN = isMinify ? "" : "\n";
             splicerT = isMinify ? "" : "\t";
             if (args.Length > 0) {
-                //string root = "G:/GUARDIAN_OFFICE/Config/";
+                // // string root = "G:/GUARDIAN_OFFICE/Config/";//TODO:test
+                // string root = "C:/GUARDIAN_OFFICE/Config/"; //TODO:test
                 string root = args[0].Replace('\\', '/');
                 string csvPath = root + "csv";
                 string jsonPath = root + "json";
@@ -41,75 +43,76 @@ namespace export {
                 DirectoryInfo csvDir = new DirectoryInfo(csvPath);
                 FileSystemInfo[] csvFiles = csvDir.GetFileSystemInfos();
                 int ignoreLine = 3;
-                foreach (FileInfo fileInfo in csvFiles) {
-                    if (fileInfo.Extension == ".csv") {
-                        string str = string.Empty;
-                        try {
-                            using (StreamReader csvSR = new StreamReader(fileInfo.FullName, new UTF8Encoding())) {
-                                str = csvSR.ReadToEnd();
-                                csvSR.Close();
-                            }
-                            //以UTF-8 NO-BOM格式重新写入文件
-                            Encoding newEncoding = new UTF8Encoding(false);
-                            using (StreamWriter csvSW = new StreamWriter(fileInfo.FullName, false, newEncoding)) {
-                                csvSW.Write(str);
-                                csvSW.Close();
-                                //Console.WriteLine(str);
-                            }
-                            string strLine = string.Empty;
-                            FileStream csvFS = new FileStream(fileInfo.FullName, FileMode.Open, FileAccess.Read);
-                            StreamReader formatCsvSR = new StreamReader(csvFS, Encoding.Default);
-                            int row = 0;
-                            string[] keys = null;
-                            string[] types = null;
-                            string[] values;
-                            string json = string.Empty;
-                            string obj;
-                            json += "[";
-                            int curLayer = 0;
-                            //int commentNum = 0;
-                            typeDict.Clear();
-                            if (!typeDict.ContainsKey("__metatable")) {
-                                typeDict.Add("__metatable", "true");
-                            }
-                            HashSet<int> validKeyIndexs = new HashSet<int>();
-                            while ((strLine = formatCsvSR.ReadLine()) != null) {
-                                //Console.WriteLine(strLine);
+                foreach (var fileSystemInfo in csvFiles) {
+                    var fileInfo = (FileInfo)fileSystemInfo;
+                    if (fileInfo.Extension != ".csv") continue;
+                    string str;
+                    try {
+                        using (StreamReader csvSR = new StreamReader(fileInfo.FullName, new UTF8Encoding())) {
+                            str = csvSR.ReadToEnd();
+                            csvSR.Close();
+                        }
+                        //以UTF-8 NO-BOM格式重新写入文件
+                        Encoding newEncoding = new UTF8Encoding(false);
+                        using (StreamWriter csvSW = new StreamWriter(fileInfo.FullName, false, newEncoding)) {
+                            csvSW.Write(str);
+                            csvSW.Close();
+                            //Console.WriteLine(str);
+                        }
+                        string strLine = string.Empty;
+                        FileStream csvFS = new FileStream(fileInfo.FullName, FileMode.Open, FileAccess.Read);
+                        StreamReader formatCsvSR = new StreamReader(csvFS, Encoding.Default);
+                        int row = 0;
+                        string[] keys = null;
+                        string[] types = null;
+                        string[] values;
+                        string json = string.Empty;
+                        string obj;
+                        json += "[";
+                        int curLayer;
+                        //int commentNum = 0;
+                        typeDict.Clear();
+                        if (!typeDict.ContainsKey("__metatable")) {
+                            typeDict.Add("__metatable", "true");
+                        }
+                        HashSet<int> validKeyIndexes = new HashSet<int>();
+                        using (Microsoft.VisualBasic.FileIO.TextFieldParser csvReader = new Microsoft.VisualBasic.FileIO.TextFieldParser(csvFS, Encoding.Default)) {
+                            csvReader.SetDelimiters(new string[] { "," });
+                            csvReader.HasFieldsEnclosedInQuotes = true;
+                            csvReader.TrimWhiteSpace = true;
+                            while (!csvReader.EndOfData) {
+                                string[] arrayLine = csvReader.ReadFields();
+                                // arrayLine 中就是每行的数据
+                                Console.WriteLine("arrayLine:  " + arrayLine.Length);
                                 if (row != ignoreLine && row != 0) {
                                     if (row == 1) {
-                                        keys = SplitCSVLineStr(strLine);
+                                        keys = arrayLine;
                                         List<string> keyList = new List<string>();
-                                        for (int i = 0; i < keys.Length; i++) {
-                                            if (!keys[i].StartsWith('_')) {
-                                                keyList.Add(keys[i]);
-                                                validKeyIndexs.Add(i);
-                                            }
+                                        for (int i = 0; i < arrayLine.Length; i++) {
+                                            if (keys[i].StartsWith('_')) continue;
+                                            keyList.Add(keys[i]);
+                                            validKeyIndexes.Add(i);
                                         }
                                         keys = keyList.ToArray();
+                           
                                         //Console.WriteLine(keys.Length);
                                     }
                                     if (row == 2) {
-                                        types = SplitCSVLineStr(strLine);
-                                        //foreach (var it in types)
-                                        //{
-                                        //    Console.WriteLine("it" + it);
-                                        //}
-
+                                        types = arrayLine;
                                         List<string> typeList = new List<string>();
                                         for (int i = 0; i < types.Length; i++) {
-                                            if (validKeyIndexs.Contains(i)) {
+                                            if (validKeyIndexes.Contains(i)) {
                                                 typeList.Add(types[i]);
                                             }
                                         }
                                         types = typeList.ToArray();
                                         //Console.WriteLine(types.Length);
                                     }
-                                    obj = string.Empty;
                                     if (row >= 4) {
-                                        values = SplitCSVLineStr(strLine);
+                                        values = arrayLine;
                                         List<string> valueList = new List<string>();
                                         for (int i = 0; i < values.Length; i++) {
-                                            if (validKeyIndexs.Contains(i)) {
+                                            if (validKeyIndexes.Contains(i)) {
                                                 valueList.Add(values[i]);
                                             }
                                         }
@@ -121,89 +124,40 @@ namespace export {
                                             // Console.WriteLine(values[i]);
                                             curLayer = 2;
                                             obj += GetTableAndRecord(curLayer);
-                                            string value = string.Empty;
-                                            switch (types[i]) {
-                                                case "int":
-                                                    value = values[i];
-                                                    break;
-                                                case "float":
-                                                    value = values[i];
-                                                    break;
-                                                case "bool":
-                                                    value = values[i].ToLower();
-                                                    break;
-                                                case "string":
-                                                    value = $"\"{values[i]}\"";
-                                                    break;
-                                                case "vector2":
-                                                    value = GetNormalList(values[i], ',');
-                                                    break;
-                                                case "vector3":
-                                                    value = GetNormalList(values[i], ',');
-                                                    break;
-                                                case "list<int>":
-                                                    value = GetNormalList(values[i], '|');
-                                                    break;
-                                                case "list<float>":
-                                                    value = GetNormalList(values[i], '|');
-                                                    break;
-                                                case "list<bool>":
-                                                    value = GetNormalList(values[i], '|');
-                                                    break;
-                                                case "list<string>":
-                                                    value = GetStringList(values[i], '|');
-                                                    break;
-                                                case "list<list<int>>":
-                                                    value = GetNormalNestList(values[i], curLayer);
-                                                    break;
-                                                case "list<list<float>>":
-                                                    value = GetNormalNestList(values[i], curLayer);
-                                                    break;
-                                                case "list<list<bool>>":
-                                                    value = GetNormalNestList(values[i], curLayer);
-                                                    break;
-                                                case "list<list<string>>":
-                                                    value = GetStringNestList(values[i], curLayer);
-                                                    break;
-                                                case "dict<int,int>":
-                                                    value = GetDict(values[i], curLayer);
-                                                    break;
-                                                case "dict<int,float>":
-                                                    value = GetDict(values[i], curLayer);
-                                                    break;
-                                                case "dict<int,bool>":
-                                                    value = GetDict(values[i], curLayer);
-                                                    break;
-                                                case "dict<int,string>":
-                                                    value = GetDict(values[i], curLayer, true);
-                                                    break;
-                                                case "dict<float,int>":
-                                                    value = GetDict(values[i], curLayer);
-                                                    break;
-                                                case "dict<float,float>":
-                                                    value = GetDict(values[i], curLayer);
-                                                    break;
-                                                case "dict<float,bool>":
-                                                    value = GetDict(values[i], curLayer);
-                                                    break;
-                                                case "dict<float,string>":
-                                                    value = GetDict(values[i], curLayer, true);
-                                                    break;
-                                                case "dict<string,int>":
-                                                    value = GetDict(values[i], curLayer);
-                                                    break;
-                                                case "dict<string,float>":
-                                                    value = GetDict(values[i], curLayer);
-                                                    break;
-                                                case "dict<string,bool>":
-                                                    value = GetDict(values[i], curLayer);
-                                                    break;
-                                                case "dict<string,string>":
-                                                    value = GetDict(values[i], curLayer, true);
-                                                    break;
-                                            }
+                                            string value = types[i] switch {
+                                                "int" => values[i],
+                                                "float" => values[i],
+                                                "bool" => values[i].ToLower(),
+                                                "string" => $"\"{values[i]}\"",
+                                                "vector2" => GetNormalList(values[i], ','),
+                                                "vector3" => GetNormalList(values[i], ','),
+                                                "list<int>" => GetNormalList(values[i], '|'),
+                                                "list<float>" => GetNormalList(values[i], '|'),
+                                                "list<bool>" => GetNormalList(values[i], '|'),
+                                                "list<string>" => GetStringList(values[i], '|'),
+                                                "list<list<int>>" => GetNormalNestList(values[i], curLayer),
+                                                "list<list<float>>" => GetNormalNestList(values[i], curLayer),
+                                                "list<list<bool>>" => GetNormalNestList(values[i], curLayer),
+                                                "list<list<string>>" => GetStringNestList(values[i], curLayer),
+                                                "dict<int,int>" => GetDict(values[i], curLayer),
+                                                "dict<int,float>" => GetDict(values[i], curLayer),
+                                                "dict<int,bool>" => GetDict(values[i], curLayer),
+                                                "dict<int,string>" => GetDict(values[i], curLayer, true),
+                                                "dict<float,int>" => GetDict(values[i], curLayer),
+                                                "dict<float,float>" => GetDict(values[i], curLayer),
+                                                "dict<float,bool>" => GetDict(values[i], curLayer),
+                                                "dict<float,string>" => GetDict(values[i], curLayer, true),
+                                                "dict<string,int>" => GetDict(values[i], curLayer),
+                                                "dict<string,float>" => GetDict(values[i], curLayer),
+                                                "dict<string,bool>" => GetDict(values[i], curLayer),
+                                                "dict<string,string>" => GetDict(values[i], curLayer, true),
+                                                _ => string.Empty
+                                            };
                                             obj += $"\"{keys[i]}\":{value}";
                                             obj += (i == values.Length - 1) ? splicerN : ("," + splicerN);
+                                            // if ("Scene.csv" == fileInfo.Name ) {
+                                            //     Console.WriteLine(fileInfo.Name + " obj:" + obj);
+                                            // }
                                             if (!typeDict.ContainsKey(keys[i])) {
                                                 typeDict.Add(keys[i], types[i]);
                                             }
@@ -216,50 +170,49 @@ namespace export {
                                 }
                                 row++;
                             }
-                            curLayer = 1;
-                            // metatable
-                            string dt = splicerT + splicerT;
-                            json += splicerN + splicerT + "{";
-                            string typeStr = "";
-                            int idx = 0;
-                            string suffix;
-                            // Console.WriteLine(typeDict.Count);
-                            foreach (KeyValuePair<string, string> kvp in typeDict) {
-                                idx++;
-                                suffix = idx == typeDict.Count ? "" : ",";
-                                typeStr += $"{splicerN}{dt}\"{kvp.Key}\":\"{kvp.Value}\"{suffix}";
+                        }
+                        // curLayer = 1;
+                        // metatable
+                        string dt = splicerT + splicerT;
+                        json += splicerN + splicerT + "{";
+                        string typeStr = "";
+                        int idx = 0;
+                        string suffix;
+                        // Console.WriteLine(typeDict.Count);
+                        foreach (KeyValuePair<string, string> kvp in typeDict) {
+                            idx++;
+                            suffix = idx == typeDict.Count ? "" : ",";
+                            typeStr += $"{splicerN}{dt}\"{kvp.Key}\":\"{kvp.Value}\"{suffix}";
+                        }
+                        json += typeStr + splicerN + splicerT + "}" + splicerN + "]";
+                        for (int i = 0; i <= maxLayer; i++) {
+                            json = json.Replace("," + splicerN + GetTable(i) + "]", splicerN + GetTable(i) + "]");
+                        }
+                        // end metatable
+                        formatCsvSR.Close();
+                        string exportFile = fileInfo.FullName.Replace("csv", "json");
+                        if (!File.Exists(exportFile)) {
+                            Console.WriteLine($"Create file : {exportFile}");
+                            FileStream createFS = File.Create(exportFile);
+                            createFS.Close();
+                        }
+                        try {
+                            using (FileStream jsonFS = File.Create(exportFile)) {
+                                byte[] info = new UTF8Encoding(true).GetBytes(json);
+                                // 向文件中写入一些信息。
+                                jsonFS.Write(info, 0, info.Length);
+                                jsonFS.Close();
                             }
-                            json += typeStr + splicerN + splicerT + "}" + splicerN + "]";
-                            for (int i = 0; i <= maxLayer; i++) {
-                                json = json.Replace("," + splicerN + GetTable(i) + "]", splicerN + GetTable(i) + "]");
-                            }
-                            // end metatable
-                            formatCsvSR.Close();
-                            string exportFile = fileInfo.FullName.Replace("csv", "json");
-                            if (!File.Exists(exportFile)) {
-                                Console.WriteLine($"Create file : {exportFile}");
-                                FileStream createFS = File.Create(exportFile);
-                                createFS.Close();
-                            }
-                            try {
-                                using (FileStream jsonFS = File.Create(exportFile)) {
-                                    byte[] info = new UTF8Encoding(true).GetBytes(json);
-                                    // 向文件中写入一些信息。
-                                    jsonFS.Write(info, 0, info.Length);
-                                    jsonFS.Close();
-                                }
-                                Console.WriteLine($"Export finished : {exportFile}");
-                            } catch (Exception ex) {
-                                Console.ForegroundColor = ConsoleColor.Red;
-                                Console.WriteLine(ex.ToString());
-                            }
-                            typeDict.Clear();
-                            //Console.WriteLine(json);
+                            Console.WriteLine($"Export finished : {exportFile}");
                         } catch (Exception ex) {
                             Console.ForegroundColor = ConsoleColor.Red;
                             Console.WriteLine(ex.ToString());
                         }
-
+                        typeDict.Clear();
+                        //Console.WriteLine(json);
+                    } catch (Exception ex) {
+                        Console.ForegroundColor = ConsoleColor.Red;
+                        Console.WriteLine(ex.ToString());
                     }
                 }
                 // Console.WriteLine(jsonPath);
@@ -272,9 +225,9 @@ namespace export {
                 foreach (FileSystemInfo i in targetFiles) {
                     //判断是否文件夹
                     if (i is DirectoryInfo) {
-                        DirectoryInfo subdir = new DirectoryInfo(i.FullName);
+                        DirectoryInfo subDir = new DirectoryInfo(i.FullName);
                         //删除子目录和文件
-                        subdir.Delete(true);
+                        subDir.Delete(true);
                     } else {
                         //删除指定文件
                         File.Delete(i.FullName);
@@ -293,42 +246,6 @@ namespace export {
             Environment.Exit(0);
         }
 
-        public static string[] SplitCSVLineStr(string str) {
-            List<string> strList = new List<string>();
-            string temp = string.Empty;
-            bool doFind = false;
-            for (int i = 0; i < str.Length; i++) {
-                char c = str[i];
-                if (c == '"' && !doFind) {
-                    doFind = true;
-                    continue;
-                }
-                if (doFind) {
-                    if (c == '"') {
-                        doFind = false;
-                        strList.Add(temp);
-                        temp = string.Empty;
-                    } else {
-                        temp += c;
-                    }
-                } else {
-                    if (c == ',') {
-                        //if (temp != string.Empty) {
-                            strList.Add(temp);
-                            temp = string.Empty;
-                        //}
-                    } else {
-                        temp += c;
-                    }
-                }
-            }
-            //if (temp != string.Empty) {
-
-            //}
-            strList.Add(temp);
-            return strList.ToArray();
-        }
-
         /// <summary>
         /// 查找固定后缀文件
         /// </summary>
@@ -344,24 +261,21 @@ namespace export {
             if (dir == null)
                 return;
             FileSystemInfo[] files = dir.GetFileSystemInfos();
-            for (int i = 0; i < files.Length; i++) {
-                FileInfo file = files[i] as FileInfo;
-                if (file != null) {
+            foreach (var t in files) {
+                if (t is FileInfo file) {
                     //Console.WriteLine(file.Extension);
                     //if (file.Extension == "."+ fileType) {
-                    if (file.Extension == "." + fileType) {
-                        Console.WriteLine("Copied : " + file.FullName);
-                        string desPath = tarDir + "/" + file.Name;
-                        file.CopyTo(desPath, true);//允许覆盖文件
-                    }
+                    if (file.Extension != "." + fileType) continue;
+                    Console.WriteLine("Copied : " + file.FullName);
+                    string desPath = tarDir + "/" + file.Name;
+                    file.CopyTo(desPath, true); //允许覆盖文件
                 } else { //子目录递归查找
-                    ListFiles(files[i], tarDir, fileType);
+                    ListFiles(t, tarDir, fileType);
                 }
             }
         }
-
+        // dict<T,T>导出方案
         /// <summary>
-        /// dict<T,T>导出方案
         /// </summary>
         /// <param name="str">解析串</param>
         /// <param name="layer">层级</param>
@@ -379,7 +293,6 @@ namespace export {
             res += splicerN + GetTable(layer) + "}";
             return res;
         }
-
         public static string GetDictKeyValuePair(string str, char split, bool isString = false) {
             string[] arr = str.Split(split);
             string res = "";
@@ -388,9 +301,8 @@ namespace export {
             }
             return res;
         }
-
+        // 嵌套list<list<数值型>>导出方案
         /// <summary>
-        /// 嵌套list<list<数值型>>导出方案
         /// </summary>
         /// <param name="str">解析串</param>
         /// <param name="layer">层级</param>
@@ -408,8 +320,8 @@ namespace export {
             res += splicerN + GetTable(layer) + "]";
             return res;
         }
+        //嵌套list<list<string>>导出方案
         /// <summary>
-        /// 嵌套list<list<string>>导出方案
         /// </summary>
         /// <param name="str">解析串</param>
         /// <param name="layer">层级</param>

@@ -1,0 +1,26 @@
+ManifestFileVersion: 0
+CRC: 2626190088
+Hashes:
+  AssetFileHash:
+    serializedVersion: 2
+    Hash: 850ee007a2729193e5e945839433b859
+  TypeTreeHash:
+    serializedVersion: 2
+    Hash: 2d467e57f96dcb7b82cd412dd5249b61
+  IncrementalBuildHash:
+    serializedVersion: 2
+    Hash: 850ee007a2729193e5e945839433b859
+HashAppended: 0
+ClassTypes:
+- Class: 28
+  Script: {instanceID: 0}
+- Class: 48
+  Script: {instanceID: 0}
+- Class: 156
+  Script: {instanceID: 0}
+- Class: 1953259897
+  Script: {instanceID: 0}
+SerializeReferenceClassIdentifiers: []
+Assets:
+- Assets/ResourcesAssets/Terrains/DeepDesert/Terrain.asset
+Dependencies: []
