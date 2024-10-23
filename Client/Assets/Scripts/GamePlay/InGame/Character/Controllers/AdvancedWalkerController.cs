@@ -21,8 +21,21 @@ namespace GamePlay.InGame.Character
         bool jumpKeyWasLetGo = false;
         bool jumpKeyIsPressed = false;
 
+        public float walkSpeed = 3f;
+        public float runSpeed = 6f;
         //Movement speed;
-        public float movementSpeed = 7f;
+        public float movementSpeed
+        {
+            get
+            {
+                if (IsRunKeyPressed())
+                {
+                    return runSpeed;
+                }
+
+                return walkSpeed;
+            }
+        }
 
         //How fast the controller can change direction while in the air;
         //Higher values result in more air control;
@@ -102,13 +115,14 @@ namespace GamePlay.InGame.Character
         {
             HandleJumpKeyInput();
         }
+        
 
         //Handle jump booleans for later use in FixedUpdate;
         void HandleJumpKeyInput()
         {
             bool _newJumpKeyPressedState = IsJumpKeyPressed();
 
-            if (jumpKeyIsPressed == false && _newJumpKeyPressedState == true)
+            if (jumpKeyIsPressed == false && _newJumpKeyPressedState)
             {
                 jumpKeyWasPressed = true;
             }
@@ -242,6 +256,18 @@ namespace GamePlay.InGame.Character
 
             return characterInput.IsJumpKeyPressed();
         }
+        
+        protected virtual bool IsRunKeyPressed()
+        {
+            //If no character input script is attached to this object, return;
+            if (characterInput == null)
+            {
+                return false;
+            }
+
+            return characterInput.IsRunKeyPressed();
+        }
+        
 
         //Determine current controller state based on current momentum and whether the controller is grounded (or not);
         //Handle state transitions;

@@ -13,5 +13,7 @@ namespace GamePlay.InGame.Character
         public abstract float GetVerticalMovementInput();
 
         public abstract bool IsJumpKeyPressed();
+
+        public abstract bool IsRunKeyPressed();
     }
 }

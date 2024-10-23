@@ -58,7 +58,8 @@ namespace GamePlay.InGame.Character
         private static readonly int ID_IsGrounded = Animator.StringToHash("IsGrounded");
         private static readonly int ID_IsStrafing = Animator.StringToHash("IsStrafing");
         private static readonly int ID_OnLand = Animator.StringToHash("OnLand");
-
+        private static readonly int ID_IsRun = Animator.StringToHash("IsRun");
+        
         private bool IsInit = false;
 
         private void Awake()
@@ -135,7 +136,6 @@ namespace GamePlay.InGame.Character
             //Pass values to animator;
             animator.SetBool(ID_IsGrounded, controller.IsGrounded());
             animator.SetBool(ID_IsStrafing, useStrafeAnimations);
-
             // lastHorizontalVelocity = curHorizontalVelocity;
             // lastVerticalVelocity = curVerticalVelocity;
         }

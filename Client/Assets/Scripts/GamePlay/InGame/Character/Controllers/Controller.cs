@@ -12,6 +12,7 @@ namespace GamePlay.InGame.Character
         public abstract Vector3 GetVelocity();
         public abstract Vector3 GetMovementVelocity();
         public abstract bool IsGrounded();
+        
 
         //Events;
         public delegate void VectorEvent(Vector3 v);
