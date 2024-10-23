@@ -16,10 +16,10 @@ namespace GamePlay.InGame.Character
         protected CeilingDetector ceilingDetector;
 
         //Jump key variables;
-        bool jumpInputIsLocked;
-        bool jumpKeyWasPressed;
-        bool jumpKeyWasLetGo;
-        bool jumpKeyIsPressed;
+        bool jumpInputIsLocked = false;
+        bool jumpKeyWasPressed = false;
+        bool jumpKeyWasLetGo = false;
+        bool jumpKeyIsPressed = false;
 
         public float walkSpeed = 3f;
         public float runSpeed = 6f;
