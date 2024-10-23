@@ -8,9 +8,13 @@ namespace Framework.Core.Manager
     {
         public override void Initialize()
         {
-            Cursor.lockState = CursorLockMode.Confined;
-            Cursor.visible = false;
+            // Cursor.lockState = CursorLockMode.Confined;
+            // Cursor.visible = false;
         }
-        public void Launch(){}
+
+        public void Launch()
+        {
+            
+        }
     }
 }

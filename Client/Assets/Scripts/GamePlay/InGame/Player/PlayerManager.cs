@@ -94,9 +94,11 @@ namespace GamePlay.InGame.Player
                 if ((DEF.ECharacterControllerType)ctrlCf["ctrlType"] != DEF.ECharacterControllerType.FPS)
                 {
                     GameObject modelGo = Instantiate(ResourcesLoadManager.LoadAsset<GameObject>(modelPath));
+                    var animCtrl = modelGo.AddComponent<AnimationControl>();
+                    animCtrl.Init(ctrlGo.GetComponent<Controller>());
                     var mt = modelGo.transform;
                     
-                    LogManager.Log(LOGTag,"LoadPlayerController",mt==null,cc==null);
+                    // LogManager.Log(LOGTag,"LoadPlayerController",mt==null,cc==null);
                     CommonUtils.ResetGO(mt,cc.ModelMountTrs);
                 }
             }
