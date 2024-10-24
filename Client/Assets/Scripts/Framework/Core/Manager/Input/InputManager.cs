@@ -25,12 +25,15 @@ namespace Framework.Core.Manager.Input {
         private void OnEnable(){
             InputControls.PC.Enable();
         }
-        private void Update(){
-            IsJumpKeyPressed();
-            IsRunKeyPressed();
-            GetAxisInput();
-            GetMoveInput();
+        private void OnDisable(){
+            InputControls.PC.Disable();
         }
+        // private void Update(){
+        //     // IsJumpKeyPressed();
+        //     // IsRunKeyPressed();
+        //     // GetAxisInput();
+        //     // GetMoveInput();
+        // }
 
         public void Launch(){
             
