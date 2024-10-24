@@ -1,15 +1,15 @@
 ManifestFileVersion: 0
-CRC: 1394035894
+CRC: 1103313452
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: 069baeab7d5050be0cd9893d20f440ab
+    Hash: e6a06d1bb3be58c5fa648804496d0b30
   TypeTreeHash:
     serializedVersion: 2
     Hash: 8e1587094829ae90eb6a160e8a730466
   IncrementalBuildHash:
     serializedVersion: 2
-    Hash: 069baeab7d5050be0cd9893d20f440ab
+    Hash: e6a06d1bb3be58c5fa648804496d0b30
 HashAppended: 0
 ClassTypes:
 - Class: 1
@@ -63,4 +63,4 @@ Assets:
 - Assets/ResourcesAssets/Scenes/Launch.unity
 - Assets/ResourcesAssets/Scenes/DeepDesert.unity
 Dependencies:
-- C:/GUARDIAN_OFFICE/Client/Assets/StreamingAssets/Windows/terrains.ab
+- G:/GUARDIAN_OFFICE/Client/Assets/StreamingAssets/Windows/terrains.ab

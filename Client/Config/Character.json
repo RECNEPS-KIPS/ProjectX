@@ -1,7 +1,7 @@
 [
 	{
 		"id":10001,
-		"modelPath":"Assets/ResourcesAssets/Characters/Main/Robot.prefab",
+		"modelPath":"Assets/ResourcesAssets/Characters/Robot/Robot.prefab",
 		"ctrlType":1,
 		"baseHP":1000,
 		"baseStamina":1000,

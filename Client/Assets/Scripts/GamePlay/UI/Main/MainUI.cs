@@ -11,7 +11,7 @@ using Framework.Core.Manager.Language;
 using Framework.Core.Manager.ResourcesLoad;
 using Framework.Core.Manager.UI;
 using GamePlay;
-using GamePlay.InGame.Player;
+using GamePlay.Player;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Events;

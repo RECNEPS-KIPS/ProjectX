@@ -9,7 +9,7 @@ using Framework.Core.Manager.Language;
 using Framework.Core.Manager.ResourcesLoad;
 using Framework.Core.Manager.UI;
 using Framework.Core.Manager;
-using GamePlay.InGame.Player;
+using GamePlay.Player;
 
 namespace Framework.Core.Launcher
 {
