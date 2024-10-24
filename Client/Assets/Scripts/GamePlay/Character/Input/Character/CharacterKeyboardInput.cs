@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using Framework.Core.Manager.Input;
 using UnityEngine;
 
 namespace GamePlay.Character
@@ -7,45 +8,31 @@ namespace GamePlay.Character
     //This character movement input class is an example of how to get input from a keyboard to control the character;
     public class CharacterKeyboardInput : CharacterInput
     {
-        public string horizontalInputAxis = "Horizontal";
-        public string verticalInputAxis = "Vertical";
-        public KeyCode jumpKey = KeyCode.Space;
-        public KeyCode runKey = KeyCode.LeftShift;
+        // public string horizontalInputAxis = "Horizontal";
+        // public string verticalInputAxis = "Vertical";
+        // public KeyCode jumpKey = KeyCode.Space;
+        // public KeyCode runKey = KeyCode.LeftShift;
 
         //If this is enabled, Unity's internal input smoothing is bypassed;
         public bool useRawInput = true;
 
         public override float GetHorizontalMovementInput()
         {
-            if (useRawInput)
-            {
-                return Input.GetAxisRaw(horizontalInputAxis);
-            }
-            else
-            {
-                return Input.GetAxis(horizontalInputAxis);
-            }
+            return InputManager.Instance.GetMoveInput().x;
         }
 
         public override float GetVerticalMovementInput()
         {
-            if (useRawInput)
-            {
-                return Input.GetAxisRaw(verticalInputAxis);
-            }
-            else
-            {
-                return Input.GetAxis(verticalInputAxis);
-            }
+            return InputManager.Instance.GetMoveInput().y;
         }
 
         public override bool IsJumpKeyPressed()
         {
-            return Input.GetKey(jumpKey);
+            return InputManager.Instance.IsJumpKeyPressed();
         }
         public override bool IsRunKeyPressed()
         {
-            return Input.GetKey(runKey);
+            return InputManager.Instance.IsRunKeyPressed();
         }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using Framework.Core.Manager.Input;
 using UnityEngine;
 
 namespace GamePlay.Character
@@ -8,10 +9,6 @@ namespace GamePlay.Character
     //It also includes an optional mouse sensitivity setting;
     public class CameraMouseInput : CameraInput
     {
-        //Mouse input axes;
-        public string mouseHorizontalAxis = "Mouse X";
-        public string mouseVerticalAxis = "Mouse Y";
-
         //Invert input options;
         public bool invertHorizontalInput = false;
         public bool invertVerticalInput = false;
@@ -23,7 +20,7 @@ namespace GamePlay.Character
         public override float GetHorizontalCameraInput()
         {
             //Get raw mouse input;
-            float _input = Input.GetAxisRaw(mouseHorizontalAxis);
+            float _input = InputManager.Instance.GetAxisInput().x;
 
             //Since raw mouse input is already time-based, we need to correct for this before passing the input to the camera controller;
             if (Time.timeScale > 0f && Time.deltaTime > 0f)
@@ -51,7 +48,7 @@ namespace GamePlay.Character
         public override float GetVerticalCameraInput()
         {
             //Get raw mouse input;
-            float _input = -Input.GetAxisRaw(mouseVerticalAxis);
+            float _input = -InputManager.Instance.GetAxisInput().y;
 
             //Since raw mouse input is already time-based, we need to correct for this before passing the input to the camera controller;
             if (Time.timeScale > 0f && Time.deltaTime > 0f)

@@ -3,13 +3,11 @@
 
 using System;
 using System.Collections.Generic;
-using Framework.Core.Container;
 using UnityEngine;
 using Framework.Core.Singleton;
-using UnityEditor;
 using Framework.Core.Manager.Camera;
 using Framework.Core.Manager.ResourcesLoad;
-using Framework.Core.ResourcesAssets;
+using UnityEngine.EventSystems;
 
 namespace Framework.Core.Manager.UI
 {
@@ -88,13 +86,14 @@ namespace Framework.Core.Manager.UI
         };
 
         private const string LOGTag = "UIManager";
-        private readonly Stack<BaseUI> _uiStack = new Stack<BaseUI>();
-        private readonly Dictionary<int, BaseUI> _baseUIDict = new Dictionary<int, BaseUI>();
+        private readonly Stack<BaseUI> _uiStack = new();
+        private readonly Dictionary<int, BaseUI> _baseUIDict = new();
 
         private static Transform UICameraRoot => CameraManager.Instance.UICamera.transform;
-        private UnityEngine.Camera _uiCamera;
-        private static UnityEngine.Camera UICamera => CameraManager.Instance.UICamera;
-
+        // private UnityEngine.Camera _uiCamera;
+        // private static UnityEngine.Camera UICamera => CameraManager.Instance.UICamera;
+        
+        private Transform _canvasRoot;
         public Transform CanvasRoot
         {
             get
@@ -104,26 +103,32 @@ namespace Framework.Core.Manager.UI
                 return _canvasRoot;
             }
         }
+        
 
-        private Transform _canvasRoot;
+        private Transform _eventSystem;
+        public Transform EventSystem
+        {
+            get
+            {
+                if (_eventSystem != null) return _eventSystem;
+                _eventSystem = FindObjectOfType<EventSystem>().transform;
+                return _eventSystem;
+            }
+        }
+
+        
 
         /// <summary>
         /// UI框架初始化
         /// </summary>
         public override void Initialize()
         {
-            RegistUIBinding();
+            RegisterUIBinding();
             InitUIData();
         }
-
-        void RegistUIBinding()
+        private static void RegisterUIBinding()
         {
             UIBinding.Register();
-        }
-
-        private void InitUICamera()
-        {
-            DontDestroyOnLoad(UICameraRoot);
         }
 
         /// <summary>
@@ -131,7 +136,8 @@ namespace Framework.Core.Manager.UI
         /// </summary>
         public void Launch()
         {
-            InitUICamera();
+            DontDestroyOnLoad(UICameraRoot);
+            DontDestroyOnLoad(EventSystem);
         }
 
         /// <summary>
@@ -151,8 +157,7 @@ namespace Framework.Core.Manager.UI
             {
                 return ui;
             }
-            
-            var go = Instantiate(ResourcesLoadManager.LoadAsset<GameObject>($"{DEF.RESOURCES_ASSETS_PATH}/{UIDataDict[id].UIPrefabPath}.prefab"),CanvasRoot);
+            var go = Instantiate(ResourcesLoadManager.LoadAsset<GameObject>($"{DEF.RESOURCES_ASSETS_PATH}/{UIDataDict[id].UIPrefabPath}.prefab",IsAsync),CanvasRoot);
             ui = go.transform.GetComponent<BaseUI>();
             go.transform.name = UIDataDict[id].Name;
             ui.UIId = id;

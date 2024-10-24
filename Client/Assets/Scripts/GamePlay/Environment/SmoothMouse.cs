@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using Framework.Core.Manager.Input;
 
 namespace GamePlay.Enviorment
 {
@@ -64,9 +65,9 @@ namespace GamePlay.Enviorment
             {
                 rotAverageY = 0f;
                 rotAverageX = 0f;
-
-                rotationY += Input.GetAxis("Mouse Y") * sensitivityY;
-                rotationX += Input.GetAxis("Mouse X") * sensitivityX;
+                
+                rotationY += InputManager.Instance.GetAxisInput().y * sensitivityY;
+                rotationX += InputManager.Instance.GetAxisInput().x * sensitivityX;
 
                 rotArrayY.Add(rotationY);
                 rotArrayX.Add(rotationX);
@@ -106,7 +107,7 @@ namespace GamePlay.Enviorment
             {
                 rotAverageX = 0f;
 
-                rotationX += Input.GetAxis("Mouse X") * sensitivityX;
+                rotationX += InputManager.Instance.GetAxisInput().x * sensitivityX;
 
                 rotArrayX.Add(rotationX);
 
@@ -131,7 +132,7 @@ namespace GamePlay.Enviorment
             {
                 rotAverageY = 0f;
 
-                rotationY += Input.GetAxis("Mouse Y") * sensitivityY * (invertY ? 1 : -1);
+                rotationY += InputManager.Instance.GetAxisInput().y * sensitivityY * (invertY ? 1 : -1);
 
                 rotArrayY.Add(rotationY);
 
@@ -158,32 +159,34 @@ namespace GamePlay.Enviorment
         {
             Cursor.visible = !_lockCursor;
             Cursor.lockState = _lockCursor ? CursorLockMode.Locked : CursorLockMode.None;
-            if (Input.GetKeyDown(KeyCode.Escape))
+            if (Input.GetKeyDown(KeyCode.Escape)) {
+                
                 _lockCursor = !_lockCursor;
+            }
         }
 
         private void HandleMovement()
         {
             var speed = 4f;
-            if (Input.GetKey(KeyCode.W))
+            if (Mathf.Abs(InputManager.Instance.GetMoveInput().y) > 0.01f)
             {
                 var transform1 = transform;
                 transform1.position += transform1.forward * Time.deltaTime * speed;
             }
 
-            if (Input.GetKey(KeyCode.A))
+            if (Mathf.Abs(InputManager.Instance.GetMoveInput().x) > 0.01f)
             {
                 var transform1 = transform;
                 transform1.position -= transform1.right * Time.deltaTime * speed;
             }
 
-            if (Input.GetKey(KeyCode.S))
+            if (Mathf.Abs(InputManager.Instance.GetMoveInput().y) > 0.01f)
             {
                 var transform1 = transform;
                 transform1.position -= transform1.forward * Time.deltaTime * speed;
             }
 
-            if (Input.GetKey(KeyCode.D))
+            if (Mathf.Abs(InputManager.Instance.GetMoveInput().x) > 0.01f)
             {
                 var transform1 = transform;
                 transform1.position += transform1.right * Time.deltaTime * speed;

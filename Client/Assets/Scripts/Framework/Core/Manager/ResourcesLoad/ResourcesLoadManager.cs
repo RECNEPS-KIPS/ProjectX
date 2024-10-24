@@ -36,11 +36,18 @@ namespace Framework.Core.Manager.ResourcesLoad {
         /// 加载AssetBundle FromLocalFile
         /// </summary>
         /// <param name="assetBundleName"></param>
-        public static AssetBundle LoadAssetBundleFile(string assetBundleName) {
+        public static AssetBundle LoadAssetBundleFile(string assetBundleName,bool isAsync = false) {
             if (_assetBundleDict.TryGetValue(assetBundleName, out var file)) {
                 LogManager.Log(LOGTag,$"LoadAssetBundleFile assetBundleName has loaded");
                 return file;
             }
+            // if (isAsync) {
+            //     AssetBundleCreateRequest abcr = AssetBundle.LoadFromFileAsync($"{AssetBundlesPathTools.GetABOutPath()}/{assetBundleName}.{DEF.ASSET_BUNDLE_SUFFIX}");
+            //     // abcr.completed +=  asyncOperation => {
+            //     //     _assetBundleDict[assetBundleName] = abcr.assetBundle;
+            //     // };
+            // } else {
+            // }
             _assetBundleDict[assetBundleName] = AssetBundle.LoadFromFile($"{AssetBundlesPathTools.GetABOutPath()}/{assetBundleName}.{DEF.ASSET_BUNDLE_SUFFIX}");
             LogManager.Log(LOGTag,$"LoadAssetBundleFile assetBundleName has loaded first");
             return _assetBundleDict[assetBundleName];
@@ -62,14 +69,14 @@ namespace Framework.Core.Manager.ResourcesLoad {
         /// <param name="assetPath"></param>
         /// <typeparam name="T"></typeparam>
         /// <returns></returns>
-        public static T LoadAsset<T>(string assetPath) where T : UnityEngine.Object {
+        public static T LoadAsset<T>(string assetPath,bool isAsync = false) where T : UnityEngine.Object {
             LogManager.Log(LOGTag,$"LoadAsset->assetPath:{assetPath}");
             T temp = default;
 #if UNITY_EDITOR
             temp = AssetDatabase.LoadAssetAtPath<T>(assetPath);
 #else
             if (_assetDict.ContainsKey(assetPath)) {
-                AssetBundle ab = LoadAssetBundleFile(_assetDict[assetPath]);
+                AssetBundle ab = LoadAssetBundleFile(_assetDict[assetPath],isAsync);
                 temp = ab.LoadAsset<T>(assetPath);
             } else {
                 LogManager.Log(LOGTag,"资源不在assetbundle中");//Assets/ResourcesAssets/UI/Start/StartWindow.prefab

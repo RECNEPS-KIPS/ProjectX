@@ -9,6 +9,7 @@ using Framework.Core.Manager.Language;
 using Framework.Core.Manager.ResourcesLoad;
 using Framework.Core.Manager.UI;
 using Framework.Core.Manager;
+using Framework.Core.Manager.Input;
 using GamePlay.Player;
 
 namespace Framework.Core.Launcher
@@ -22,6 +23,7 @@ namespace Framework.Core.Launcher
         private void Awake()
         {
             GameManager.Instance.Launch();
+            InputManager.Instance.Launch();
             ResourcesLoadManager.Instance.Launch();
             ConfigManager.Instance.Launch();
             StoreManager.Instance.Launch();
