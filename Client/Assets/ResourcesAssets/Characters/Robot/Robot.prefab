@@ -916,8 +916,8 @@ MonoBehaviour:
     footRotationSpeed: 7
     maxFootRotationAngle: 45
     rotateSolver: 1
-    pelvisSpeed: 5
-    pelvisDamper: 0
+    pelvisSpeed: 10
+    pelvisDamper: 0.1
     lowerPelvisWeight: 1
     liftPelvisWeight: 0
     rootSphereCastRadius: 0.1
