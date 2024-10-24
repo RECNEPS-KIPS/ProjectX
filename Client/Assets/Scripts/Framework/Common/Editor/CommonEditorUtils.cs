@@ -1,8 +1,10 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
+using Unity.VisualScripting;
 using UnityEditor;
 using UnityEditor.SceneManagement;
+using UnityEngine;
 using UnityEngine.SceneManagement;
-using Application = UnityEngine.Application;
 
 namespace Framework.Common
 {
@@ -20,6 +22,26 @@ namespace Framework.Common
                 EditorSceneManager.OpenScene(path);
             }
             EditorApplication.ExecuteMenuItem("Edit/Play");
+        }
+        
+        [MenuItem("Tools/ExportMesh",false)]
+        public static void ExportMeshAsset() {
+            var obj = Selection.activeObject;
+            try
+            {
+                Mesh mesh = obj.GetComponent<MeshFilter>().mesh;
+                if (mesh != null) {
+                    var path = $"Assets/{obj.name}_{DateTime.Now.Millisecond}.asset";
+                    AssetDatabase.CreateAsset(mesh, path);
+                    LogManager.Log("提取mesh成功：提取_" + path);
+                }
+                else
+                    LogManager.LogWarning("提取mesh失败：无MeshFilter组件");
+            }
+            catch (Exception e)
+            {
+                LogManager.LogWarning("提取mesh失败：" + e.ToString());
+            }
         }
     }
     

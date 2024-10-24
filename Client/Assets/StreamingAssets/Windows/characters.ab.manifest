@@ -1,15 +1,15 @@
 ManifestFileVersion: 0
-CRC: 3262975077
+CRC: 4111487224
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: fb63607051d78b85641b07ecd35fe0b0
+    Hash: 4454b9e46f649221a43e45f34660a20b
   TypeTreeHash:
     serializedVersion: 2
-    Hash: e9256a038e46af7c547771850d846df8
+    Hash: 2eb2612a1ce3447e4253e657bb54a8c9
   IncrementalBuildHash:
     serializedVersion: 2
-    Hash: fb63607051d78b85641b07ecd35fe0b0
+    Hash: 4454b9e46f649221a43e45f34660a20b
 HashAppended: 0
 ClassTypes:
 - Class: 1
@@ -39,6 +39,10 @@ ClassTypes:
 - Class: 114
   Script: {fileID: 11500000, guid: 65ace204533ef4c24ac80f11ef8ee8ea, type: 3}
 - Class: 114
+  Script: {fileID: 11500000, guid: a70e525c82ce9413fa4d940ad7fcf1db, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: 6c72e1df647af4c0098866e944a04b01, type: 3}
+- Class: 114
   Script: {fileID: 11500000, guid: 4db3c450680fd4c809d5ad90a2f24e5f, type: 3}
 - Class: 115
   Script: {instanceID: 0}
@@ -46,9 +50,35 @@ ClassTypes:
   Script: {instanceID: 0}
 SerializeReferenceClassIdentifiers:
 - AssemblyName: Assembly-CSharp
+  ClassName: Plugins.RootMotion.BipedReferences
+- AssemblyName: Assembly-CSharp
+  ClassName: Plugins.RootMotion.FinalIK.FBIKChain
+- AssemblyName: Assembly-CSharp
+  ClassName: Plugins.RootMotion.FinalIK.FBIKChain/ChildConstraint
+- AssemblyName: Assembly-CSharp
+  ClassName: Plugins.RootMotion.FinalIK.FBIKChain/Smoothing
+- AssemblyName: Assembly-CSharp
+  ClassName: Plugins.RootMotion.FinalIK.FullBodyBipedEffector
+- AssemblyName: Assembly-CSharp
+  ClassName: Plugins.RootMotion.FinalIK.GrounderFBBIK/SpineEffector
+- AssemblyName: Assembly-CSharp
   ClassName: Plugins.RootMotion.FinalIK.Grounding
 - AssemblyName: Assembly-CSharp
   ClassName: Plugins.RootMotion.FinalIK.Grounding/Quality
+- AssemblyName: Assembly-CSharp
+  ClassName: Plugins.RootMotion.FinalIK.IKConstraintBend
+- AssemblyName: Assembly-CSharp
+  ClassName: Plugins.RootMotion.FinalIK.IKEffector
+- AssemblyName: Assembly-CSharp
+  ClassName: Plugins.RootMotion.FinalIK.IKMappingBone
+- AssemblyName: Assembly-CSharp
+  ClassName: Plugins.RootMotion.FinalIK.IKMappingLimb
+- AssemblyName: Assembly-CSharp
+  ClassName: Plugins.RootMotion.FinalIK.IKMappingSpine
+- AssemblyName: Assembly-CSharp
+  ClassName: Plugins.RootMotion.FinalIK.IKSolver/Node
+- AssemblyName: Assembly-CSharp
+  ClassName: Plugins.RootMotion.FinalIK.IKSolverFullBodyBiped
 - AssemblyName: Assembly-CSharp
   ClassName: Plugins.RootMotion.FinalIK.IKSolverLimb
 - AssemblyName: Assembly-CSharp
@@ -58,4 +88,5 @@ SerializeReferenceClassIdentifiers:
 Assets:
 - Assets/ResourcesAssets/Characters/BagBoy/BagBoy.prefab
 - Assets/ResourcesAssets/Characters/Robot/Robot.prefab
+- Assets/ResourcesAssets/Characters/BagBoy/Models/SM_Chr_Teen_Male_01.asset
 Dependencies: []
