@@ -112,12 +112,6 @@ namespace GamePlay.InGame.Character
             oldMovementVelocity = _horizontalVelocity;
             curVerticalVelocity = _verticalVelocity.magnitude * VectorMath.GetDotProduct(_verticalVelocity.normalized, up);
             curHorizontalVelocity = _horizontalVelocity.magnitude;
-
-            // if (Mathf.Abs(curVerticalVelocity - lastVerticalVelocity) <= 0.01f && Mathf.Abs(curHorizontalVelocity - lastHorizontalVelocity) <= 0.01f)
-            // {
-            //     return;
-            // }
-            
             
             LogManager.Log("ID_VerticalSpeed",curVerticalVelocity);
             LogManager.Log("ID_HorizontalSpeed",curHorizontalVelocity);
