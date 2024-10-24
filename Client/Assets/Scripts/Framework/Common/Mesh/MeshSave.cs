@@ -12,7 +12,7 @@ namespace Framework.Common
             LogManager.Log("开始提取mesh");
             try
             {
-                Mesh mesh = this.GetComponent<MeshFilter>().mesh;
+                Mesh mesh = this.GetComponent<MeshFilter>().sharedMesh;
                 if (mesh != null) {
                     AssetDatabase.CreateAsset(mesh, "Assets/MeshSave/" + name + ".asset");
                     LogManager.Log("提取mesh成功：提取_" + name);
