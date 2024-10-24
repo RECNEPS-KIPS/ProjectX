@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Data;
 using Framework;
 using Framework.Common;
 using Framework.Core.Manager.Config;
@@ -15,7 +16,7 @@ namespace GamePlay.Player
     public class PlayerManager:MonoSingleton<PlayerManager>
     {
         [NonSerialized]
-        public const int PROTAGONIST_ID = 10001;
+        public const int PROTAGONIST_ID = 10002;
         
         private const string LOGTag = "PlayerManager";
 
@@ -26,13 +27,26 @@ namespace GamePlay.Player
         {
             get
             {
-                if (_playerAttr == null)
-                {
-                    _playerAttr = new PlayerAttr();
-                    _playerAttr.InitAttrValues();
-                }
+                if (_playerAttr != null) return _playerAttr;
+                _playerAttr = new PlayerAttr();
+                _playerAttr.InitAttrValues();
 
                 return _playerAttr;
+            }
+        }
+        
+        [SerializeField]
+        private PlayerStatus _playerStatus;
+
+        public PlayerStatus PlayerStatus
+        {
+            get
+            {
+                if (_playerStatus != null) return _playerStatus;
+                _playerStatus = new PlayerStatus();
+                _playerStatus.InitStatusValues();
+
+                return _playerStatus;
             }
         }
 
@@ -103,5 +117,21 @@ namespace GamePlay.Player
                 }
             }
         }
+
+        private void Update()
+        {
+            UpdateStatus();
+            UpdateAttr();
+        }
+
+        void UpdateStatus()
+        {
+            
+        }
+
+        void UpdateAttr()
+        {
+            
+        }   
     }
 }

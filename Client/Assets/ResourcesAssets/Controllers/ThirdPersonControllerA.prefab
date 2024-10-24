@@ -196,7 +196,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1f5e44db14072ea4c964da3b192181c8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  movementSpeed: 3
+  walkSpeed: 1.2
+  runSpeed: 6
   airControlRate: 2
   jumpSpeed: 5
   jumpDuration: 0.2
@@ -222,6 +223,7 @@ MonoBehaviour:
   horizontalInputAxis: Horizontal
   verticalInputAxis: Vertical
   jumpKey: 32
+  runKey: 304
   useRawInput: 1
 --- !u!114 &6985380360096126537
 MonoBehaviour:

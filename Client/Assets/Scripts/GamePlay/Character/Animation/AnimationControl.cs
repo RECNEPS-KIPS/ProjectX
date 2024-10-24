@@ -60,13 +60,14 @@ namespace GamePlay.Character
         private static readonly int ID_OnLand = Animator.StringToHash("OnLand");
         private static readonly int ID_IsRun = Animator.StringToHash("IsRun");
         
-        private bool IsInit = false;
+        private bool IsInit;
 
         private void Awake()
         {
             IsInit = false;
         }
 
+        //初始化
         public void Init(Controller ctrl)
         {
             controller = ctrl;
@@ -77,7 +78,7 @@ namespace GamePlay.Character
         }
 
         //OnDisable;
-        void OnDisable()
+        private void OnDisable()
         {
             //Disconnect events to prevent calls to disabled gameobjects;
             controller.OnLand -= OnLand;
@@ -93,7 +94,7 @@ namespace GamePlay.Character
 
 
         //Update;
-        void Update()
+        private void Update()
         {
             if (!IsInit)
             {
@@ -113,8 +114,8 @@ namespace GamePlay.Character
             curVerticalVelocity = _verticalVelocity.magnitude * VectorMath.GetDotProduct(_verticalVelocity.normalized, up);
             curHorizontalVelocity = _horizontalVelocity.magnitude;
             
-            LogManager.Log("ID_VerticalSpeed",curVerticalVelocity);
-            LogManager.Log("ID_HorizontalSpeed",curHorizontalVelocity);
+            // LogManager.Log("ID_VerticalSpeed",curVerticalVelocity);
+            // LogManager.Log("ID_HorizontalSpeed",curHorizontalVelocity);
             
             animator.SetFloat(ID_VerticalSpeed, curVerticalVelocity);
             animator.SetFloat(ID_HorizontalSpeed, curHorizontalVelocity);
@@ -134,19 +135,20 @@ namespace GamePlay.Character
             // lastVerticalVelocity = curVerticalVelocity;
         }
 
-        void OnLand(Vector3 _v)
+        private void OnLand(Vector3 _v)
         {
             //Only trigger animation if downward velocity exceeds threshold;
             if (VectorMath.GetDotProduct(_v, tr.up) > -landVelocityThreshold)
             {
                 return;
             }
-
+            LogManager.Log("OnLand");
             animator.SetTrigger(ID_OnLand);
         }
 
-        void OnJump(Vector3 _v)
+        private void OnJump(Vector3 _v)
         {
+            LogManager.Log("OnJump");
         }
     }
 }

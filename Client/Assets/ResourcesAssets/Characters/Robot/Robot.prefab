@@ -927,7 +927,7 @@ MonoBehaviour:
   - {fileID: 9023505409200153229}
   - {fileID: 2553947326022128206}
   pelvis: {fileID: 6959776833777707963}
-  characterRoot: {fileID: 6980825922667235050}
+  characterRoot: {fileID: 7880064046620277858}
   rootRotationWeight: 0
   rootRotationSpeed: 5
   maxRootRotationAngle: 45

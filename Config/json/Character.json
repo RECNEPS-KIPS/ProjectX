@@ -12,6 +12,18 @@
 		"growthTemp":0
 	},
 	{
+		"id":10002,
+		"modelPath":"Assets/ResourcesAssets/Characters/BagBoy/BagBoy.prefab",
+		"ctrlType":1,
+		"baseHP":1000,
+		"baseStamina":1000,
+		"baseThirsty":1000,
+		"baseHungry":1000,
+		"baseDefense":100,
+		"baseAttack":50,
+		"growthTemp":0
+	},
+	{
 		"__metatable":"true",
 		"id":"int",
 		"modelPath":"string",

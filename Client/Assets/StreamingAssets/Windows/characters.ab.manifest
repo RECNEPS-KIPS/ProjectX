@@ -1,15 +1,15 @@
 ManifestFileVersion: 0
-CRC: 925806378
+CRC: 3262975077
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: e1df0dbaa16ba3e302813972da507ede
+    Hash: fb63607051d78b85641b07ecd35fe0b0
   TypeTreeHash:
     serializedVersion: 2
-    Hash: e422a73b4511c0e6dd16f04435cec9ce
+    Hash: e9256a038e46af7c547771850d846df8
   IncrementalBuildHash:
     serializedVersion: 2
-    Hash: e1df0dbaa16ba3e302813972da507ede
+    Hash: fb63607051d78b85641b07ecd35fe0b0
 HashAppended: 0
 ClassTypes:
 - Class: 1
@@ -18,7 +18,11 @@ ClassTypes:
   Script: {instanceID: 0}
 - Class: 21
   Script: {instanceID: 0}
+- Class: 23
+  Script: {instanceID: 0}
 - Class: 28
+  Script: {instanceID: 0}
+- Class: 33
   Script: {instanceID: 0}
 - Class: 43
   Script: {instanceID: 0}
@@ -32,9 +36,26 @@ ClassTypes:
   Script: {instanceID: 0}
 - Class: 95
   Script: {instanceID: 0}
+- Class: 114
+  Script: {fileID: 11500000, guid: 65ace204533ef4c24ac80f11ef8ee8ea, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: 4db3c450680fd4c809d5ad90a2f24e5f, type: 3}
+- Class: 115
+  Script: {instanceID: 0}
 - Class: 137
   Script: {instanceID: 0}
-SerializeReferenceClassIdentifiers: []
+SerializeReferenceClassIdentifiers:
+- AssemblyName: Assembly-CSharp
+  ClassName: Plugins.RootMotion.FinalIK.Grounding
+- AssemblyName: Assembly-CSharp
+  ClassName: Plugins.RootMotion.FinalIK.Grounding/Quality
+- AssemblyName: Assembly-CSharp
+  ClassName: Plugins.RootMotion.FinalIK.IKSolverLimb
+- AssemblyName: Assembly-CSharp
+  ClassName: Plugins.RootMotion.FinalIK.IKSolverLimb/BendModifier
+- AssemblyName: Assembly-CSharp
+  ClassName: Plugins.RootMotion.FinalIK.IKSolverTrigonometric/TrigonometricBone
 Assets:
+- Assets/ResourcesAssets/Characters/BagBoy/BagBoy.prefab
 - Assets/ResourcesAssets/Characters/Robot/Robot.prefab
 Dependencies: []
