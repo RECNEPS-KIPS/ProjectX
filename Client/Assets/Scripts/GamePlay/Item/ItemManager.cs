@@ -23,11 +23,10 @@ namespace GamePlay.Item
         public string Path;
         public int Weight;
         public List<int> Params;
-        public bool HasCollider;
 
         public override string ToString()
         {
-            return $"Item: ID{ID},Name:{Name},MainType:{MainType.ToString()},SubType:{SubType.ToString()},Path:{Path},Weight:{Weight},HasCollider:{HasCollider},Params:{Params}";
+            return $"Item: ID{ID},Name:{Name},MainType:{MainType.ToString()},SubType:{SubType.ToString()},Path:{Path},Weight:{Weight},Params:{Params}";
         }
     }
     public class ItemManager:Singleton<ItemManager>
@@ -60,7 +59,6 @@ namespace GamePlay.Item
                     SubType = (EItemSubType)cf["subType"],
                     Path = cf["path"],
                     Weight = cf["weight"],
-                    HasCollider = cf["hasCollider"],
                     Params = cf["params"],
                 };
                 LogManager.Log(LOGTag,$"itemCf:{itemCf}");

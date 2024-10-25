@@ -1,3 +1,5 @@
+using System;
+
 namespace GamePlay.Player
 {
     public enum PlayerMainStatus
@@ -11,6 +13,7 @@ namespace GamePlay.Player
         NONE,
         INSANE,//精神错乱
     }
+    [Serializable]
     public class PlayerStatus
     {
         public PlayerMainStatus mainStatus = PlayerMainStatus.NONE;

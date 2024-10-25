@@ -1,18 +1,24 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Framework.Core.Manager.Config;
 using Framework.Core.Manager.Event;
 using Framework.Core.Manager.ResourcesLoad;
 using Framework.Core.Singleton;
+using GamePlay.Item;
+using UnityEngine;
 using UnityEngine.Events;
 
 namespace GamePlay.Scene
 {
-    public class SceneManager: Singleton<SceneManager>
+    [MonoSingletonPath("[Manager]/SceneManager")]
+    public class SceneManager: MonoSingleton<SceneManager>
     {
         private const string LOGTag = "SceneManager";
         
         private Dictionary<string, int> _scenePathIDMap;
-
+        
+        [SerializeField]
+        private bool DrawGizmos;
         private Dictionary<string, int> ScenePathIDMap
         {
             get
@@ -28,7 +34,7 @@ namespace GamePlay.Scene
 
         private Dictionary<int, dynamic> _sceneCfMap;
 
-        //sceneid-cf
+        //scene id-cf
         private Dictionary<int, dynamic> SceneCfMap
         {
             get
@@ -47,8 +53,7 @@ namespace GamePlay.Scene
                 return _sceneCfMap;
             }
         }
-
-        UnityAction<UnityEngine.SceneManagement.Scene, UnityEngine.SceneManagement.LoadSceneMode> SceneLoadFinished;
+        private UnityAction<UnityEngine.SceneManagement.Scene, UnityEngine.SceneManagement.LoadSceneMode> SceneLoadFinished;
         private Dictionary<string, UnityAction> _loadedCallbackMap;
 
         private Dictionary<string, UnityAction> LoadedCallbackMap
@@ -59,7 +64,32 @@ namespace GamePlay.Scene
                 return _loadedCallbackMap;
             }
         }
-        public void Launch(){}
+        // 存储世界中的游戏对象数组
+        
+        public IOctrable[] worldObjects;
+        public int nodeMinSize = 5; // 八叉树的最小节点大小
+        
+        [SerializeField]
+        private Octree octree; // 八叉树对象
+        
+
+        // 在每一帧更新时调用
+        private void OnDrawGizmos()
+        {
+            if (Application.isPlaying && octree != null)
+            {
+                if (DrawGizmos)
+                {
+                    octree.rootNode.Draw(); // 在运行时绘制八叉树的根节点的包围盒
+                }
+            }
+        }
+        public void Launch()
+        {
+#if UNITY_EDITOR
+            DrawGizmos = true;
+#endif
+        }
         public override void Initialize()
         {
             LogManager.Log(LOGTag,$"Register scene load finished callback");
@@ -76,7 +106,11 @@ namespace GamePlay.Scene
                 {
                     cf = GetSceneConfig(sceneID);
                 }
-                //初始化场景中的物件 按照八叉树结构划分好
+                worldObjects = FindObjectsOfType<OctreeItem>() as IOctrable[];
+                // LogManager.Log(LOGTag,$"Scene load worldObjects:{worldObjects.Length}");
+                //新场景加载好之后初始化八叉树
+                octree = new Octree(worldObjects, nodeMinSize); //创建八叉树对象并初始化
+        
                 EventManager.Dispatch(EEvent.SCENE_LOAD_FINISHED,cf);
             };
             UnityEngine.SceneManagement.SceneManager.sceneLoaded += SceneLoadFinished;

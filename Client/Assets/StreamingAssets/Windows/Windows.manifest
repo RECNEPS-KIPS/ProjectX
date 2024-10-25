@@ -1,32 +1,32 @@
 ManifestFileVersion: 0
-CRC: 877240056
+CRC: 1311633121
 AssetBundleManifest:
   AssetBundleInfos:
     Info_0:
-      Name: ingame.ab
-      Dependencies: {}
-    Info_1:
-      Name: misc.ab
-      Dependencies: {}
-    Info_2:
-      Name: ui.ab
-      Dependencies: {}
-    Info_3:
       Name: characters.ab
       Dependencies: {}
-    Info_4:
+    Info_1:
       Name: controllers.ab
       Dependencies: {}
-    Info_5:
+    Info_2:
+      Name: ingame.ab
+      Dependencies: {}
+    Info_3:
       Name: items.ab
       Dependencies: {}
-    Info_6:
+    Info_4:
+      Name: misc.ab
+      Dependencies: {}
+    Info_5:
       Name: scenes.ab
       Dependencies:
         Dependency_0: terrains.ab
-    Info_7:
+    Info_6:
       Name: settings.ab
       Dependencies: {}
-    Info_8:
+    Info_7:
       Name: terrains.ab
+      Dependencies: {}
+    Info_8:
+      Name: ui.ab
       Dependencies: {}

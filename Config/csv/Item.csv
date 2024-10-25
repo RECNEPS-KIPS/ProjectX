@@ -1,5 +1,5 @@
-道具id,道具描述,道具名称,道具类型(0-Food),道具子类型,资源模型路径,缩放,重量,道具参数,参数描述,是否有碰撞盒
-id,_desc,name,mainType,subType,path,scale,weight,params,_params,hasCollider
-int,,string,int,int,string,vector3,int,list<int>,,bool
-,,,,,,,,,,
-10001,苹果,苹果,1,,Assets/ResourcesAssets/Items/Prefabs/Plants/SM_Prop_Apple_01.prefab,"1,1,1",100,100|100|50,"回复的血量,饥饿度,水分",TRUE
+道具id,道具描述,道具名称,道具类型(0-Food),道具子类型,资源模型路径,缩放,重量,道具参数,参数描述
+id,_desc,name,mainType,subType,path,scale,weight,params,_params
+int,,string,int,int,string,vector3,int,list<int>,
+,,,,,,,,,
+10001,苹果,苹果,1,,Assets/ResourcesAssets/Items/Prefabs/Plants/SM_Prop_Apple_01.prefab,"1,1,1",100,100|100|50,"回复的血量,饥饿度,水分"

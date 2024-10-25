@@ -1,15 +1,15 @@
 ManifestFileVersion: 0
-CRC: 3193973407
+CRC: 2473514984
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: 17bdb89dc5cc8987f4a95918f126f6bb
+    Hash: fd9d9483be20ce74378ecc1b5fe50df9
   TypeTreeHash:
     serializedVersion: 2
-    Hash: 84604c0e2614fd872d681c9a87cd35c3
+    Hash: 8a5a32bf012702a96669b2172d981654
   IncrementalBuildHash:
     serializedVersion: 2
-    Hash: 17bdb89dc5cc8987f4a95918f126f6bb
+    Hash: fd9d9483be20ce74378ecc1b5fe50df9
 HashAppended: 0
 ClassTypes:
 - Class: 1
@@ -31,21 +31,21 @@ ClassTypes:
 - Class: 108
   Script: {instanceID: 0}
 - Class: 114
+  Script: {fileID: 11500000, guid: 0cd44c1031e13a943bb63640046fad76, type: 3}
+- Class: 114
   Script: {fileID: 11500000, guid: 76c392e42b5098c458856cdf6ecaaaa1, type: 3}
 - Class: 114
   Script: {fileID: 11500000, guid: dc42784cf147c0c48a680349fa168899, type: 3}
 - Class: 114
-  Script: {fileID: 11500000, guid: 3c413f2be8af4aba949b5102607bfca2, type: 3}
-- Class: 114
-  Script: {fileID: 11500000, guid: 0cd44c1031e13a943bb63640046fad76, type: 3}
-- Class: 114
-  Script: {fileID: 11500000, guid: 01614664b831546d2ae94a42149d80ac, type: 3}
-- Class: 114
   Script: {fileID: 11500000, guid: 39fa3d8997a24136984ca6e2c99902bc, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: 3c413f2be8af4aba949b5102607bfca2, type: 3}
 - Class: 114
   Script: {fileID: 11500000, guid: fc1515ab76e54f068e2f2207940fab32, type: 3}
 - Class: 114
-  Script: {fileID: 11500000, guid: 38b76df3fc6941bfb76be1be9047a948, type: 3}
+  Script: {fileID: 11500000, guid: 01614664b831546d2ae94a42149d80ac, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: cf2acca074854a8a8e6dbc6fb528f28f, type: 3}
 - Class: 115
   Script: {instanceID: 0}
 - Class: 154
@@ -69,4 +69,4 @@ Assets:
 - Assets/ResourcesAssets/Scenes/Launch.unity
 - Assets/ResourcesAssets/Scenes/DeepDesert.unity
 Dependencies:
-- G:/GUARDIAN_OFFICE/Client/Assets/StreamingAssets/Windows/terrains.ab
+- C:/GUARDIAN_OFFICE/Client/Assets/StreamingAssets/Windows/terrains.ab

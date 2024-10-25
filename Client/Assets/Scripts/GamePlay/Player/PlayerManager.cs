@@ -49,6 +49,8 @@ namespace GamePlay.Player
                 return _playerStatus;
             }
         }
+        
+        private CharacterController CharacterController;
 
         public void Launch()
         {
@@ -66,7 +68,15 @@ namespace GamePlay.Player
 
         void OnSceneLoadFinished(dynamic sceneCf)
         {
-            LoadPlayerController(sceneCf);
+            if (CharacterController != null)
+            {
+                return;
+            }
+            var loadPlayer = sceneCf != null && sceneCf["loadPlayer"];
+            if (loadPlayer)
+            {
+                LoadPlayerController(sceneCf);
+            }
         }
 
         private Transform CharacterControllerRoot;
@@ -74,7 +84,7 @@ namespace GamePlay.Player
         void LoadPlayerController(dynamic sceneCf)
         {
             LogManager.Log(LOGTag,"LoadPlayerController");
-            var playerCf = ConfigManager.GetConfigByID(EConfig.Character, PlayerManager.PROTAGONIST_ID);
+            var playerCf = ConfigManager.GetConfigByID(EConfig.Character, PROTAGONIST_ID);
             var modelPath = playerCf["modelPath"];
             var ctrlType = playerCf["ctrlType"];
             var ctrlCfList = ConfigManager.GetConfig(EConfig.CharacterController);
@@ -101,7 +111,7 @@ namespace GamePlay.Player
                     }
                 }
                 GameObject ctrlGo = Instantiate(ResourcesLoadManager.LoadAsset<GameObject>(ctrlCf["path"]), initPos, Quaternion.identity);
-                CharacterController cc = ctrlGo.GetComponent<CharacterController>();
+                CharacterController = ctrlGo.GetComponent<CharacterController>();
                 ctrlGo.name = "CharacterController";
                 CharacterControllerRoot = ctrlGo.transform;
                 DontDestroyOnLoad(CharacterControllerRoot);
@@ -113,7 +123,7 @@ namespace GamePlay.Player
                     var mt = modelGo.transform;
                     
                     // LogManager.Log(LOGTag,"LoadPlayerController",mt==null,cc==null);
-                    CommonUtils.ResetGO(mt,cc.ModelMountTrs);
+                    CommonUtils.ResetGO(mt,CharacterController.ModelMountTrs);
                 }
             }
         }

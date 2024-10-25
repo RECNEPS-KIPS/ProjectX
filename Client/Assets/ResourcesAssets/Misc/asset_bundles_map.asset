@@ -16,7 +16,6 @@ MonoBehaviour:
   - assetBundlesMap:
     - Assets/ResourcesAssets/Characters/BagBoy/BagBoy.prefab
     - Assets/ResourcesAssets/Characters/BagBoy/Models/SM_Chr_Teen_Male_01.asset
-    - Assets/ResourcesAssets/Characters/Robot/Robot.prefab
     bundleName: Characters
   - assetBundlesMap:
     - Assets/ResourcesAssets/Controllers/FirstPersonController.prefab

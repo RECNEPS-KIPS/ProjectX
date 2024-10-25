@@ -12,6 +12,7 @@ using Framework.Core.Manager;
 using Framework.Core.Manager.Input;
 using GamePlay.Item;
 using GamePlay.Player;
+using SceneManager = GamePlay.Scene.SceneManager;
 
 namespace Framework.Core.Launcher
 {
@@ -23,7 +24,7 @@ namespace Framework.Core.Launcher
         // 调用业务逻辑
         private void Awake()
         {
-            //先启动core manager
+            //core manager先启动
             GameManager.Instance.Launch();
             InputManager.Instance.Launch();
             ResourcesLoadManager.Instance.Launch();
@@ -31,6 +32,7 @@ namespace Framework.Core.Launcher
             StoreManager.Instance.Launch();
             AntiCheatManager.Instance.Launch();
             LanguageManager.Instance.Launch();
+            SceneManager.Instance.Launch();
 
             //gameplay玩法相关manager后启动
             UIManager.Instance.Launch();

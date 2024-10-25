@@ -1,15 +1,15 @@
 ManifestFileVersion: 0
-CRC: 497627230
+CRC: 2154556217
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: c5d4d6743300838d2b26a544f69f3f9f
+    Hash: 2544a3f73bd959d0820fde56a9f95162
   TypeTreeHash:
     serializedVersion: 2
-    Hash: 77a1c9490bb013eb86ede1dedae576da
+    Hash: fa27d064f08d1f3e02d1ddf860a944b7
   IncrementalBuildHash:
     serializedVersion: 2
-    Hash: c5d4d6743300838d2b26a544f69f3f9f
+    Hash: 2544a3f73bd959d0820fde56a9f95162
 HashAppended: 0
 ClassTypes:
 - Class: 1
@@ -38,10 +38,6 @@ ClassTypes:
   Script: {instanceID: 0}
 - Class: 114
   Script: {fileID: 11500000, guid: 6c72e1df647af4c0098866e944a04b01, type: 3}
-- Class: 114
-  Script: {fileID: 11500000, guid: 4db3c450680fd4c809d5ad90a2f24e5f, type: 3}
-- Class: 114
-  Script: {fileID: 11500000, guid: 65ace204533ef4c24ac80f11ef8ee8ea, type: 3}
 - Class: 114
   Script: {fileID: 11500000, guid: a70e525c82ce9413fa4d940ad7fcf1db, type: 3}
 - Class: 115
@@ -79,14 +75,7 @@ SerializeReferenceClassIdentifiers:
   ClassName: Plugins.RootMotion.FinalIK.IKSolver/Node
 - AssemblyName: Assembly-CSharp
   ClassName: Plugins.RootMotion.FinalIK.IKSolverFullBodyBiped
-- AssemblyName: Assembly-CSharp
-  ClassName: Plugins.RootMotion.FinalIK.IKSolverLimb
-- AssemblyName: Assembly-CSharp
-  ClassName: Plugins.RootMotion.FinalIK.IKSolverLimb/BendModifier
-- AssemblyName: Assembly-CSharp
-  ClassName: Plugins.RootMotion.FinalIK.IKSolverTrigonometric/TrigonometricBone
 Assets:
 - Assets/ResourcesAssets/Characters/BagBoy/BagBoy.prefab
-- Assets/ResourcesAssets/Characters/Robot/Robot.prefab
 - Assets/ResourcesAssets/Characters/BagBoy/Models/SM_Chr_Teen_Male_01.asset
 Dependencies: []

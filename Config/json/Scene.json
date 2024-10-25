@@ -3,19 +3,15 @@
 		"id":10001,
 		"path":"Assets/ResourcesAssets/Scenes/DeepDesert.unity",
 		"initPos":[4.5,1.6,12],
-		"terrainAssetPath":"Assets/ResourcesAssets/Terrains/DeepDesert/Terrain.asset"
-	},
-	{
-		"id":10002,
-		"path":"Assets/ResourcesAssets/InGame/Levels/Level1/Level.unity",
-		"initPos":[],
-		"terrainAssetPath":""
+		"terrainAssetPath":"Assets/ResourcesAssets/Terrains/DeepDesert/Terrain.asset",
+		"loadPlayer":true
 	},
 	{
 		"__metatable":"true",
 		"id":"int",
 		"path":"string",
 		"initPos":"vector3",
-		"terrainAssetPath":"string"
+		"terrainAssetPath":"string",
+		"loadPlayer":"bool"
 	}
 ]
