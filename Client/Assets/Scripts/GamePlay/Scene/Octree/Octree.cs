@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace GamePlay.Scene
@@ -18,8 +19,8 @@ namespace GamePlay.Scene
             // 遍历所有游戏对象,计算包围盒以包含它们
             foreach (IOctrable octreeItem in worldObjects)
             {
-                LogManager.Log(LOGTag,$"Item name:{octreeItem.GO.name}");
-                bounds.Encapsulate(octreeItem.GO.GetComponent<Collider>().bounds);
+                LogManager.Log(LOGTag,$"Item name:{octreeItem.SelfTrs.name}");
+                bounds.Encapsulate(octreeItem.ColliderTrs.GetComponent<Collider>().bounds);
             }
 
             // 计算包围盒的最大边长
@@ -41,7 +42,37 @@ namespace GamePlay.Scene
         {
             foreach (IOctrable wo in worldObjects)
             {
-                rootNode.AddObject(wo.GO);
+                rootNode.AddObject(wo);
+            }
+        }
+        
+        public List<OctreeNode> CheckBounds(Bounds checkBounds)
+        {
+            List<OctreeNode> nodes = new List<OctreeNode>();
+            CheckNode(rootNode, checkBounds,ref nodes);
+            return nodes;
+        }
+        
+        void CheckNode(OctreeNode node, Bounds checkBounds,ref List<OctreeNode> nodes)
+        {
+            if (node == null)
+            {
+                return;
+            }
+            if (node.nodeBounds.Intersects(checkBounds))
+            {
+                if (node.isLeaf)
+                {
+                    nodes.Add(node);
+                } 
+                else
+                {
+                    if (node.children == null) return;
+                    foreach (var child in node.children)
+                    {
+                        CheckNode(child, checkBounds,ref nodes);
+                    }
+                }
             }
         }
     }

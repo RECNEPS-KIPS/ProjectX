@@ -50,7 +50,7 @@ namespace GamePlay.Player
             }
         }
         
-        private CharacterController CharacterController;
+        public CharacterController CharacterController;
 
         public void Launch()
         {

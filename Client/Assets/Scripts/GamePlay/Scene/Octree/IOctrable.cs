@@ -8,6 +8,7 @@ namespace GamePlay.Scene
 {
     public interface IOctrable
     {
-        GameObject GO { get; set; }
+        Transform ColliderTrs { get; set; }
+        Transform SelfTrs{get;}
     }
 }

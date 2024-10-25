@@ -8,19 +8,39 @@ namespace GamePlay.Scene
     public class OctreeNode
     {
         [SerializeField]
-        Bounds nodeBounds; // 节点的包围盒
+        public Bounds nodeBounds; // 节点的包围盒
         
         [SerializeField]
-        float minSize; // 最小节点大小
+        public float minSize; // 最小节点大小
         
-        Bounds[] childBounds; // 子节点的包围盒数组
+        [SerializeField]
+        public Bounds[] childBounds; // 子节点的包围盒数组
        
         [SerializeField]
-        private OctreeNode[] children; // 子节点数组
+        public OctreeNode[] children; // 子节点数组
 
+        [SerializeField]
+        public bool isLeaf; // 是否叶节点
+        
+        [SerializeField]
+        public List<IOctrable> octrables; // 子节点数组
+
+        public List<IOctrable> Octrables
+        {
+            get
+            {
+                if (octrables == null)
+                {
+                    octrables = new();
+                }
+                return octrables;
+            }
+        }
+        
         // 构造函数,接受一个包围盒和最小节点大小作为参数
         public OctreeNode(Bounds b, float minNodeSize)
         {
+            isLeaf = false;
             nodeBounds = b;
             minSize = minNodeSize;
             float quarter = nodeBounds.size.y / 4.0f;
@@ -40,17 +60,19 @@ namespace GamePlay.Scene
         }
 
         // 将游戏对象添加到节点
-        public void AddObject(GameObject go)
+        public void AddObject(IOctrable go)
         {
             DivideAndAdd(go);
         }
 
         // 分割并添加游戏对象
-        public void DivideAndAdd(GameObject go)
+        public void DivideAndAdd(IOctrable io)
         {
             if (nodeBounds.size.y <= minSize)
             {
                 // 如果节点大小小于等于最小节点大小,停止分割
+                isLeaf = true;
+                Octrables.Add(io);
                 return; 
             }
             children ??= new OctreeNode[8];
@@ -60,9 +82,9 @@ namespace GamePlay.Scene
                 children[i] ??= new OctreeNode(childBounds[i], minSize);
 
                 // 如果游戏对象的包围盒与子节点的包围盒相交,进行分割
-                if (!childBounds[i].Intersects(go.GetComponent<Collider>().bounds)) continue;
+                if (!childBounds[i].Intersects(io.ColliderTrs.GetComponent<Collider>().bounds)) continue;
                 dividing = true;
-                children[i].DivideAndAdd(go);
+                children[i].DivideAndAdd(io);
             }
 
             // 如果没有进行分割,将子节点数组设为null
@@ -75,7 +97,8 @@ namespace GamePlay.Scene
         // 绘制节点的包围盒
         public void Draw()
         {
-            Gizmos.color = new Color(0, 1, 0);
+            Gizmos.color = isLeaf ? new Color(1, 0, 0) : new Color(0, 1, 0);
+            LogManager.Log("OctreeNode",$"isLeaf:{isLeaf}");
             Gizmos.DrawWireCube(nodeBounds.center, nodeBounds.size);
 
             // 如果子节点不为空,递归绘制子节点

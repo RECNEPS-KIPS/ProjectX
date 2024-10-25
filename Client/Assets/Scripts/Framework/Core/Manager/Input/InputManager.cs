@@ -70,7 +70,7 @@ namespace Framework.Core.Manager.Input {
         }
         public bool IsPickKeyPressed(){
             // LogManager.Log("IsRunKeyPressed");
-            return InputControls.Keyboard.Backpack.IsPressed();
+            return InputControls.Keyboard.Pick.IsPressed();
         }
     }
 }

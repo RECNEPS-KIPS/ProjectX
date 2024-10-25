@@ -107,7 +107,7 @@ namespace GamePlay.Scene
                     cf = GetSceneConfig(sceneID);
                 }
                 worldObjects = FindObjectsOfType<OctreeItem>() as IOctrable[];
-                // LogManager.Log(LOGTag,$"Scene load worldObjects:{worldObjects.Length}");
+                LogManager.Log(LOGTag,$"Scene load IOctrable:{worldObjects.Length} OctreeItem:{FindObjectsOfType<OctreeItem>().Length}");
                 //新场景加载好之后初始化八叉树
                 octree = new Octree(worldObjects, nodeMinSize); //创建八叉树对象并初始化
         
@@ -155,6 +155,21 @@ namespace GamePlay.Scene
             }
             ResourcesLoadManager.LoadAssetBundleFile(ResourcesLoadManager.GetAssetBundleName(path));
             UnityEngine.SceneManagement.SceneManager.LoadScene(path);
+        }
+
+        public List<IOctrable> CheckBounds(Bounds bounds)
+        {
+            List<IOctrable> os = new();
+            List<OctreeNode> nodes = octree.CheckBounds(bounds);
+            foreach (var node in nodes)
+            {
+                if (!node.isLeaf)
+                {
+                    continue;
+                }
+                os.AddRange(node.Octrables);
+            }
+            return os;
         }
     }
 }

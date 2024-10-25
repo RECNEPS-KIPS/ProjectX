@@ -3,11 +3,11 @@
 // describe:
 using System;
 using Framework.Core.Manager.ResourcesLoad;
-using GamePlay.Scene;
+using GamePlay.Item;
 using Unity.VisualScripting;
 using UnityEngine;
 
-namespace GamePlay.Item
+namespace GamePlay.Scene
 {
     [Serializable]
     public class OctreeItem : MonoBehaviour, IItemable, IOctrable
@@ -31,7 +31,14 @@ namespace GamePlay.Item
                 return null;
             }
         }
-        public GameObject GO { get; set; }
+        public Transform SelfTrs {
+            get
+            {
+                return transform;
+            }
+            
+        }
+        public Transform ColliderTrs { get; set; }
         private void Awake()
         {
             InitItem();
@@ -44,7 +51,7 @@ namespace GamePlay.Item
             go.transform.localRotation = Quaternion.Euler(0, 0, 0);
             var collider = go.transform.AddComponent<BoxCollider>();
             collider.isTrigger = true;
-            GO = go;
+            ColliderTrs = go.transform;
         }
     }
 }
