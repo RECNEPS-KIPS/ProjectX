@@ -16,7 +16,7 @@ namespace GamePlay.Character
         
         void Update()
         {
-            if (collider != null && InputManager.Instance.IsPickKeyPressed())
+            if (collider != null && InputManager.Instance.IsPickKeySinglePressed())
             {
                 LogManager.Log(LOGTag,"IsPickKeyPressed");
                 var list = SceneManager.Instance.CheckBounds(collider.bounds);

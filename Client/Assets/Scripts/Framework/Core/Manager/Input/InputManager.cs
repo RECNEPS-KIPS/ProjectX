@@ -68,9 +68,9 @@ namespace Framework.Core.Manager.Input {
             // LogManager.Log("IsRunKeyPressed");
             return InputControls.Keyboard.Backpack.IsPressed();
         }
-        public bool IsPickKeyPressed(){
+        public bool IsPickKeySinglePressed(){
             // LogManager.Log("IsRunKeyPressed");
-            return InputControls.Keyboard.Pick.IsPressed();
+            return InputControls.Keyboard.Pick.WasPressedThisFrame();
         }
     }
 }
