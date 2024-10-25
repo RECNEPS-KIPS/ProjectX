@@ -1,4 +1,4 @@
-﻿namespace GamePlay
+﻿namespace GamePlay.Scene
 {
     public enum EScene
     {

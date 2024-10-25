@@ -5,7 +5,7 @@ using Framework.Core.Manager.ResourcesLoad;
 using Framework.Core.Singleton;
 using UnityEngine.Events;
 
-namespace GamePlay
+namespace GamePlay.Scene
 {
     public class SceneManager: Singleton<SceneManager>
     {
@@ -76,6 +76,7 @@ namespace GamePlay
                 {
                     cf = GetSceneConfig(sceneID);
                 }
+                //初始化场景中的物件 按照八叉树结构划分好
                 EventManager.Dispatch(EEvent.SCENE_LOAD_FINISHED,cf);
             };
             UnityEngine.SceneManagement.SceneManager.sceneLoaded += SceneLoadFinished;

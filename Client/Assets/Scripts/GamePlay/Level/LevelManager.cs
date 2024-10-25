@@ -2,7 +2,7 @@
 using Framework.Core.Singleton;
 using Framework.Core.Manager.Config;
 using Framework.Core.Manager.ResourcesLoad;
-using UnityEngine.SceneManagement;
+using GamePlay.Scene;
 
 namespace GamePlay
 {

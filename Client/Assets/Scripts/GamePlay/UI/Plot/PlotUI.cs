@@ -8,10 +8,11 @@ using Framework.Core.Manager.Language;
 using Framework.Core.Manager.ResourcesLoad;
 using Framework.Core.Manager.UI;
 using GamePlay;
+using GamePlay.Scene;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Events;
-using UnityEngine.SceneManagement;
+// using UnityEngine.SceneManagement;
 
 namespace GamePlay.UI
 {

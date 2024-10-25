@@ -171,6 +171,7 @@ GameObject:
   - component: {fileID: 54557862415402216}
   - component: {fileID: 114438794829362116}
   - component: {fileID: 186393638272809079}
+  - component: {fileID: 7933276989555753689}
   m_Layer: 0
   m_Name: ThirdPersonControllerC
   m_TagString: Untagged
@@ -310,6 +311,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ModelMountTrs: {fileID: 4209187798482428}
+--- !u!114 &7933276989555753689
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1290408604890402}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 28e6a5e4a8574db5878123dfff3b07c1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1755181170198668
 GameObject:
   m_ObjectHideFlags: 0
