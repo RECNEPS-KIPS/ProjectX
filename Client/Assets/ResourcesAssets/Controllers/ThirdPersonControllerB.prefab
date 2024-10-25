@@ -196,7 +196,6 @@ GameObject:
   - component: {fileID: 114762289025753696}
   - component: {fileID: 54055344017074204}
   - component: {fileID: 114863170432658214}
-  - component: {fileID: 114859487416141918}
   - component: {fileID: 5040646710081833268}
   m_Layer: 0
   m_Name: ThirdPersonControllerB
@@ -312,7 +311,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1f5e44db14072ea4c964da3b192181c8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  movementSpeed: 7
+  walkSpeed: 3
+  runSpeed: 6
   airControlRate: 2
   jumpSpeed: 10
   jumpDuration: 0.2
@@ -323,22 +323,6 @@ MonoBehaviour:
   slopeLimit: 80
   useLocalMomentum: 1
   cameraTransform: {fileID: 4715490485707256}
---- !u!114 &114859487416141918
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1596819394309530}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e9819db9f56d8ad4c83e05807a209fc8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  horizontalInputAxis: Horizontal
-  verticalInputAxis: Vertical
-  jumpKey: 32
-  useRawInput: 1
 --- !u!114 &5040646710081833268
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -363,7 +347,6 @@ GameObject:
   - component: {fileID: 4715490485707256}
   - component: {fileID: 114432345465638362}
   - component: {fileID: 114090306027042826}
-  - component: {fileID: 114373537807595304}
   m_Layer: 0
   m_Name: CameraControls
   m_TagString: Untagged
@@ -427,27 +410,13 @@ MonoBehaviour:
   cameraSpeed: 250
   smoothCameraRotation: 0
   cameraSmoothingFactor: 25
+  invertHorizontalInput: 0
+  invertVerticalInput: 0
+  mouseInputMultiplier: 0.0008
   turnCameraTowardMovementDirection: 1
   controller: {fileID: 114863170432658214}
   maximumMovementSpeed: 7
   cameraTurnSpeed: 120
---- !u!114 &114373537807595304
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1677444743452204}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ef9d20421a8e3e44e88315dc70ee11e5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  mouseHorizontalAxis: Mouse X
-  mouseVerticalAxis: Mouse Y
-  invertHorizontalInput: 0
-  invertVerticalInput: 0
-  mouseInputMultiplier: 0.01
 --- !u!1 &1813250524658466
 GameObject:
   m_ObjectHideFlags: 0

@@ -7,7 +7,7 @@ namespace GamePlay.Character
     {
 
 
-        public Controller controller;
+        public MovementController controller;
 
  
         private Animator _animator;
@@ -68,7 +68,7 @@ namespace GamePlay.Character
         }
 
         //初始化
-        public void Init(Controller ctrl)
+        public void Init(MovementController ctrl)
         {
             controller = ctrl;
             controller.OnLand += OnLand;

@@ -21,15 +21,15 @@ namespace GamePlay.Character
 
         void OnTriggerEnter(Collider col)
         {
-            if (col.GetComponent<Controller>() == null)
+            if (col.GetComponent<MovementController>() == null)
             {
                 return;
             }
 
-            SwitchDirection(tr.forward, col.GetComponent<Controller>());
+            SwitchDirection(tr.forward, col.GetComponent<MovementController>());
         }
 
-        void SwitchDirection(Vector3 _newUpDirection, Controller _controller)
+        void SwitchDirection(Vector3 _newUpDirection, MovementController _controller)
         {
             float _angleThreshold = 0.001f;
 

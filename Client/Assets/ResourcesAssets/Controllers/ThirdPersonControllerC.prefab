@@ -170,7 +170,6 @@ GameObject:
   - component: {fileID: 114737437961115464}
   - component: {fileID: 54557862415402216}
   - component: {fileID: 114438794829362116}
-  - component: {fileID: 114104344747015054}
   - component: {fileID: 186393638272809079}
   m_Layer: 0
   m_Name: ThirdPersonControllerC
@@ -286,7 +285,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1f5e44db14072ea4c964da3b192181c8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  movementSpeed: 7
+  walkSpeed: 3
+  runSpeed: 6
   airControlRate: 2
   jumpSpeed: 10
   jumpDuration: 0.2
@@ -297,22 +297,6 @@ MonoBehaviour:
   slopeLimit: 80
   useLocalMomentum: 1
   cameraTransform: {fileID: 4740296991823410}
---- !u!114 &114104344747015054
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1290408604890402}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e9819db9f56d8ad4c83e05807a209fc8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  horizontalInputAxis: Horizontal
-  verticalInputAxis: Vertical
-  jumpKey: 32
-  useRawInput: 1
 --- !u!114 &186393638272809079
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -337,7 +321,6 @@ GameObject:
   - component: {fileID: 4740296991823410}
   - component: {fileID: 114198390792803080}
   - component: {fileID: 114758057711501104}
-  - component: {fileID: 114230822896331584}
   m_Layer: 0
   m_Name: CameraControls
   m_TagString: Untagged
@@ -401,23 +384,9 @@ MonoBehaviour:
   cameraSpeed: 250
   smoothCameraRotation: 0
   cameraSmoothingFactor: 25
---- !u!114 &114230822896331584
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1755181170198668}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ef9d20421a8e3e44e88315dc70ee11e5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  mouseHorizontalAxis: Mouse X
-  mouseVerticalAxis: Mouse Y
   invertHorizontalInput: 0
   invertVerticalInput: 0
-  mouseInputMultiplier: 0.01
+  mouseInputMultiplier: 0.0008
 --- !u!1 &1819991891203076
 GameObject:
   m_ObjectHideFlags: 0

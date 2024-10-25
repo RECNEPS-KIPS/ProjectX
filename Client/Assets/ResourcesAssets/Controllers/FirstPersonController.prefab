@@ -44,7 +44,6 @@ GameObject:
   - component: {fileID: 114620730111555832}
   - component: {fileID: 54434733990370572}
   - component: {fileID: 114036295079588584}
-  - component: {fileID: 114444104459402276}
   - component: {fileID: 7365699705761627508}
   m_Layer: 0
   m_Name: FirstPersonController
@@ -161,7 +160,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1f5e44db14072ea4c964da3b192181c8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  movementSpeed: 7
+  walkSpeed: 3
+  runSpeed: 6
   airControlRate: 2
   jumpSpeed: 10
   jumpDuration: 0.2
@@ -172,22 +172,6 @@ MonoBehaviour:
   slopeLimit: 80
   useLocalMomentum: 1
   cameraTransform: {fileID: 4343462885528220}
---- !u!114 &114444104459402276
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1273852644323278}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e9819db9f56d8ad4c83e05807a209fc8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  horizontalInputAxis: Horizontal
-  verticalInputAxis: Vertical
-  jumpKey: 32
-  useRawInput: 1
 --- !u!114 &7365699705761627508
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -371,7 +355,6 @@ GameObject:
   m_Component:
   - component: {fileID: 4343462885528220}
   - component: {fileID: 114824084839813896}
-  - component: {fileID: 114145209882964648}
   m_Layer: 0
   m_Name: CameraControls
   m_TagString: Untagged
@@ -412,20 +395,6 @@ MonoBehaviour:
   cameraSpeed: 200
   smoothCameraRotation: 0
   cameraSmoothingFactor: 25
---- !u!114 &114145209882964648
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1964354500963162}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ef9d20421a8e3e44e88315dc70ee11e5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  mouseHorizontalAxis: Mouse X
-  mouseVerticalAxis: Mouse Y
   invertHorizontalInput: 0
   invertVerticalInput: 0
-  mouseInputMultiplier: 0.01
+  mouseInputMultiplier: 0.0008

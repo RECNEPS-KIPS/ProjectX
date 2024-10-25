@@ -12,7 +12,7 @@ namespace GamePlay.Character
         //Whether or not the camera turns towards the controller's movement direction;
         public bool turnCameraTowardMovementDirection = true;
 
-        public Controller controller;
+        public MovementController controller;
 
         //The maximum expected movement speed of this game object;
         //This value should be set to the maximum movement speed achievable by this gameobject;

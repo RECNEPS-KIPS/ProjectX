@@ -109,7 +109,7 @@ namespace GamePlay.Player
                 {
                     GameObject modelGo = Instantiate(ResourcesLoadManager.LoadAsset<GameObject>(modelPath));
                     var animCtrl = modelGo.AddComponent<AnimationControl>();
-                    animCtrl.Init(ctrlGo.GetComponent<Controller>());
+                    animCtrl.Init(ctrlGo.GetComponent<MovementController>());
                     var mt = modelGo.transform;
                     
                     // LogManager.Log(LOGTag,"LoadPlayerController",mt==null,cc==null);

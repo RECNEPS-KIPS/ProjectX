@@ -8,7 +8,7 @@ namespace GamePlay.Character
 	public class TurnTowardControllerVelocity : MonoBehaviour {
 
 		//Target controller;
-		public Controller controller;
+		public MovementController controller;
 
 		//Speed at which this gameobject turns toward the controller's velocity;
 		public float turnSpeed = 500f;

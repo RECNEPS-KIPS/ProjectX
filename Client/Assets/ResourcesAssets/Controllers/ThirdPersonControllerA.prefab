@@ -80,7 +80,6 @@ GameObject:
   - component: {fileID: 114808892733143080}
   - component: {fileID: 54247263789400272}
   - component: {fileID: 114854587450894338}
-  - component: {fileID: 114092038815198868}
   - component: {fileID: 6985380360096126537}
   m_Layer: 0
   m_Name: ThirdPersonControllerA
@@ -208,19 +207,6 @@ MonoBehaviour:
   slopeLimit: 80
   useLocalMomentum: 1
   cameraTransform: {fileID: 4415475864035566}
---- !u!114 &114092038815198868
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1189618843407812}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e9819db9f56d8ad4c83e05807a209fc8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  useRawInput: 1
 --- !u!114 &6985380360096126537
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -361,7 +347,6 @@ GameObject:
   - component: {fileID: 4415475864035566}
   - component: {fileID: 114944577470240670}
   - component: {fileID: 114420073759096334}
-  - component: {fileID: 114100764997902158}
   m_Layer: 0
   m_Name: CameraControls
   m_TagString: Untagged
@@ -425,18 +410,6 @@ MonoBehaviour:
   cameraSpeed: 250
   smoothCameraRotation: 0
   cameraSmoothingFactor: 25
---- !u!114 &114100764997902158
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1761818851292640}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ef9d20421a8e3e44e88315dc70ee11e5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
   invertHorizontalInput: 0
   invertVerticalInput: 0
   mouseInputMultiplier: 0.0008

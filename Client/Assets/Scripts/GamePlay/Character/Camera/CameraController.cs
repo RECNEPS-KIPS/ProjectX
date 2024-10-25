@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using Framework.Core.Manager.Input;
 using UnityEngine;
 
 namespace GamePlay.Character
@@ -35,23 +36,23 @@ namespace GamePlay.Character
         //Variables for storing current facing direction and upwards direction;
         Vector3 facingDirection;
         Vector3 upwardsDirection;
+        
+        public bool invertHorizontalInput;
+        public bool invertVerticalInput;
+
+        //Use this value to fine-tune mouse movement;
+        //All mouse input will be multiplied by this value;
+        public float mouseInputMultiplier = 0.0008f;
 
         //References to transform and camera components;
         protected Transform tr;
         protected Camera cam;
-        protected CameraInput cameraInput;
 
         //Setup references.
         void Awake()
         {
             tr = transform;
             cam = GetComponent<Camera>();
-            cameraInput = GetComponent<CameraInput>();
-
-            if (cameraInput == null)
-            {
-                LogManager.LogWarning("CameraController","No camera input script has been attached to this gameobject");
-            }
 
             //If no camera component has been attached to this gameobject, search the transform's children;
             if (cam == null)
@@ -82,16 +83,67 @@ namespace GamePlay.Character
         //This method can be overridden in classes derived from this base class to modify camera behaviour;
         protected virtual void HandleCameraRotation()
         {
-            if (cameraInput == null)
-            {
-                return;
-            }
-
             //Get input values;
-            float _inputHorizontal = cameraInput.GetHorizontalCameraInput();
-            float _inputVertical = cameraInput.GetVerticalCameraInput();
+            float _inputHorizontal = GetHorizontalCameraInput();
+            float _inputVertical = GetVerticalCameraInput();
 
             RotateCamera(_inputHorizontal, _inputVertical);
+        }
+        
+        public float GetHorizontalCameraInput()
+        {
+            //Get raw mouse input;
+            float _input = InputManager.Instance.GetAxisInput().x;
+
+            //Since raw mouse input is already time-based, we need to correct for this before passing the input to the camera controller;
+            if (Time.timeScale > 0f && Time.deltaTime > 0f)
+            {
+                _input /= Time.deltaTime;
+                _input *= Time.timeScale;
+            }
+            else
+            {
+                _input = 0f;
+            }
+
+            //Apply mouse sensitivity;
+            _input *= mouseInputMultiplier;
+
+            //Invert input;
+            if (invertHorizontalInput)
+            {
+                _input *= -1f;
+            }
+
+            return _input;
+        }
+
+        public float GetVerticalCameraInput()
+        {
+            //Get raw mouse input;
+            float _input = -InputManager.Instance.GetAxisInput().y;
+
+            //Since raw mouse input is already time-based, we need to correct for this before passing the input to the camera controller;
+            if (Time.timeScale > 0f && Time.deltaTime > 0f)
+            {
+                _input /= Time.deltaTime;
+                _input *= Time.timeScale;
+            }
+            else
+            {
+                _input = 0f;
+            }
+
+            //Apply mouse sensitivity;
+            _input *= mouseInputMultiplier;
+
+            //Invert input;
+            if (invertVerticalInput)
+            {
+                _input *= -1f;
+            }
+
+            return _input;
         }
 
         //Rotate camera; 
