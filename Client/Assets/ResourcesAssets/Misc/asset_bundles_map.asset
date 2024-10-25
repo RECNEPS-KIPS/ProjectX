@@ -36,6 +36,9 @@ MonoBehaviour:
     - Assets/ResourcesAssets/Scenes/Launch.unity
     bundleName: Scenes
   - assetBundlesMap:
+    - Assets/ResourcesAssets/Settings/Input/InputSystem.inputsettings.asset
+    bundleName: Settings
+  - assetBundlesMap:
     - Assets/ResourcesAssets/Terrains/DeepDesert/Terrain.asset
     bundleName: Terrains
   - assetBundlesMap:

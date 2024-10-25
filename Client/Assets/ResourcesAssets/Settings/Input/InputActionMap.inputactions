@@ -2,7 +2,7 @@
     "name": "InputActionMap",
     "maps": [
         {
-            "name": "PC",
+            "name": "Keyboard",
             "id": "d040de73-8303-45c3-8d5c-2374f4e888e8",
             "actions": [
                 {
@@ -36,6 +36,15 @@
                     "name": "Run",
                     "type": "Button",
                     "id": "456ae4b9-07cd-4983-9a92-a90cc59720de",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Tab",
+                    "type": "Button",
+                    "id": "eb1d58ee-0760-4203-9dd1-55007ee7acf6",
                     "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
@@ -128,6 +137,17 @@
                     "processors": "",
                     "groups": "",
                     "action": "Run",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "9969a6d5-3203-4861-9d57-ac32c06f46ea",
+                    "path": "<Keyboard>/tab",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Tab",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

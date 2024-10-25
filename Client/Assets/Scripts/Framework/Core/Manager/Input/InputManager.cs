@@ -23,10 +23,10 @@ namespace Framework.Core.Manager.Input {
             // inputControls = new InputControls();
         }
         private void OnEnable(){
-            InputControls.PC.Enable();
+            InputControls.Keyboard.Enable();
         }
         private void OnDisable(){
-            InputControls.PC.Disable();
+            InputControls.Keyboard.Disable();
         }
         // private void Update(){
         //     // IsJumpKeyPressed();
@@ -41,22 +41,27 @@ namespace Framework.Core.Manager.Input {
 
         public bool IsJumpKeyPressed(){
             // LogManager.Log("IsJumpKeyPressed");
-            return InputControls.PC.Jump.IsPressed();
+            return InputControls.Keyboard.Jump.IsPressed();
         }
         
         public Vector2 GetAxisInput(){
             // LogManager.Log("GetAxisInput",InputControls.PC.Camera.ReadValue<Vector2>(),InputControls.PC.Camera.ReadValue<Vector2>().normalized,InputControls.PC.Camera.ReadValue<Vector2>().magnitude);
-            return InputControls.PC.Camera.ReadValue<Vector2>();
+            return InputControls.Keyboard.Camera.ReadValue<Vector2>();
         }
         
         public Vector2 GetMoveInput(){
             // LogManager.Log("GetMoveInput",InputControls.PC.Move.ReadValue<Vector2>());
-            return InputControls.PC.Move.ReadValue<Vector2>();
+            return InputControls.Keyboard.Move.ReadValue<Vector2>();
         }
 
         public bool IsRunKeyPressed(){
             // LogManager.Log("IsRunKeyPressed");
-            return InputControls.PC.Run.IsPressed();
+            return InputControls.Keyboard.Run.IsPressed();
+        }
+        
+        public bool IsTabKeyPressed(){
+            // LogManager.Log("IsRunKeyPressed");
+            return InputControls.Keyboard.Tab.IsPressed();
         }
     }
 }

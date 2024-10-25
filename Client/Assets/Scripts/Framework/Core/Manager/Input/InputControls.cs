@@ -26,7 +26,7 @@ namespace Framework.Core.Manager.Input
     ""name"": ""InputActionMap"",
     ""maps"": [
         {
-            ""name"": ""PC"",
+            ""name"": ""Keyboard"",
             ""id"": ""d040de73-8303-45c3-8d5c-2374f4e888e8"",
             ""actions"": [
                 {
@@ -60,6 +60,15 @@ namespace Framework.Core.Manager.Input
                     ""name"": ""Run"",
                     ""type"": ""Button"",
                     ""id"": ""456ae4b9-07cd-4983-9a92-a90cc59720de"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Tab"",
+                    ""type"": ""Button"",
+                    ""id"": ""eb1d58ee-0760-4203-9dd1-55007ee7acf6"",
                     ""expectedControlType"": """",
                     ""processors"": """",
                     ""interactions"": """",
@@ -154,23 +163,35 @@ namespace Framework.Core.Manager.Input
                     ""action"": ""Run"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""9969a6d5-3203-4861-9d57-ac32c06f46ea"",
+                    ""path"": ""<Keyboard>/tab"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Tab"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
     ],
     ""controlSchemes"": []
 }");
-            // PC
-            m_PC = asset.FindActionMap("PC", throwIfNotFound: true);
-            m_PC_Move = m_PC.FindAction("Move", throwIfNotFound: true);
-            m_PC_Jump = m_PC.FindAction("Jump", throwIfNotFound: true);
-            m_PC_Camera = m_PC.FindAction("Camera", throwIfNotFound: true);
-            m_PC_Run = m_PC.FindAction("Run", throwIfNotFound: true);
+            // Keyboard
+            m_Keyboard = asset.FindActionMap("Keyboard", throwIfNotFound: true);
+            m_Keyboard_Move = m_Keyboard.FindAction("Move", throwIfNotFound: true);
+            m_Keyboard_Jump = m_Keyboard.FindAction("Jump", throwIfNotFound: true);
+            m_Keyboard_Camera = m_Keyboard.FindAction("Camera", throwIfNotFound: true);
+            m_Keyboard_Run = m_Keyboard.FindAction("Run", throwIfNotFound: true);
+            m_Keyboard_Tab = m_Keyboard.FindAction("Tab", throwIfNotFound: true);
         }
 
         ~@InputControls()
         {
-            UnityEngine.Debug.Assert(!m_PC.enabled, "This will cause a leak and performance issues, InputControls.PC.Disable() has not been called.");
+            UnityEngine.Debug.Assert(!m_Keyboard.enabled, "This will cause a leak and performance issues, InputControls.Keyboard.Disable() has not been called.");
         }
 
         public void Dispose()
@@ -229,30 +250,32 @@ namespace Framework.Core.Manager.Input
             return asset.FindBinding(bindingMask, out action);
         }
 
-        // PC
-        private readonly InputActionMap m_PC;
-        private List<IPCActions> m_PCActionsCallbackInterfaces = new List<IPCActions>();
-        private readonly InputAction m_PC_Move;
-        private readonly InputAction m_PC_Jump;
-        private readonly InputAction m_PC_Camera;
-        private readonly InputAction m_PC_Run;
-        public struct PCActions
+        // Keyboard
+        private readonly InputActionMap m_Keyboard;
+        private List<IKeyboardActions> m_KeyboardActionsCallbackInterfaces = new List<IKeyboardActions>();
+        private readonly InputAction m_Keyboard_Move;
+        private readonly InputAction m_Keyboard_Jump;
+        private readonly InputAction m_Keyboard_Camera;
+        private readonly InputAction m_Keyboard_Run;
+        private readonly InputAction m_Keyboard_Tab;
+        public struct KeyboardActions
         {
             private @InputControls m_Wrapper;
-            public PCActions(@InputControls wrapper) { m_Wrapper = wrapper; }
-            public InputAction @Move => m_Wrapper.m_PC_Move;
-            public InputAction @Jump => m_Wrapper.m_PC_Jump;
-            public InputAction @Camera => m_Wrapper.m_PC_Camera;
-            public InputAction @Run => m_Wrapper.m_PC_Run;
-            public InputActionMap Get() { return m_Wrapper.m_PC; }
+            public KeyboardActions(@InputControls wrapper) { m_Wrapper = wrapper; }
+            public InputAction @Move => m_Wrapper.m_Keyboard_Move;
+            public InputAction @Jump => m_Wrapper.m_Keyboard_Jump;
+            public InputAction @Camera => m_Wrapper.m_Keyboard_Camera;
+            public InputAction @Run => m_Wrapper.m_Keyboard_Run;
+            public InputAction @Tab => m_Wrapper.m_Keyboard_Tab;
+            public InputActionMap Get() { return m_Wrapper.m_Keyboard; }
             public void Enable() { Get().Enable(); }
             public void Disable() { Get().Disable(); }
             public bool enabled => Get().enabled;
-            public static implicit operator InputActionMap(PCActions set) { return set.Get(); }
-            public void AddCallbacks(IPCActions instance)
+            public static implicit operator InputActionMap(KeyboardActions set) { return set.Get(); }
+            public void AddCallbacks(IKeyboardActions instance)
             {
-                if (instance == null || m_Wrapper.m_PCActionsCallbackInterfaces.Contains(instance)) return;
-                m_Wrapper.m_PCActionsCallbackInterfaces.Add(instance);
+                if (instance == null || m_Wrapper.m_KeyboardActionsCallbackInterfaces.Contains(instance)) return;
+                m_Wrapper.m_KeyboardActionsCallbackInterfaces.Add(instance);
                 @Move.started += instance.OnMove;
                 @Move.performed += instance.OnMove;
                 @Move.canceled += instance.OnMove;
@@ -265,9 +288,12 @@ namespace Framework.Core.Manager.Input
                 @Run.started += instance.OnRun;
                 @Run.performed += instance.OnRun;
                 @Run.canceled += instance.OnRun;
+                @Tab.started += instance.OnTab;
+                @Tab.performed += instance.OnTab;
+                @Tab.canceled += instance.OnTab;
             }
 
-            private void UnregisterCallbacks(IPCActions instance)
+            private void UnregisterCallbacks(IKeyboardActions instance)
             {
                 @Move.started -= instance.OnMove;
                 @Move.performed -= instance.OnMove;
@@ -281,29 +307,33 @@ namespace Framework.Core.Manager.Input
                 @Run.started -= instance.OnRun;
                 @Run.performed -= instance.OnRun;
                 @Run.canceled -= instance.OnRun;
+                @Tab.started -= instance.OnTab;
+                @Tab.performed -= instance.OnTab;
+                @Tab.canceled -= instance.OnTab;
             }
 
-            public void RemoveCallbacks(IPCActions instance)
+            public void RemoveCallbacks(IKeyboardActions instance)
             {
-                if (m_Wrapper.m_PCActionsCallbackInterfaces.Remove(instance))
+                if (m_Wrapper.m_KeyboardActionsCallbackInterfaces.Remove(instance))
                     UnregisterCallbacks(instance);
             }
 
-            public void SetCallbacks(IPCActions instance)
+            public void SetCallbacks(IKeyboardActions instance)
             {
-                foreach (var item in m_Wrapper.m_PCActionsCallbackInterfaces)
+                foreach (var item in m_Wrapper.m_KeyboardActionsCallbackInterfaces)
                     UnregisterCallbacks(item);
-                m_Wrapper.m_PCActionsCallbackInterfaces.Clear();
+                m_Wrapper.m_KeyboardActionsCallbackInterfaces.Clear();
                 AddCallbacks(instance);
             }
         }
-        public PCActions @PC => new PCActions(this);
-        public interface IPCActions
+        public KeyboardActions @Keyboard => new KeyboardActions(this);
+        public interface IKeyboardActions
         {
             void OnMove(InputAction.CallbackContext context);
             void OnJump(InputAction.CallbackContext context);
             void OnCamera(InputAction.CallbackContext context);
             void OnRun(InputAction.CallbackContext context);
+            void OnTab(InputAction.CallbackContext context);
         }
     }
 }
