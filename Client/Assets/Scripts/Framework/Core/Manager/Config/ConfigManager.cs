@@ -29,6 +29,7 @@ namespace Framework.Core.Manager.Config
             { EConfig.Character, "Character" },
             { EConfig.CharacterController, "CharacterController" },
             { EConfig.GrowthTemp, "GrowthTemp" },
+            { EConfig.Item,"Item"}
         };
 
         private const string LOGTag = "ConfigManager";
@@ -67,8 +68,8 @@ namespace Framework.Core.Manager.Config
                 // _configDict[configName].Add(null); //预留一个位置
                 // configDict[configName].Add();
                 LogManager.Log(LOGTag, "Load Config:", t.Name);
-                try
-                {
+                // try
+                // {
                     var jObjList = JsonUtils.LoadJsonByPath<List<JObject>>(ConfigPath + t.Name);
                     var metatable = jObjList[^1];
                     if (metatable.ContainsKey("__metatable"))
@@ -95,14 +96,15 @@ namespace Framework.Core.Manager.Config
                             var properties = jObjList[j].Properties();
                             foreach (var prop in properties)
                             {
-                                if (configName == "Scene")
-                                {
-                                    LogManager.Log(LOGTag, configName, _typeDict[configName][prop.Name], prop.Value.Type.ToString());
-                                }
+                                // if (configName == "Item")
+                                // {
+                                //     LogManager.Log(LOGTag, configName, _typeDict[configName][prop.Name], prop.Value == null);
+                                // }
 
                                 switch (_typeDict[configName][prop.Name])
                                 {
                                     case "int":
+                                        // int intV = 0;
                                         table[prop.Name] = (int)prop.Value;
                                         break;
                                     case "float":
@@ -136,88 +138,78 @@ namespace Framework.Core.Manager.Config
                                         table[prop.Name] = v3o;
                                         break;
                                     case "list<int>":
-                                        table[prop.Name] = HandleArray(prop.Value.ToArray());
+                                        table[prop.Name] = HandleArray<int>(prop.Value.ToArray());
                                         break;
                                     case "list<float>":
-                                        table[prop.Name] = HandleArray(prop.Value.ToArray());
+                                        table[prop.Name] = HandleArray<float>(prop.Value.ToArray());
                                         break;
                                     case "list<bool>":
-                                        table[prop.Name] = HandleArray(prop.Value.ToArray());
+                                        table[prop.Name] = HandleArray<bool>(prop.Value.ToArray());
                                         break;
                                     case "list<string>":
-                                        table[prop.Name] = HandleArray(prop.Value.ToArray());
+                                        table[prop.Name] = HandleArray<string>(prop.Value.ToArray());
                                         break;
                                     case "list<list<int>>":
-                                        table[prop.Name] = HandleArray(prop.Value.ToArray());
+                                        table[prop.Name] = HandleArray<int>(prop.Value.ToArray(),2);
                                         break;
                                     case "list<list<float>>":
-                                        table[prop.Name] = HandleArray(prop.Value.ToArray());
+                                        table[prop.Name] = HandleArray<float>(prop.Value.ToArray(),2);
                                         break;
                                     case "list<list<bool>>":
-                                        table[prop.Name] = HandleArray(prop.Value.ToArray());
+                                        table[prop.Name] = HandleArray<bool>(prop.Value.ToArray(),2);
                                         break;
                                     case "list<list<string>>":
-                                        table[prop.Name] = HandleArray(prop.Value.ToArray());
+                                        table[prop.Name] = HandleArray<string>(prop.Value.ToArray(),2);
                                         break;
                                     case "dict<int,int>":
-                                        table[prop.Name] = HandleDict(prop.Value.ToObject<JObject>(), prop.Name, configName);
+                                        table[prop.Name] = HandleDict<int,int>(prop.Value.ToObject<JObject>(), prop.Name, configName);
                                         break;
                                     case "dict<int,float>":
-                                        table[prop.Name] = HandleDict(prop.Value.ToObject<JObject>(), prop.Name, configName);
+                                        table[prop.Name] = HandleDict<int,float>(prop.Value.ToObject<JObject>(), prop.Name, configName);
                                         break;
                                     case "dict<int,bool>":
-                                        table[prop.Name] = HandleDict(prop.Value.ToObject<JObject>(), prop.Name, configName);
+                                        table[prop.Name] = HandleDict<int,bool>(prop.Value.ToObject<JObject>(), prop.Name, configName);
                                         break;
                                     case "dict<int,string>":
-                                        table[prop.Name] = HandleDict(prop.Value.ToObject<JObject>(), prop.Name, configName);
+                                        table[prop.Name] = HandleDict<int,string>(prop.Value.ToObject<JObject>(), prop.Name, configName);
                                         break;
                                     case "dict<float,int>":
-                                        table[prop.Name] = HandleDict(prop.Value.ToObject<JObject>(), prop.Name, configName);
+                                        table[prop.Name] = HandleDict<float,int>(prop.Value.ToObject<JObject>(), prop.Name, configName);
                                         break;
                                     case "dict<float,float>":
-                                        table[prop.Name] = HandleDict(prop.Value.ToObject<JObject>(), prop.Name, configName);
+                                        table[prop.Name] = HandleDict<float,float>(prop.Value.ToObject<JObject>(), prop.Name, configName);
                                         break;
                                     case "dict<float,bool>":
-                                        table[prop.Name] = HandleDict(prop.Value.ToObject<JObject>(), prop.Name, configName);
+                                        table[prop.Name] = HandleDict<float,bool>(prop.Value.ToObject<JObject>(), prop.Name, configName);
                                         break;
                                     case "dict<float,string>":
-                                        table[prop.Name] = HandleDict(prop.Value.ToObject<JObject>(), prop.Name, configName);
+                                        table[prop.Name] = HandleDict<float,string>(prop.Value.ToObject<JObject>(), prop.Name, configName);
                                         break;
                                     case "dict<string,int>":
-                                        table[prop.Name] = HandleDict(prop.Value.ToObject<JObject>(), prop.Name, configName);
+                                        table[prop.Name] = HandleDict<string,int>(prop.Value.ToObject<JObject>(), prop.Name, configName);
                                         break;
                                     case "dict<string,float>":
-                                        table[prop.Name] = HandleDict(prop.Value.ToObject<JObject>(), prop.Name, configName);
+                                        table[prop.Name] = HandleDict<string,float>(prop.Value.ToObject<JObject>(), prop.Name, configName);
                                         break;
                                     case "dict<string,bool>":
-                                        table[prop.Name] = HandleDict(prop.Value.ToObject<JObject>(), prop.Name, configName);
+                                        table[prop.Name] = HandleDict<string,bool>(prop.Value.ToObject<JObject>(), prop.Name, configName);
                                         break;
                                     case "dict<string,string>":
-                                        table[prop.Name] = HandleDict(prop.Value.ToObject<JObject>(), prop.Name, configName);
+                                        table[prop.Name] = HandleDict<string,string>(prop.Value.ToObject<JObject>(), prop.Name, configName);
                                         break;
                                 }
-                                // table[prop.Name] = prop.Value.Type.ToString() switch
-                                // {
-                                //     "Integer" => (int)prop.Value,
-                                //     "Float" => (float)prop.Value,
-                                //     "Boolean" => (bool)prop.Value,
-                                //     "String" => prop.Value.ToString(),
-                                //     "Array" => HandleArray(prop.Value.ToArray()),
-                                //     "Object" => HandleDict(prop.Value.ToObject<JObject>(), prop.Name, configName),
-                                //     _ => table[prop.Name]
-                                // };
                             }
 
                             table.ForbidWrite();
                             _configDict[configName].Add(table);
                         }
                     }
-                }
-                catch (Exception ex)
-                {
-                    LogManager.Log(LOGTag, configName);
-                    LogManager.LogError(LOGTag, ex.ToString());
-                }
+                // }
+                // catch (Exception ex)
+                // {
+                //     LogManager.Log(LOGTag, configName);
+                //     LogManager.LogError(LOGTag, ex.ToString());
+                // }
             }
 
             _configDict.ForbidWrite();
@@ -232,81 +224,102 @@ namespace Framework.Core.Manager.Config
         /// <param name="filedName"></param>
         /// <param name="cfName"></param>
         /// <returns></returns>
-        private dynamic HandleDict(JObject jObj, string filedName, string cfName)
+        private dynamic HandleDict<TKey,TValue>(JObject jObj, string filedName, string cfName)
         {
-            dynamic table = new RestrictedDictionary<dynamic, dynamic>();
+            dynamic table = new RestrictedDictionary<TKey,TValue>();
+            // LogManager.Log(typeof(TKey));
             table.EnableWrite();
-            var valueTypeDict = _typeDict[cfName];
+            // var valueTypeDict = _typeDict[cfName];
             var properties = jObj.Properties();
-            dynamic key = null;
             foreach (var prop in properties)
             {
-                if (valueTypeDict.ContainsKey(filedName))
+                dynamic key = typeof(TKey).ToString() switch
                 {
-                    if (valueTypeDict[filedName].StartsWith("dict<int"))
-                    {
-                        key = int.Parse(prop.Name);
-                    }
-                    else if (valueTypeDict[filedName].StartsWith("dict<float"))
-                    {
-                        key = float.Parse(prop.Name);
-                    }
-                    else if (valueTypeDict[filedName].StartsWith("dict<string"))
-                    {
-                        key = prop.Name;
-                    }
-
-                    switch (prop.Value.Type.ToString())
-                    {
-                        case "Integer":
-                            table.Add(key, (int)prop.Value);
-                            break;
-                        case "Float":
-                            table.Add(key, (float)prop.Value);
-                            break;
-                        case "Boolean":
-                            table.Add(key, (bool)prop.Value);
-                            break;
-                        case "String":
-                            table.Add(key, prop.Value.ToString());
-                            break;
-                    }
-                }
+                    "System.Int32" => int.Parse(prop.Name),
+                    "System.Single" => float.Parse(prop.Name),
+                    "System.String" => prop.Name,
+                    _ => default
+                };
+                dynamic value = prop.Value.Type.ToString() switch
+                {
+                    "Integer" => (int)prop.Value,
+                    "Float" => (float)prop.Value,
+                    "Boolean" => (bool)prop.Value,
+                    "String" => prop.Value.ToString(),
+                    _ => default
+                };
+                table.Add(key, value);
             }
-
             table.ForbidWrite();
-            // LogManager.Log(logTag, table);    
+            // LogManager.Log(LOGTag, table);    
             return table;
         }
 
-        // 递归处理数组类型
-        private static dynamic HandleArray(IReadOnlyList<JToken> array)
+        private static dynamic HandleArray1D<T>(IReadOnlyList<JToken> array)
         {
-            dynamic table = new RestrictedDictionary<int, dynamic>();
-            table.EnableWrite();
+            LogManager.Log(LOGTag,"array.Count",array.Count);
+            dynamic table = new List<T>();
             for (var i = 0; i < array.Count; i++)
             {
                 switch (array[i].Type.ToString())
                 {
                     case "Integer":
-                        table.Add(i, (int)array[i]);
+                        table.Add((int)array[i]);
                         break;
                     case "Float":
-                        table.Add(i, (float)array[i]);
+                        table.Add((float)array[i]);
                         break;
                     case "Boolean":
-                        table.Add(i, (bool)array[i]);
+                        table.Add((bool)array[i]);
                         break;
                     case "String":
-                        table.Add(i, array[i].ToString());
-                        break;
-                    case "Array":
-                        table.Add(i, HandleArray(array[i].ToArray()));
+                        table.Add(array[i].ToString());
                         break;
                 }
             }
 
-            table.ForbidWrite();
+            return table;
+        }
+        private static dynamic HandleArray2D<T>(IReadOnlyList<JToken> array)
+        {
+            dynamic table = new List<List<T>>();
+            for (var i = 0; i < array.Count; i++)
+            {
+                List<T> innerTable = new List<T>();
+                for (var j = 0; j < array[i].ToArray().Length; j++)
+                {
+                    switch (array[i].Type.ToString())
+                    {
+                        case "Integer":
+                            innerTable.Add(array[i].ToObject<T>());
+                            break;
+                        case "Float":
+                            innerTable.Add(array[i].ToObject<T>());
+                            break;
+                        case "Boolean":
+                            innerTable.Add(array[i].ToObject<T>());
+                            break;
+                        case "String":
+                            innerTable.Add(array[i].ToObject<T>());
+                            break;
+                    }
+                }
+                table.Add(innerTable);
+            }
+
+            return table;
+        }
+
+
+        // 递归处理数组类型
+        private static dynamic HandleArray<T>(IReadOnlyList<JToken> array,int deep = 1)
+        {
+            dynamic table = deep switch
+            {
+                1 => HandleArray1D<T>(array),
+                2 => HandleArray2D<T>(array),
+                _ => HandleArray1D<T>(array)
+            };
             return table;
         }
 

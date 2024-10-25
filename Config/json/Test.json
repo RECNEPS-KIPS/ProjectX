@@ -1,0 +1,37 @@
+[
+	{
+		"id":1,
+		"test_list_int":[],
+		"test_list_list_int":[
+			[1,2,3],
+			[1,2]
+		],
+		"test_list_list_string":[
+			["q","q"],
+			["w","e","r"]
+		],
+		"test_list_float":[],
+		"test_dict_int_int":{
+			"1":2,
+			"2":4
+		},
+		"test_dict_string_int":{
+			"xx":1,
+			"ww":2
+		},
+		"SS":{
+			"1.5":2.1
+		}
+	},
+	{
+		"__metatable":"true",
+		"id":"int",
+		"test_list_int":"list<int>",
+		"test_list_list_int":"list<list<int>>",
+		"test_list_list_string":"list<list<string>>",
+		"test_list_float":"list<float>",
+		"test_dict_int_int":"dict<int,int>",
+		"test_dict_string_int":"dict<string,int>",
+		"SS":"dict<float,float>"
+	}
+]

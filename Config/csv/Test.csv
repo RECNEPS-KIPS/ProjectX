@@ -1,0 +1,5 @@
+索引id,测试list_int,测试list_list_int,测试list_list_string,测试list_float,测试dict_int_int,测试dict_string_int,DD
+id,test_list_int,test_list_list_int,test_list_list_string,test_list_float,test_dict_int_int,test_dict_string_int,SS
+int,list<int>,list<list<int>>,list<list<string>>,list<float>,"dict<int,int>","dict<string,int>","dict<float,float>"
+,,,,,,,
+1,,1#2#3|1#2,q#q|w#e#r,,1#2|2#4,xx#1|ww#2,1.5#2.1

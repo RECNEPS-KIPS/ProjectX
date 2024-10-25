@@ -125,9 +125,9 @@ namespace export {
                                             curLayer = 2;
                                             obj += GetTableAndRecord(curLayer);
                                             string value = types[i] switch {
-                                                "int" => values[i],
-                                                "float" => values[i],
-                                                "bool" => values[i].ToLower(),
+                                                "int" => values[i] == "" ? "0" : values[i],
+                                                "float" => values[i] == "" ? "0" : values[i],
+                                                "bool" => values[i] == "" ? "false" : values[i].ToLower(),
                                                 "string" => $"\"{values[i]}\"",
                                                 "vector2" => GetNormalList(values[i], ','),
                                                 "vector3" => GetNormalList(values[i], ','),

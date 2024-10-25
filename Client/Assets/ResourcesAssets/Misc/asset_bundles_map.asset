@@ -29,6 +29,9 @@ MonoBehaviour:
     - Assets/ResourcesAssets/InGame/Levels/Level1/Level.unity
     bundleName: InGame
   - assetBundlesMap:
+    - Assets/ResourcesAssets/Items/Prefabs/Plants/SM_Prop_Apple_01.prefab
+    bundleName: Items
+  - assetBundlesMap:
     - Assets/ResourcesAssets/Misc/asset_bundles_map.asset
     bundleName: Misc
   - assetBundlesMap:

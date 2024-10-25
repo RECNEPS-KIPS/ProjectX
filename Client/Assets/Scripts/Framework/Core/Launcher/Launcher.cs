@@ -10,6 +10,7 @@ using Framework.Core.Manager.ResourcesLoad;
 using Framework.Core.Manager.UI;
 using Framework.Core.Manager;
 using Framework.Core.Manager.Input;
+using GamePlay.Item;
 using GamePlay.Player;
 
 namespace Framework.Core.Launcher
@@ -22,16 +23,20 @@ namespace Framework.Core.Launcher
         // 调用业务逻辑
         private void Awake()
         {
+            //先启动core manager
             GameManager.Instance.Launch();
             InputManager.Instance.Launch();
             ResourcesLoadManager.Instance.Launch();
             ConfigManager.Instance.Launch();
             StoreManager.Instance.Launch();
-            PlayerManager.Instance.Launch();
             AntiCheatManager.Instance.Launch();
             LanguageManager.Instance.Launch();
-            UIManager.Instance.Launch();
 
+            //gameplay玩法相关manager后启动
+            UIManager.Instance.Launch();
+            PlayerManager.Instance.Launch();
+            ItemManager.Instance.Launch();
+            
             UIManager.Instance.OpenUI(EUI.PlotUI);
         }
     }

@@ -42,9 +42,18 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "Tab",
+                    "name": "Backpack",
                     "type": "Button",
                     "id": "eb1d58ee-0760-4203-9dd1-55007ee7acf6",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Pick",
+                    "type": "Button",
+                    "id": "12ab38e2-6d10-44d1-be7c-abbf8758f154",
                     "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
@@ -147,7 +156,18 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Tab",
+                    "action": "Backpack",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "b6044bd7-6857-427a-ab51-e12b7b4fbd07",
+                    "path": "<Keyboard>/f",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Pick",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

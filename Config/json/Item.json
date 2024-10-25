@@ -1,0 +1,25 @@
+[
+	{
+		"id":10001,
+		"name":"苹果",
+		"mainType":1,
+		"subType":0,
+		"path":"Assets/ResourcesAssets/Items/Prefabs/Plants/SM_Prop_Apple_01.prefab",
+		"scale":[1,1,1],
+		"weight":100,
+		"params":[100,100,50],
+		"hasCollider":true
+	},
+	{
+		"__metatable":"true",
+		"id":"int",
+		"name":"string",
+		"mainType":"int",
+		"subType":"int",
+		"path":"string",
+		"scale":"vector3",
+		"weight":"int",
+		"params":"list<int>",
+		"hasCollider":"bool"
+	}
+]

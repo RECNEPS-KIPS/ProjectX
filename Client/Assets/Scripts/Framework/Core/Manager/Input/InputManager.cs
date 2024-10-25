@@ -2,6 +2,7 @@
 // date:2024.10.25 00:42
 // describe:
 using System;
+using Framework.Core.Manager.Event;
 using Framework.Core.Manager.ResourcesLoad;
 using Framework.Core.Singleton;
 using UnityEngine;
@@ -28,12 +29,16 @@ namespace Framework.Core.Manager.Input {
         private void OnDisable(){
             InputControls.Keyboard.Disable();
         }
-        // private void Update(){
-        //     // IsJumpKeyPressed();
-        //     // IsRunKeyPressed();
-        //     // GetAxisInput();
-        //     // GetMoveInput();
-        // }
+        private void Update(){
+            // IsJumpKeyPressed();
+            // IsRunKeyPressed();
+            // GetAxisInput();
+            // GetMoveInput();
+            if (InputControls.Keyboard.Backpack.IsPressed())
+            {
+                EventManager.Dispatch(EEvent.PLAYER_ATTR_UPDATE);
+            }
+        }
 
         public void Launch(){
             
@@ -59,9 +64,13 @@ namespace Framework.Core.Manager.Input {
             return InputControls.Keyboard.Run.IsPressed();
         }
         
-        public bool IsTabKeyPressed(){
+        public bool IsBackpackKeyPressed(){
             // LogManager.Log("IsRunKeyPressed");
-            return InputControls.Keyboard.Tab.IsPressed();
+            return InputControls.Keyboard.Backpack.IsPressed();
+        }
+        public bool IsPickKeyPressed(){
+            // LogManager.Log("IsRunKeyPressed");
+            return InputControls.Keyboard.Backpack.IsPressed();
         }
     }
 }

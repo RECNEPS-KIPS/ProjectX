@@ -66,9 +66,18 @@ namespace Framework.Core.Manager.Input
                     ""initialStateCheck"": false
                 },
                 {
-                    ""name"": ""Tab"",
+                    ""name"": ""Backpack"",
                     ""type"": ""Button"",
                     ""id"": ""eb1d58ee-0760-4203-9dd1-55007ee7acf6"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Pick"",
+                    ""type"": ""Button"",
+                    ""id"": ""12ab38e2-6d10-44d1-be7c-abbf8758f154"",
                     ""expectedControlType"": """",
                     ""processors"": """",
                     ""interactions"": """",
@@ -171,7 +180,18 @@ namespace Framework.Core.Manager.Input
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""Tab"",
+                    ""action"": ""Backpack"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""b6044bd7-6857-427a-ab51-e12b7b4fbd07"",
+                    ""path"": ""<Keyboard>/f"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Pick"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -186,7 +206,8 @@ namespace Framework.Core.Manager.Input
             m_Keyboard_Jump = m_Keyboard.FindAction("Jump", throwIfNotFound: true);
             m_Keyboard_Camera = m_Keyboard.FindAction("Camera", throwIfNotFound: true);
             m_Keyboard_Run = m_Keyboard.FindAction("Run", throwIfNotFound: true);
-            m_Keyboard_Tab = m_Keyboard.FindAction("Tab", throwIfNotFound: true);
+            m_Keyboard_Backpack = m_Keyboard.FindAction("Backpack", throwIfNotFound: true);
+            m_Keyboard_Pick = m_Keyboard.FindAction("Pick", throwIfNotFound: true);
         }
 
         ~@InputControls()
@@ -257,7 +278,8 @@ namespace Framework.Core.Manager.Input
         private readonly InputAction m_Keyboard_Jump;
         private readonly InputAction m_Keyboard_Camera;
         private readonly InputAction m_Keyboard_Run;
-        private readonly InputAction m_Keyboard_Tab;
+        private readonly InputAction m_Keyboard_Backpack;
+        private readonly InputAction m_Keyboard_Pick;
         public struct KeyboardActions
         {
             private @InputControls m_Wrapper;
@@ -266,7 +288,8 @@ namespace Framework.Core.Manager.Input
             public InputAction @Jump => m_Wrapper.m_Keyboard_Jump;
             public InputAction @Camera => m_Wrapper.m_Keyboard_Camera;
             public InputAction @Run => m_Wrapper.m_Keyboard_Run;
-            public InputAction @Tab => m_Wrapper.m_Keyboard_Tab;
+            public InputAction @Backpack => m_Wrapper.m_Keyboard_Backpack;
+            public InputAction @Pick => m_Wrapper.m_Keyboard_Pick;
             public InputActionMap Get() { return m_Wrapper.m_Keyboard; }
             public void Enable() { Get().Enable(); }
             public void Disable() { Get().Disable(); }
@@ -288,9 +311,12 @@ namespace Framework.Core.Manager.Input
                 @Run.started += instance.OnRun;
                 @Run.performed += instance.OnRun;
                 @Run.canceled += instance.OnRun;
-                @Tab.started += instance.OnTab;
-                @Tab.performed += instance.OnTab;
-                @Tab.canceled += instance.OnTab;
+                @Backpack.started += instance.OnBackpack;
+                @Backpack.performed += instance.OnBackpack;
+                @Backpack.canceled += instance.OnBackpack;
+                @Pick.started += instance.OnPick;
+                @Pick.performed += instance.OnPick;
+                @Pick.canceled += instance.OnPick;
             }
 
             private void UnregisterCallbacks(IKeyboardActions instance)
@@ -307,9 +333,12 @@ namespace Framework.Core.Manager.Input
                 @Run.started -= instance.OnRun;
                 @Run.performed -= instance.OnRun;
                 @Run.canceled -= instance.OnRun;
-                @Tab.started -= instance.OnTab;
-                @Tab.performed -= instance.OnTab;
-                @Tab.canceled -= instance.OnTab;
+                @Backpack.started -= instance.OnBackpack;
+                @Backpack.performed -= instance.OnBackpack;
+                @Backpack.canceled -= instance.OnBackpack;
+                @Pick.started -= instance.OnPick;
+                @Pick.performed -= instance.OnPick;
+                @Pick.canceled -= instance.OnPick;
             }
 
             public void RemoveCallbacks(IKeyboardActions instance)
@@ -333,7 +362,8 @@ namespace Framework.Core.Manager.Input
             void OnJump(InputAction.CallbackContext context);
             void OnCamera(InputAction.CallbackContext context);
             void OnRun(InputAction.CallbackContext context);
-            void OnTab(InputAction.CallbackContext context);
+            void OnBackpack(InputAction.CallbackContext context);
+            void OnPick(InputAction.CallbackContext context);
         }
     }
 }

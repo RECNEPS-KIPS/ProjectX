@@ -1,5 +1,5 @@
 ManifestFileVersion: 0
-CRC: 3514660593
+CRC: 877240056
 AssetBundleManifest:
   AssetBundleInfos:
     Info_0:
@@ -18,12 +18,15 @@ AssetBundleManifest:
       Name: controllers.ab
       Dependencies: {}
     Info_5:
+      Name: items.ab
+      Dependencies: {}
+    Info_6:
       Name: scenes.ab
       Dependencies:
         Dependency_0: terrains.ab
-    Info_6:
+    Info_7:
       Name: settings.ab
       Dependencies: {}
-    Info_7:
+    Info_8:
       Name: terrains.ab
       Dependencies: {}

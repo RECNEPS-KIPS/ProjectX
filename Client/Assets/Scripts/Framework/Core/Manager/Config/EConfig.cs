@@ -10,5 +10,6 @@
         Character,
         CharacterController,
         GrowthTemp,
+        Item,
     }
 }
