@@ -40,22 +40,22 @@ namespace Framework.Core.Manager.Input {
         }
 
         public bool IsJumpKeyPressed(){
-            LogManager.Log("IsJumpKeyPressed");
+            // LogManager.Log("IsJumpKeyPressed");
             return InputControls.PC.Jump.IsPressed();
         }
         
         public Vector2 GetAxisInput(){
-            LogManager.Log("GetAxisInput",InputControls.PC.Camera.ReadValue<Vector2>());
-            return InputControls.PC.Camera.ReadValue<Vector2>().normalized;
+            // LogManager.Log("GetAxisInput",InputControls.PC.Camera.ReadValue<Vector2>(),InputControls.PC.Camera.ReadValue<Vector2>().normalized,InputControls.PC.Camera.ReadValue<Vector2>().magnitude);
+            return InputControls.PC.Camera.ReadValue<Vector2>();
         }
         
         public Vector2 GetMoveInput(){
-            LogManager.Log("GetMoveInput");
+            // LogManager.Log("GetMoveInput",InputControls.PC.Move.ReadValue<Vector2>());
             return InputControls.PC.Move.ReadValue<Vector2>();
         }
 
         public bool IsRunKeyPressed(){
-            LogManager.Log("IsRunKeyPressed");
+            // LogManager.Log("IsRunKeyPressed");
             return InputControls.PC.Run.IsPressed();
         }
     }

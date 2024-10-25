@@ -220,10 +220,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e9819db9f56d8ad4c83e05807a209fc8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  horizontalInputAxis: Horizontal
-  verticalInputAxis: Vertical
-  jumpKey: 32
-  runKey: 304
   useRawInput: 1
 --- !u!114 &6985380360096126537
 MonoBehaviour:
@@ -441,11 +437,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ef9d20421a8e3e44e88315dc70ee11e5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mouseHorizontalAxis: Mouse X
-  mouseVerticalAxis: Mouse Y
   invertHorizontalInput: 0
   invertVerticalInput: 0
-  mouseInputMultiplier: 0.01
+  mouseInputMultiplier: 0.0008
 --- !u!1 &1840144661440388
 GameObject:
   m_ObjectHideFlags: 0
