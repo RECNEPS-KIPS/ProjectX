@@ -1,10 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Framework.Core.Manager.Config;
 using Framework.Core.Manager.Event;
 using Framework.Core.Manager.ResourcesLoad;
 using Framework.Core.Singleton;
-using GamePlay.Item;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -93,7 +91,7 @@ namespace GamePlay.Scene
         public override void Initialize()
         {
             LogManager.Log(LOGTag,$"Register scene load finished callback");
-            SceneLoadFinished = (scene, mode) =>
+            SceneLoadFinished = (scene, _) =>
             {
                 LogManager.Log(LOGTag,$"Scene load finished === name:{scene.path}");
                 if (LoadedCallbackMap.TryGetValue(scene.path,out var callback))
@@ -106,8 +104,8 @@ namespace GamePlay.Scene
                 {
                     cf = GetSceneConfig(sceneID);
                 }
-                worldObjects = FindObjectsOfType<OctreeItem>() as IOctrable[];
-                LogManager.Log(LOGTag,$"Scene load IOctrable:{worldObjects.Length} OctreeItem:{FindObjectsOfType<OctreeItem>().Length}");
+                worldObjects = FindObjectsOfType<SceneItem>() as IOctrable[];
+                LogManager.Log(LOGTag,$"Scene load IOctrable:{worldObjects.Length} SceneItem:{FindObjectsOfType<SceneItem>().Length}");
                 //新场景加载好之后初始化八叉树
                 octree = new Octree(worldObjects, nodeMinSize); //创建八叉树对象并初始化
         
@@ -130,13 +128,12 @@ namespace GamePlay.Scene
         public void LoadSceneByID(EScene sceneID,UnityAction callback = null)
         {
             var sceneCf = GetSceneConfig((int)sceneID);
-            if (sceneCf != null) {
-                //先加载依赖的terrain
-                LogManager.Log(LOGTag,$"Load terrain name:{sceneCf["terrainAssetPath"]}");
+            if (sceneCf == null) return;
+            //先加载依赖的terrain
+            LogManager.Log(LOGTag,$"Load terrain name:{sceneCf["terrainAssetPath"]}");
                 
-                ResourcesLoadManager.LoadAssetBundleFile(ResourcesLoadManager.GetAssetBundleName(sceneCf["terrainAssetPath"]));
-                LoadSceneByID((int)sceneID,callback);
-            }
+            ResourcesLoadManager.LoadAssetBundleFile(ResourcesLoadManager.GetAssetBundleName(sceneCf["terrainAssetPath"]));
+            LoadSceneByID((int)sceneID,callback);
         }
 
         //同步从assetbundle中加载场景

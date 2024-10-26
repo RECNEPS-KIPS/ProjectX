@@ -2,16 +2,8 @@
 // date:2024.10.16 19:19
 // describe:开始界面
 
-using Framework;
-using Framework.Core.Manager.Config;
 using Framework.Core.Manager.Language;
-using Framework.Core.Manager.ResourcesLoad;
 using Framework.Core.Manager.UI;
-using GamePlay;
-using Unity.VisualScripting;
-using UnityEngine;
-using UnityEngine.Events;
-using UnityEngine.SceneManagement;
 
 namespace GamePlay.UI
 {

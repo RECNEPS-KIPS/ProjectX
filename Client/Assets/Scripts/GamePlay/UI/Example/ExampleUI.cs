@@ -19,11 +19,6 @@ namespace GamePlay.UI
             VBind("profession3"); /*MBind("onDe",() => LogManager.Log("onLast"));*/
             VBind("profession4"); //VBind("profession4");
 
-            // DOBind<string>("profession8");
-            // DOBind<UnityAction>("closeBtn11",() => {
-            //     UIManager.Instance.Close(WindowNameDef.TestUI);
-            // });
-
             MBind("closeBtn", () => { UIManager.Instance.Close(EUI.ExampleUI); });
             /*MBind("onDe",() => LogManager.Log("onLast"));*/
             MBind("onLast", () => LogManager.Log("onLast"));

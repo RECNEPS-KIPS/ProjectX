@@ -46,7 +46,7 @@ namespace GamePlay
             var levelCf = GetLevelCfByID(levelID);
             int sceneID = levelCf["sceneID"];
             var sceneCf = SceneManager.Instance.GetSceneConfig(sceneID);
-            LogManager.Log("LOGTag",levelCf,sceneCf);
+            LogManager.Log(LOGTag,levelCf,sceneCf);
             string path = sceneCf["path"];
             ResourcesLoadManager.LoadAssetBundleFile(ResourcesLoadManager.GetAssetBundleName(path));
             UnityEngine.SceneManagement.SceneManager.LoadScene(path);

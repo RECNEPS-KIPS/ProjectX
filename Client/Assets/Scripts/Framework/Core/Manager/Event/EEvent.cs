@@ -16,7 +16,7 @@ namespace Framework.Core.Manager.Event
         #region 输入响应相关
         
         INPUT_BACKPACK,
-        INPUT_PICK,
+        PLAYER_PICK_ITEM,
         
         #endregion
     }

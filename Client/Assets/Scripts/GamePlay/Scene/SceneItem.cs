@@ -10,7 +10,7 @@ using UnityEngine;
 namespace GamePlay.Scene
 {
     [Serializable]
-    public class OctreeItem : MonoBehaviour, IItemable, IOctrable
+    public class SceneItem : MonoBehaviour, IItemable, IOctrable
     {
         public int id;
         public int ID
@@ -31,13 +31,19 @@ namespace GamePlay.Scene
                 return null;
             }
         }
-        public Transform SelfTrs {
+        public Collider _collider;
+        public Collider Collider
+        {
             get
             {
-                return transform;
+                if (_collider == null)
+                {
+                    _collider = ColliderTrs.GetComponent<Collider>();
+                }
+                return _collider;
             }
-            
         }
+        public Transform SelfTrs => transform;
         public Transform ColliderTrs { get; set; }
         private void Awake()
         {

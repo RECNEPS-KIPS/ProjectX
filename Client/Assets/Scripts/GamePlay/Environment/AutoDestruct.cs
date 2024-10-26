@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-namespace GamePlay.Enviorment
+namespace GamePlay.Environment
 {
     public class AutoDestruct : MonoBehaviour
     {

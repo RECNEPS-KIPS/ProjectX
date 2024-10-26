@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Framework.Core.Manager.Input;
 
-namespace GamePlay.Enviorment
+namespace GamePlay.Environment
 {
     public class SmoothMouse : MonoBehaviour
     {
@@ -24,30 +24,28 @@ namespace GamePlay.Enviorment
         public float minimumY = -60f;
         public float maximumY = 60f;
 
-        float rotationX = 0f;
-        float rotationY = 0f;
+        private float rotationX;
+        private float rotationY;
 
-        private List<float> rotArrayX = new List<float>();
-        float rotAverageX = 0f;
+        private readonly List<float> rotArrayX = new();
+        private float rotAverageX;
 
-        private List<float> rotArrayY = new List<float>();
-        float rotAverageY = 0f;
+        private readonly List<float> rotArrayY = new();
+        private float rotAverageY;
 
         public float frameCounter = 20;
 
         public bool invertY = true;
-
-        Quaternion originalRotation;
+        private Quaternion originalRotation;
         private bool _lockCursor = true;
-        public Texture2D crosshairImage;
-
-        void OnGUI()
+        public Texture2D crossHairImage;
+        private void OnGUI()
         {
             if (!_lockCursor) return;
             const float size = 0.25f;
-            float xMin = Screen.width / 2 - crosshairImage.width * size / 2;
-            float yMin = Screen.height / 2 - crosshairImage.height * size / 2;
-            GUI.DrawTexture(new Rect(xMin, yMin, crosshairImage.width * size, crosshairImage.height * size), crosshairImage);
+            float xMin = Screen.width / 2f - crossHairImage.width * size / 2;
+            float yMin = Screen.height / 2f - crossHairImage.height * size / 2;
+            GUI.DrawTexture(new Rect(xMin, yMin, crossHairImage.width * size, crossHairImage.height * size), crossHairImage);
         }
 
         void Update()
@@ -82,14 +80,14 @@ namespace GamePlay.Enviorment
                     rotArrayX.RemoveAt(0);
                 }
 
-                for (int j = 0; j < rotArrayY.Count; j++)
+                foreach (var t in rotArrayY)
                 {
-                    rotAverageY += rotArrayY[j];
+                    rotAverageY += t;
                 }
 
-                for (int i = 0; i < rotArrayX.Count; i++)
+                foreach (var t in rotArrayX)
                 {
-                    rotAverageX += rotArrayX[i];
+                    rotAverageX += t;
                 }
 
                 rotAverageY /= rotArrayY.Count;
@@ -116,9 +114,9 @@ namespace GamePlay.Enviorment
                     rotArrayX.RemoveAt(0);
                 }
 
-                for (int i = 0; i < rotArrayX.Count; i++)
+                foreach (var t in rotArrayX)
                 {
-                    rotAverageX += rotArrayX[i];
+                    rotAverageX += t;
                 }
 
                 rotAverageX /= rotArrayX.Count;
@@ -141,9 +139,9 @@ namespace GamePlay.Enviorment
                     rotArrayY.RemoveAt(0);
                 }
 
-                for (int j = 0; j < rotArrayY.Count; j++)
+                foreach (var t in rotArrayY)
                 {
-                    rotAverageY += rotArrayY[j];
+                    rotAverageY += t;
                 }
 
                 rotAverageY /= rotArrayY.Count;
@@ -206,16 +204,16 @@ namespace GamePlay.Enviorment
         public static float ClampAngle(float angle, float min, float max)
         {
             angle %= 360;
-            if ((angle >= -360F) && (angle <= 360F))
+            if (angle is >= -360f and <= 360f)
             {
-                if (angle < -360F)
+                if (angle < -360f)
                 {
-                    angle += 360F;
+                    angle += 360f;
                 }
 
-                if (angle > 360F)
+                if (angle > 360f)
                 {
-                    angle -= 360F;
+                    angle -= 360f;
                 }
             }
 

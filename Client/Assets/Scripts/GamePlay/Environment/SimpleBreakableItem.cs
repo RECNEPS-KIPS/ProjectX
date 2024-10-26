@@ -6,7 +6,7 @@ using UnityEngine;
 using System.Collections.Generic;
 using Plugins.Voronoi;
 
-namespace GamePlay.Enviorment
+namespace GamePlay.Environment
 {
     /// <summary>
     /// 使用delaunay三角剖分将墙壁/表面分割成独立的碎片
