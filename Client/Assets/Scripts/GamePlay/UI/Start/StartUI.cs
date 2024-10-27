@@ -24,8 +24,6 @@ namespace GamePlay.UI
         {
             UIManager.Instance.Close(EUI.StartUI);
             LogManager.Log("OnGameStartBtnClick");
-            
-            LevelManager.Instance.LoadSceneByID(10001);
         }
 
         public override void OnEnter(dynamic args)

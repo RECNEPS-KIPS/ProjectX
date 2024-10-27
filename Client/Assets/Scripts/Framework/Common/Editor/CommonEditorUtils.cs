@@ -10,7 +10,7 @@ namespace Framework.Common
 {
     public static class CommonEditorUtils
     {
-        [MenuItem("Tools/GameLaunch",false,-9999999)]
+        [MenuItem("Tools/启动游戏",false,-9999999)]
         private static void GameLaunch()
         {
             const string path = "Assets/ResourcesAssets/Scenes/Launch.unity";
@@ -24,7 +24,7 @@ namespace Framework.Common
             EditorApplication.ExecuteMenuItem("Edit/Play");
         }
         
-        [MenuItem("Tools/ExportMesh",false)]
+        [MenuItem("Tools/Mesh导出",false)]
         public static void ExportMeshAsset() {
             var obj = Selection.activeObject;
             try

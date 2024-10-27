@@ -11,5 +11,6 @@
         CharacterController,
         GrowthTemp,
         Item,
+        World,
     }
 }

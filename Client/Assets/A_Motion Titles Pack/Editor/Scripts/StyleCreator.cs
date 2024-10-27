@@ -17,7 +17,7 @@ namespace Michsky.UI.MTP
         public StyleCreatorList styleCreatorList;
         StyleVideoPreview tempWindow;
 
-        [MenuItem("Tools/Motion Titles Pack/Style Creator", false, 0)]
+        [MenuItem("Tools/UI特效/创建样式", false, 0)]
         public static void ShowWindow()
         {
             window = GetWindow<StyleCreator>("MTP - Style Creator");

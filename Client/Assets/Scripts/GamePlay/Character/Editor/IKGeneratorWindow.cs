@@ -80,7 +80,7 @@ public class IKGeneratorWindow : EditorWindow
         }
     }
 
-    [UnityEditor.MenuItem("Tools/IKGeneratorWindow")]
+    [UnityEditor.MenuItem("Tools/IK生成")]
     private static void Open()
     {
         mWindow = EditorWindow.GetWindow(typeof(IKGeneratorWindow), true, "IK生成器", true);

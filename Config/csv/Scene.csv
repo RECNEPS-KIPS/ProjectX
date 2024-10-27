@@ -3,3 +3,4 @@ id,_desc,path,initPos,terrainAssetPath,loadPlayer
 int,,string,vector3,string,bool
 ,,,,,
 10001,荒漠,Assets/ResourcesAssets/Scenes/DeepDesert.unity,"4.5,1.6,12",Assets/ResourcesAssets/Terrains/DeepDesert/Terrain.asset,TRUE
+10002,荒漠,Assets/ResourcesAssets/Scenes/DeepDesert.unity,"4.5,1.6,12",Assets/ResourcesAssets/Terrains/DeepDesert/Terrain.asset,TRUE

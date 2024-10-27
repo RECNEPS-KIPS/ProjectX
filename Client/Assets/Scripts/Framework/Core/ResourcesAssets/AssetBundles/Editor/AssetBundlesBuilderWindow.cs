@@ -83,7 +83,7 @@ namespace Framework.Core.ResourcesAssets
             return abList.ToArray();
         }
 
-        [MenuItem("Tools/ResourcesAssets/Build AssetsBundle", false)]
+        [MenuItem("Tools/资源相关/构建AssetsBundle", false)]
         public static void BuildAssetsBundle()
         {
             AssetsDict.Clear();
@@ -191,7 +191,7 @@ namespace Framework.Core.ResourcesAssets
         }
         
         
-        [MenuItem("Tools/ResourcesAssets/Remove AB Label")]
+        [MenuItem("Tools/资源相关/清理AB包Label")]
         public static void RemoveABLabel()
         {
             // 需要移除标记的根目录
