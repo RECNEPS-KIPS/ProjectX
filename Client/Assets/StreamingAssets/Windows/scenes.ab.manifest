@@ -1,15 +1,15 @@
 ManifestFileVersion: 0
-CRC: 3394922823
+CRC: 4163207343
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: 46b774fcd1b8b10d91fa8bff0a84c925
+    Hash: 1a5c9167189ff42d6f08f42197fb0a18
   TypeTreeHash:
     serializedVersion: 2
-    Hash: 5e5af48809f4432effbab56cf4fff366
+    Hash: 607f388b389a063d6ff9d4bb8b18467c
   IncrementalBuildHash:
     serializedVersion: 2
-    Hash: 46b774fcd1b8b10d91fa8bff0a84c925
+    Hash: 1a5c9167189ff42d6f08f42197fb0a18
 HashAppended: 0
 ClassTypes:
 - Class: 1
@@ -44,8 +44,6 @@ ClassTypes:
   Script: {fileID: 11500000, guid: fc1515ab76e54f068e2f2207940fab32, type: 3}
 - Class: 114
   Script: {fileID: 11500000, guid: 01614664b831546d2ae94a42149d80ac, type: 3}
-- Class: 114
-  Script: {fileID: 11500000, guid: c87395752485b654bbadf52473fbe930, type: 3}
 - Class: 115
   Script: {instanceID: 0}
 - Class: 154
@@ -69,4 +67,4 @@ Assets:
 - Assets/ResourcesAssets/Scenes/Launch.unity
 - Assets/ResourcesAssets/Scenes/DeepDesert.unity
 Dependencies:
-- C:/GUARDIAN_OFFICE/Client/Assets/StreamingAssets/Windows/terrains.ab
+- C:/ProjectX/Client/Assets/StreamingAssets/Windows/terrains.ab

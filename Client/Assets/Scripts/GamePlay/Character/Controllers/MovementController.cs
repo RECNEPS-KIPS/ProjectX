@@ -241,7 +241,7 @@ namespace GamePlay.Character
         //Returns 'true' if the player presses the jump key;
         protected virtual bool IsJumpKeyPressed()
         {
-            return InputManager.Instance.IsJumpKeyPressed();
+            return InputManager.Instance.IsJumpKeySinglePressed();
         }
         
         protected virtual bool IsRunKeyPressed()

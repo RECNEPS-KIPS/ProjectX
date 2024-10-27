@@ -3,61 +3,57 @@
 // describe:
 using System;
 using Framework.Core.Manager.ResourcesLoad;
+using Framework.Core.SpaceSegment;
 using GamePlay.Item;
 using Unity.VisualScripting;
 using UnityEngine;
+using Object = UnityEngine.Object;
 
 namespace GamePlay.Scene
 {
     [Serializable]
-    public class SceneItem : MonoBehaviour, IItemable, IOctrable
+    public class SceneItem : IScenable
     {
-        public int id;
-        public int ID
-        {
-            get => id;
-            set => id = value;
-        }
+        public int itemID;
+        public int GUID;
+        public Vector3 position;
+        public Vector3 rotation;
+        public Vector3 scale;
+        public GameObject model;
         public ItemConfig ItemConfig
         {
             get
             {
-                var cf = ItemManager.Instance.GetItemConfigByID(ID);
+                var cf = ItemManager.Instance.GetItemConfigByID(itemID);
                 if (cf != null)
                 {
                     return cf;
                 }
-                LogManager.LogError("Item", $"ID:{ID} has not config");
+                LogManager.LogError("Item", $"ItemID:{itemID} has not config");
                 return null;
             }
         }
-        public Collider _collider;
-        public Collider Collider
+
+        public bool LoadModel()
         {
-            get
-            {
-                if (_collider == null)
-                {
-                    _collider = ColliderTrs.GetComponent<Collider>();
-                }
-                return _collider;
-            }
+            if (ItemConfig == null) return false;
+            model = Object.Instantiate(ResourcesLoadManager.LoadAsset<GameObject>(ItemConfig.Path),SceneManager.Instance.SceneItemRoot);
+            model.transform.localPosition = position;
+            model.transform.eulerAngles = rotation;
+            model.transform.localScale = scale;
+            return true;
         }
-        public Transform SelfTrs => transform;
-        public Transform ColliderTrs { get; set; }
-        private void Awake()
+        public Bounds Bounds { get; set; }
+        public bool OnShow(Transform parent)
         {
-            InitItem();
+            if (model != null) return true;
+            bool loaded = LoadModel();
+            return loaded;
         }
-        public void InitItem()
+        public void OnHide()
         {
-            if (ItemConfig == null) return;
-            var go = Instantiate(ResourcesLoadManager.LoadAsset<GameObject>(ItemConfig.Path), transform);
-            go.transform.localPosition = Vector3.zero;
-            go.transform.localRotation = Quaternion.Euler(0, 0, 0);
-            var collider = go.transform.AddComponent<BoxCollider>();
-            collider.isTrigger = true;
-            ColliderTrs = go.transform;
+            Object.Destroy(model);
+            model = null;
         }
     }
 }

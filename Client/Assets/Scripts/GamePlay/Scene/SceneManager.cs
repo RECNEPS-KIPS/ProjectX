@@ -3,6 +3,9 @@ using Framework.Core.Manager.Config;
 using Framework.Core.Manager.Event;
 using Framework.Core.Manager.ResourcesLoad;
 using Framework.Core.Singleton;
+using Framework.Core.SpaceSegment;
+using GamePlay.Player;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -15,21 +18,7 @@ namespace GamePlay.Scene
         
         private Dictionary<string, int> _scenePathIDMap;
         
-        [SerializeField]
-        private bool DrawGizmos;
-        private Dictionary<string, int> ScenePathIDMap
-        {
-            get
-            {
-                if (_scenePathIDMap == null)
-                {
-                    _scenePathIDMap = new Dictionary<string, int>();
-                }
-
-                return _scenePathIDMap;
-            }
-        }
-
+        private Dictionary<string, int> ScenePathIDMap => _scenePathIDMap ??= new Dictionary<string, int>();
         private Dictionary<int, dynamic> _sceneCfMap;
 
         //scene id-cf
@@ -52,6 +41,7 @@ namespace GamePlay.Scene
             }
         }
         private UnityAction<UnityEngine.SceneManagement.Scene, UnityEngine.SceneManagement.LoadSceneMode> SceneLoadFinished;
+        private UnityAction<UnityEngine.SceneManagement.Scene> SceneUnloadFinished;
         private Dictionary<string, UnityAction> _loadedCallbackMap;
 
         private Dictionary<string, UnityAction> LoadedCallbackMap
@@ -64,36 +54,44 @@ namespace GamePlay.Scene
         }
         // 存储世界中的游戏对象数组
         
-        public IOctrable[] worldObjects;
-        public int nodeMinSize = 5; // 八叉树的最小节点大小
-        
-        [SerializeField]
-        private Octree octree; // 八叉树对象
+        // public IOctrable[] worldObjects;
+        // public int nodeMinSize = 5; // 八叉树的最小节点大小
+        //
+        // [SerializeField]
+        // private Octree octree; // 八叉树对象
         
 
         // 在每一帧更新时调用
-        private void OnDrawGizmos()
-        {
-            if (Application.isPlaying && octree != null)
-            {
-                if (DrawGizmos)
-                {
-                    octree.rootNode.Draw(); // 在运行时绘制八叉树的根节点的包围盒
-                }
-            }
-        }
+        // private void OnDrawGizmos()
+        // {
+        //     if (Application.isPlaying && octree != null)
+        //     {
+        //         if (DrawGizmos)
+        //         {
+        //             octree.rootNode.Draw(); // 在运行时绘制八叉树的根节点的包围盒
+        //         }
+        //     }
+        // }
+        private bool canUpdateSceneDetector;
         public void Launch()
         {
-#if UNITY_EDITOR
-            DrawGizmos = true;
-#endif
+        }
+        private void OnPlayerLoadFinished()
+        {
+            canUpdateSceneDetector = true;
         }
         public override void Initialize()
         {
+            EventManager.Register(EEvent.PLAYER_LOAD_FINISHED,OnPlayerLoadFinished);
             LogManager.Log(LOGTag,$"Register scene load finished callback");
+            SceneUnloadFinished = _ =>
+            {
+                canUpdateSceneDetector = false;
+            };
             SceneLoadFinished = (scene, _) =>
             {
                 LogManager.Log(LOGTag,$"Scene load finished === name:{scene.path}");
+                canUpdateSceneDetector = false;
                 if (LoadedCallbackMap.TryGetValue(scene.path,out var callback))
                 {
                     callback?.Invoke();
@@ -104,19 +102,61 @@ namespace GamePlay.Scene
                 {
                     cf = GetSceneConfig(sceneID);
                 }
-                worldObjects = FindObjectsOfType<SceneItem>() as IOctrable[];
-                LogManager.Log(LOGTag,$"Scene load IOctrable:{worldObjects.Length} SceneItem:{FindObjectsOfType<SceneItem>().Length}");
-                //新场景加载好之后初始化八叉树
-                octree = new Octree(worldObjects, nodeMinSize); //创建八叉树对象并初始化
+                
+                //加载场景物件
+                InitSceneItems();
+                // worldObjects = FindObjectsOfType<SceneItem>() as IOctrable[];
+                // LogManager.Log(LOGTag,$"Scene load IOctrable:{worldObjects.Length} SceneItem:{FindObjectsOfType<SceneItem>().Length}");
+                // //新场景加载好之后初始化八叉树
+                // octree = new Octree(worldObjects, nodeMinSize); //创建八叉树对象并初始化
         
                 EventManager.Dispatch(EEvent.SCENE_LOAD_FINISHED,cf);
             };
+            UnityEngine.SceneManagement.SceneManager.sceneUnloaded += SceneUnloadFinished;
             UnityEngine.SceneManagement.SceneManager.sceneLoaded += SceneLoadFinished;
+        }
+        private ScenableLoadController _scenableLoadController;
+        public ScenableLoadController ScenableLoadController => _scenableLoadController ??= SceneItemRoot.AddComponent<ScenableLoadController>();
+
+        private Transform _sceneItemRoot;
+        public Transform SceneItemRoot => _sceneItemRoot ??= new GameObject("[Environment]").transform;
+
+        private void InitSceneItems()
+        {
+            // Bounds bounds = new Bounds(); // 用于计算包围盒的 Bounds 对象
+
+            // 遍历所有游戏对象,计算整体包围盒
+            // foreach (IOctrable octreeItem in worldObjects)
+            // {
+            //     LogManager.Log(LOGTag,$"Item name:{octreeItem.GO.name}");
+            //     bounds.Encapsulate(octreeItem.GO.GetComponent<Collider>().bounds);
+            // }
+            //
+            // // 计算包围盒的最大边长
+            // float maxSize = Mathf.Max(bounds.size.x, bounds.size.y, bounds.size.z);
+            // Vector3 sizeVector = new Vector3(maxSize, maxSize, maxSize) * 0.5f;
+            
+            
+            // ScenableLoadController.Init(Vector3.zero, new Vector3(0,0,0),false,TreeType.LinearOctree);
+            // for (int i = 0; i < loadObjects.Count; i++)
+            // {
+            //     ScenableLoadController.AddSceneBlockObject(loadObjects[i]);
+            // }
+        }
+        
+        void Update()
+        {
+            if (canUpdateSceneDetector)
+            {
+                ScenableLoadController.RefreshDetector(PlayerManager.Instance.CharacterController.SceneDetector);
+            }
         }
 
         public override void Dispose()
         {
+            EventManager.Remove(EEvent.PLAYER_LOAD_FINISHED,OnPlayerLoadFinished);
             UnityEngine.SceneManagement.SceneManager.sceneLoaded -= SceneLoadFinished;
+            UnityEngine.SceneManagement.SceneManager.sceneUnloaded -= SceneUnloadFinished;
         }
 
         public dynamic GetSceneConfig(int sceneID)
@@ -154,19 +194,19 @@ namespace GamePlay.Scene
             UnityEngine.SceneManagement.SceneManager.LoadScene(path);
         }
 
-        public List<IOctrable> CheckBounds(Bounds bounds)
-        {
-            List<IOctrable> os = new();
-            List<OctreeNode> nodes = octree.CheckBounds(bounds);
-            foreach (var node in nodes)
-            {
-                if (!node.isLeaf)
-                {
-                    continue;
-                }
-                os.AddRange(node.Octrables);
-            }
-            return os;
-        }
+        // public List<IOctrable> CheckBounds(Bounds bounds)
+        // {
+        //     List<IOctrable> os = new();
+        //     List<OctreeNode> nodes = octree.CheckBounds(bounds);
+        //     foreach (var node in nodes)
+        //     {
+        //         if (!node.isLeaf)
+        //         {
+        //             continue;
+        //         }
+        //         os.AddRange(node.Octrables);
+        //     }
+        //     return os;
+        // }
     }
 }

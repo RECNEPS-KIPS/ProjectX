@@ -8,7 +8,7 @@ namespace Framework.Core.Manager.Event
     /// </summary>
     public enum EEvent
     {
-
+        PLAYER_LOAD_FINISHED,//玩家
         PLAYER_ATTR_UPDATE,//玩家属性更新
         
         SCENE_LOAD_FINISHED,//场景加载完成

@@ -6,6 +6,7 @@ using Framework.Core.Manager.Config;
 using Framework.Core.Manager.Event;
 using Framework.Core.Manager.ResourcesLoad;
 using Framework.Core.Singleton;
+using Framework.Core.SpaceSegment;
 using GamePlay.Character;
 using UnityEngine;
 using CharacterController = GamePlay.Character.CharacterController;
@@ -79,7 +80,7 @@ namespace GamePlay.Player
             }
         }
 
-        private Transform CharacterControllerRoot;
+        public Transform CharacterControllerRoot;
 
         void LoadPlayerController(dynamic sceneCf)
         {
@@ -123,9 +124,10 @@ namespace GamePlay.Player
                     var mt = modelGo.transform;
                     
                     // LogManager.Log(LOGTag,"LoadPlayerController",mt==null,cc==null);
-                    CommonUtils.ResetGO(mt,CharacterController.ModelMountTrs);
+                    CommonUtils.ResetGO(mt,CharacterController.ModelMountRoot);
                 }
             }
+            EventManager.Dispatch(EEvent.PLAYER_LOAD_FINISHED);
         }
 
         private void Update()

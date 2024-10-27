@@ -336,7 +336,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 25fbf2dec20d4368904b654b00e56491, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ModelMountTrs: {fileID: 4697449027845386}
+  ModelMountRoot: {fileID: 4697449027845386}
+  CameraMountRoot: {fileID: 4163543299974472}
 --- !u!114 &-3989095886545326408
 MonoBehaviour:
   m_ObjectHideFlags: 0

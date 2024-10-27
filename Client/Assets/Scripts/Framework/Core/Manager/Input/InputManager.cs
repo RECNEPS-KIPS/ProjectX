@@ -44,9 +44,9 @@ namespace Framework.Core.Manager.Input {
             
         }
 
-        public bool IsJumpKeyPressed(){
+        public bool IsJumpKeySinglePressed(){
             // LogManager.Log("IsJumpKeyPressed");
-            return InputControls.Keyboard.Jump.IsPressed();
+            return InputControls.Keyboard.Jump.WasPressedThisFrame();
         }
         
         public Vector2 GetAxisInput(){
@@ -64,9 +64,9 @@ namespace Framework.Core.Manager.Input {
             return InputControls.Keyboard.Run.IsPressed();
         }
         
-        public bool IsBackpackKeyPressed(){
+        public bool IsBackpackKeySinglePressed(){
             // LogManager.Log("IsRunKeyPressed");
-            return InputControls.Keyboard.Backpack.IsPressed();
+            return InputControls.Keyboard.Backpack.WasPressedThisFrame();
         }
         public bool IsPickKeySinglePressed(){
             // LogManager.Log("IsRunKeyPressed");
