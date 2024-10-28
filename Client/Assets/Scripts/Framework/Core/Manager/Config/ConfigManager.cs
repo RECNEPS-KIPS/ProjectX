@@ -67,7 +67,7 @@ namespace Framework.Core.Manager.Config
                 _configDict.Add(configName, new List<dynamic>());
                 // _configDict[configName].Add(null); //预留一个位置
                 // configDict[configName].Add();
-                LogManager.Log(LOGTag, "Load Config:", t.Name);
+                // LogManager.Log(LOGTag, "Load Config:", t.Name);
                 // try
                 // {
                     var jObjList = JsonUtils.LoadJsonByPath<List<JObject>>(ConfigPath + t.Name);
@@ -280,12 +280,12 @@ namespace Framework.Core.Manager.Config
 
             return table;
         }
-        private static dynamic HandleArray2D<T>(IReadOnlyList<JToken> array)
+        private static dynamic HandleArray2D<T>(IEnumerable<JToken> array)
         {
             dynamic table = new List<List<T>>();
             foreach (var t in array)
             {
-                List<T> innerTable = new List<T>();
+                var innerTable = new List<T>();
                 for (var j = 0; j < t.ToArray().Length; j++)
                 {
                     switch (t.Type.ToString())
@@ -312,9 +312,9 @@ namespace Framework.Core.Manager.Config
 
 
         // 递归处理数组类型
-        private static dynamic HandleArray<T>(IReadOnlyList<JToken> array,int deep = 1)
+        private static dynamic HandleArray<T>(IReadOnlyCollection<JToken> array,int deep = 1)
         {
-            dynamic table = deep switch
+            var table = deep switch
             {
                 1 => HandleArray1D<T>(array),
                 2 => HandleArray2D<T>(array),
@@ -361,10 +361,10 @@ namespace Framework.Core.Manager.Config
             {
                 if (ConfigNameDict.TryGetValue(configName, out var name))
                 {
-                    if (_configDict.ContainsKey(name))
+                    if (_configDict.TryGetValue(name, out var value))
                     {
-                        //待优化
-                        foreach (var cf in _configDict[name])
+                        //待优化直接取id的配置
+                        foreach (var cf in value)
                         {
                             if (cf["id"] == id)
                             {
