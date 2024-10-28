@@ -1,7 +1,6 @@
 using Framework.Core.Manager.Event;
 using Framework.Core.Manager.Input;
 using GamePlay.Player;
-using GamePlay.Scene;
 using UnityEngine;
 
 namespace GamePlay.Character

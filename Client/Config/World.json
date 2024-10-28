@@ -2,22 +2,14 @@
 	{
 		"id":10001,
 		"worldName":"MainWorld",
-		"path":"Assets/ResourcesAssets/Scenes/MainWorld.unity",
 		"initPos":[4.5,1.6,12],
-		"terrainAssetPath":"Assets/ResourcesAssets/Terrains/MainWorld/Terrain.asset",
-		"loadPlayer":true,
-		"chunkSizeX":256,
-		"chunkSizeY":256
+		"terrainAssetPath":"Assets/ResourcesAssets/Worlds/MainWorld/RawInfo/Terrain/Terrain.asset"
 	},
 	{
 		"__metatable":"true",
 		"id":"int",
 		"worldName":"string",
-		"path":"string",
 		"initPos":"vector3",
-		"terrainAssetPath":"string",
-		"loadPlayer":"bool",
-		"chunkSizeX":"int",
-		"chunkSizeY":"int"
+		"terrainAssetPath":"string"
 	}
 ]

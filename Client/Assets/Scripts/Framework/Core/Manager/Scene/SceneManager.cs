@@ -9,7 +9,7 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Events;
 
-namespace GamePlay.Scene
+namespace Framework.Core.Manager.Scene
 {
     [MonoSingletonPath("[Manager]/SceneManager")]
     public class SceneManager: MonoSingleton<SceneManager>
@@ -52,46 +52,31 @@ namespace GamePlay.Scene
                 return _loadedCallbackMap;
             }
         }
-        // 存储世界中的游戏对象数组
-        
-        // public IOctrable[] worldObjects;
-        // public int nodeMinSize = 5; // 八叉树的最小节点大小
-        //
-        // [SerializeField]
-        // private Octree octree; // 八叉树对象
-        
-
-        // 在每一帧更新时调用
-        // private void OnDrawGizmos()
-        // {
-        //     if (Application.isPlaying && octree != null)
-        //     {
-        //         if (DrawGizmos)
-        //         {
-        //             octree.rootNode.Draw(); // 在运行时绘制八叉树的根节点的包围盒
-        //         }
-        //     }
-        // }
-        private bool canUpdateSceneDetector;
         public void Launch()
         {
         }
-        private void OnPlayerLoadFinished()
-        {
-            canUpdateSceneDetector = true;
-        }
+
         public override void Initialize()
         {
-            EventManager.Register(EEvent.PLAYER_LOAD_FINISHED,OnPlayerLoadFinished);
+
             LogManager.Log(LOGTag,$"Register scene load finished callback");
-            SceneUnloadFinished = _ =>
+            SceneUnloadFinished = scene =>
             {
-                canUpdateSceneDetector = false;
+                if (LoadedCallbackMap.TryGetValue(scene.path,out var callback))
+                {
+                    callback?.Invoke();
+                }
+                dynamic cf = null;
+                if (ScenePathIDMap.TryGetValue(scene.path, out var sceneID))
+                {
+                    cf = GetSceneConfig(sceneID);
+                }
+                EventManager.Dispatch(EEvent.SCENE_UNLOAD_FINISHED,cf);
             };
             SceneLoadFinished = (scene, _) =>
             {
                 LogManager.Log(LOGTag,$"Scene load finished === name:{scene.path}");
-                canUpdateSceneDetector = false;
+                // canUpdateSceneDetector = false;
                 if (LoadedCallbackMap.TryGetValue(scene.path,out var callback))
                 {
                     callback?.Invoke();
@@ -102,59 +87,14 @@ namespace GamePlay.Scene
                 {
                     cf = GetSceneConfig(sceneID);
                 }
-                
-                //加载场景物件
-                InitSceneItems();
-                // worldObjects = FindObjectsOfType<SceneItem>() as IOctrable[];
-                // LogManager.Log(LOGTag,$"Scene load IOctrable:{worldObjects.Length} SceneItem:{FindObjectsOfType<SceneItem>().Length}");
-                // //新场景加载好之后初始化八叉树
-                // octree = new Octree(worldObjects, nodeMinSize); //创建八叉树对象并初始化
-        
                 EventManager.Dispatch(EEvent.SCENE_LOAD_FINISHED,cf);
             };
             UnityEngine.SceneManagement.SceneManager.sceneUnloaded += SceneUnloadFinished;
             UnityEngine.SceneManagement.SceneManager.sceneLoaded += SceneLoadFinished;
         }
-        private ScenableLoadController _scenableLoadController;
-        public ScenableLoadController ScenableLoadController => _scenableLoadController ??= SceneItemRoot.AddComponent<ScenableLoadController>();
-
-        private Transform _sceneItemRoot;
-        public Transform SceneItemRoot => _sceneItemRoot ??= new GameObject("[Environment]").transform;
-
-        private void InitSceneItems()
-        {
-            // Bounds bounds = new Bounds(); // 用于计算包围盒的 Bounds 对象
-
-            // 遍历所有游戏对象,计算整体包围盒
-            // foreach (IOctrable octreeItem in worldObjects)
-            // {
-            //     LogManager.Log(LOGTag,$"Item name:{octreeItem.GO.name}");
-            //     bounds.Encapsulate(octreeItem.GO.GetComponent<Collider>().bounds);
-            // }
-            //
-            // // 计算包围盒的最大边长
-            // float maxSize = Mathf.Max(bounds.size.x, bounds.size.y, bounds.size.z);
-            // Vector3 sizeVector = new Vector3(maxSize, maxSize, maxSize) * 0.5f;
-            
-            
-            // ScenableLoadController.Init(Vector3.zero, new Vector3(0,0,0),false,TreeType.LinearOctree);
-            // for (int i = 0; i < loadObjects.Count; i++)
-            // {
-            //     ScenableLoadController.AddSceneBlockObject(loadObjects[i]);
-            // }
-        }
-        
-        void Update()
-        {
-            if (canUpdateSceneDetector)
-            {
-                ScenableLoadController.RefreshDetector(PlayerManager.Instance.CharacterController.SceneDetector);
-            }
-        }
 
         public override void Dispose()
         {
-            EventManager.Remove(EEvent.PLAYER_LOAD_FINISHED,OnPlayerLoadFinished);
             UnityEngine.SceneManagement.SceneManager.sceneLoaded -= SceneLoadFinished;
             UnityEngine.SceneManagement.SceneManager.sceneUnloaded -= SceneUnloadFinished;
         }
@@ -169,10 +109,6 @@ namespace GamePlay.Scene
         {
             var sceneCf = GetSceneConfig((int)sceneID);
             if (sceneCf == null) return;
-            //先加载依赖的terrain
-            LogManager.Log(LOGTag,$"Load terrain name:{sceneCf["terrainAssetPath"]}");
-                
-            ResourcesLoadManager.LoadAssetBundleFile(ResourcesLoadManager.GetAssetBundleName(sceneCf["terrainAssetPath"]));
             LoadSceneByID((int)sceneID,callback);
         }
 
@@ -193,20 +129,5 @@ namespace GamePlay.Scene
             ResourcesLoadManager.LoadAssetBundleFile(ResourcesLoadManager.GetAssetBundleName(path));
             UnityEngine.SceneManagement.SceneManager.LoadScene(path);
         }
-
-        // public List<IOctrable> CheckBounds(Bounds bounds)
-        // {
-        //     List<IOctrable> os = new();
-        //     List<OctreeNode> nodes = octree.CheckBounds(bounds);
-        //     foreach (var node in nodes)
-        //     {
-        //         if (!node.isLeaf)
-        //         {
-        //             continue;
-        //         }
-        //         os.AddRange(node.Octrables);
-        //     }
-        //     return os;
-        // }
     }
 }

@@ -1,5 +1,5 @@
-worldID,场景描述,世界名称,路径,初始位置,地形资源,是否加载角色,地形拆分尺寸X,地形拆分尺寸Y
-id,_desc,worldName,path,initPos,terrainAssetPath,loadPlayer,chunkSizeX,chunkSizeY
-int,,string,string,vector3,string,bool,int,int
-,,,,,,,,
-10001,主世界,MainWorld,Assets/ResourcesAssets/Scenes/MainWorld.unity,"4.5,1.6,12",Assets/ResourcesAssets/Terrains/MainWorld/Terrain.asset,TRUE,256,256
+worldID,场景描述,世界名称,初始位置,地形资源
+id,_desc,worldName,initPos,terrainAssetPath
+int,,string,vector3,string
+,,,,
+10001,主世界,MainWorld,"4.5,1.6,12",Assets/ResourcesAssets/Worlds/MainWorld/RawInfo/Terrain/Terrain.asset

@@ -2,14 +2,12 @@
 // date:2024.10.25 21:07
 // describe:
 using System;
-using Framework.Core.Manager.ResourcesLoad;
 using Framework.Core.SpaceSegment;
 using GamePlay.Item;
-using Unity.VisualScripting;
 using UnityEngine;
 using Object = UnityEngine.Object;
 
-namespace GamePlay.Scene
+namespace Framework.Core.Manager.Scene
 {
     [Serializable]
     public class SceneItem : IScenable
@@ -37,7 +35,7 @@ namespace GamePlay.Scene
         public bool LoadModel()
         {
             if (ItemConfig == null) return false;
-            model = Object.Instantiate(ResourcesLoadManager.LoadAsset<GameObject>(ItemConfig.Path),SceneManager.Instance.SceneItemRoot);
+            // model = Object.Instantiate(ResourcesLoadManager.LoadAsset<GameObject>(ItemConfig.Path),SceneManager.Instance.SceneItemRoot);
             model.transform.localPosition = position;
             model.transform.eulerAngles = rotation;
             model.transform.localScale = scale;

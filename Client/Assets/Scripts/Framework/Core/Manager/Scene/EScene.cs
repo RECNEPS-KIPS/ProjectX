@@ -1,4 +1,4 @@
-﻿namespace GamePlay.Scene
+﻿namespace Framework.Core.Manager.Scene
 {
     public enum EScene
     {
