@@ -22,7 +22,7 @@ namespace Framework.Core.AI
         public eActionExecuteType type;
     }
     
-    public abstract class AIActionBase
+    public abstract class AIActionBase : IAIAction
     {
         protected Func<bool> m_checkBreakFunc;
 
@@ -61,6 +61,11 @@ namespace Framework.Core.AI
         {
             m_checkBreakFunc -= checkFunc;
         }
+
+        public virtual void ResetAction()
+        {
+            
+        }
     }
 
     /// <summary>
@@ -69,9 +74,11 @@ namespace Framework.Core.AI
     public class WaitAction : AIActionBase
     {
         private float m_timer;
-        public WaitAction(float waitTime) : base()
+
+        public WaitAction SetTimer(float timer)
         {
-            m_timer = waitTime;
+            m_timer = timer;
+            return this;
         }
 
         public override void Execute(AIAgent AIAgent, out SActionResult result)
@@ -115,10 +122,11 @@ namespace Framework.Core.AI
         private float m_distanceOffset;
         private Transform m_target;
 
-        public MoveToTargetAction(float distanceOffset,Transform target)
+        public MoveToTargetAction SetMoveTarget(float distanceOffset,Transform target)
         {
             m_distanceOffset = distanceOffset;
             m_target = target;
+            return this;
         }
         
         public override void Execute(AIAgent AIAgent, out SActionResult result)

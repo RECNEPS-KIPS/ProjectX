@@ -67,21 +67,21 @@ namespace Framework.Core.AI
             // Idle-Partol
             if (!AISensor.TrySphereDetect(curPos, 3, GameAIConst.PlayerLayer, out var player))
             {
-                m_actions.Enqueue(new IdleAction());
-                m_actions.Enqueue(new WaitAction(2f));
-                m_actions.Enqueue(new MoveToTargetAction(0.1f,m_patrolPos[m_lastPatrolIndex % m_patrolPos.Count]));
+                m_actions.Enqueue(AIActionFactory.Instance.GetAction<IdleAction>());
+                m_actions.Enqueue(AIActionFactory.Instance.GetAction<WaitAction>().SetTimer(2f));
+                m_actions.Enqueue(AIActionFactory.Instance.GetAction<MoveToTargetAction>().SetMoveTarget(0.1f,m_patrolPos[m_lastPatrolIndex % m_patrolPos.Count]));
                 m_lastPatrolIndex++;
-                m_actions.Enqueue(new WaitAction(1f));
+                m_actions.Enqueue(AIActionFactory.Instance.GetAction<WaitAction>().SetTimer(1f));
             }
             else
             {
                 // Attack
                 if (Vector3.Distance(curPos, player.position) >= 1)
                 {
-                    m_actions.Enqueue(new MoveToTargetAction(1,player));
+                    m_actions.Enqueue(AIActionFactory.Instance.GetAction<MoveToTargetAction>().SetMoveTarget(1,player));
                 }
-                m_actions.Enqueue(new AttackAction());
-                m_actions.Enqueue(new WaitAction(2f));
+                m_actions.Enqueue(AIActionFactory.Instance.GetAction<AttackAction>());
+                m_actions.Enqueue(AIActionFactory.Instance.GetAction<WaitAction>().SetTimer(2f));
             }
             
         }
