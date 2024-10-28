@@ -1,6 +1,5 @@
-索引id,场景描述,路径,初始位置,地形资源,是否加载角色
-id,_desc,path,initPos,terrainAssetPath,loadPlayer
-int,,string,vector3,string,bool
-,,,,,
-10001,荒漠,Assets/ResourcesAssets/Scenes/DeepDesert.unity,"4.5,1.6,12",Assets/ResourcesAssets/Terrains/DeepDesert/Terrain.asset,TRUE
-10002,荒漠,Assets/ResourcesAssets/Scenes/DeepDesert.unity,"4.5,1.6,12",Assets/ResourcesAssets/Terrains/DeepDesert/Terrain.asset,TRUE
+索引id,场景描述,路径
+id,_desc,path
+int,,string
+,,
+10001,主世界场景,Assets/ResourcesAssets/Scenes/MainWorld.unity

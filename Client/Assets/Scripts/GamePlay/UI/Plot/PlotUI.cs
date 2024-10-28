@@ -2,8 +2,8 @@
 // date:2024.10.19 14:30
 // describe:剧情界面
 
+using Framework.Core.Manager.Scene;
 using Framework.Core.Manager.UI;
-using GamePlay.Scene;
 // using UnityEngine.SceneManagement;
 
 namespace GamePlay.UI

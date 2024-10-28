@@ -10,9 +10,9 @@ using Framework.Core.Manager.ResourcesLoad;
 using Framework.Core.Manager.UI;
 using Framework.Core.Manager;
 using Framework.Core.Manager.Input;
+using Framework.Core.Manager.Scene;
 using GamePlay.Item;
 using GamePlay.Player;
-using SceneManager = GamePlay.Scene.SceneManager;
 
 namespace Framework.Core.Launcher
 {
@@ -33,9 +33,9 @@ namespace Framework.Core.Launcher
             AntiCheatManager.Instance.Launch();
             LanguageManager.Instance.Launch();
             SceneManager.Instance.Launch();
+            UIManager.Instance.Launch();
 
             //gameplay玩法相关manager后启动
-            UIManager.Instance.Launch();
             PlayerManager.Instance.Launch();
             ItemManager.Instance.Launch();
             

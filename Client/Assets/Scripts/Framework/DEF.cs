@@ -31,9 +31,9 @@ namespace Framework
             TOPDOWN = 4,
         }
         
-        public const string TERRAIN_ASSETS_PATH = "Assets/ResourcesAssets/Terrains";
         public const int CHUNK_SIZE = 256;
         public const string ENV_ROOT = "[Environment]"; //根节点
+        
         public const string COLLIDER_ROOT = "[Collider]"; //碰撞盒节点
         public const string ITEM_ROOT = "[Item]"; //场景元素节点
         public const string TERRAIN_ROOT = "[Terrain]"; //地形节点
