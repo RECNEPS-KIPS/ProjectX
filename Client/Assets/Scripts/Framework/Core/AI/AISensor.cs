@@ -8,7 +8,7 @@ namespace Framework.Core.AI
 {
     public class AISensor
     {
-        public bool TrySphereDetect(Vector3 pos,float radius,LayerMask layerMask,out Transform target)
+        public static bool TrySphereDetect(Vector3 pos,float radius,LayerMask layerMask,out Transform target)
         {
             target = null; 
             var findColliders = CommonUtils.OverlapSphere_Max10(pos,radius, layerMask);

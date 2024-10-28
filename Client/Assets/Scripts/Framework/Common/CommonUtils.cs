@@ -2,6 +2,7 @@
 // describe:通用工具类
 
 using System;
+using System.Collections;
 using Framework.Core.Manager.Config;
 using Framework.Core.Manager.Timer;
 using UnityEngine;

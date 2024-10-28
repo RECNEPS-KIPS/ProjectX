@@ -1,6 +1,9 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
+using Framework.Core.Manager.Timer;
+using Plugins.RootMotion;
 using UnityEngine;
 
 namespace Framework.Core.AI
@@ -21,14 +24,33 @@ namespace Framework.Core.AI
     
     public abstract class AIActionBase
     {
-        private Func<bool> m_checkBreakFunc;
-        public abstract void BeforeExecute();
+        protected Func<bool> m_checkBreakFunc;
+
+        public virtual void BeforeExecute()
+        {
+            
+        }
+
         /// <summary>
         ///
         /// </summary>
         /// <returns></returns>
-        public abstract void Execute(out SActionResult result);
-        public abstract void AfterExecute();
+        public virtual void Execute(AIAgent AIAgent, out SActionResult result)
+        {
+            result = new SActionResult()
+            {
+                type = eActionExecuteType.EXECUTING,
+            };
+            if (m_checkBreakFunc?.Invoke() ?? false)
+            {
+                result.type = eActionExecuteType.BREAK;
+            }
+        }
+
+        public virtual void AfterExecute()
+        {
+            
+        }
 
         public void RegisterCheckBreakFunc(Func<bool> checkFunc)
         {
@@ -38,6 +60,91 @@ namespace Framework.Core.AI
         public void RemoveCheckBreakFunc(Func<bool> checkFunc)
         {
             m_checkBreakFunc -= checkFunc;
+        }
+    }
+
+    /// <summary>
+    /// 能被打断的WaitAction
+    /// </summary>
+    public class WaitAction : AIActionBase
+    {
+        private float m_timer;
+        public WaitAction(float waitTime) : base()
+        {
+            m_timer = waitTime;
+        }
+
+        public override void Execute(AIAgent AIAgent, out SActionResult result)
+        {            
+            base.Execute(AIAgent,out result);
+            if (result.type == eActionExecuteType.BREAK)
+            {
+                return;
+            }
+            
+            if (m_timer > 0)
+            {
+                m_timer -= Time.deltaTime;
+            }
+            else
+            {
+                result.type = eActionExecuteType.SUCCESS;
+            }
+        }
+    }
+
+    /// <summary>
+    /// 闲置Action
+    /// </summary>
+    public class IdleAction : AIActionBase
+    {
+        public override void Execute(AIAgent AIAgent, out SActionResult result)
+        {
+            base.Execute(AIAgent,out result);
+            if (result.type == eActionExecuteType.BREAK)
+                return;
+            result.type = eActionExecuteType.SUCCESS;
+        }
+    }
+
+    /// <summary>
+    /// 移动至目标Action
+    /// </summary>
+    public class MoveToTargetAction : AIActionBase
+    {
+        private float m_distanceOffset;
+        private Transform m_target;
+
+        public MoveToTargetAction(float distanceOffset,Transform target)
+        {
+            m_distanceOffset = distanceOffset;
+            m_target = target;
+        }
+        
+        public override void Execute(AIAgent AIAgent, out SActionResult result)
+        {
+            base.Execute(AIAgent,out result);
+            if (result.type == eActionExecuteType.BREAK)
+                return;
+
+            var curPos = AIAgent.transform.position;
+            var targetPos = m_target.position;
+            if (Vector3.Distance(curPos, targetPos) <= m_distanceOffset)
+            {
+                result.type = eActionExecuteType.SUCCESS;
+            }
+        }
+    }
+    
+    public class AttackAction : AIActionBase
+    {
+        public override void Execute(AIAgent AIAgent, out SActionResult result)
+        {
+            base.Execute(AIAgent,out result);
+            if (result.type == eActionExecuteType.BREAK)
+                return;
+
+            Debug.LogError("Attack");
         }
     }
 }
