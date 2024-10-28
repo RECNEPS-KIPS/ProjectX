@@ -34,9 +34,9 @@ namespace Framework
         public const int CHUNK_SIZE = 256;
         public const string ENV_ROOT = "[Environment]"; //根节点
         
-        public const string COLLIDER_ROOT = "[Collider]"; //碰撞盒节点
-        public const string ITEM_ROOT = "[Item]"; //场景元素节点
-        public const string TERRAIN_ROOT = "[Terrain]"; //地形节点
+        // public const string COLLIDER_ROOT = "[Collider]"; //碰撞盒节点
+        // public const string ITEM_ROOT = "[Item]"; //场景元素节点
+        // public const string TERRAIN_ROOT = "[Terrain]"; //地形节点
         
         public static string LIGHTMAP_TEXTURE_DIR(int idx) => $"Lightmap-{idx}_comp_dir";
         public static string LIGHTMAP_TEXTURE_LIGHT(int idx) => $"Lightmap-{idx}_comp_light";

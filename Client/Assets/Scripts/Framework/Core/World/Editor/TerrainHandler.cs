@@ -49,9 +49,9 @@ namespace Framework.Core.World
             return File.Exists(terrainAssetPath);
         }
 
-        public static void FocusTerrain(Transform terrainRoot, string terrainName)
+        public static void FocusTerrain(Transform trs)
         {
-            var trs = terrainRoot.Find(terrainName);
+            // var trs = terrainRoot.Find(terrainName);
             if (!trs) return;
             EditorGUIUtility.PingObject(trs.gameObject);
             Selection.activeGameObject = trs.gameObject;
@@ -76,7 +76,7 @@ namespace Framework.Core.World
         #region Load Terrain
 
         //加载切分的地形
-        public void LoadSplitTerrain(string worldName, Transform terrainRoot, Action callback = null)
+        public void LoadSplitTerrain(string worldName, Transform envRoot, Action callback = null)
         {
             var worldDir = $"{DEF.RESOURCES_ASSETS_PATH}/Worlds/{worldName}";
             if (!Directory.Exists(worldDir))
@@ -101,22 +101,28 @@ namespace Framework.Core.World
                 }
 
                 // TerrainDataStruct terrainInfo = LoadTerrainInfo($"{saveDir}/data.bytes");
-                LoadTerrainChunk(worldName, terrainRoot, x, y);
+                LoadTerrainChunk(worldName, envRoot, x, y);
             }
 
             callback?.Invoke();
         }
 
-        private void LoadTerrainChunk(string worldName, Transform terrainRoot, int x, int y)
+        private void LoadTerrainChunk(string worldName, Transform envRoot, int x, int y)
         {
             var chunkDir = $"Chunk{TerrainSplitChar}{y}{TerrainSplitChar}{x}";
             var saveDir = $"{DEF.RESOURCES_ASSETS_PATH}/Worlds/{worldName}/{chunkDir}";
             var td = AssetDatabase.LoadAssetAtPath<TerrainData>($"{saveDir}/terrain.asset");
-
+            var chunkRoot = new GameObject();
+            chunkRoot.transform.SetParent(envRoot);
+            chunkRoot.transform.localScale = Vector3.one;
+            chunkRoot.transform.localRotation = Quaternion.identity;
+            chunkRoot.transform.localPosition = new Vector3(x * td.size.x, 0, y * td.size.z);
+            chunkRoot.name = $"Chunk_{y}_{x}";
+            
             var go = Terrain.CreateTerrainGameObject(td);
-            go.name = $"{y}_{x}";
-            go.transform.SetParent(terrainRoot);
-            go.transform.localPosition = new Vector3(x * td.size.x, 0, y * td.size.z);
+            go.transform.SetParent(chunkRoot.transform);
+            go.name = "Terrain";
+            go.transform.localPosition = Vector3.zero;
             go.transform.localScale = Vector3.one;
             go.transform.localRotation = Quaternion.identity;
             go.gameObject.isStatic = true;
@@ -124,7 +130,7 @@ namespace Framework.Core.World
             terrainList.Add(go);
         }
 
-        public static Terrain LoadSingleTerrain(Transform terrainRoot, string terrainAssetPath,Action<GameObject> callback = null)
+        public static Terrain LoadSingleTerrain(Transform envRoot, string terrainAssetPath,Action<GameObject> callback = null)
         {
             if (!File.Exists(terrainAssetPath))
             {
@@ -134,7 +140,7 @@ namespace Framework.Core.World
             
             var td = AssetDatabase.LoadAssetAtPath<TerrainData>(terrainAssetPath);
             var go = Terrain.CreateTerrainGameObject(td);
-            go.transform.SetParent(terrainRoot);
+            go.transform.SetParent(envRoot);
             go.transform.localPosition = Vector3.zero;
             go.transform.localScale = Vector3.one;
             go.transform.localRotation = Quaternion.identity;
@@ -285,7 +291,7 @@ namespace Framework.Core.World
             AssetDatabase.Refresh();
         }
 
-        private TerrainData CreateTerrainData(float[,] heightmap, int alphamapResolution, int baseMapResolution, int heightmapResolution, Vector3 originalSize, int rows, int columns)
+        private static TerrainData CreateTerrainData(float[,] heightmap, int alphamapResolution, int baseMapResolution, int heightmapResolution, Vector3 originalSize, int rows, int columns)
         {
             var terrainData = new TerrainData
             {
@@ -299,7 +305,7 @@ namespace Framework.Core.World
             return terrainData;
         }
 
-        private void CopyVegetationData(TerrainData sourceTerrainData, TerrainData targetTerrainData, int row, int col, int rows, int columns)
+        private static void CopyVegetationData(TerrainData sourceTerrainData, TerrainData targetTerrainData, int row, int col, int rows, int columns)
         {
             // 获取原始地形的植被数据
             var sourceTreePrototypes = sourceTerrainData.treePrototypes;
@@ -346,7 +352,7 @@ namespace Framework.Core.World
             //Debug.Log(targetTerrainData.name+ " treeInstances:"+ adjustedTreeInstances.Count);
         }
 
-        private void CopyTerrainTextureData(Terrain sourceTerrain, Terrain targetTerrain, int row, int col, int rows, int columns)
+        private static void CopyTerrainTextureData(Terrain sourceTerrain, Terrain targetTerrain, int row, int col, int rows, int columns)
         {
             var sourceTerrainData = sourceTerrain.terrainData;
             var targetTerrainData = targetTerrain.terrainData;
@@ -392,35 +398,36 @@ namespace Framework.Core.World
         #region Collider Boxes
 
         //生成碰撞盒
-        public void GenColliderBoxes(Transform colliderRoot, int xMax, int yMax, Vector2 chunkSize, Vector2 colliderSize, float terrainHeight, Action callback = null)
+        public void GenColliderBoxes(Transform envRoot, int rows, int columns, Vector2 chunkSize, Vector2 colliderSize, float terrainHeight, Action callback = null)
         {
-            for (var y = 0; y < yMax; ++y)
+            for (var row = 0; row < rows; ++row)
             {
-                for (var x = 0; x < xMax; ++x)
+                for (var col = 0; col < columns; ++col)
                 {
-                    GenColliderBox(colliderRoot, x, y, chunkSize, colliderSize, terrainHeight);
+                    GenColliderBox(envRoot, row, col, chunkSize, colliderSize, terrainHeight);
                 }
             }
             callback?.Invoke();
         }
 
-        private void GenColliderBox(Transform colliderRoot, int x, int y, Vector2 chunkSize, Vector2 colliderSize, float terrainHeight)
+        private void GenColliderBox(Transform envRoot, int row, int col, Vector2 chunkSize, Vector2 colliderSize, float terrainHeight,bool isPosition = false)
         {
-            var nodeName = $"{y}_{x}";
-            var oldTrs = colliderRoot.Find(nodeName);
+            // var nodeName = $"{row}_{col}";
+            var chunkRoot = envRoot.Find($"Chunk_{row}_{col}");
+            var oldTrs = chunkRoot.Find("Collider");
             if (oldTrs)
             {
                 Object.DestroyImmediate(oldTrs.gameObject);
             }
 
-            var go = new GameObject(nodeName);
-            go.transform.SetParent(colliderRoot);
+            var go = new GameObject();
+            go.transform.SetParent(chunkRoot);
             var trs = go.transform;
-            trs.name = nodeName;
+            trs.name = "Collider";
             trs.localRotation = Quaternion.identity;
             trs.localScale = Vector3.one;
             var collider = go.AddComponent<BoxCollider>();
-            trs.localPosition = new Vector3((x + 0.5f) * chunkSize.x, 0, (y + 0.5f) * chunkSize.y);
+            trs.localPosition = new Vector3( isPosition ? chunkSize.x : (0.5f * chunkSize.x), 0,  isPosition ? chunkSize.y : (0.5f * chunkSize.y));
             collider.size = new Vector3(colliderSize.x, terrainHeight, colliderSize.y);
             collider.isTrigger = true;
             colliderList.Add(go);
@@ -439,48 +446,30 @@ namespace Framework.Core.World
         }
 
         //加载碰撞盒子
-        public void LoadColliderBoxes(Transform colliderRoot, string worldName, int xMax, int yMax, Vector2 chunkSize,Action callback = null)
+        public void LoadColliderBoxes(Transform colliderRoot, string worldName, int rows, int columns, Vector2 chunkSize,Action callback = null)
         {
-            for (var y = 0; y < yMax; y++)
+            for (var row = 0; row < rows; row++)
             {
-                for (var x = 0; x < xMax; x++)
+                for (var col = 0; col < columns; col++)
                 {
-                    var chunkDir = $"Chunk{TerrainSplitChar}{y}{TerrainSplitChar}{x}";
-                    var saveDir = $"{DEF.RESOURCES_ASSETS_PATH}Environment/{worldName}/{chunkDir}";
-                    var filePath = $"{saveDir}/data.bytes";
-                    if (!File.Exists(filePath))
+                    var chunkDir = $"Chunk{TerrainSplitChar}{row}{TerrainSplitChar}{col}";
+                    var savePath = $"{DEF.RESOURCES_ASSETS_PATH}/Worlds/{worldName}/{chunkDir}/Collider.bin";
+                    if (!File.Exists(savePath))
                     {
                         continue;
                     }
 
-                    var fs = new FileStream(filePath, FileMode.Open, FileAccess.Read);
+                    var fs = new FileStream(savePath, FileMode.Open, FileAccess.Read);
                     var reader = new BinaryReader(fs);
                     try
                     {
-                        reader.ReadSingle();
-                        reader.ReadSingle();
-                        reader.ReadSingle();
-                        reader.ReadInt32();
-                        reader.ReadSingle();
-                        reader.ReadSingle();
-                        reader.ReadInt32();
-                        reader.ReadInt32();
-                        reader.ReadSingle();
-                        reader.ReadSingle();
-                        reader.ReadSingle();
-                        reader.ReadInt32();
-                        reader.ReadSingle();
-                        reader.ReadInt32();
-                        reader.ReadInt32();
-                        reader.ReadSingle();
-                        reader.ReadSingle();
-                        reader.ReadSingle();
-                        reader.ReadSingle();
-                        reader.ReadString();
-                        var colliderX = reader.ReadInt32();
-                        var colliderY = reader.ReadInt32();
-                        var colliderZ = reader.ReadInt32();
-                        GenColliderBox(colliderRoot, x, y, chunkSize, new Vector2(colliderX, colliderZ), colliderY);
+                        var px = reader.ReadSingle();
+                        var pz = reader.ReadSingle();
+                        var sizeX = reader.ReadSingle();
+                        var sizeY = reader.ReadSingle();
+                        var sizeZ = reader.ReadSingle();
+
+                        GenColliderBox(colliderRoot, row, col, new Vector2(px, pz), new Vector2(sizeX, sizeZ), sizeY,true);
                     }
                     catch (Exception e)
                     {
@@ -495,192 +484,35 @@ namespace Framework.Core.World
             callback?.Invoke();
         }
 
-        public static void SaveColliderBoxes(Transform colliderRoot, string worldName, int rows, int columns, Action callback = null)
+        public static void SaveColliderBoxes(Transform envRoot, string worldName, int rows, int columns, Action callback = null)
         {
+            LogManager.Log(LOGTag,worldName,rows,columns);
             for (var row = 0; row < rows; row++)
             {
                 for (var col = 0; col < columns; col++)
                 {
-                    
-                    var chunkDir = $"Chunk{TerrainSplitChar}{col}{TerrainSplitChar}{row}";
-                    var savePath = $"{DEF.RESOURCES_ASSETS_PATH}/Worlds/{worldName}/{chunkDir}/Data.bin";
+                    var chunkDir = $"Chunk{TerrainSplitChar}{row}{TerrainSplitChar}{col}";
+                    var savePath = $"{DEF.RESOURCES_ASSETS_PATH}/Worlds/{worldName}/{chunkDir}/Collider.bin";
                     if(File.Exists(savePath))
                     {
                         File.Delete(savePath);
                     }
                     var fs = new FileStream(savePath, FileMode.Create);
                     var writer = new BinaryWriter(fs);
+
+                    var colliderTrs = envRoot.Find(chunkDir).Find("Collider");
+                    var collider = colliderTrs.GetComponent<BoxCollider>();
+                    var localPosition = colliderTrs.localPosition;
+                    writer.Write(localPosition.x);
+                    writer.Write(localPosition.z);
+                    writer.Write(collider.size.x);
+                    writer.Write(collider.size.y);
+                    writer.Write(collider.size.z);
                     
-                    writer.Write(0);
-                }
-            }
-        }
-        [Obsolete]
-        public static void ObsoleteSaveColliderBoxes(Transform colliderRoot, string worldName, int xMax, int yMax,Action callback = null)
-        {
-            for (var y = 0; y < yMax; y++)
-            {
-                for (var x = 0; x < xMax; x++)
-                {
-                    var chunkDir = $"Chunk{TerrainSplitChar}{y}{TerrainSplitChar}{x}";
-                    var saveDir = $"{DEF.RESOURCES_ASSETS_PATH}Environment/{worldName}/{chunkDir}";
-                    var filePath = $"{saveDir}/data.bytes";
-                    if (!File.Exists(filePath))
-                    {
-                        continue;
-                    }
-
-                    var fs = new FileStream(filePath, FileMode.Open, FileAccess.Read);
-                    var reader = new BinaryReader(fs);
-                    var terrainData = new TerrainDataStruct();
-                    var itemDataStructList = new List<ItemDataStruct>();
-                    var success = true;
-                    try
-                    {
-                        //terrain data
-                        var posX = reader.ReadSingle();
-                        var posY = reader.ReadSingle();
-                        var posZ = reader.ReadSingle();
-                        terrainData.pos = new Vector3(posX, posY, posZ);
-                        terrainData.sliceSize = reader.ReadInt32();
-                        terrainData.treeDistance = reader.ReadSingle();
-                        terrainData.treeBillboardDistance = reader.ReadSingle();
-                        terrainData.treeCrossFadeLength = reader.ReadInt32();
-                        terrainData.treeMaximumFullLODCount = reader.ReadInt32();
-                        terrainData.detailObjectDistance = reader.ReadSingle();
-                        terrainData.detailObjectDensity = reader.ReadSingle();
-                        terrainData.heightmapPixelError = reader.ReadSingle();
-                        terrainData.heightmapMaximumLOD = reader.ReadInt32();
-                        terrainData.basemapDistance = reader.ReadSingle();
-                        terrainData.shadowCastingMode = (ShadowCastingMode)reader.ReadInt32();
-                        terrainData.lightmapIndex = reader.ReadInt32();
-                        var lightmapScaleOffsetX = reader.ReadSingle();
-                        var lightmapScaleOffsetY = reader.ReadSingle();
-                        var lightmapScaleOffsetZ = reader.ReadSingle();
-                        var lightmapScaleOffsetW = reader.ReadSingle();
-                        terrainData.lightmapScaleOffset = new Vector4(lightmapScaleOffsetX, lightmapScaleOffsetY,
-                            lightmapScaleOffsetZ, lightmapScaleOffsetW);
-                        terrainData.materialGUID = reader.ReadString();
-                        //ignore line old collider
-                        reader.ReadInt32();
-                        reader.ReadInt32();
-                        reader.ReadInt32();
-
-                        //item data
-                        var cnt = reader.ReadInt32();
-                        for (var i = 0; i < cnt; i++)
-                        {
-                            ItemDataStruct ids = new ItemDataStruct();
-                            var tX = reader.ReadSingle();
-                            var tY = reader.ReadSingle();
-                            var tZ = reader.ReadSingle();
-                            ids.pos = new Vector3(tX, tY, tZ);
-                            tX = reader.ReadSingle();
-                            tY = reader.ReadSingle();
-                            tZ = reader.ReadSingle();
-                            ids.rotate = Quaternion.Euler(tX, tY, tZ);
-                            tX = reader.ReadSingle();
-                            tY = reader.ReadSingle();
-                            tZ = reader.ReadSingle();
-                            ids.scale = new Vector3(tX, tY, tZ);
-                            ids.lightingMapIndex = reader.ReadInt32();
-                            tX = reader.ReadSingle();
-                            tY = reader.ReadSingle();
-                            tZ = reader.ReadSingle();
-                            var w = reader.ReadSingle();
-                            ids.lightingMapOffsetScale = new Vector4(tX, tY, tZ, w);
-                            ids.guid = reader.ReadString();
-                            ids.name = reader.ReadString();
-                            itemDataStructList.Add(ids);
-                        }
-                    }
-                    catch (Exception e)
-                    {
-                        LogManager.LogError(LOGTag, e.Message);
-                        success = false;
-                    }
-
-                    reader.Close();
+                    writer.Close();
                     fs.Close();
-                    if (!success) continue;
-                    {
-                        File.Delete(filePath);
-                        fs = new FileStream(filePath, FileMode.OpenOrCreate, FileAccess.Write);
-                        BinaryWriter writer = new BinaryWriter(fs);
-                        //恢复记录的地形数据
-                        Vector3 pos = terrainData.pos;
-                        writer.Write(pos.x);
-                        writer.Write(pos.y);
-                        writer.Write(pos.z);
-                        writer.Write(terrainData.sliceSize);
-                        writer.Write(terrainData.treeDistance);
-                        writer.Write(terrainData.treeBillboardDistance);
-                        writer.Write(terrainData.treeCrossFadeLength);
-                        writer.Write(terrainData.treeMaximumFullLODCount);
-                        writer.Write(terrainData.detailObjectDistance);
-                        writer.Write(terrainData.detailObjectDensity);
-                        writer.Write(terrainData.heightmapPixelError);
-                        writer.Write(terrainData.heightmapMaximumLOD);
-                        writer.Write(terrainData.basemapDistance);
-                        writer.Write((int)terrainData.shadowCastingMode);
-                        writer.Write(terrainData.lightmapIndex);
-                        writer.Write(terrainData.lightmapScaleOffset.x);
-                        writer.Write(terrainData.lightmapScaleOffset.y);
-                        writer.Write(terrainData.lightmapScaleOffset.z);
-                        writer.Write(terrainData.lightmapScaleOffset.w);
-                        writer.Write(terrainData.materialGUID);
-
-                        //记录新的碰撞盒数据
-                        var nodeName = $"{y}_{x}";
-                        var oldTrs = colliderRoot.Find(nodeName);
-                        var colliderX = 0;
-                        var colliderY = 0;
-                        var colliderZ = 0;
-                        if (oldTrs)
-                        {
-                            var collider = oldTrs.GetComponent<BoxCollider>();
-                            if (collider)
-                            {
-                                var v = collider.size;
-                                colliderX = (int)v.x;
-                                colliderY = (int)v.y;
-                                colliderZ = (int)v.z;
-                            }
-                        }
-
-                        writer.Write(colliderX);
-                        writer.Write(colliderY);
-                        writer.Write(colliderZ);
-
-                        //恢复item数据
-                        writer.Write(itemDataStructList.Count);
-                        foreach (var ids in itemDataStructList)
-                        {
-                            writer.Write(ids.pos.x);
-                            writer.Write(ids.pos.y);
-                            writer.Write(ids.pos.z);
-                            writer.Write(ids.rotate.x);
-                            writer.Write(ids.rotate.y);
-                            writer.Write(ids.rotate.z);
-                            writer.Write(ids.scale.x);
-                            writer.Write(ids.scale.y);
-                            writer.Write(ids.scale.z);
-                            writer.Write(ids.lightingMapIndex);
-                            writer.Write(ids.lightingMapOffsetScale.x);
-                            writer.Write(ids.lightingMapOffsetScale.y);
-                            writer.Write(ids.lightingMapOffsetScale.z);
-                            writer.Write(ids.lightingMapOffsetScale.w);
-                            writer.Write(ids.guid);
-                            writer.Write(ids.name);
-                        }
-
-                        writer.Flush();
-                        writer.Close();
-                        fs.Close();
-                    }
                 }
             }
-
             callback?.Invoke();
         }
 

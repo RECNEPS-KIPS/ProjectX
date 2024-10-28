@@ -20,6 +20,7 @@ namespace Framework.Core.World
             if (colliderList.Count <= 0) return;
             foreach (var boxCollider in from t in colliderList where t select t.GetComponent<BoxCollider>())
             {
+                LogManager.Log("???",boxCollider.transform.parent.name);
                 Gizmos.color = colliderBoxesGizmosColor;
                 Gizmos.DrawWireCube(boxCollider.transform.localPosition, boxCollider.size);
             }

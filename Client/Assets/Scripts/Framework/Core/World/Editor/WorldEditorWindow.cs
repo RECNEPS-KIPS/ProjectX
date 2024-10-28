@@ -192,36 +192,36 @@ namespace Framework.Core.World
                 return _envRoot;
             }
         }
-        private Transform _colliderRoot;
-        private Transform colliderRoot
-        {
-            get
-            {
-                Transform trs = envRoot.Find(DEF.COLLIDER_ROOT);
-                _colliderRoot = trs == null ? CreateNode(DEF.COLLIDER_ROOT, envRoot) : trs;
-                return _colliderRoot;
-            }
-        }
-        private Transform _itemRoot;
-        private Transform itemRoot
-        {
-            get
-            {
-                Transform trs = envRoot.Find(DEF.ITEM_ROOT);
-                _itemRoot = trs == null ? CreateNode(DEF.ITEM_ROOT, envRoot) : trs;
-                return _itemRoot;
-            }
-        }
-        private Transform _terrainRoot;
-        private Transform terrainRoot
-        {
-            get
-            {
-                Transform trs = envRoot.Find(DEF.TERRAIN_ROOT);
-                _terrainRoot = trs == null ? CreateNode(DEF.TERRAIN_ROOT, envRoot) : trs;
-                return _terrainRoot;
-            }
-        }
+        // private Transform _colliderRoot;
+        // private Transform colliderRoot
+        // {
+        //     get
+        //     {
+        //         Transform trs = envRoot.Find(DEF.COLLIDER_ROOT);
+        //         _colliderRoot = trs == null ? CreateNode(DEF.COLLIDER_ROOT, envRoot) : trs;
+        //         return _colliderRoot;
+        //     }
+        // }
+        // private Transform _itemRoot;
+        // private Transform itemRoot
+        // {
+        //     get
+        //     {
+        //         Transform trs = envRoot.Find(DEF.ITEM_ROOT);
+        //         _itemRoot = trs == null ? CreateNode(DEF.ITEM_ROOT, envRoot) : trs;
+        //         return _itemRoot;
+        //     }
+        // }
+        // private Transform _terrainRoot;
+        // private Transform terrainRoot
+        // {
+        //     get
+        //     {
+        //         Transform trs = envRoot.Find(DEF.TERRAIN_ROOT);
+        //         _terrainRoot = trs == null ? CreateNode(DEF.TERRAIN_ROOT, envRoot) : trs;
+        //         return _terrainRoot;
+        //     }
+        // }
 
         #endregion
 
@@ -260,9 +260,9 @@ namespace Framework.Core.World
             terrain = null;
             _config = null;
             selectIndex = -1;
-            _terrainRoot = null;
-            _itemRoot = null;
-            _colliderRoot = null;
+            // _terrainRoot = null;
+            // _itemRoot = null;
+            // _colliderRoot = null;
             _envRoot = null;
             _terrainHandler = null;
             _lightmapHandler = null;
@@ -298,7 +298,7 @@ namespace Framework.Core.World
                         showSliceTerrain = true;
                     }
 
-                    terrain = TerrainHandler.LoadSingleTerrain(terrainRoot, worldConfig["terrainAssetPath"],(Action<GameObject>)Callback);
+                    terrain = TerrainHandler.LoadSingleTerrain(envRoot, worldConfig["terrainAssetPath"],(Action<GameObject>)Callback);
                 }
                 GUILayout.EndHorizontal();
                 GUILayout.BeginHorizontal();
@@ -354,7 +354,7 @@ namespace Framework.Core.World
                 {
                     if (!hasTerrainChunks)
                     {
-                        terrainHandler.LoadSplitTerrain(worldName, terrainRoot, () =>
+                        terrainHandler.LoadSplitTerrain(worldName, envRoot, () =>
                         {
                             LogManager.Log(LOGTag, "All terrain chunks load finished");
                             if (terrain != null)
@@ -408,7 +408,7 @@ namespace Framework.Core.World
                             GUILayout.Label(tName, guiSkin.box, GUILayout.Width(windowSize.width - 20 - 2 * normalSpace - verticalScrollBar), GUILayout.Height(20));
                             if (GUILayout.Button(new GUIContent(EditorGUIUtility.IconContent("d_ToolHandleCenter").image, "Focus Terrain Chunk"), guiSkin.box, GUILayout.Height(normalSpace), GUILayout.Width(normalSpace)))
                             {
-                                TerrainHandler.FocusTerrain(terrainRoot, tName);
+                                TerrainHandler.FocusTerrain(_terrainHandler.terrainList[i].transform);
                             }
                             GUILayout.EndHorizontal();
                         }
@@ -419,7 +419,7 @@ namespace Framework.Core.World
                 EditorGUILayout.EndFoldoutHeaderGroup();
                 if (worldData != null)
                 {
-                    LogManager.Log(LOGTag,worldData.ToString());
+                    // LogManager.Log(LOGTag,worldData.ToString());
                     showColliderSettings = EditorGUILayout.BeginFoldoutHeaderGroup(showColliderSettings, "Collider Settings");
                     if (showColliderSettings)
                     {
@@ -463,7 +463,7 @@ namespace Framework.Core.World
                         //生成碰撞盒
                         if (GUILayout.Button("Create Collider Boxes", GUILayout.Width(windowSize.width - normalSpace - border), GUILayout.Height(20)))
                         {
-                            terrainHandler.GenColliderBoxes(colliderRoot, worldData.TerrainRowCount, worldData.TerrainColumnCount, chunkSize, colliderSize, worldData.TerrainHeight, () =>
+                            terrainHandler.GenColliderBoxes(envRoot, worldData.TerrainRowCount, worldData.TerrainColumnCount, chunkSize, colliderSize, worldData.TerrainHeight, () =>
                             {
                                 LogManager.Log(LOGTag, "Create collider boxes finished");
                                 gizmosHandler.colliderList = new List<GameObject>(terrainHandler.colliderList);
@@ -474,7 +474,7 @@ namespace Framework.Core.World
                         GUILayout.Space(normalSpace);
                         if (GUILayout.Button("Load Collider Boxes", GUILayout.Width(windowSize.width - normalSpace - border), GUILayout.Height(20)))
                         {
-                            terrainHandler.LoadColliderBoxes(colliderRoot, worldName, worldData.TerrainRowCount, worldData.TerrainColumnCount, chunkSize, () =>
+                            terrainHandler.LoadColliderBoxes(envRoot, worldName, worldData.TerrainRowCount, worldData.TerrainColumnCount, chunkSize, () =>
                             {
                                 LogManager.Log(LOGTag, "Load collider boxes form bytes file finished");
                                 gizmosHandler.colliderList = new List<GameObject>(terrainHandler.colliderList);
@@ -485,7 +485,7 @@ namespace Framework.Core.World
                         GUILayout.Space(normalSpace);
                         if (GUILayout.Button("Save Collider Data", GUILayout.Width(windowSize.width - normalSpace - border), GUILayout.Height(20)))
                         {
-                            TerrainHandler.SaveColliderBoxes(colliderRoot, worldName, worldData.TerrainRowCount, worldData.TerrainColumnCount, () => { LogManager.Log(LOGTag, "Save collider data finished"); });
+                            TerrainHandler.SaveColliderBoxes(envRoot, worldName, worldData.TerrainRowCount, worldData.TerrainColumnCount, () => { LogManager.Log(LOGTag, "Save collider data finished"); });
                         }
                         GUILayout.EndHorizontal();
                         GUILayout.BeginHorizontal();
@@ -554,19 +554,19 @@ namespace Framework.Core.World
                             chunkStatusDict[chunkName][(int)ChunkStatus.Visible] = 1 - chunkStatusDict[chunkName][(int)ChunkStatus.Visible];
                             if (visible)
                             {
-                                itemHandler.UnloadItemChunk(itemRoot, row, col,() => { LogManager.Log(LOGTag, $"{chunkName} items unload finished"); });
+                                itemHandler.UnloadItemChunk(envRoot, row, col,() => { LogManager.Log(LOGTag, $"{chunkName} items unload finished"); });
                             } else
                             {
-                                itemHandler.LoadItemChunk(itemRoot, worldName, row, col, chunkSize, () => { LogManager.Log(LOGTag, $"{chunkName} items load finished"); });
+                                itemHandler.LoadItemChunk(envRoot, worldName, row, col, chunkSize, () => { LogManager.Log(LOGTag, $"{chunkName} items load finished"); });
                             }
                         }
                         if (GUILayout.Button(new GUIContent(EditorGUIUtility.IconContent("d_ToolHandleCenter").image, "Focus Chunk Items"), guiSkin.box, GUILayout.Height(20), GUILayout.Width(20)))
                         {
-                            ItemHandler.FocusItemChunk(itemRoot, row, col, chunkSize);
+                            ItemHandler.FocusItemChunk(envRoot, row, col, chunkSize);
                         }
                         if (GUILayout.Button(new GUIContent(EditorGUIUtility.IconContent("SceneSaveGrey").image, "Save Chunk Items"), guiSkin.box, GUILayout.Height(20), GUILayout.Width(20)))
                         {
-                            itemHandler.SaveItemChunk(itemRoot, worldName, row, col, () => { LogManager.Log(LOGTag, $"{chunkName} items save success"); });
+                            itemHandler.SaveItemChunk(envRoot, worldName, row, col, () => { LogManager.Log(LOGTag, $"{chunkName} items save success"); });
                         }
                         GUILayout.Space(rightBorder);
                         GUILayout.EndHorizontal();
@@ -637,7 +637,7 @@ namespace Framework.Core.World
                 {
                     if (!itemChunksLoaded)
                     {
-                        itemHandler.LoadAllItemChunks(itemRoot, worldName, worldData.TerrainRowCount, worldData.TerrainColumnCount, chunkSize, () =>
+                        itemHandler.LoadAllItemChunks(envRoot, worldName, worldData.TerrainRowCount, worldData.TerrainColumnCount, chunkSize, () =>
                         {
                             LogManager.Log(LOGTag, "All item chunks load finished!");
                             itemChunksLoaded = true;
@@ -664,7 +664,7 @@ namespace Framework.Core.World
                 if (GUILayout.Button("Clear All", GUILayout.Width(rightHandlePanelWidth - border * 2)))
                 {
                     itemChunksLoaded = false;
-                    itemHandler.UnloadAllItemChunks(itemRoot, worldData.TerrainRowCount, worldData.TerrainColumnCount, () => { LogManager.Log(LOGTag, "All item chunks unload finished!"); });
+                    itemHandler.UnloadAllItemChunks(envRoot, worldData.TerrainRowCount, worldData.TerrainColumnCount, () => { LogManager.Log(LOGTag, "All item chunks unload finished!"); });
                     var chunkStatusDict = worldChunkStatusDict[selectIndex];
                     for (var row = 0; row < worldData.TerrainRowCount; row++)
                     {
@@ -681,7 +681,7 @@ namespace Framework.Core.World
                 }
                 if (GUILayout.Button("Save All", GUILayout.Width(rightHandlePanelWidth - border * 2)))
                 {
-                    itemHandler.SaveAllItemChunks(itemRoot, worldName, worldData.TerrainRowCount, worldData.TerrainColumnCount, () => { LogManager.Log(LOGTag, "Save succeed!"); });
+                    itemHandler.SaveAllItemChunks(envRoot, worldName, worldData.TerrainRowCount, worldData.TerrainColumnCount, () => { LogManager.Log(LOGTag, "Save succeed!"); });
                 }
                 if (GUILayout.Button("Switch All Fold", GUILayout.Width(rightHandlePanelWidth - border * 2)))
                 {
@@ -749,11 +749,11 @@ namespace Framework.Core.World
             GUILayout.EndHorizontal();
             if (GUILayout.Button("Generate Lightmap Data"))
             {
-                lightmapHandler.GenLightmapData(terrainRoot, itemRoot, worldName, worldData.TerrainRowCount, worldData.TerrainColumnCount, () => { LogManager.Log(LOGTag, "光照数据生成完成"); });
+                // lightmapHandler.GenLightmapData(terrainRoot, itemRoot, worldName, worldData.TerrainRowCount, worldData.TerrainColumnCount, () => { LogManager.Log(LOGTag, "光照数据生成完成"); });
             }
             if (GUILayout.Button("Load Lightmap Data"))
             {
-                lightmapHandler.LoadLightmapData(terrainRoot, itemRoot, worldName, worldData.TerrainRowCount, worldData.TerrainColumnCount, () => { LogManager.Log(LOGTag, "光照数据加载完成"); });
+                // lightmapHandler.LoadLightmapData(terrainRoot, itemRoot, worldName, worldData.TerrainRowCount, worldData.TerrainColumnCount, () => { LogManager.Log(LOGTag, "光照数据加载完成"); });
             }
             GUILayout.EndVertical();
         }
@@ -827,7 +827,7 @@ namespace Framework.Core.World
                 itemHandler.chunkItemsDict[np].Add(mi);
                 itemHandler.chunkItemsDict[modelInfoDict[mi].parent].Remove(mi);
                 modelInfoDict[mi].parent = np;
-                mi.go.transform.SetParent(itemRoot.Find(np));
+                // mi.go.transform.SetParent(itemRoot.Find(np));
             }
             modifyModelList.Clear();
         }
@@ -903,7 +903,7 @@ namespace Framework.Core.World
                     {
                         //add to scene [screen pos => world pos]
                         var assetPath = $"{DEF.RESOURCES_ASSETS_PATH}Models/{node.uid}";
-                        itemHandler.LoadModelPrefab(itemRoot, assetPath, worldData.TerrainRowCount, worldData.TerrainColumnCount, chunkSize);
+                        // itemHandler.LoadModelPrefab(itemRoot, assetPath, worldData.TerrainRowCount, worldData.TerrainColumnCount, chunkSize);
                     }
                     // GUILayout.FlexibleSpace();
                     GUILayout.EndHorizontal();
