@@ -213,6 +213,15 @@ namespace Framework.Core.World
         // private Transform transform;
         private void Init()
         {
+            //打开WorldEditorScene
+            const string path = "Assets/Scenes/WorldEditor.unity";
+            var sceneName = Path.GetFileNameWithoutExtension(path);
+            var bIsCurScene = SceneManager.GetActiveScene().name.Equals(sceneName);//是否为当前场景
+            if (!bIsCurScene)
+            {
+                EditorSceneManager.OpenScene(path);
+            }
+            
             terrain = null;
             _config = null;
             selectIndex = -1;
@@ -239,14 +248,15 @@ namespace Framework.Core.World
                 if (GUILayout.Button("Load Source Terrain", GUILayout.Width(windowSize.width - normalSpace - border), GUILayout.Height(20)))
                 {
                     // LogManager.Log(LOGTag,skin.button.normal.background);
-                    Action<GameObject> callback = go =>
+                    void Callback(GameObject go)
                     {
                         go.name = terrainName;
                         LogManager.Log(LOGTag, "Load terrain finished");
                         hasSourceTerrain = true;
                         showSliceTerrain = true;
-                    };
-                    terrain = terrainHandler.LoadSingleTerrain(terrainRoot, worldConfig["terrainAssetPath"],callback);
+                    }
+
+                    terrain = terrainHandler.LoadSingleTerrain(terrainRoot, worldConfig["terrainAssetPath"],(Action<GameObject>)Callback);
                 }
                 GUILayout.EndHorizontal();
                 GUILayout.BeginHorizontal();
@@ -257,13 +267,13 @@ namespace Framework.Core.World
                     hasSourceTerrain = false;
                     if (terrain != null)
                     {
-                        GameObject.DestroyImmediate(terrain.gameObject);
+                        DestroyImmediate(terrain.gameObject);
                     }
                 }
                 GUILayout.EndHorizontal();
             }
             EditorGUILayout.EndFoldoutHeaderGroup();
-            int usedHeight = 5 + 45 + (showSourceTerrain ? 70 : 25) + (hasSourceTerrain ? (showSliceTerrain ? 71 : 28) : 9) + (showSlicedTerrainChunks ? 70 : 25) + (showColliderSettings ? 195 : 27) + ((showColliderSettings && drawColliderBoxesGizmos) ? 25 : 5) + 25;
+            var usedHeight = 5 + 45 + (showSourceTerrain ? 70 : 25) + (hasSourceTerrain ? (showSliceTerrain ? 71 : 28) : 9) + (showSlicedTerrainChunks ? 70 : 25) + (showColliderSettings ? 195 : 27) + ((showColliderSettings && drawColliderBoxesGizmos) ? 25 : 5) + 25;
             if (hasSourceTerrain)
             {
                 showSliceTerrain = EditorGUILayout.BeginFoldoutHeaderGroup(showSliceTerrain, "Slice Terrain");
@@ -338,14 +348,13 @@ namespace Framework.Core.World
                 if (showTerrainChunkList)
                 {
                     terrainChunksPosition = GUILayout.BeginScrollView(terrainChunksPosition, false, true, GUILayout.Height(windowSize.height - usedHeight));
-                    Color c = GUI.backgroundColor;
-                    string tName;
-                    for (int i = 0; i < _terrainHandler.terrainList.Count; i++)
+                    var c = GUI.backgroundColor;
+                    for (var i = 0; i < _terrainHandler.terrainList.Count; i++)
                     {
                         GUILayout.BeginHorizontal();
                         GUI.backgroundColor = i % 2 == 0 ? Color.white : Color.black;
                         GUILayout.Space(normalSpace);
-                        tName = _terrainHandler.terrainList[i].name;
+                        var tName = _terrainHandler.terrainList[i].name;
                         GUILayout.Box(new GUIContent(EditorGUIUtility.IconContent("d_Terrain Icon").image), guiSkin.box, GUILayout.Width(16), GUILayout.Height(20));
                         GUILayout.Box("", guiSkin.box, GUILayout.Width(4), GUILayout.Height(20));
                         GUILayout.Label(tName, guiSkin.box, GUILayout.Width(windowSize.width - 20 - 2 * normalSpace - verticalScrollBar), GUILayout.Height(20));
@@ -451,33 +460,32 @@ namespace Framework.Core.World
             GUILayout.BeginHorizontal();
             GUILayout.BeginVertical(GUILayout.Width(windowSize.width - rightHandlePanelWidth));
             showSceneScroll = EditorGUILayout.BeginFoldoutHeaderGroup(showSceneScroll, "Scene Items");
-            int usableHeight = (int)windowSize.height - 20 * 6 - 12 - ((!hasTerrainChunks && !hasSourceTerrain) ? helpBoxHeight : 0);
+            var usableHeight = (int)windowSize.height - 20 * 6 - 12 - ((!hasTerrainChunks && !hasSourceTerrain) ? helpBoxHeight : 0);
             if (showSceneScroll)
             {
                 GUILayout.BeginHorizontal();
                 GUILayout.Space(normalSpace);
-                sceneScrollPosition = GUILayout.BeginScrollView(sceneScrollPosition, false, true, GUILayout.Width(windowSize.width - normalSpace - rightHandlePanelWidth), GUILayout.Height(showModelPrefabsScroll ? usableHeight / 2 : usableHeight));
-                Dictionary<string, int[]> chunkStatusDict;
+                sceneScrollPosition = GUILayout.BeginScrollView(sceneScrollPosition, false, true, GUILayout.Width(windowSize.width - normalSpace - rightHandlePanelWidth), GUILayout.Height(showModelPrefabsScroll ? usableHeight / 2f : usableHeight));
                 if (!worldChunkStatusDict.ContainsKey(selectIndex))
                 {
                     worldChunkStatusDict.Add(selectIndex, new Dictionary<string, int[]>());
                 }
-                chunkStatusDict = worldChunkStatusDict[selectIndex];
-                Color c = GUI.backgroundColor;
-                int line = 0;
-                for (int y = 0; y < chunkSliceY; y++)
+                var chunkStatusDict = worldChunkStatusDict[selectIndex];
+                var c = GUI.backgroundColor;
+                var line = 0;
+                for (var y = 0; y < chunkSliceY; y++)
                 {
-                    for (int x = 0; x < chunkSliceX; x++)
+                    for (var x = 0; x < chunkSliceX; x++)
                     {
                         GUILayout.BeginHorizontal();
-                        string chunkName = $"Chunk_{y}_{x}";
+                        var chunkName = $"Chunk_{y}_{x}";
                         if (!chunkStatusDict.ContainsKey(chunkName))
                         {
                             chunkStatusDict.Add(chunkName, new int[2]);
                         }
                         line++;
                         GUI.backgroundColor = line % 2 == 0 ? Color.white : Color.black;
-                        bool unfold = chunkStatusDict[chunkName][(int)ChunkStatus.Fold] == DEF.TRUE;
+                        var unfold = chunkStatusDict[chunkName][(int)ChunkStatus.Fold] == DEF.TRUE;
                         if (GUILayout.Button(new GUIContent(EditorGUIUtility.IconContent(unfold ? "IN foldout on" : "IN foldout").image), guiSkin.box, GUILayout.Width(20), GUILayout.Height(20)))
                         {
                             chunkStatusDict[chunkName][(int)ChunkStatus.Fold] = 1 - chunkStatusDict[chunkName][(int)ChunkStatus.Fold];
@@ -487,7 +495,7 @@ namespace Framework.Core.World
                             chunkStatusDict[chunkName][(int)ChunkStatus.Fold] = 1 - chunkStatusDict[chunkName][(int)ChunkStatus.Fold];
                         }
                         GUILayout.FlexibleSpace();
-                        bool visible = chunkStatusDict[chunkName][(int)ChunkStatus.Visible] == DEF.TRUE;
+                        var visible = chunkStatusDict[chunkName][(int)ChunkStatus.Visible] == DEF.TRUE;
                         if (GUILayout.Button(new GUIContent(EditorGUIUtility.IconContent(visible ? "d_animationvisibilitytoggleon" : "d_animationvisibilitytoggleoff").image, "Display or Hide Chunk Items"), guiSkin.box, GUILayout.Height(20), GUILayout.Width(20)))
                         {
                             chunkStatusDict[chunkName][(int)ChunkStatus.Visible] = 1 - chunkStatusDict[chunkName][(int)ChunkStatus.Visible];
@@ -509,58 +517,56 @@ namespace Framework.Core.World
                         }
                         GUILayout.Space(rightBorder);
                         GUILayout.EndHorizontal();
-                        if (chunkStatusDict[chunkName][(int)ChunkStatus.Fold] == DEF.TRUE)
+                        if (chunkStatusDict[chunkName][(int)ChunkStatus.Fold] != DEF.TRUE) continue;
+                        var itemName = $"{y}_{x}";
+                        if (!itemHandler.chunkItemsDict.ContainsKey(itemName))
                         {
-                            string name = $"{y}_{x}";
-                            if (!itemHandler.chunkItemsDict.ContainsKey(name))
+                            itemHandler.chunkItemsDict.Add(itemName, new List<ModelInfo>());
+                        }
+                        var usableW = windowSize.width - normalSpace * 4 - 17.5f - verticalScrollBar - rightHandlePanelWidth;
+                        for (var i = 0; i < itemHandler.chunkItemsDict[itemName].Count; i++)
+                        {
+                            line++;
+                            GUI.backgroundColor = line % 2 == 0 ? Color.white : Color.black;
+                            GUILayout.BeginHorizontal();
+                            GUILayout.Box("", guiSkin.box, GUILayout.Height(normalSpace), GUILayout.Width(normalSpace));
+                            var mi = itemHandler.chunkItemsDict[itemName][i];
+                            GUILayout.Box(new GUIContent(EditorGUIUtility.IconContent(mi.suffix == "fbx" ? "d_PrefabModel Icon" : "d_Prefab Icon")), guiSkin.box, GUILayout.Width(18), GUILayout.Height(normalSpace));
+                            if (mi.go != null)
                             {
-                                itemHandler.chunkItemsDict.Add(name, new List<ModelInfo>());
+                                var go = mi.go;
+                                GUILayout.Box(go.name, guiSkin.box, GUILayout.Width(usableW), GUILayout.Height(normalSpace));
+                            } else
+                            {
+                                if (!markDeleteDict.ContainsKey(itemName))
+                                {
+                                    markDeleteDict.Add(itemName, new List<ModelInfo>());
+                                }
+                                if (!markDeleteDict[itemName].Contains(mi))
+                                {
+                                    markDeleteDict[itemName].Add(mi);
+                                }
                             }
-                            float usableW = windowSize.width - normalSpace * 4 - 17.5f - verticalScrollBar - rightHandlePanelWidth;
-                            for (int i = 0; i < itemHandler.chunkItemsDict[name].Count; i++)
+                            GUILayout.FlexibleSpace();
+                            if (GUILayout.Button(new GUIContent(EditorGUIUtility.IconContent("d_ToolHandleCenter")), guiSkin.box, GUILayout.Width(normalSpace), GUILayout.Height(normalSpace)))
                             {
-                                line++;
-                                GUI.backgroundColor = line % 2 == 0 ? Color.white : Color.black;
-                                GUILayout.BeginHorizontal();
-                                GUILayout.Box("", guiSkin.box, GUILayout.Height(normalSpace), GUILayout.Width(normalSpace));
-                                ModelInfo mi = itemHandler.chunkItemsDict[name][i];
-                                GUILayout.Box(new GUIContent(EditorGUIUtility.IconContent(mi.suffix == "fbx" ? "d_PrefabModel Icon" : "d_Prefab Icon")), guiSkin.box, GUILayout.Width(18), GUILayout.Height(normalSpace));
                                 if (mi.go != null)
                                 {
-                                    GameObject go = mi.go;
-                                    GUILayout.Box(go.name, guiSkin.box, GUILayout.Width(usableW), GUILayout.Height(normalSpace));
-                                } else
-                                {
-                                    if (!markDeleteDict.ContainsKey(name))
-                                    {
-                                        markDeleteDict.Add(name, new List<ModelInfo>());
-                                    }
-                                    if (!markDeleteDict[name].Contains(mi))
-                                    {
-                                        markDeleteDict[name].Add(mi);
-                                    }
+                                    Selection.activeGameObject = mi.go;
+                                    SceneView.FrameLastActiveSceneView();
                                 }
-                                GUILayout.FlexibleSpace();
-                                if (GUILayout.Button(new GUIContent(EditorGUIUtility.IconContent("d_ToolHandleCenter")), guiSkin.box, GUILayout.Width(normalSpace), GUILayout.Height(normalSpace)))
-                                {
-                                    if (mi.go != null)
-                                    {
-                                        Selection.activeGameObject = mi.go;
-                                        SceneView.FrameLastActiveSceneView();
-                                    }
-                                }
-                                if (GUILayout.Button(new GUIContent(EditorGUIUtility.IconContent("d_winbtn_win_close@2x")), guiSkin.box, GUILayout.Width(normalSpace), GUILayout.Height(normalSpace)))
-                                {
-                                    if (mi.go != null)
-                                    {
-                                        ModelInfo m = itemHandler.chunkItemsDict[name].Find(obj => obj.go == mi.go);
-                                        itemHandler.chunkItemsDict[name].Remove(m);
-                                        DestroyImmediate(mi.go);
-                                    }
-                                }
-                                GUILayout.Space(2);
-                                GUILayout.EndHorizontal();
                             }
+                            if (GUILayout.Button(new GUIContent(EditorGUIUtility.IconContent("d_winbtn_win_close@2x")), guiSkin.box, GUILayout.Width(normalSpace), GUILayout.Height(normalSpace)))
+                            {
+                                if (mi.go != null)
+                                {
+                                    var m = itemHandler.chunkItemsDict[itemName].Find(obj => obj.go == mi.go);
+                                    itemHandler.chunkItemsDict[itemName].Remove(m);
+                                    DestroyImmediate(mi.go);
+                                }
+                            }
+                            GUILayout.Space(2);
+                            GUILayout.EndHorizontal();
                         }
                     }
                 }
@@ -587,12 +593,12 @@ namespace Framework.Core.World
                         {
                             worldChunkStatusDict.Add(selectIndex, new Dictionary<string, int[]>());
                         }
-                        Dictionary<string, int[]> chunkStatusDict = worldChunkStatusDict[selectIndex];
-                        for (int y = 0; y < chunkSliceY; y++)
+                        var chunkStatusDict = worldChunkStatusDict[selectIndex];
+                        for (var y = 0; y < chunkSliceY; y++)
                         {
-                            for (int x = 0; x < chunkSliceX; x++)
+                            for (var x = 0; x < chunkSliceX; x++)
                             {
-                                string chunkName = $"Chunk_{y}_{x}";
+                                var chunkName = $"Chunk_{y}_{x}";
                                 if (!chunkStatusDict.ContainsKey(chunkName))
                                 {
                                     chunkStatusDict.Add(chunkName, new int[2]);
@@ -606,12 +612,12 @@ namespace Framework.Core.World
                 {
                     itemChunksLoaded = false;
                     itemHandler.UnloadAllItemChunks(itemRoot, chunkSliceX, chunkSliceY, () => { LogManager.Log(LOGTag, "All item chunks unload finished!"); });
-                    Dictionary<string, int[]> chunkStatusDict = worldChunkStatusDict[selectIndex];
-                    for (int y = 0; y < chunkSliceY; y++)
+                    var chunkStatusDict = worldChunkStatusDict[selectIndex];
+                    for (var y = 0; y < chunkSliceY; y++)
                     {
-                        for (int x = 0; x < chunkSliceX; x++)
+                        for (var x = 0; x < chunkSliceX; x++)
                         {
-                            string chunkName = $"Chunk_{y}_{x}";
+                            var chunkName = $"Chunk_{y}_{x}";
                             if (!chunkStatusDict.ContainsKey(chunkName))
                             {
                                 chunkStatusDict.Add(chunkName, new int[2]);
@@ -645,9 +651,9 @@ namespace Framework.Core.World
             showModelPrefabsScroll = EditorGUILayout.BeginFoldoutHeaderGroup(showModelPrefabsScroll, "Model Prefabs");
             if (showModelPrefabsScroll)
             {
-                modelPrefabsScrollPosition = GUILayout.BeginScrollView(modelPrefabsScrollPosition, false, true, GUILayout.Width(windowSize.width - rightHandlePanelWidth), GUILayout.Height(showSceneScroll ? usableHeight / 2 : usableHeight));
-                Color c = GUI.backgroundColor;
-                FolderLevelNode temp = itemHandler.modelAssetRoot;
+                modelPrefabsScrollPosition = GUILayout.BeginScrollView(modelPrefabsScrollPosition, false, true, GUILayout.Width(windowSize.width - rightHandlePanelWidth), GUILayout.Height(showSceneScroll ? usableHeight / 2f : usableHeight));
+                var c = GUI.backgroundColor;
+                var temp = itemHandler.modelAssetRoot;
                 DrawPrefabModelsFold(temp, 0);
                 modelSwitchFoldStatusTrigger = false;
                 GUI.backgroundColor = c;
@@ -722,18 +728,18 @@ namespace Framework.Core.World
         //场景内物件位置数据发生变化
         private void CheckAndRecordPositionChange()
         {
-            for (int y = 0; y < chunkSliceY; y++)
+            for (var y = 0; y < chunkSliceY; y++)
             {
-                for (int x = 0; x < chunkSliceX; x++)
+                for (var x = 0; x < chunkSliceX; x++)
                 {
-                    string name = $"{y}_{x}";
-                    if (!itemHandler.chunkItemsDict.ContainsKey(name))
+                    var chunkName = $"{y}_{x}";
+                    if (!itemHandler.chunkItemsDict.ContainsKey(chunkName))
                     {
-                        itemHandler.chunkItemsDict.Add(name, new List<ModelInfo>());
+                        itemHandler.chunkItemsDict.Add(chunkName, new List<ModelInfo>());
                     }
-                    for (int i = 0; i < itemHandler.chunkItemsDict[name].Count; i++)
+                    for (var i = 0; i < itemHandler.chunkItemsDict[chunkName].Count; i++)
                     {
-                        ModelInfo mi = itemHandler.chunkItemsDict[name][i];
+                        var mi = itemHandler.chunkItemsDict[chunkName][i];
                         if (mi.go == null) continue;
                         if (!modelInfoDict.ContainsKey(mi))
                         {
@@ -781,11 +787,11 @@ namespace Framework.Core.World
         private void DrawPrefabModelsFold(FolderLevelNode node, int subLev)
         {
             drawPrefabModelsTimes++;
-            Color c = drawPrefabModelsTimes % 2 == 0 ? Color.white : Color.black;
+            var c = drawPrefabModelsTimes % 2 == 0 ? Color.white : Color.black;
             GUI.backgroundColor = c;
-            bool isRoot = subLev == 0;
+            var isRoot = subLev == 0;
             subLev++;
-            int prefixSpaceWidth = (subLev - 2) * normalSpace;
+            var prefixSpaceWidth = (subLev - 2) * normalSpace;
             if (node.subdirectories.Count > 0)
             {
                 bool showChild;
@@ -794,11 +800,8 @@ namespace Framework.Core.World
                     GUILayout.BeginHorizontal();
                     GUILayout.Space(normalSpace);
                     GUILayout.Box("", guiSkin.box, GUILayout.Height(normalSpace), GUILayout.Width(prefixSpaceWidth));
-                    if (!prefabModelsFoldStatus.ContainsKey(node.uid))
-                    {
-                        prefabModelsFoldStatus.Add(node.uid, false);
-                    }
-                    bool fold = prefabModelsFoldStatus[node.uid];
+                    prefabModelsFoldStatus.TryAdd(node.uid, false);
+                    // var fold = prefabModelsFoldStatus[node.uid];
                     if (modelSwitchFoldStatusTrigger)
                     {
                         prefabModelsFoldStatus[node.uid] = modelSwitchFoldStatus;
@@ -835,14 +838,14 @@ namespace Framework.Core.World
                     GUILayout.BeginHorizontal();
                     GUILayout.Space(normalSpace);
                     GUILayout.Box("", guiSkin.box, GUILayout.Height(normalSpace), GUILayout.Width(prefixSpaceWidth));
-                    string[] splits = node.name.Split('.');
-                    string suffix = splits.Last().ToLower();
+                    var splits = node.name.Split('.');
+                    var suffix = splits.Last().ToLower();
                     GUILayout.Box(new GUIContent(EditorGUIUtility.IconContent(suffix == "fbx" ? "d_PrefabModel Icon" : "d_Prefab Icon").image), guiSkin.box, GUILayout.Width(18), GUILayout.Height(normalSpace));
                     GUILayout.Box(node.name, guiSkin.box, GUILayout.Width(windowSize.width - normalSpace - rightHandlePanelWidth - verticalScrollBar - 15 - 20 - prefixSpaceWidth), GUILayout.Height(normalSpace));
                     if (GUILayout.Button(new GUIContent(EditorGUIUtility.IconContent("ToolBar Plus").image, "Add model to scene"), guiSkin.box, GUILayout.Height(normalSpace), GUILayout.Width(normalSpace)))
                     {
                         //add to scene [screen pos => world pos]
-                        string assetPath = $"{DEF.RESOURCES_ASSETS_PATH}Models/{node.uid}";
+                        var assetPath = $"{DEF.RESOURCES_ASSETS_PATH}Models/{node.uid}";
                         itemHandler.LoadModelPrefab(itemRoot, assetPath, chunkSliceX, chunkSliceY, chunkSize);
                     }
                     // GUILayout.FlexibleSpace();
@@ -873,6 +876,11 @@ namespace Framework.Core.World
                         break;
                 }
                 GUILayout.FlexibleSpace();
+                if (GUILayout.Button("Clear Scene", GUILayout.Width(windowSize.width - 6), GUILayout.Height(normalSpace)))
+                {
+                    ClearScene();
+                }
+                GUILayout.Space(5);
                 if (GUILayout.Button("Back To Select World", GUILayout.Width(windowSize.width - 6), GUILayout.Height(normalSpace)))
                 {
                     startEdit = false;
@@ -883,18 +891,17 @@ namespace Framework.Core.World
             {
                 GUILayout.BeginVertical();
                 showWorldList = EditorGUILayout.BeginFoldoutHeaderGroup(showWorldList, "World List");
-                bool warn = false;
+                var warn = false;
                 if (selectIndex >= 0 && showWorldInfo)
                 {
-                    var cf = worldConfig;
                     warn = !terrainHandler.CheckSourceTerrainAsset(worldConfig["terrainAssetPath"]);
                 }
                 if (showWorldList)
                 {
-                    Color color = GUI.backgroundColor;
-                    int usableHeight = 20 + (selectIndex >= 0 ? (showWorldCleaner ? 42 : 20) : 0) + (showWorldInfo ? 60 : 0) + 30 + (selectIndex > 0 ? 48 : (helpBoxHeight + 28)) + (warn ? helpBoxHeight : 0);
+                    var color = GUI.backgroundColor;
+                    var usableHeight = 20 + (selectIndex >= 0 ? (showWorldCleaner ? 42 : 20) : 0) + (showWorldInfo ? 60 : 0) + 30 + (selectIndex > 0 ? 48 : (helpBoxHeight + 28)) + (warn ? helpBoxHeight : 0);
                     worldScrollPosition = GUILayout.BeginScrollView(worldScrollPosition, false, true, GUILayout.Width(windowSize.width - border), GUILayout.Height(windowSize.height - usableHeight));
-                    for (int i = 0; i < config.Count; i++)
+                    for (var i = 0; i < config.Count; i++)
                     {
                         GUILayout.BeginHorizontal();
                         GUILayout.Space(normalSpace);
@@ -966,6 +973,11 @@ namespace Framework.Core.World
                     EditorGUILayout.HelpBox("Please select world to edit!", MessageType.Info, true);
                 }
                 GUILayout.FlexibleSpace();
+                if (GUILayout.Button("Clear Scene", GUILayout.Width(windowSize.width - border - 1), GUILayout.Height(30)))
+                {
+                    ClearScene();
+                }
+                GUILayout.Space(5);
                 if (GUILayout.Button("Start Edit World", GUILayout.Width(windowSize.width - border - 1), GUILayout.Height(30)))
                 {
                     if (selectIndex >= 0)
@@ -1010,8 +1022,8 @@ namespace Framework.Core.World
         }
         private static Transform CreateNode(string nodeName, Transform parent = null)
         {
-            GameObject go = new GameObject(nodeName);
-            Transform trs = go.transform;
+            var go = new GameObject(nodeName);
+            var trs = go.transform;
             if (parent)
             {
                 trs.SetParent(parent);
@@ -1021,26 +1033,28 @@ namespace Framework.Core.World
             trs.localRotation = Quaternion.identity;
             return trs;
         }
-        private void OnDestroy()
-        {
-            ClearScene();
-        }
-        private void OnDisable()
-        {
-            ClearScene();
-        }
+        // private void OnDestroy()
+        // {
+        //     ClearScene();
+        // }
+        // private void OnDisable()
+        // {
+        //     ClearScene();
+        // }
         private void ClearScene()
         {
             SceneView.duringSceneGui -= OnSceneGUI;
-            GameObject[] objs = FindObjectsOfType(typeof(GameObject), true) as GameObject[];
+            if (FindObjectsOfType(typeof(GameObject), true) is not GameObject[] objs) return;
+            // Undo.RecordObjects(objs,"Clear Objs");
             foreach (var obj in objs)
             {
-                if (obj.transform.parent == null && (obj.name != "Main Camera" && obj.name != "Directional Light"))
+                if (obj.transform.parent == null)
                 {
-                    DestroyImmediate(obj);
+                    Undo.DestroyObjectImmediate(obj);
                 }
             }
-            EditorSceneManager.SaveScene(SceneManager.GetActiveScene());
+            EditorSceneManager.MarkSceneDirty(SceneManager.GetActiveScene());
+            // EditorSceneManager.SaveScene(SceneManager.GetActiveScene());
         }
 
         #endregion

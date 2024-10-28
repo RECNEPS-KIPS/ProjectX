@@ -29,14 +29,16 @@ namespace Framework.Common
             var obj = Selection.activeObject;
             try
             {
-                Mesh mesh = obj.GetComponent<MeshFilter>().mesh;
+                var mesh = obj.GetComponent<MeshFilter>().mesh;
                 if (mesh != null) {
                     var path = $"Assets/{obj.name}_{DateTime.Now.Millisecond}.asset";
                     AssetDatabase.CreateAsset(mesh, path);
                     LogManager.Log("提取mesh成功：提取_" + path);
                 }
                 else
+                {
                     LogManager.LogWarning("提取mesh失败：无MeshFilter组件");
+                }
             }
             catch (Exception e)
             {
