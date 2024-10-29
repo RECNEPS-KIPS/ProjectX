@@ -402,6 +402,7 @@ namespace Framework.Core.World
         //生成碰撞盒
         public void GenColliderBoxes(Transform envRoot, int rows, int columns, Vector2 chunkSize, Vector2 colliderSize, float terrainHeight, Action callback = null)
         {
+            colliderList.Clear();
             for (var row = 0; row < rows; ++row)
             {
                 for (var col = 0; col < columns; ++col)
@@ -450,6 +451,7 @@ namespace Framework.Core.World
         //加载碰撞盒子
         public void LoadColliderBoxes(Transform colliderRoot, string worldName, int rows, int columns, Vector2 chunkSize,Action callback = null)
         {
+            colliderList.Clear();
             for (var row = 0; row < rows; row++)
             {
                 for (var col = 0; col < columns; col++)

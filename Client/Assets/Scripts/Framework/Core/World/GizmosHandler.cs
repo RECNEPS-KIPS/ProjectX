@@ -18,10 +18,13 @@ namespace Framework.Core.World
             //负责碰撞盒的边框绘制
             if (!drawColliderBoxesGizmos || colliderList == null) return;
             if (colliderList.Count <= 0) return;
-            foreach (var boxCollider in from t in colliderList where t select t.GetComponent<BoxCollider>())
+
+            foreach (var go in colliderList)
             {
+                var boxCollider = go.GetComponent<BoxCollider>();
+                if (boxCollider == null) continue;
                 Gizmos.color = colliderBoxesGizmosColor;
-                Gizmos.DrawWireCube(boxCollider.transform.localPosition, boxCollider.size);
+                Gizmos.DrawWireCube(boxCollider.transform.position, boxCollider.size);
             }
         }
     }
