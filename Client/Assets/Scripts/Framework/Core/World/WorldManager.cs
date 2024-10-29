@@ -1,3 +1,6 @@
+using Framework.Core.Manager.Config;
+using Framework.Core.Singleton;
+
 namespace Framework.Core.World
 {
     public class WorldData
@@ -13,8 +16,21 @@ namespace Framework.Core.World
             return $"TerrainHeight:{TerrainHeight},TerrainRowCount:{TerrainRowCount},TerrainColumnCount:{TerrainColumnCount},TerrainChunkWidth:{TerrainChunkWidth},TerrainChunkLength:{TerrainChunkLength}";
         }
     }
-    public class WorldManager
+    // [MonoSingletonPath("[Manager]/GameManager")]
+    public class WorldManager : Singleton<WorldManager>
     {
-        
+        private const string LOGTag = "WorldManager";
+
+        public static void EnterWorld(EWorld worldID)
+        {
+            var cf = ConfigManager.GetConfigByID(EConfig.World, (int)worldID);
+            if (cf == null)
+            {
+               LogManager.LogError(LOGTag,$"WorldID:{worldID} has no config!");
+               return;
+            }
+
+            var terrainAssetPath = cf["terrainAssetPath"];
+        }
     }
 }
