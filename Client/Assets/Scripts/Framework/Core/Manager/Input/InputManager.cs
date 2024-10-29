@@ -12,14 +12,8 @@ namespace Framework.Core.Manager.Input {
     [MonoSingletonPath("[Manager]/InputManager")]
     public class InputManager : MonoSingleton<InputManager> {
         public InputControls _inputControls;
-        public InputControls InputControls {
-            get {
-                if (_inputControls == null) {
-                    _inputControls = new InputControls();
-                }
-                return _inputControls;
-            }
-        }
+        public InputControls InputControls => _inputControls ??= new InputControls();
+
         public override void Initialize(){
             // inputControls = new InputControls();
         }

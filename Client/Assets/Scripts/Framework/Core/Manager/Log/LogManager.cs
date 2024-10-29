@@ -133,7 +133,8 @@ public static class LogManager
 
     private static bool InheritInterface<T>(object obj)
     {
-        return typeof(T).IsAssignableFrom(obj.GetType());
+        // return typeof(T).IsAssignableFrom(obj.GetType());
+        return obj is T;
     }
 
     /// <summary>

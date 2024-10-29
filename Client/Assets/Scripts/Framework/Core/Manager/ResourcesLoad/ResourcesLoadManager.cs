@@ -32,10 +32,12 @@ namespace Framework.Core.Manager.ResourcesLoad {
                 }
             }
         }
+
         /// <summary>
         /// 加载AssetBundle FromLocalFile
         /// </summary>
         /// <param name="assetBundleName"></param>
+        /// <param name="isAsync"></param>
         public static AssetBundle LoadAssetBundleFile(string assetBundleName,bool isAsync = false) {
             if (_assetBundleDict.TryGetValue(assetBundleName, out var file)) {
                 LogManager.Log(LOGTag,$"LoadAssetBundleFile assetBundleName has loaded");
@@ -62,11 +64,12 @@ namespace Framework.Core.Manager.ResourcesLoad {
             LogManager.Log(LOGTag,"资源不在assetbundle中");
             return string.Empty;
         }
-        
+
         /// <summary>
         /// AssetBundles本地加载
         /// </summary>
         /// <param name="assetPath"></param>
+        /// <param name="isAsync"></param>
         /// <typeparam name="T"></typeparam>
         /// <returns></returns>
         public static T LoadAsset<T>(string assetPath,bool isAsync = false) where T : UnityEngine.Object {

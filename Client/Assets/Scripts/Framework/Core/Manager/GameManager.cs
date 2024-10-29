@@ -1,9 +1,8 @@
 ﻿using Framework.Core.Singleton;
-using UnityEngine;
 
 namespace Framework.Core.Manager
 {
-    [MonoSingletonPath("[Manager]/CameraManager")]
+    [MonoSingletonPath("[Manager]/GameManager")]
     public class GameManager : MonoSingleton<GameManager>
     {
         public override void Initialize()

@@ -1,6 +1,6 @@
 // author:KIPKIPS
 // date:2024.10.27 11:48
-// describe:
+// describe:光照贴图处理工具
 
 using System;
 using System.Collections.Generic;

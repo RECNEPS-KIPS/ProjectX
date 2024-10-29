@@ -1,3 +1,6 @@
+// author:KIPKIPS
+// date:2024.10.27 11:10
+// describe:世界编辑器
 using System.Collections.Generic;
 using UnityEngine;
 using System;
@@ -337,7 +340,7 @@ namespace Framework.Core.World
                             var terrainData = terrain.terrainData;
                             var rows = (int)terrainData.size.x / size;
                             var columns = (int)terrainData.size.z / size;
-                            terrainHandler.SplitTerrain(terrain, worldName, rows,columns);
+                            TerrainHandler.SplitTerrain(terrain, worldName, rows,columns);
                         }
                     }
                     GUILayout.EndHorizontal();
@@ -363,6 +366,7 @@ namespace Framework.Core.World
                             }
                             hasTerrainChunks = true;
                             colliderSize = new Vector2(0,0);
+                            worldData = LoadWorldData();
                             colliderHeight = worldData.TerrainHeight;
                             chunkSize = new Vector2(worldData.TerrainChunkWidth, worldData.TerrainChunkLength);
                         });

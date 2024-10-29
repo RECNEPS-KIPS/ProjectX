@@ -1,6 +1,6 @@
 // author:KIPKIPS
 // date:2024.10.26 17:51
-// describe:
+// describe:优先队列
 using System;
 using System.Collections.Generic;
 
@@ -44,14 +44,14 @@ namespace Framework.Core.Container
             throw new InvalidOperationException("优先队列为空");
         }
 
-        void SiftUp(int n)
+        public void SiftUp(int n)
         {
             var v = heap[n];
             for (var n2 = n / 2; n > 0 && comparer.Compare(v, heap[n2]) > 0; n = n2, n2 /= 2) heap[n] = heap[n2];
             heap[n] = v;
         }
 
-        void SiftDown(int n)
+        public void SiftDown(int n)
         {
             var v = heap[n];
             for (var n2 = n * 2; n2 < Count; n = n2, n2 *= 2)

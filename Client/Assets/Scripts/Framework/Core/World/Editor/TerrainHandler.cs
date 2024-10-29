@@ -1,6 +1,6 @@
 // author:KIPKIPS
 // date:2024.10.27 11:50
-// describe:
+// describe:处理地形工具
 
 using System;
 using System.Collections.Generic;
@@ -111,7 +111,7 @@ namespace Framework.Core.World
         {
             var chunkDir = $"Chunk{TerrainSplitChar}{y}{TerrainSplitChar}{x}";
             var saveDir = $"{DEF.RESOURCES_ASSETS_PATH}/Worlds/{worldName}/{chunkDir}";
-            var td = AssetDatabase.LoadAssetAtPath<TerrainData>($"{saveDir}/terrain.asset");
+            var td = AssetDatabase.LoadAssetAtPath<TerrainData>($"{saveDir}/Terrain.asset");
             var chunkRoot = new GameObject();
             chunkRoot.transform.SetParent(envRoot);
             chunkRoot.transform.localScale = Vector3.one;
@@ -154,7 +154,7 @@ namespace Framework.Core.World
         #region Split Terrain
 
         //分割地形
-        public void SplitTerrain(Terrain terrain, string worldName, int rows, int columns)
+        public static void SplitTerrain(Terrain terrain, string worldName, int rows, int columns)
         {
             if (terrain == null)
             {
@@ -188,14 +188,17 @@ namespace Framework.Core.World
 
                         EditorUtility.DisplayProgressBar("正在分割地形", chunkDir,(row * rows + col) / (float)(rows * columns));
                         var saveDir = $"{DEF.RESOURCES_ASSETS_PATH}/Worlds/{worldName}/{chunkDir}";
-                        if (AssetDatabase.IsValidFolder(saveDir))
+                        if (!Directory.Exists(saveDir))
                         {
-                            AssetDatabase.DeleteAsset(saveDir);
+                            Directory.CreateDirectory(saveDir);
                         }
 
-                        Directory.CreateDirectory(saveDir);
-
                         var assetPath = $"{saveDir}/Terrain.asset";
+                        if (File.Exists(assetPath))
+                        {
+                            File.Delete(assetPath);
+                            File.Delete($"{assetPath}.meta");
+                        }
 
                         // 创建一个新的GameObject用于表示子地图
                         var tileObject = Terrain.CreateTerrainGameObject(null);
@@ -212,7 +215,6 @@ namespace Framework.Core.World
                         var terrainData1 = CreateTerrainData(height, adaptedAlphamapResolution, adaptedBaseMapResolution, heightmapResolution, originalSize, rows, columns);
                         tileTerrain.terrainData = terrainData1;
                         terrainData1.name = tileTerrain.name + "_terrainData";
-                        //Debug.Log(originalHeightmapResolution + "=>" + tileObject.name + ":" + tileTerrain.terrainData.heightmapResolution);
 
                         //设置地形原型
                         var newSplats = new SplatPrototype[splatProtos.Length];
@@ -269,6 +271,7 @@ namespace Framework.Core.World
             if(File.Exists(savePath))
             {
                 File.Delete(savePath);
+                File.Delete($"{savePath}.meta");
             }
             
             var fs = new FileStream(savePath, FileMode.Create);
@@ -349,7 +352,6 @@ namespace Framework.Core.World
 
             // 将 List 转换为数组并赋值给目标地形的植被数据
             targetTerrainData.treeInstances = adjustedTreeInstances.ToArray();
-            //Debug.Log(targetTerrainData.name+ " treeInstances:"+ adjustedTreeInstances.Count);
         }
 
         private static void CopyTerrainTextureData(Terrain sourceTerrain, Terrain targetTerrain, int row, int col, int rows, int columns)
@@ -496,6 +498,7 @@ namespace Framework.Core.World
                     if(File.Exists(savePath))
                     {
                         File.Delete(savePath);
+                        File.Delete($"{savePath}.meta");
                     }
                     var fs = new FileStream(savePath, FileMode.Create);
                     var writer = new BinaryWriter(fs);
@@ -514,6 +517,7 @@ namespace Framework.Core.World
                 }
             }
             callback?.Invoke();
+            AssetDatabase.Refresh();
         }
 
         #endregion
