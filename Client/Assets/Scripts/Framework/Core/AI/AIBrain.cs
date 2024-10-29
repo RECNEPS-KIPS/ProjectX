@@ -35,6 +35,8 @@ namespace Framework.Core.AI
         
         public SimpleAIBrain(AIAgent agent) : base(agent)
         {
+            m_actions = new Queue<AIActionBase>();
+            m_patrolPos = new List<Transform>();
         }
         
         public override void BrainUpdate()
@@ -59,8 +61,7 @@ namespace Framework.Core.AI
                 GenActions();
             }
         }
-
-        // TODO 对接Action 工厂
+        
         private void GenActions()
         {
             var curPos = m_AIAgent.transform.position;

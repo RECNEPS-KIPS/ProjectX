@@ -3,6 +3,7 @@
 
 using System;
 using System.Collections;
+using System.Reflection;
 using Framework.Core.Manager.Config;
 using Framework.Core.Manager.Timer;
 using UnityEngine;
@@ -207,6 +208,31 @@ namespace Framework.Common
             m_checkColliders.Clear();
             Physics.OverlapSphereNonAlloc(center, radius,m_checkColliders,layerValue);
             return m_checkColliders;
+        }
+    }
+
+    public class RefType<T> where T : class
+    {
+        private object m_instance;
+        private Type m_type;
+
+        public RefType(T instance)
+        {
+            m_instance = instance;
+            m_type = instance.GetType();
+        }
+
+        public bool TryGetField<T>(string fieldName,out T result)
+        {
+            result = default(T);
+            if (m_instance == null)
+                return false;
+
+            FieldInfo fieldInfo = m_type.GetField(fieldName, BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Static);
+            if (fieldInfo == null)
+                return false;
+            result = (T)fieldInfo.GetValue(m_instance);
+            return true;
         }
     }
 }
