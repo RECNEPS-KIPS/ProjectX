@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace Framework.Core.ResourcesAssets
 {
-    public class AssetBundlesBuilderWindow : MonoBehaviour
+    public class AssetBundlesBuilderWindow : EditorWindow
     {
         private static string abOutPath;
         // private static List<AssetBundleBuild> ListAssets = new List<AssetBundleBuild>();
@@ -26,7 +26,14 @@ namespace Framework.Core.ResourcesAssets
         {
             "unity","prefab","asset"
         };
-
+        private static AssetBundlesBuilderWindow window;
+        private const int leftBorder = 2;
+        private const int rightBorder = 2;
+        private const int normalSpace = 20;
+        private const int border = leftBorder + rightBorder;
+        private static float screenScale => Screen.dpi / DEF.SYSTEM_STANDARD_DPI;
+        // private Rect _windowSize;
+        private static Rect windowSize => new (0, 0, Screen.width / screenScale, Screen.height / screenScale);
         public static bool GetState()
         {
             return IsFinished;
@@ -84,18 +91,27 @@ namespace Framework.Core.ResourcesAssets
         }
 
         [MenuItem("Tools/资源相关/构建AssetsBundle", false)]
-        public static void BuildAssetsBundle()
+        public static void OpenBuildAssetBundlesWindow()
+        {
+            window = GetWindow<AssetBundlesBuilderWindow>("Build AssetsBundle Window");
+            window.Show();
+            // var position = window.position;
+            window.minSize = new Vector2(560, 510);
+            window.InitWindow();
+        }
+        private void InitWindow()
         {
             AssetsDict.Clear();
             abOutPath = AssetBundlesPathTools.GetABOutPath();
+        }
+        private static void BuildAssetBundles()
+        {
             // LogManager.Log(LOGTag,"GetABOutPath",abOutPath);
             if (Directory.Exists(abOutPath))
             {
                 Directory.Delete(abOutPath,true);
             }
             Directory.CreateDirectory(abOutPath);
-
-
             LogManager.Log(LOGTag,AssetBundlesPathTools.GetABResourcesPath(),abOutPath);
             
             SearchFileAssetBundleBuild(AssetBundlesPathTools.GetABResourcesPath());
@@ -106,6 +122,21 @@ namespace Framework.Core.ResourcesAssets
             // var assetMapPath = DEF.ASSET_BUNDLE_PATH;
             // var assetMap = AssetDatabase.LoadAssetAtPath<AssetBundlesMap>(assetMapPath);
             // LogManager.Log(LOGTag,assetMap.Map.Count);
+        }
+
+        private void OnGUI()
+        {
+            GUILayout.BeginVertical();
+            
+            
+            
+            GUILayout.FlexibleSpace();
+            if (GUILayout.Button("Build AssetBundle", GUILayout.Width(windowSize.width - 6), GUILayout.Height(normalSpace)))
+            {
+                BuildAssetBundles();
+            }
+            GUILayout.Space(3);
+            GUILayout.EndVertical();
         }
 
         //是文件 继续向下
@@ -177,12 +208,13 @@ namespace Framework.Core.ResourcesAssets
                 }
                 else
                 {
-                    AssetsDict.Add(tag,new InnerAssetBundleBuild());
-                    AssetsDict[tag].assetNames = new List<string> { path };
-                    AssetsDict[tag].assetBundleName = tag;
-                    AssetsDict[tag].assetBundleVariant = DEF.ASSET_BUNDLE_SUFFIX;
+                    AssetsDict.Add(tag,new InnerAssetBundleBuild
+                    {
+                        assetNames = new List<string> { path },
+                        assetBundleName = tag,
+                        assetBundleVariant = DEF.ASSET_BUNDLE_SUFFIX
+                    });
                 }
-
             }
             else
             {

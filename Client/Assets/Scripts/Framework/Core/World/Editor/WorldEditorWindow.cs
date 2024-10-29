@@ -154,7 +154,6 @@ namespace Framework.Core.World
         private GUISkin _guiSkin;
         private GUISkin guiSkin => _guiSkin ??= (GUISkin)AssetDatabase.LoadAssetAtPath($"{editorAstPath}gui_skin.guiskin", typeof(GUISkin));
         private static float screenScale => Screen.dpi / DEF.SYSTEM_STANDARD_DPI;
-        private Rect _windowSize;
         private static Rect windowSize => new Rect(0, 0, Screen.width / screenScale, Screen.height / screenScale);
         private bool startEdit;
         private static WorldEditorWindow window;
