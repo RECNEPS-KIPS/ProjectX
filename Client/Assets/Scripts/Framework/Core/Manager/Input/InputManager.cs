@@ -18,17 +18,17 @@ namespace Framework.Core.Manager.Input {
             // inputControls = new InputControls();
         }
         private void OnEnable(){
-            InputControls.Keyboard.Enable();
+            InputControls.Player.Enable();
         }
         private void OnDisable(){
-            InputControls.Keyboard.Disable();
+            InputControls.Player.Disable();
         }
         private void Update(){
             // IsJumpKeyPressed();
             // IsRunKeyPressed();
             // GetAxisInput();
             // GetMoveInput();
-            if (InputControls.Keyboard.Backpack.IsPressed())
+            if (InputControls.Player.Backpack.IsPressed())
             {
                 EventManager.Dispatch(EEvent.PLAYER_ATTR_UPDATE);
             }
@@ -40,31 +40,31 @@ namespace Framework.Core.Manager.Input {
 
         public bool IsJumpKeySinglePressed(){
             // LogManager.Log("IsJumpKeyPressed");
-            return InputControls.Keyboard.Jump.WasPressedThisFrame();
+            return InputControls.Player.Jump.WasPressedThisFrame();
         }
         
         public Vector2 GetAxisInput(){
             // LogManager.Log("GetAxisInput",InputControls.PC.Camera.ReadValue<Vector2>(),InputControls.PC.Camera.ReadValue<Vector2>().normalized,InputControls.PC.Camera.ReadValue<Vector2>().magnitude);
-            return InputControls.Keyboard.Camera.ReadValue<Vector2>();
+            return InputControls.Player.Camera.ReadValue<Vector2>();
         }
         
         public Vector2 GetMoveInput(){
             // LogManager.Log("GetMoveInput",InputControls.PC.Move.ReadValue<Vector2>());
-            return InputControls.Keyboard.Move.ReadValue<Vector2>();
+            return InputControls.Player.Move.ReadValue<Vector2>();
         }
 
         public bool IsRunKeyPressed(){
             // LogManager.Log("IsRunKeyPressed");
-            return InputControls.Keyboard.Run.IsPressed();
+            return InputControls.Player.Run.IsPressed();
         }
         
         public bool IsBackpackKeySinglePressed(){
             // LogManager.Log("IsRunKeyPressed");
-            return InputControls.Keyboard.Backpack.WasPressedThisFrame();
+            return InputControls.Player.Backpack.WasPressedThisFrame();
         }
         public bool IsPickKeySinglePressed(){
             // LogManager.Log("IsRunKeyPressed");
-            return InputControls.Keyboard.Pick.WasPressedThisFrame();
+            return InputControls.Player.Pick.WasPressedThisFrame();
         }
     }
 }

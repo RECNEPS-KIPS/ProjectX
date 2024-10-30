@@ -23,7 +23,7 @@ namespace Framework.Core.World
     {
         private const string LOGTag = "WorldManager";
 
-        private static TerrainHandler terrainHandler;
+        // private static TerrainHandler terrainHandler;
         private static Transform _envRoot;
         private static Transform envRoot
         {
@@ -37,7 +37,7 @@ namespace Framework.Core.World
 
         public void Launch()
         {
-            terrainHandler = new TerrainHandler();
+            // terrainHandler = new TerrainHandler();
         }
 
         public static void EnterWorld(EWorld worldID)
@@ -50,7 +50,7 @@ namespace Framework.Core.World
             }
 
             var terrainAssetPath = cf["terrainAssetPath"];
-            terrainHandler.LoadSplitTerrain(cf["worldName"],envRoot);
+            // terrainHandler.LoadSplitTerrain(cf["worldName"],envRoot);
         }
     }
 }

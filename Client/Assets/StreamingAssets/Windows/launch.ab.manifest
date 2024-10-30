@@ -1,15 +1,15 @@
 ManifestFileVersion: 0
-CRC: 1386573380
+CRC: 294327337
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: 0f408ff39239956ad1de90e201c38c48
+    Hash: 77c956bb839cbded416ec30cb2e2033b
   TypeTreeHash:
     serializedVersion: 2
     Hash: 7a961cfc09f5292b47b65d38b125161f
   IncrementalBuildHash:
     serializedVersion: 2
-    Hash: 0f408ff39239956ad1de90e201c38c48
+    Hash: 77c956bb839cbded416ec30cb2e2033b
 HashAppended: 0
 ClassTypes:
 - Class: 1
@@ -55,4 +55,5 @@ ClassTypes:
 SerializeReferenceClassIdentifiers: []
 Assets:
 - Assets/ResourcesAssets/Scenes/Launch.unity
-Dependencies: []
+Dependencies:
+- C:/ProjectX/Client/Assets/StreamingAssets/Windows/inputactionmap.ab

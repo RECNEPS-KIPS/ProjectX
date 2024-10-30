@@ -33,6 +33,9 @@ MonoBehaviour:
     - Assets/ResourcesAssets/Scenes/MainWorld.unity
     bundleName: mainworld
   - assetBundlesMap:
+    - Assets/ResourcesAssets/Settings/Input/InputActionMap.inputactions
+    bundleName: inputactionmap
+  - assetBundlesMap:
     - Assets/ResourcesAssets/UI/Pages/Lobby\LobbyMainUI.prefab
     bundleName: lobby
   - assetBundlesMap:

@@ -1,5 +1,5 @@
 ManifestFileVersion: 0
-CRC: 2785123635
+CRC: 1816534310
 AssetBundleManifest:
   AssetBundleInfos:
     Info_0:
@@ -13,31 +13,35 @@ AssetBundleManifest:
       Dependencies: {}
     Info_3:
       Name: launch.ab
-      Dependencies: {}
+      Dependencies:
+        Dependency_0: inputactionmap.ab
     Info_4:
       Name: mainworld.ab
       Dependencies: {}
     Info_5:
-      Name: lobby.ab
+      Name: inputactionmap.ab
       Dependencies: {}
     Info_6:
-      Name: main.ab
+      Name: lobby.ab
       Dependencies: {}
     Info_7:
-      Name: plot.ab
+      Name: main.ab
       Dependencies: {}
     Info_8:
-      Name: start.ab
+      Name: plot.ab
       Dependencies: {}
     Info_9:
-      Name: chunk_0_0.ab
+      Name: start.ab
       Dependencies: {}
     Info_10:
-      Name: chunk_0_1.ab
+      Name: chunk_0_0.ab
       Dependencies: {}
     Info_11:
-      Name: chunk_1_0.ab
+      Name: chunk_0_1.ab
       Dependencies: {}
     Info_12:
+      Name: chunk_1_0.ab
+      Dependencies: {}
+    Info_13:
       Name: chunk_1_1.ab
       Dependencies: {}
