@@ -8,6 +8,7 @@ using System.IO;
 using UnityEditor;
 using UnityEditor.SceneManagement;
 using System.Linq;
+using Framework.Common;
 using Framework.Core.Manager.Config;
 using UnityEngine.SceneManagement;
 
@@ -186,7 +187,7 @@ namespace Framework.Core.World
             get
             {
                 GameObject root = GameObject.Find(DEF.ENV_ROOT);
-                _envRoot = root == null ? CreateNode(DEF.ENV_ROOT) : root.transform;
+                _envRoot = root == null ? CommonUtils.CreateNode(DEF.ENV_ROOT) : root.transform;
                 if (_envRoot.GetComponent<GizmosHandler>() == null)
                 {
                     gizmosHandler = _envRoot.gameObject.AddComponent<GizmosHandler>();
@@ -1094,19 +1095,6 @@ namespace Framework.Core.World
             ConfigManager.AnalyticsConfig();
             var cfList = ConfigManager.GetConfig(EConfig.World);
             return cfList;
-        }
-        private static Transform CreateNode(string nodeName, Transform parent = null)
-        {
-            var go = new GameObject(nodeName);
-            var trs = go.transform;
-            if (parent)
-            {
-                trs.SetParent(parent);
-            }
-            trs.localPosition = Vector3.zero;
-            trs.localScale = Vector3.one;
-            trs.localRotation = Quaternion.identity;
-            return trs;
         }
         // private void OnDestroy()
         // {

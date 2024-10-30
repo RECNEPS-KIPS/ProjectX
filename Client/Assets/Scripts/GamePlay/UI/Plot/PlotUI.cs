@@ -4,6 +4,8 @@
 
 using Framework.Core.Manager.Scene;
 using Framework.Core.Manager.UI;
+using Framework.Core.World;
+
 // using UnityEngine.SceneManagement;
 
 namespace GamePlay.UI
@@ -20,10 +22,11 @@ namespace GamePlay.UI
         private void OnSkipBtn()
         {
             LogManager.Log("PlotWindow","OnSkipBtn");
-            UIManager.Instance.Close(EUI.PlotUI);
-            SceneManager.Instance.LoadSceneByID(EScene.DeepDesert, () =>
+            UIManager.Close(EUI.PlotUI);
+            SceneManager.LoadSceneByID(EScene.MainWorld, () =>
             {
-                UIManager.Instance.OpenUI(EUI.MainUI);
+                UIManager.OpenUI(EUI.MainUI);
+                WorldManager.EnterWorld(EWorld.MainWorld);
             });
         }
 

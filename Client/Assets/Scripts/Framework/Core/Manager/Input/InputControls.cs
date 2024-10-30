@@ -82,6 +82,15 @@ namespace Framework.Core.Manager.Input
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""UI"",
+                    ""type"": ""Button"",
+                    ""id"": ""00f4666f-7916-4d47-85cc-193823c61c55"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -194,6 +203,17 @@ namespace Framework.Core.Manager.Input
                     ""action"": ""Pick"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""6db9e99d-2d56-4f16-a034-c7fd0a4d615b"",
+                    ""path"": """",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""UI"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -208,6 +228,7 @@ namespace Framework.Core.Manager.Input
             m_Keyboard_Run = m_Keyboard.FindAction("Run", throwIfNotFound: true);
             m_Keyboard_Backpack = m_Keyboard.FindAction("Backpack", throwIfNotFound: true);
             m_Keyboard_Pick = m_Keyboard.FindAction("Pick", throwIfNotFound: true);
+            m_Keyboard_UI = m_Keyboard.FindAction("UI", throwIfNotFound: true);
         }
 
         ~@InputControls()
@@ -280,6 +301,7 @@ namespace Framework.Core.Manager.Input
         private readonly InputAction m_Keyboard_Run;
         private readonly InputAction m_Keyboard_Backpack;
         private readonly InputAction m_Keyboard_Pick;
+        private readonly InputAction m_Keyboard_UI;
         public struct KeyboardActions
         {
             private @InputControls m_Wrapper;
@@ -290,6 +312,7 @@ namespace Framework.Core.Manager.Input
             public InputAction @Run => m_Wrapper.m_Keyboard_Run;
             public InputAction @Backpack => m_Wrapper.m_Keyboard_Backpack;
             public InputAction @Pick => m_Wrapper.m_Keyboard_Pick;
+            public InputAction @UI => m_Wrapper.m_Keyboard_UI;
             public InputActionMap Get() { return m_Wrapper.m_Keyboard; }
             public void Enable() { Get().Enable(); }
             public void Disable() { Get().Disable(); }
@@ -317,6 +340,9 @@ namespace Framework.Core.Manager.Input
                 @Pick.started += instance.OnPick;
                 @Pick.performed += instance.OnPick;
                 @Pick.canceled += instance.OnPick;
+                @UI.started += instance.OnUI;
+                @UI.performed += instance.OnUI;
+                @UI.canceled += instance.OnUI;
             }
 
             private void UnregisterCallbacks(IKeyboardActions instance)
@@ -339,6 +365,9 @@ namespace Framework.Core.Manager.Input
                 @Pick.started -= instance.OnPick;
                 @Pick.performed -= instance.OnPick;
                 @Pick.canceled -= instance.OnPick;
+                @UI.started -= instance.OnUI;
+                @UI.performed -= instance.OnUI;
+                @UI.canceled -= instance.OnUI;
             }
 
             public void RemoveCallbacks(IKeyboardActions instance)
@@ -364,6 +393,7 @@ namespace Framework.Core.Manager.Input
             void OnRun(InputAction.CallbackContext context);
             void OnBackpack(InputAction.CallbackContext context);
             void OnPick(InputAction.CallbackContext context);
+            void OnUI(InputAction.CallbackContext context);
         }
     }
 }

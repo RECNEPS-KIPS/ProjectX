@@ -1,5 +1,7 @@
+using Framework.Common;
 using Framework.Core.Manager.Config;
 using Framework.Core.Singleton;
+using UnityEngine;
 
 namespace Framework.Core.World
 {
@@ -21,6 +23,23 @@ namespace Framework.Core.World
     {
         private const string LOGTag = "WorldManager";
 
+        private static TerrainHandler terrainHandler;
+        private static Transform _envRoot;
+        private static Transform envRoot
+        {
+            get
+            {
+                var root = GameObject.Find(DEF.ENV_ROOT);
+                _envRoot = root == null ? CommonUtils.CreateNode(DEF.ENV_ROOT) : root.transform;
+                return _envRoot;
+            }
+        }
+
+        public void Launch()
+        {
+            terrainHandler = new TerrainHandler();
+        }
+
         public static void EnterWorld(EWorld worldID)
         {
             var cf = ConfigManager.GetConfigByID(EConfig.World, (int)worldID);
@@ -31,6 +50,7 @@ namespace Framework.Core.World
             }
 
             var terrainAssetPath = cf["terrainAssetPath"];
+            terrainHandler.LoadSplitTerrain(cf["worldName"],envRoot);
         }
     }
 }

@@ -22,7 +22,7 @@ namespace GamePlay.UI
 
         void OnStartBtn()
         {
-            UIManager.Instance.Close(EUI.StartUI);
+            UIManager.Close(EUI.StartUI);
             LogManager.Log("OnGameStartBtnClick");
         }
 

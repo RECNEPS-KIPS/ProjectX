@@ -69,15 +69,11 @@ namespace GamePlay.Player
 
         void OnSceneLoadFinished(dynamic sceneCf)
         {
-            if (CharacterController != null)
-            {
-                return;
-            }
-            var loadPlayer = sceneCf != null && sceneCf["loadPlayer"];
-            if (loadPlayer)
-            {
-                LoadPlayerController(sceneCf);
-            }
+            // if (CharacterController != null)
+            // {
+            //     return;
+            // }
+            // LoadPlayerController(sceneCf);
         }
 
         public Transform CharacterControllerRoot;
@@ -90,13 +86,11 @@ namespace GamePlay.Player
             var ctrlType = playerCf["ctrlType"];
             var ctrlCfList = ConfigManager.GetConfig(EConfig.CharacterController);
             dynamic ctrlCf = null;
-            for (int i = 0; i < ctrlCfList.Count; i++)
+            for (var i = 0; i < ctrlCfList.Count; i++)
             {
-                if (ctrlCfList[i]["ctrlType"] == ctrlType)
-                {
-                    ctrlCf = ctrlCfList[i];
-                    break;
-                }
+                if (ctrlCfList[i]["ctrlType"] != ctrlType) continue;
+                ctrlCf = ctrlCfList[i];
+                break;
             }
 
             if (ctrlCf != null)
@@ -136,12 +130,12 @@ namespace GamePlay.Player
             UpdateAttr();
         }
 
-        void UpdateStatus()
+        private void UpdateStatus()
         {
             
         }
 
-        void UpdateAttr()
+        private void UpdateAttr()
         {
             
         }   
