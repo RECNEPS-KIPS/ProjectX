@@ -14,13 +14,15 @@ namespace Framework
         public const int FALSE = 0;
         
         //UIBinding枚举值的间隔
-        public static readonly int BIND_ENUM_GAP = 10000;
+        public const int BIND_ENUM_GAP = 10000;
 
-        public static readonly string ASSET_BUNDLE_PATH = "Assets/ResourcesAssets/Misc/asset_bundles_map.asset";
-
-        public static readonly string RESOURCES_ASSETS_PATH = "Assets/ResourcesAssets";
+        public const string ASSET_BUNDLE_PATH = "Assets/ResourcesAssets/Misc/asset_bundles_map.asset";
         
-        public static readonly string ASSET_BUNDLE_SUFFIX = "ab";
+        public const string ASSET_BUNDLE_RULE_PATH = "Assets/Scripts/Framework/Core/ResourcesAssets/AssetBundles/Editor/asset_bundles_rule.asset";
+
+        public const string RESOURCES_ASSETS_PATH = "Assets/ResourcesAssets";
+        
+        public const string ASSET_BUNDLE_SUFFIX = "ab";
 
         public enum ECharacterControllerType
         {

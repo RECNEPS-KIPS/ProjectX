@@ -1,32 +1,43 @@
 ManifestFileVersion: 0
-CRC: 4170416683
+CRC: 2785123635
 AssetBundleManifest:
   AssetBundleInfos:
     Info_0:
-      Name: characters.ab
+      Name: bagboy.ab
       Dependencies: {}
     Info_1:
       Name: controllers.ab
       Dependencies: {}
     Info_2:
-      Name: ingame.ab
-      Dependencies: {}
-    Info_3:
-      Name: items.ab
-      Dependencies: {}
-    Info_4:
       Name: misc.ab
       Dependencies: {}
+    Info_3:
+      Name: launch.ab
+      Dependencies: {}
+    Info_4:
+      Name: mainworld.ab
+      Dependencies: {}
     Info_5:
-      Name: scenes.ab
-      Dependencies:
-        Dependency_0: terrains.ab
+      Name: lobby.ab
+      Dependencies: {}
     Info_6:
-      Name: settings.ab
+      Name: main.ab
       Dependencies: {}
     Info_7:
-      Name: terrains.ab
+      Name: plot.ab
       Dependencies: {}
     Info_8:
-      Name: ui.ab
+      Name: start.ab
+      Dependencies: {}
+    Info_9:
+      Name: chunk_0_0.ab
+      Dependencies: {}
+    Info_10:
+      Name: chunk_0_1.ab
+      Dependencies: {}
+    Info_11:
+      Name: chunk_1_0.ab
+      Dependencies: {}
+    Info_12:
+      Name: chunk_1_1.ab
       Dependencies: {}

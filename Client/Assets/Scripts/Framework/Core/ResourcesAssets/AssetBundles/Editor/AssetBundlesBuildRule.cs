@@ -10,9 +10,11 @@ namespace Framework.Core.ResourcesAssets
     [Serializable]
     public class AssetBundlesRule
     {
-        public int Priority;
-        public string Path;
-        // p
+        [SerializeField]public string FullPath;
+        // [SerializeField]public bool IsFolded;
+        [SerializeField]public string ABLabel;
+        [SerializeField]public bool IsDirectory;
+        [SerializeField]public string AssetType;
     }
     
     [Serializable]

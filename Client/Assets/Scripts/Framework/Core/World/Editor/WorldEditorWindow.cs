@@ -238,7 +238,7 @@ namespace Framework.Core.World
 
         #endregion
 
-        [MenuItem("Tools/世界编辑器")]
+        [MenuItem("Tools/世界编辑器",false,-900)]
         public static void OpenWorldEditorWindow()
         {
             window = GetWindow<WorldEditorWindow>("World Editor");
@@ -1123,6 +1123,10 @@ namespace Framework.Core.World
             // Undo.RecordObjects(objs,"Clear Objs");
             foreach (var obj in objs)
             {
+                if (obj == null)
+                {
+                    continue;
+                }
                 if (obj.transform.parent == null)
                 {
                     Undo.DestroyObjectImmediate(obj);

@@ -15,38 +15,53 @@ MonoBehaviour:
   map:
   - assetBundlesMap:
     - Assets/ResourcesAssets/Characters/BagBoy/BagBoy.prefab
-    - Assets/ResourcesAssets/Characters/BagBoy/Models/SM_Chr_Teen_Male_01.asset
-    bundleName: Characters
+    bundleName: bagboy
   - assetBundlesMap:
-    - Assets/ResourcesAssets/Controllers/FirstPersonController.prefab
-    - Assets/ResourcesAssets/Controllers/ThirdPersonControllerA.prefab
-    - Assets/ResourcesAssets/Controllers/ThirdPersonControllerB.prefab
-    - Assets/ResourcesAssets/Controllers/ThirdPersonControllerC.prefab
-    - Assets/ResourcesAssets/Controllers/TopDownController.prefab
-    bundleName: Controllers
+    - Assets/ResourcesAssets/Controllers\FirstPersonController.prefab
+    - Assets/ResourcesAssets/Controllers\ThirdPersonControllerA.prefab
+    - Assets/ResourcesAssets/Controllers\ThirdPersonControllerB.prefab
+    - Assets/ResourcesAssets/Controllers\ThirdPersonControllerC.prefab
+    - Assets/ResourcesAssets/Controllers\TopDownController.prefab
+    bundleName: controllers
   - assetBundlesMap:
-    - Assets/ResourcesAssets/InGame/Levels/Level1/Level.unity
-    bundleName: InGame
+    - Assets/ResourcesAssets/Misc\asset_bundles_map.asset
+    bundleName: misc
   - assetBundlesMap:
-    - Assets/ResourcesAssets/Items/Prefabs/Plants/SM_Prop_Apple_01.prefab
-    bundleName: Items
-  - assetBundlesMap:
-    - Assets/ResourcesAssets/Misc/asset_bundles_map.asset
-    bundleName: Misc
-  - assetBundlesMap:
-    - Assets/ResourcesAssets/Scenes/DeepDesert.unity
     - Assets/ResourcesAssets/Scenes/Launch.unity
-    bundleName: Scenes
+    bundleName: launch
   - assetBundlesMap:
-    - Assets/ResourcesAssets/Settings/Input/InputSystem.inputsettings.asset
-    bundleName: Settings
+    - Assets/ResourcesAssets/Scenes/MainWorld.unity
+    bundleName: mainworld
   - assetBundlesMap:
-    - Assets/ResourcesAssets/Terrains/DeepDesert/Terrain.asset
-    bundleName: Terrains
+    - Assets/ResourcesAssets/UI/Pages/Lobby\LobbyMainUI.prefab
+    bundleName: lobby
   - assetBundlesMap:
-    - Assets/ResourcesAssets/UI/Pages/Example/ExampleUI.prefab
-    - Assets/ResourcesAssets/UI/Pages/Lobby/LobbyMainUI.prefab
-    - Assets/ResourcesAssets/UI/Pages/Main/MainUI.prefab
-    - Assets/ResourcesAssets/UI/Pages/Plot/PlotUI.prefab
-    - Assets/ResourcesAssets/UI/Pages/Start/StartUI.prefab
-    bundleName: UI
+    - Assets/ResourcesAssets/UI/Pages/Main\MainUI.prefab
+    bundleName: main
+  - assetBundlesMap:
+    - Assets/ResourcesAssets/UI/Pages/Plot\PlotUI.prefab
+    bundleName: plot
+  - assetBundlesMap:
+    - Assets/ResourcesAssets/UI/Pages/Start\StartUI.prefab
+    bundleName: start
+  - assetBundlesMap:
+    - Assets/ResourcesAssets/Worlds/MainWorld/Chunk_0_0\Collider.bin
+    - Assets/ResourcesAssets/Worlds/MainWorld/Chunk_0_0\Terrain.asset
+    bundleName: chunk_0_0
+  - assetBundlesMap:
+    - Assets/ResourcesAssets/Worlds/MainWorld/Chunk_0_1\Collider.bin
+    - Assets/ResourcesAssets/Worlds/MainWorld/Chunk_0_1\Terrain.asset
+    bundleName: chunk_0_1
+  - assetBundlesMap:
+    - Assets/ResourcesAssets/Worlds/MainWorld/Chunk_1_0\Collider.bin
+    - Assets/ResourcesAssets/Worlds/MainWorld/Chunk_1_0\Terrain.asset
+    bundleName: chunk_1_0
+  - assetBundlesMap:
+    - Assets/ResourcesAssets/Worlds/MainWorld/Chunk_1_1\Collider.bin
+    - Assets/ResourcesAssets/Worlds/MainWorld/Chunk_1_1\Terrain.asset
+    bundleName: chunk_1_1
+  - assetBundlesMap:
+    - Assets/ResourcesAssets/Worlds/MainWorld/WorldData.bin
+    bundleName: worlddata
+  - assetBundlesMap: []
+    bundleName: Misc
