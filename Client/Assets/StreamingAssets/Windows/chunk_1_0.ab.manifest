@@ -1,20 +1,22 @@
 ManifestFileVersion: 0
-CRC: 218580986
+CRC: 30642641
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: db9992526c228c354e6efd2f065787fa
+    Hash: 2ce195caf8f4628b32b9a511b8db9ae3
   TypeTreeHash:
     serializedVersion: 2
-    Hash: 2d467e57f96dcb7b82cd412dd5249b61
+    Hash: 1e40b625faba507322888801694be47e
   IncrementalBuildHash:
     serializedVersion: 2
-    Hash: db9992526c228c354e6efd2f065787fa
+    Hash: 2ce195caf8f4628b32b9a511b8db9ae3
 HashAppended: 0
 ClassTypes:
 - Class: 28
   Script: {instanceID: 0}
 - Class: 48
+  Script: {instanceID: 0}
+- Class: 49
   Script: {instanceID: 0}
 - Class: 156
   Script: {instanceID: 0}
@@ -23,4 +25,5 @@ ClassTypes:
 SerializeReferenceClassIdentifiers: []
 Assets:
 - Assets/ResourcesAssets/Worlds/MainWorld/Chunk_1_0/Terrain.asset
+- Assets/ResourcesAssets/Worlds/MainWorld/Chunk_1_0/Collider.bytes
 Dependencies: []

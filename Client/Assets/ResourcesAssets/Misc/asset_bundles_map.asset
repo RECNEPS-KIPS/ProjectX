@@ -48,23 +48,23 @@ MonoBehaviour:
     - Assets/ResourcesAssets/UI/Pages/Start\StartUI.prefab
     bundleName: start
   - assetBundlesMap:
-    - Assets/ResourcesAssets/Worlds/MainWorld/Chunk_0_0\Collider.bin
+    - Assets/ResourcesAssets/Worlds/MainWorld/Chunk_0_0\Collider.bytes
     - Assets/ResourcesAssets/Worlds/MainWorld/Chunk_0_0\Terrain.asset
     bundleName: chunk_0_0
   - assetBundlesMap:
-    - Assets/ResourcesAssets/Worlds/MainWorld/Chunk_0_1\Collider.bin
+    - Assets/ResourcesAssets/Worlds/MainWorld/Chunk_0_1\Collider.bytes
     - Assets/ResourcesAssets/Worlds/MainWorld/Chunk_0_1\Terrain.asset
     bundleName: chunk_0_1
   - assetBundlesMap:
-    - Assets/ResourcesAssets/Worlds/MainWorld/Chunk_1_0\Collider.bin
+    - Assets/ResourcesAssets/Worlds/MainWorld/Chunk_1_0\Collider.bytes
     - Assets/ResourcesAssets/Worlds/MainWorld/Chunk_1_0\Terrain.asset
     bundleName: chunk_1_0
   - assetBundlesMap:
-    - Assets/ResourcesAssets/Worlds/MainWorld/Chunk_1_1\Collider.bin
+    - Assets/ResourcesAssets/Worlds/MainWorld/Chunk_1_1\Collider.bytes
     - Assets/ResourcesAssets/Worlds/MainWorld/Chunk_1_1\Terrain.asset
     bundleName: chunk_1_1
   - assetBundlesMap:
-    - Assets/ResourcesAssets/Worlds/MainWorld/WorldData.bin
+    - Assets/ResourcesAssets/Worlds/MainWorld/WorldData.bytes
     bundleName: worlddata
   - assetBundlesMap: []
     bundleName: Misc

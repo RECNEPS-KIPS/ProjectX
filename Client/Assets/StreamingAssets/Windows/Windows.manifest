@@ -1,5 +1,5 @@
 ManifestFileVersion: 0
-CRC: 3186508193
+CRC: 268931919
 AssetBundleManifest:
   AssetBundleInfos:
     Info_0:
@@ -44,4 +44,7 @@ AssetBundleManifest:
       Dependencies: {}
     Info_13:
       Name: chunk_1_1.ab
+      Dependencies: {}
+    Info_14:
+      Name: worlddata.ab
       Dependencies: {}

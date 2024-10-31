@@ -10,6 +10,7 @@ using UnityEditor.SceneManagement;
 using System.Linq;
 using Framework.Common;
 using Framework.Core.Manager.Config;
+using Framework.Core.Manager.ResourcesLoad;
 using UnityEngine.SceneManagement;
 
 namespace Framework.Core.World
@@ -102,31 +103,14 @@ namespace Framework.Core.World
 
         private WorldData LoadWorldData()
         {
-            var savePath = $"{DEF.RESOURCES_ASSETS_PATH}/Worlds/{worldName}/WorldData.bin";
+            var savePath = $"{DEF.RESOURCES_ASSETS_PATH}/Worlds/{worldName}/WorldData.bytes";
             if(!File.Exists(savePath))
             {
                 return null;
             }
-            
-            var data = new WorldData();
-            var fs = new FileStream(savePath, FileMode.Open);
-            var reader = new BinaryReader(fs);
-            try
-            {
-                data.TerrainHeight = reader.ReadSingle();//地形高度
-                data.TerrainRowCount = reader.ReadInt32();//行数
-                data.TerrainColumnCount = reader.ReadInt32();//列数
-                data.TerrainChunkWidth = reader.ReadSingle();//地形块尺寸宽
-                data.TerrainChunkLength = reader.ReadSingle();//地形块尺寸高
-            }
-            catch (Exception e)
-            {
-                LogManager.LogError(LOGTag, e.Message);
-            }
-
-            reader.Close();
-            fs.Close();
-            AssetDatabase.Refresh();
+            var assetData = ResourcesLoadManager.LoadAsset<TextAsset>(savePath);
+            var data = BinaryUtils.Bytes2Object<WorldData>(assetData.bytes);
+            LogManager.Log(LOGTag,"WorldData:",data.ToString());
             return data;
         }
         private string terrainName => worldConfig != null ? $"Terrain_{worldConfig["id"]}" : "UnknownTerrain";
@@ -195,36 +179,6 @@ namespace Framework.Core.World
                 return _envRoot;
             }
         }
-        // private Transform _colliderRoot;
-        // private Transform colliderRoot
-        // {
-        //     get
-        //     {
-        //         Transform trs = envRoot.Find(DEF.COLLIDER_ROOT);
-        //         _colliderRoot = trs == null ? CreateNode(DEF.COLLIDER_ROOT, envRoot) : trs;
-        //         return _colliderRoot;
-        //     }
-        // }
-        // private Transform _itemRoot;
-        // private Transform itemRoot
-        // {
-        //     get
-        //     {
-        //         Transform trs = envRoot.Find(DEF.ITEM_ROOT);
-        //         _itemRoot = trs == null ? CreateNode(DEF.ITEM_ROOT, envRoot) : trs;
-        //         return _itemRoot;
-        //     }
-        // }
-        // private Transform _terrainRoot;
-        // private Transform terrainRoot
-        // {
-        //     get
-        //     {
-        //         Transform trs = envRoot.Find(DEF.TERRAIN_ROOT);
-        //         _terrainRoot = trs == null ? CreateNode(DEF.TERRAIN_ROOT, envRoot) : trs;
-        //         return _terrainRoot;
-        //     }
-        // }
 
         #endregion
 
@@ -302,6 +256,7 @@ namespace Framework.Core.World
                     }
 
                     terrain = TerrainHandler.LoadSingleTerrain(envRoot, worldConfig["terrainAssetPath"],(Action<GameObject>)Callback);
+                    GUIUtility.ExitGUI();
                 }
                 GUILayout.EndHorizontal();
                 GUILayout.BeginHorizontal();
@@ -314,6 +269,7 @@ namespace Framework.Core.World
                     {
                         DestroyImmediate(terrain.gameObject);
                     }
+                    GUIUtility.ExitGUI();
                 }
                 GUILayout.EndHorizontal();
             }
@@ -342,6 +298,7 @@ namespace Framework.Core.World
                             var columns = (int)terrainData.size.z / size;
                             TerrainHandler.SplitTerrain(terrain, worldName, rows,columns);
                         }
+                        GUIUtility.ExitGUI();
                     }
                     GUILayout.EndHorizontal();
                 }
@@ -368,9 +325,10 @@ namespace Framework.Core.World
                             colliderSize = new Vector2(0,0);
                             worldData = LoadWorldData();
                             colliderHeight = worldData.TerrainHeight;
-                            chunkSize = new Vector2(worldData.TerrainChunkWidth, worldData.TerrainChunkLength);
+                            chunkSize = new Vector2(worldData.ChunkSizeX,worldData.ChunkSizeY);
                         });
                     }
+                    GUIUtility.ExitGUI();
                 }
                 GUILayout.EndHorizontal();
                 GUILayout.BeginHorizontal();
@@ -388,6 +346,7 @@ namespace Framework.Core.World
                         terrainHandler.ClearColliderBoxes();
                         gizmosHandler.colliderList.Clear();
                     }
+                    GUIUtility.ExitGUI();
                 }
                 GUILayout.EndHorizontal();
             }
@@ -413,6 +372,7 @@ namespace Framework.Core.World
                             if (GUILayout.Button(new GUIContent(EditorGUIUtility.IconContent("d_ToolHandleCenter").image, "Focus Terrain Chunk"), guiSkin.box, GUILayout.Height(normalSpace), GUILayout.Width(normalSpace)))
                             {
                                 TerrainHandler.FocusTerrain(_terrainHandler.terrainList[i].transform);
+                                GUIUtility.ExitGUI();
                             }
                             GUILayout.EndHorizontal();
                         }
@@ -467,29 +427,32 @@ namespace Framework.Core.World
                         //生成碰撞盒
                         if (GUILayout.Button("Create Collider Boxes", GUILayout.Width(windowSize.width - normalSpace - border), GUILayout.Height(20)))
                         {
-                            terrainHandler.GenColliderBoxes(envRoot, worldData.TerrainRowCount, worldData.TerrainColumnCount, chunkSize, colliderSize, worldData.TerrainHeight, () =>
+                            terrainHandler.GenColliderBoxes(envRoot, worldData.ChunkRowCount, worldData.ChunkColumnCount, chunkSize, colliderSize, worldData.TerrainHeight, () =>
                             {
                                 LogManager.Log(LOGTag, "Create collider boxes finished");
                                 gizmosHandler.colliderList = new List<GameObject>(terrainHandler.colliderList);
                             });
+                            GUIUtility.ExitGUI();
                         }
                         GUILayout.EndHorizontal();
                         GUILayout.BeginHorizontal();
                         GUILayout.Space(normalSpace);
                         if (GUILayout.Button("Load Collider Boxes", GUILayout.Width(windowSize.width - normalSpace - border), GUILayout.Height(20)))
                         {
-                            terrainHandler.LoadColliderBoxes(envRoot, worldName, worldData.TerrainRowCount, worldData.TerrainColumnCount, chunkSize, () =>
+                            terrainHandler.LoadColliderBoxes(envRoot, worldName, worldData.ChunkRowCount, worldData.ChunkColumnCount, chunkSize, () =>
                             {
                                 LogManager.Log(LOGTag, "Load collider boxes form bytes file finished");
                                 gizmosHandler.colliderList = new List<GameObject>(terrainHandler.colliderList);
                             });
+                            GUIUtility.ExitGUI();
                         }
                         GUILayout.EndHorizontal();
                         GUILayout.BeginHorizontal();
                         GUILayout.Space(normalSpace);
                         if (GUILayout.Button("Save Collider Data", GUILayout.Width(windowSize.width - normalSpace - border), GUILayout.Height(20)))
                         {
-                            TerrainHandler.SaveColliderBoxes(envRoot, worldName, worldData.TerrainRowCount, worldData.TerrainColumnCount, () => { LogManager.Log(LOGTag, "Save collider data finished"); });
+                            TerrainHandler.SaveColliderBoxes(envRoot, worldName, worldData.ChunkRowCount, worldData.ChunkColumnCount, () => { LogManager.Log(LOGTag, "Save collider data finished"); });
+                            GUIUtility.ExitGUI();
                         }
                         GUILayout.EndHorizontal();
                         GUILayout.BeginHorizontal();
@@ -501,6 +464,7 @@ namespace Framework.Core.World
                                 LogManager.Log(LOGTag, "Clear collider boxes finished");
                                 gizmosHandler.colliderList = new List<GameObject>(terrainHandler.colliderList);
                             });
+                            GUIUtility.ExitGUI();
                         }
                         GUILayout.EndHorizontal();
                     }
@@ -530,9 +494,9 @@ namespace Framework.Core.World
                 var chunkStatusDict = worldChunkStatusDict[selectIndex];
                 var c = GUI.backgroundColor;
                 var line = 0;
-                for (var row = 0; row < worldData.TerrainRowCount; row++)
+                for (var row = 0; row < worldData.ChunkRowCount; row++)
                 {
-                    for (var col = 0; col < worldData.TerrainColumnCount; col++)
+                    for (var col = 0; col < worldData.ChunkColumnCount; col++)
                     {
                         GUILayout.BeginHorizontal();
                         var chunkName = $"Chunk_{row}_{col}";
@@ -546,10 +510,12 @@ namespace Framework.Core.World
                         if (GUILayout.Button(new GUIContent(EditorGUIUtility.IconContent(unfold ? "IN foldout on" : "IN foldout").image), guiSkin.box, GUILayout.Width(20), GUILayout.Height(20)))
                         {
                             chunkStatusDict[chunkName][(int)ChunkStatus.Fold] = 1 - chunkStatusDict[chunkName][(int)ChunkStatus.Fold];
+                            GUIUtility.ExitGUI();
                         }
                         if (GUILayout.Button(chunkName, guiSkin.box, GUILayout.Height(20), GUILayout.Width(windowSize.width - 20 * 4 - rightBorder - 9.4f - normalSpace - border - rightHandlePanelWidth)))
                         {
                             chunkStatusDict[chunkName][(int)ChunkStatus.Fold] = 1 - chunkStatusDict[chunkName][(int)ChunkStatus.Fold];
+                            GUIUtility.ExitGUI();
                         }
                         GUILayout.FlexibleSpace();
                         var visible = chunkStatusDict[chunkName][(int)ChunkStatus.Visible] == DEF.TRUE;
@@ -563,14 +529,17 @@ namespace Framework.Core.World
                             {
                                 itemHandler.LoadItemChunk(envRoot, worldName, row, col, chunkSize, () => { LogManager.Log(LOGTag, $"{chunkName} items load finished"); });
                             }
+                            GUIUtility.ExitGUI();
                         }
                         if (GUILayout.Button(new GUIContent(EditorGUIUtility.IconContent("d_ToolHandleCenter").image, "Focus Chunk Items"), guiSkin.box, GUILayout.Height(20), GUILayout.Width(20)))
                         {
                             ItemHandler.FocusItemChunk(envRoot, row, col, chunkSize);
+                            GUIUtility.ExitGUI();
                         }
                         if (GUILayout.Button(new GUIContent(EditorGUIUtility.IconContent("SceneSaveGrey").image, "Save Chunk Items"), guiSkin.box, GUILayout.Height(20), GUILayout.Width(20)))
                         {
                             itemHandler.SaveItemChunk(envRoot, worldName, row, col, () => { LogManager.Log(LOGTag, $"{chunkName} items save success"); });
+                            GUIUtility.ExitGUI();
                         }
                         GUILayout.Space(rightBorder);
                         GUILayout.EndHorizontal();
@@ -612,6 +581,7 @@ namespace Framework.Core.World
                                     Selection.activeGameObject = mi.go;
                                     SceneView.FrameLastActiveSceneView();
                                 }
+                                GUIUtility.ExitGUI();
                             }
                             if (GUILayout.Button(new GUIContent(EditorGUIUtility.IconContent("d_winbtn_win_close@2x")), guiSkin.box, GUILayout.Width(normalSpace), GUILayout.Height(normalSpace)))
                             {
@@ -621,6 +591,7 @@ namespace Framework.Core.World
                                     itemHandler.chunkItemsDict[itemName].Remove(m);
                                     DestroyImmediate(mi.go);
                                 }
+                                GUIUtility.ExitGUI();
                             }
                             GUILayout.Space(2);
                             GUILayout.EndHorizontal();
@@ -641,7 +612,7 @@ namespace Framework.Core.World
                 {
                     if (!itemChunksLoaded)
                     {
-                        itemHandler.LoadAllItemChunks(envRoot, worldName, worldData.TerrainRowCount, worldData.TerrainColumnCount, chunkSize, () =>
+                        itemHandler.LoadAllItemChunks(envRoot, worldName, worldData.ChunkRowCount, worldData.ChunkColumnCount, chunkSize, () =>
                         {
                             LogManager.Log(LOGTag, "All item chunks load finished!");
                             itemChunksLoaded = true;
@@ -651,9 +622,9 @@ namespace Framework.Core.World
                             worldChunkStatusDict.Add(selectIndex, new Dictionary<string, int[]>());
                         }
                         var chunkStatusDict = worldChunkStatusDict[selectIndex];
-                        for (var row = 0; row < worldData.TerrainRowCount; row++)
+                        for (var row = 0; row < worldData.ChunkRowCount; row++)
                         {
-                            for (var col = 0; col < worldData.TerrainColumnCount; col++)
+                            for (var col = 0; col < worldData.ChunkColumnCount; col++)
                             {
                                 var chunkName = $"Chunk_{row}_{col}";
                                 if (!chunkStatusDict.ContainsKey(chunkName))
@@ -664,15 +635,16 @@ namespace Framework.Core.World
                             }
                         }
                     }
+                    GUIUtility.ExitGUI();
                 }
                 if (GUILayout.Button("Clear All", GUILayout.Width(rightHandlePanelWidth - border * 2)))
                 {
                     itemChunksLoaded = false;
-                    itemHandler.UnloadAllItemChunks(envRoot, worldData.TerrainRowCount, worldData.TerrainColumnCount, () => { LogManager.Log(LOGTag, "All item chunks unload finished!"); });
+                    itemHandler.UnloadAllItemChunks(envRoot, worldData.ChunkRowCount, worldData.ChunkColumnCount, () => { LogManager.Log(LOGTag, "All item chunks unload finished!"); });
                     var chunkStatusDict = worldChunkStatusDict[selectIndex];
-                    for (var row = 0; row < worldData.TerrainRowCount; row++)
+                    for (var row = 0; row < worldData.ChunkRowCount; row++)
                     {
-                        for (var col = 0; col < worldData.TerrainColumnCount; col++)
+                        for (var col = 0; col < worldData.ChunkColumnCount; col++)
                         {
                             var chunkName = $"Chunk_{row}_{col}";
                             if (!chunkStatusDict.ContainsKey(chunkName))
@@ -682,10 +654,12 @@ namespace Framework.Core.World
                             chunkStatusDict[chunkName][(int)ChunkStatus.Visible] = 0;
                         }
                     }
+                    GUIUtility.ExitGUI();
                 }
                 if (GUILayout.Button("Save All", GUILayout.Width(rightHandlePanelWidth - border * 2)))
                 {
-                    itemHandler.SaveAllItemChunks(envRoot, worldName, worldData.TerrainRowCount, worldData.TerrainColumnCount, () => { LogManager.Log(LOGTag, "Save succeed!"); });
+                    itemHandler.SaveAllItemChunks(envRoot, worldName, worldData.ChunkRowCount, worldData.ChunkColumnCount, () => { LogManager.Log(LOGTag, "Save succeed!"); });
+                    GUIUtility.ExitGUI();
                 }
                 if (GUILayout.Button("Switch All Fold", GUILayout.Width(rightHandlePanelWidth - border * 2)))
                 {
@@ -696,6 +670,7 @@ namespace Framework.Core.World
                             kvp.Value[(int)ChunkStatus.Fold] = 1 - kvp.Value[(int)ChunkStatus.Fold];
                         }
                     }
+                    GUIUtility.ExitGUI();
                 }
             }
             EditorGUILayout.EndFoldoutHeaderGroup();
@@ -726,11 +701,13 @@ namespace Framework.Core.World
                 {
                     // itemHandler.LoadAllItems(itemRoot,worldName,chunkSliceX,chunkSliceY);
                     itemHandler.ResetModelPrefabs();
+                    GUIUtility.ExitGUI();
                 }
                 if (GUILayout.Button("Switch All Fold", GUILayout.Width(rightHandlePanelWidth - border * 2)))
                 {
                     modelSwitchFoldStatus = !modelSwitchFoldStatus;
                     modelSwitchFoldStatusTrigger = true;
+                    GUIUtility.ExitGUI();
                 }
             }
             EditorGUILayout.EndFoldoutHeaderGroup();
@@ -754,10 +731,12 @@ namespace Framework.Core.World
             if (GUILayout.Button("Generate Lightmap Data"))
             {
                 // lightmapHandler.GenLightmapData(terrainRoot, itemRoot, worldName, worldData.TerrainRowCount, worldData.TerrainColumnCount, () => { LogManager.Log(LOGTag, "光照数据生成完成"); });
+                GUIUtility.ExitGUI();
             }
             if (GUILayout.Button("Load Lightmap Data"))
             {
                 // lightmapHandler.LoadLightmapData(terrainRoot, itemRoot, worldName, worldData.TerrainRowCount, worldData.TerrainColumnCount, () => { LogManager.Log(LOGTag, "光照数据加载完成"); });
+                GUIUtility.ExitGUI();
             }
             GUILayout.EndVertical();
         }
@@ -789,9 +768,9 @@ namespace Framework.Core.World
             {
                 return;
             }
-            for (var row = 0; row < worldData.TerrainRowCount; row++)
+            for (var row = 0; row < worldData.ChunkRowCount; row++)
             {
-                for (var col = 0; col < worldData.TerrainColumnCount; col++)
+                for (var col = 0; col < worldData.ChunkColumnCount; col++)
                 {
                     var chunkName = $"{row}_{col}";
                     if (!itemHandler.chunkItemsDict.ContainsKey(chunkName))
@@ -824,7 +803,7 @@ namespace Framework.Core.World
             foreach (var mi in modifyModelList)
             {
                 if (!modelInfoDict.ContainsKey(mi)) continue;
-                Vector2 newParent = itemHandler.CheckParentChunk(modelInfoDict[mi].pos, worldData.TerrainRowCount, worldData.TerrainColumnCount, chunkSize);
+                Vector2 newParent = itemHandler.CheckParentChunk(modelInfoDict[mi].pos, worldData.ChunkRowCount, worldData.ChunkColumnCount, chunkSize);
                 if (!(newParent.x >= 0) || !(newParent.y >= 0)) continue;
                 string np = $"{(int)newParent.y}_{(int)newParent.x}";
                 if (modelInfoDict[mi].parent == np) continue;
@@ -870,14 +849,17 @@ namespace Framework.Core.World
                     if (GUILayout.Button(new GUIContent(EditorGUIUtility.IconContent(prefabModelsFoldStatus[node.uid] ? "IN foldout on" : "IN foldout").image), guiSkin.box, GUILayout.Height(normalSpace), GUILayout.Width(15)))
                     {
                         prefabModelsFoldStatus[node.uid] = !prefabModelsFoldStatus[node.uid];
+                        GUIUtility.ExitGUI();
                     }
                     if (GUILayout.Button(new GUIContent(EditorGUIUtility.IconContent(prefabModelsFoldStatus[node.uid] ? "d_FolderOpened Icon" : "d_Folder Icon").image), guiSkin.box, GUILayout.Height(normalSpace), GUILayout.Width(normalSpace)))
                     {
                         prefabModelsFoldStatus[node.uid] = !prefabModelsFoldStatus[node.uid];
+                        GUIUtility.ExitGUI();
                     }
                     if (GUILayout.Button(node.name, guiSkin.box, GUILayout.Width(windowSize.width - subLev * normalSpace - rightHandlePanelWidth - normalSpace - 8), GUILayout.Height(normalSpace)))
                     {
                         prefabModelsFoldStatus[node.uid] = !prefabModelsFoldStatus[node.uid];
+                        GUIUtility.ExitGUI();
                     }
                     showChild = prefabModelsFoldStatus[node.uid];
                     GUILayout.EndHorizontal();
@@ -908,6 +890,7 @@ namespace Framework.Core.World
                         //add to scene [screen pos => world pos]
                         var assetPath = $"{DEF.RESOURCES_ASSETS_PATH}Models/{node.uid}";
                         // itemHandler.LoadModelPrefab(itemRoot, assetPath, worldData.TerrainRowCount, worldData.TerrainColumnCount, chunkSize);
+                        GUIUtility.ExitGUI();
                     }
                     // GUILayout.FlexibleSpace();
                     GUILayout.EndHorizontal();
@@ -940,11 +923,13 @@ namespace Framework.Core.World
                 if (GUILayout.Button("Clear Scene", GUILayout.Width(windowSize.width - 6), GUILayout.Height(normalSpace)))
                 {
                     ClearScene();
+                    GUIUtility.ExitGUI();
                 }
                 GUILayout.Space(5);
                 if (GUILayout.Button("Back To Select World", GUILayout.Width(windowSize.width - 6), GUILayout.Height(normalSpace)))
                 {
                     startEdit = false;
+                    GUIUtility.ExitGUI();
                 }
                 GUILayout.Space(5);
             } 
@@ -972,6 +957,7 @@ namespace Framework.Core.World
                             selectIndex = i;
                             showWorldInfo = true;
                             worldData = LoadWorldData();
+                            GUIUtility.ExitGUI();
                         }
                         GUILayout.EndHorizontal();
                         GUI.backgroundColor = color;
@@ -1032,14 +1018,16 @@ namespace Framework.Core.World
                                     File.Delete($"{worldDir}/{t.Name}.meta");
                                     AssetDatabase.Refresh();
                                 }
-                                //删除WorldData.bin
-                                var binPath = $"{worldDir}/WorldData.bin";
+                                //删除WorldData.bytes
+                                var binPath = $"{worldDir}/WorldData.bytes";
                                 if (File.Exists(binPath))
                                 {
                                     File.Delete(binPath);
+                                    File.Delete($"{binPath}.meta");
                                 }
                                 AssetDatabase.Refresh();
                             }
+                            GUIUtility.ExitGUI();
                         }
                         GUILayout.EndHorizontal();
                         GUILayout.Space(2);
@@ -1052,6 +1040,7 @@ namespace Framework.Core.World
                 if (GUILayout.Button("Clear Scene", GUILayout.Width(windowSize.width - border - 1), GUILayout.Height(30)))
                 {
                     ClearScene();
+                    GUIUtility.ExitGUI();
                 }
                 GUILayout.Space(5);
                 if (GUILayout.Button("Start Edit World", GUILayout.Width(windowSize.width - border - 1), GUILayout.Height(30)))
@@ -1060,6 +1049,7 @@ namespace Framework.Core.World
                     {
                         startEdit = true;
                     }
+                    GUIUtility.ExitGUI();
                 }
                 GUILayout.Space(5);
                 // GUILayout.Box(authorTex,guiSkin.box,GUILayout.Width(windowSize.width),GUILayout.Height(windowSize.width / 10));

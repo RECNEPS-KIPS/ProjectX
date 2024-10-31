@@ -1,7 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using Framework.Core.Manager.ResourcesLoad;
 using UnityEditor;
 using UnityEngine;
@@ -16,7 +14,7 @@ namespace Framework.Core.ResourcesAssets
 
         private static bool IsFinished; //是否检查完成 可以打包
 
-        class InnerAssetBundleBuild
+        private class InnerAssetBundleBuild
         {
             public string assetBundleName;
             public string assetBundleVariant;
@@ -25,17 +23,11 @@ namespace Framework.Core.ResourcesAssets
         private const string LOGTag = "AssetBundlesBuilder";
         
         private static AssetBundlesBuilderWindow window;
-        private const int leftBorder = 2;
-        private const int rightBorder = 2;
         private const int normalSpace = 20;
-        private const int border = leftBorder + rightBorder;
+
         private static float screenScale => Screen.dpi / DEF.SYSTEM_STANDARD_DPI;
         // private Rect _windowSize;
         private static Rect windowSize => new (0, 0, Screen.width / screenScale, Screen.height / screenScale);
-        public static bool GetState()
-        {
-            return IsFinished;
-        }
 
         private static void CollectAllAssetBundlesData()
         {
@@ -49,7 +41,7 @@ namespace Framework.Core.ResourcesAssets
                 AssetsDict["Misc"].assetBundleName = "Misc";
             }
             
-            var assetMapPath = DEF.ASSET_BUNDLE_PATH;
+            const string assetMapPath = DEF.ASSET_BUNDLE_PATH;
             var assetMap = AssetDatabase.LoadAssetAtPath<AssetBundlesMap>(assetMapPath);
             if (assetMap) {
                 assetMap.Map.Clear();
@@ -57,7 +49,7 @@ namespace Framework.Core.ResourcesAssets
             else
             {
                 AssetsDict["Misc"].assetNames.Add(assetMapPath);
-                assetMap = ScriptableObject.CreateInstance<AssetBundlesMap>();
+                assetMap = CreateInstance<AssetBundlesMap>();
                 AssetDatabase.CreateAsset(assetMap,assetMapPath);
             }
             var tmpImportObj = AssetImporter.GetAtPath(assetMapPath);
@@ -112,17 +104,21 @@ namespace Framework.Core.ResourcesAssets
         private readonly Dictionary<string, AssetBundlesRule> RuleMap = new();
         private void InitWindow()
         {
-            AssetsDict.Clear();
-            abOutPath = AssetBundlesPathTools.GetABOutPath();
             AssetBundlesBuildRule = ResourcesLoadManager.LoadAsset<AssetBundlesBuildRule>(DEF.ASSET_BUNDLE_RULE_PATH);
             if (AssetBundlesBuildRule != null)
             {
                 foreach (var rule in AssetBundlesBuildRule.AssetBundlesRules)
                 {
-                    RuleMap.Add(rule.FullPath,rule);
-                    SelectMap.Add(rule.FullPath,true);
+                    var vaild = (rule.IsDirectory && Directory.Exists(rule.FullPath)) || (!rule.IsDirectory && File.Exists(rule.FullPath));
+                    if (vaild)
+                    {
+                        RuleMap.Add(rule.FullPath,rule);
+                        SelectMap.Add(rule.FullPath,true);
+                    }
                 }
             }
+            AssetsDict.Clear();
+            abOutPath = AssetBundlesPathTools.GetABOutPath();
         }
         private void BuildAssetBundles()
         {
@@ -150,14 +146,11 @@ namespace Framework.Core.ResourcesAssets
             
             BuildPipeline.BuildAssetBundles(abOutPath,assetBundleBuilds , BuildAssetBundleOptions.None,EditorUserBuildSettings.activeBuildTarget);
             LogManager.Log(LOGTag,"AssetBundle打包完毕");
-            // var assetMapPath = DEF.ASSET_BUNDLE_PATH;
-            // var assetMap = AssetDatabase.LoadAssetAtPath<AssetBundlesMap>(assetMapPath);
-            // LogManager.Log(LOGTag,assetMap.Map.Count);
         }
         
-        private Dictionary<string, bool> RuleFlodMap = new();
+        private readonly Dictionary<string, bool> RuleFlodMap = new();
         private readonly Dictionary<string, bool> SelectMap = new();
-        private void DrawDir(string dirPath,string drawName,int layer,int line)
+        private void DrawDir(string dirPath,string drawName,int layer)
         {
             if (!Directory.Exists(dirPath)) return;
             var dirInfo = new DirectoryInfo(dirPath);
@@ -184,7 +177,7 @@ namespace Framework.Core.ResourcesAssets
                 {
                     foreach (var t in dirs)
                     {
-                        DrawDir(t.FullName,t.Name,layer,line++);
+                        DrawDir(t.FullName,t.Name,layer);
                     }
 
                     foreach (var t in files)
@@ -261,7 +254,7 @@ namespace Framework.Core.ResourcesAssets
         {
             GUILayout.BeginVertical();
             sceneScrollPosition = GUILayout.BeginScrollView(sceneScrollPosition, false, true, GUILayout.Width(windowSize.width - 2), GUILayout.Height(windowSize.height - normalSpace * 6));
-            DrawDir("Assets/ResourcesAssets","ResourcesAssets",0,0);
+            DrawDir("Assets/ResourcesAssets","ResourcesAssets",0);
             GUILayout.EndScrollView();
             GUILayout.FlexibleSpace();
             
@@ -375,7 +368,7 @@ namespace Framework.Core.ResourcesAssets
             }
         }
         
-        public void RemoveABLabel()
+        public static void RemoveABLabel()
         {
             // 需要移除标记的根目录
             // 目录信息（场景目录信息数组 表示所有根目录下场景目录）
@@ -442,7 +435,7 @@ namespace Framework.Core.ResourcesAssets
         /// 给文件移除 Asset Bundle 标记
         /// </summary>
         /// <param name="fileInfoObj">文件（文件信息）</param>
-        static void RemoveFileABLabel(FileInfo fileInfoObj)
+        private static void RemoveFileABLabel(FileSystemInfo fileInfoObj)
         {
             // AssetBundle 包名称
             // 参数检查（*.meta 文件不做处理）

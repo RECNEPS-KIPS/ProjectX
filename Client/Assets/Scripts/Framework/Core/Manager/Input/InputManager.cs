@@ -28,9 +28,9 @@ namespace Framework.Core.Manager.Input {
             // IsRunKeyPressed();
             // GetAxisInput();
             // GetMoveInput();
-            if (InputControls.Player.Backpack.IsPressed())
+            if (IsBackpackKeySinglePressed())
             {
-                EventManager.Dispatch(EEvent.PLAYER_ATTR_UPDATE);
+                EventManager.Dispatch(EEvent.INPUT_BACKPACK);
             }
         }
 

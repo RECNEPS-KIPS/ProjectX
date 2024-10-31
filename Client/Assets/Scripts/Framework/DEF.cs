@@ -43,5 +43,7 @@ namespace Framework
         public static string LIGHTMAP_TEXTURE_DIR(int idx) => $"Lightmap-{idx}_comp_dir";
         public static string LIGHTMAP_TEXTURE_LIGHT(int idx) => $"Lightmap-{idx}_comp_light";
         public static string LIGHTMAP_TEXTURE_SHADOWMASK(int idx) => $"Lightmap-{idx}_comp_shadowmask";
+        
+        public const string TerrainSplitChar = "_";
     }
 }

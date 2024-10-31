@@ -78,7 +78,7 @@ namespace GamePlay.Player
 
         public Transform CharacterControllerRoot;
 
-        void LoadPlayerController(dynamic sceneCf)
+        public void LoadPlayerController(Vector3 initPlayerPos = default)
         {
             LogManager.Log(LOGTag,"LoadPlayerController");
             var playerCf = ConfigManager.GetConfigByID(EConfig.Character, PROTAGONIST_ID);
@@ -95,17 +95,8 @@ namespace GamePlay.Player
 
             if (ctrlCf != null)
             {
-                var initPos = Vector3.zero;
-                if (sceneCf != null)
-                {
-                    var cfInitPos = sceneCf["initPos"];
-                    if (cfInitPos != null)
-                    {
-                        initPos = cfInitPos;
-                        LogManager.Log(LOGTag,"CharacterCtrl initPos:",initPos);
-                    }
-                }
-                GameObject ctrlGo = Instantiate(ResourcesLoadManager.LoadAsset<GameObject>(ctrlCf["path"]), initPos, Quaternion.identity);
+                LogManager.Log(LOGTag,"CharacterCtrl initPos:",initPlayerPos);
+                GameObject ctrlGo = Instantiate(ResourcesLoadManager.LoadAsset<GameObject>(ctrlCf["path"]), initPlayerPos, Quaternion.identity);
                 CharacterController = ctrlGo.GetComponent<CharacterController>();
                 ctrlGo.name = "CharacterController";
                 CharacterControllerRoot = ctrlGo.transform;

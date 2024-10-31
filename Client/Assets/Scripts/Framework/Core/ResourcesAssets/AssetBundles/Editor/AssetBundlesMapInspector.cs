@@ -19,7 +19,7 @@ namespace Framework.Core.ResourcesAssets
         private Dictionary<string, List<string>> Dict {
             get {
                 dict ??= new Dictionary<string, List<string>>();
-                for (int i = 0; i < assetMap.map.Count; i++)
+                for (var i = 0; i < assetMap.map.Count; i++)
                 {
                     var abName = assetMap.map[i].bundleName;
                     if (!dict.ContainsKey(abName))
@@ -33,9 +33,6 @@ namespace Framework.Core.ResourcesAssets
         }
 
         public override void OnInspectorGUI() {
-            // EditorGUILayout.BeginHorizontal();
-            //
-            // EditorGUILayout.EndHorizontal();
             // GUILayout.Space(5);
             foreach (var kvp in Dict)
             {
@@ -43,9 +40,7 @@ namespace Framework.Core.ResourcesAssets
                 GUILayout.Label($"BundleName:{kvp.Key}");
                 foreach (var assetName in kvp.Value)
                 {
-                    // EditorGUILayout.BeginHorizontal();
                     GUILayout.Label($"  AssetName:{assetName}");
-                    // EditorGUILayout.EndHorizontal();
                 }
                 GUILayout.Space(10);
                 EditorGUILayout.EndVertical();

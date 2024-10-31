@@ -56,20 +56,20 @@ MonoBehaviour:
   - FullPath: Assets/ResourcesAssets/Worlds/MainWorld/Chunk_0_0
     ABLabel: Chunk_0_0
     IsDirectory: 1
-    AssetType: asset;bin
+    AssetType: asset;bytes
   - FullPath: Assets/ResourcesAssets/Worlds/MainWorld/Chunk_0_1
     ABLabel: Chunk_0_1
     IsDirectory: 1
-    AssetType: asset;bin
+    AssetType: asset;bytes
   - FullPath: Assets/ResourcesAssets/Worlds/MainWorld/Chunk_1_0
     ABLabel: Chunk_1_0
     IsDirectory: 1
-    AssetType: asset;bin
+    AssetType: asset;bytes
   - FullPath: Assets/ResourcesAssets/Worlds/MainWorld/Chunk_1_1
     ABLabel: Chunk_1_1
     IsDirectory: 1
-    AssetType: asset;bin
-  - FullPath: Assets/ResourcesAssets/Worlds/MainWorld/WorldData.bin
+    AssetType: asset;bytes
+  - FullPath: Assets/ResourcesAssets/Worlds/MainWorld/WorldData.bytes
     ABLabel: WorldData
     IsDirectory: 0
     AssetType: 
