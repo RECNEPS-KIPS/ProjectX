@@ -102,7 +102,7 @@ namespace Framework.Core.World
             chunkRoot.transform.localScale = Vector3.one;
             chunkRoot.transform.localRotation = Quaternion.identity;
             chunkRoot.transform.localPosition = new Vector3(row * td.size.x, 0, col * td.size.z);
-            chunkRoot.name = $"Chunk_{row}_{col}";
+            chunkRoot.name = $"Chunk{DEF.TerrainSplitChar}{row}{DEF.TerrainSplitChar}{col}";
             
             var go = Terrain.CreateTerrainGameObject(td);
             go.transform.SetParent(chunkRoot.transform);

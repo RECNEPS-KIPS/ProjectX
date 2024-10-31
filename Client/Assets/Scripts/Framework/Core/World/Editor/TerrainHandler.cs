@@ -93,7 +93,7 @@ namespace Framework.Core.World
             foreach (var t in subDirs)
             {
                 if (!t.Name.StartsWith("Chunk")) continue;
-                var split = t.Name.Split('_');
+                var split = t.Name.Split(DEF.TerrainSplitChar);
                 var row = int.Parse(split[1]);
                 var col = int.Parse(split[2]);
                 var saveDir = $"{worldDir}/{t.Name}";
@@ -119,7 +119,7 @@ namespace Framework.Core.World
             chunkRoot.transform.localScale = Vector3.one;
             chunkRoot.transform.localRotation = Quaternion.identity;
             chunkRoot.transform.localPosition = new Vector3(row * td.size.x, 0, col * td.size.z);
-            chunkRoot.name = $"Chunk_{row}_{col}";
+            chunkRoot.name = $"Chunk{DEF.TerrainSplitChar}{row}{DEF.TerrainSplitChar}{col}";
             
             var go = Terrain.CreateTerrainGameObject(td);
             go.transform.SetParent(chunkRoot.transform);
@@ -204,7 +204,7 @@ namespace Framework.Core.World
 
                         // 创建一个新的GameObject用于表示子地图
                         var tileObject = Terrain.CreateTerrainGameObject(null);
-                        tileObject.name = "Tile_" + row + "_" + col;
+                        tileObject.name = $"Tile{DEF.TerrainSplitChar}{row}{DEF.TerrainSplitChar}{col}";
                         tileObject.transform.SetParent(terrain.transform);
 
                         //设置高度
@@ -420,7 +420,7 @@ namespace Framework.Core.World
 
         private void InstantiateColliderBox(Transform envRoot, int row, int col, Vector3 position, Vector3 colliderSize)
         {
-            var chunkRoot = envRoot.Find($"Chunk_{row}_{col}");
+            var chunkRoot = envRoot.Find($"Chunk{DEF.TerrainSplitChar}{row}{DEF.TerrainSplitChar}{col}");
             var oldTrs = chunkRoot.Find("Collider");
             if (oldTrs)
             {
@@ -442,8 +442,8 @@ namespace Framework.Core.World
 
         private void GenColliderBox(Transform envRoot, int row, int col, Vector2 chunkSize, Vector2 colliderSize, float terrainHeight,bool isPosition = false)
         {
-            // var nodeName = $"{row}_{col}";
-            var chunkRoot = envRoot.Find($"Chunk_{row}_{col}");
+            // var nodeName = $"{row}{DEF.TerrainSplitChar}{col}";
+            var chunkRoot = envRoot.Find($"Chunk{DEF.TerrainSplitChar}{row}{DEF.TerrainSplitChar}{col}");
             var oldTrs = chunkRoot.Find("Collider");
             if (oldTrs)
             {

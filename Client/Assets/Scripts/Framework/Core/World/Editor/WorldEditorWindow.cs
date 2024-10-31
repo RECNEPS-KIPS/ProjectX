@@ -499,7 +499,7 @@ namespace Framework.Core.World
                     for (var col = 0; col < worldData.ChunkColumnCount; col++)
                     {
                         GUILayout.BeginHorizontal();
-                        var chunkName = $"Chunk_{row}_{col}";
+                        var chunkName = $"Chunk{DEF.TerrainSplitChar}{row}{DEF.TerrainSplitChar}{col}";
                         if (!chunkStatusDict.ContainsKey(chunkName))
                         {
                             chunkStatusDict.Add(chunkName, new int[2]);
@@ -544,7 +544,7 @@ namespace Framework.Core.World
                         GUILayout.Space(rightBorder);
                         GUILayout.EndHorizontal();
                         if (chunkStatusDict[chunkName][(int)ChunkStatus.Fold] != DEF.TRUE) continue;
-                        var itemName = $"{row}_{col}";
+                        var itemName = $"{row}{DEF.TerrainSplitChar}{col}";
                         if (!itemHandler.chunkItemsDict.ContainsKey(itemName))
                         {
                             itemHandler.chunkItemsDict.Add(itemName, new List<ModelInfo>());
@@ -626,7 +626,7 @@ namespace Framework.Core.World
                         {
                             for (var col = 0; col < worldData.ChunkColumnCount; col++)
                             {
-                                var chunkName = $"Chunk_{row}_{col}";
+                                var chunkName = $"Chunk{DEF.TerrainSplitChar}{row}{DEF.TerrainSplitChar}{col}";
                                 if (!chunkStatusDict.ContainsKey(chunkName))
                                 {
                                     chunkStatusDict.Add(chunkName, new int[2]);
@@ -646,7 +646,7 @@ namespace Framework.Core.World
                     {
                         for (var col = 0; col < worldData.ChunkColumnCount; col++)
                         {
-                            var chunkName = $"Chunk_{row}_{col}";
+                            var chunkName = $"Chunk{DEF.TerrainSplitChar}{row}{DEF.TerrainSplitChar}{col}";
                             if (!chunkStatusDict.ContainsKey(chunkName))
                             {
                                 chunkStatusDict.Add(chunkName, new int[2]);
@@ -772,7 +772,7 @@ namespace Framework.Core.World
             {
                 for (var col = 0; col < worldData.ChunkColumnCount; col++)
                 {
-                    var chunkName = $"{row}_{col}";
+                    var chunkName = $"{row}{DEF.TerrainSplitChar}{col}";
                     if (!itemHandler.chunkItemsDict.ContainsKey(chunkName))
                     {
                         itemHandler.chunkItemsDict.Add(chunkName, new List<ModelInfo>());
