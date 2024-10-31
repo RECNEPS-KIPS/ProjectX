@@ -26,8 +26,8 @@ SpriteAtlas:
       padding: 4
       blockOffset: 1
       allowAlphaSplitting: 0
-      enableRotation: 1
-      enableTightPacking: 1
+      enableRotation: 0
+      enableTightPacking: 0
       enableAlphaDilation: 0
     secondaryTextureSettings: {}
     variantMultiplier: 1
@@ -37,33 +37,33 @@ SpriteAtlas:
     isAtlasV2: 0
     cachedData: {fileID: 0}
     packedSpriteRenderDataKeys:
-    - cd27463009e484046be705a25dbd7a77: 21300000
-    - 338d2401fc2a6fb41846d961eac06b35: 21300000
-    - b1213d240be7e0e47a0f60afaba12a23: 21300000
-    - 11550c275dad76b4e9e6b9e69c4272e9: 21300000
-    - 0eacfc1b42917084f871ee238b2a576d: 21300000
-    - fbc6157cc09f36840ae218d78b622dbb: 21300000
-    - f3dd296dd2f0973429de993ad18e9ad5: 21300000
-    - d946934e126f9e5468cae483f1ca1891: 21300000
+    - 7c3832450c59c7f438a46d619f5dc73d: 21300000
+    - 33aee545c06ccab4482fc26d8d7d2961: 21300000
+    - ea7fba55c8d7fb3438536859f87b66e3: 21300000
+    - bd7337e725b397741b1a2078f7c573f1: 21300000
+    - 8e9ef439486e1ff438af38b48668dd8a: 21300000
+    - af77384cc0a94be48917c553a2bc47c8: 21300000
+    - f5ed23ecaee3c0c45819df9a03b9c9ea: 21300000
+    - b20b063deb3b74b45b710e676de8a7f1: 21300000
   m_MasterAtlas: {fileID: 0}
   m_PackedSprites:
-  - {fileID: 21300000, guid: cd27463009e484046be705a25dbd7a77, type: 3}
-  - {fileID: 21300000, guid: 338d2401fc2a6fb41846d961eac06b35, type: 3}
-  - {fileID: 21300000, guid: b1213d240be7e0e47a0f60afaba12a23, type: 3}
-  - {fileID: 21300000, guid: 11550c275dad76b4e9e6b9e69c4272e9, type: 3}
-  - {fileID: 21300000, guid: 0eacfc1b42917084f871ee238b2a576d, type: 3}
-  - {fileID: 21300000, guid: fbc6157cc09f36840ae218d78b622dbb, type: 3}
-  - {fileID: 21300000, guid: f3dd296dd2f0973429de993ad18e9ad5, type: 3}
-  - {fileID: 21300000, guid: d946934e126f9e5468cae483f1ca1891, type: 3}
+  - {fileID: 21300000, guid: 7c3832450c59c7f438a46d619f5dc73d, type: 3}
+  - {fileID: 21300000, guid: 33aee545c06ccab4482fc26d8d7d2961, type: 3}
+  - {fileID: 21300000, guid: ea7fba55c8d7fb3438536859f87b66e3, type: 3}
+  - {fileID: 21300000, guid: bd7337e725b397741b1a2078f7c573f1, type: 3}
+  - {fileID: 21300000, guid: 8e9ef439486e1ff438af38b48668dd8a, type: 3}
+  - {fileID: 21300000, guid: af77384cc0a94be48917c553a2bc47c8, type: 3}
+  - {fileID: 21300000, guid: f5ed23ecaee3c0c45819df9a03b9c9ea, type: 3}
+  - {fileID: 21300000, guid: b20b063deb3b74b45b710e676de8a7f1, type: 3}
   m_PackedSpriteNamesToIndex:
+  - hungry_inner
+  - hp_wrapper
+  - hp_inner
+  - stamina_wrapper
+  - thirsty_inner
+  - stamina_inner
   - hungry_wrapper
   - thirsty_wrapper
-  - hp_wrapper
-  - thirsty_inner
-  - stamina_wrapper
-  - stamina_inner
-  - hungry_inner
-  - hp_inner
   m_RenderDataMap: {}
   m_Tag: MainAtlas
   m_IsVariant: 0
