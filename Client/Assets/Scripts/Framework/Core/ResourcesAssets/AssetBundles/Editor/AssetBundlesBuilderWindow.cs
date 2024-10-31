@@ -133,6 +133,8 @@ namespace Framework.Core.ResourcesAssets
             {
                 AssetBundlesBuildRule.AssetBundlesRules.Add(kvp.Value);
             }
+
+            EditorUtility.SetDirty(AssetBundlesBuildRule);
             AssetDatabase.SaveAssets();
             AssetDatabase.Refresh();
             
