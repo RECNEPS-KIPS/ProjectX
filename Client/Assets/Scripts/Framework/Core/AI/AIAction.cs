@@ -2,9 +2,11 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using Framework.Core.Manager.Timer;
-using Plugins.RootMotion;
 using UnityEngine;
+
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
 
 namespace Framework.Core.AI
 {
@@ -66,6 +68,13 @@ namespace Framework.Core.AI
         {
             
         }
+        
+#if UNITY_EDITOR
+        public void DrawDebugAction()
+        {
+            EditorGUILayout.LabelField($"ActionName:{this.ToString()}");
+        }
+#endif
     }
 
     /// <summary>

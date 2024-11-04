@@ -12,6 +12,8 @@ namespace Framework.Core.AI
     
     public abstract class AIBrainBase
     {
+        // 当前action
+        protected Queue<AIActionBase> m_actions;
         protected AIAgent m_AIAgent;
         public AIBrainBase(AIAgent agent)
         {
@@ -20,15 +22,12 @@ namespace Framework.Core.AI
         
         public abstract void BrainUpdate();
     }
-
-
+    
     /// <summary>
     /// 包含基本巡逻、追踪敌人、攻击敌人
     /// </summary>
     public class SimpleAIBrain : AIBrainBase
     {
-        // 当前action
-        private Queue<AIActionBase> m_actions;
         // 巡逻地点
         private List<Transform> m_patrolPos;
         private int m_lastPatrolIndex = 0;
@@ -36,7 +35,11 @@ namespace Framework.Core.AI
         public SimpleAIBrain(AIAgent agent) : base(agent)
         {
             m_actions = new Queue<AIActionBase>();
-            m_patrolPos = new List<Transform>();
+        }
+
+        public void SetPatrolPos(List<Transform> patrolPos)
+        {
+            m_patrolPos = patrolPos;
         }
         
         public override void BrainUpdate()
@@ -70,7 +73,7 @@ namespace Framework.Core.AI
             {
                 m_actions.Enqueue(AIActionFactory.Instance.GetAction<IdleAction>());
                 m_actions.Enqueue(AIActionFactory.Instance.GetAction<WaitAction>().SetTimer(2f));
-                m_actions.Enqueue(AIActionFactory.Instance.GetAction<MoveToTargetAction>().SetMoveTarget(0.1f,m_patrolPos[m_lastPatrolIndex % m_patrolPos.Count]));
+                m_actions.Enqueue(AIActionFactory.Instance.GetAction<MoveToTargetAction>().SetMoveTarget(1f,m_patrolPos[m_lastPatrolIndex % m_patrolPos.Count]));
                 m_lastPatrolIndex++;
                 m_actions.Enqueue(AIActionFactory.Instance.GetAction<WaitAction>().SetTimer(1f));
             }
