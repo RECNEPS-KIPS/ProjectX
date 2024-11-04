@@ -1,0 +1,75 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 58a47578ac9e45179b39a3368fb435ab, type: 3}
+  m_Name: asset_bundles_rule
+  m_EditorClassIdentifier: 
+  AssetBundlesRules:
+  - FullPath: Assets/ResourcesAssets/Characters/BagBoy/BagBoy.prefab
+    ABLabel: BagBoy
+    IsDirectory: 0
+    AssetType: 
+  - FullPath: Assets/ResourcesAssets/Controllers
+    ABLabel: Controllers
+    IsDirectory: 1
+    AssetType: prefab
+  - FullPath: Assets/ResourcesAssets/Misc
+    ABLabel: Misc
+    IsDirectory: 1
+    AssetType: asset
+  - FullPath: Assets/ResourcesAssets/Scenes/Launch.unity
+    ABLabel: Launch
+    IsDirectory: 0
+    AssetType: 
+  - FullPath: Assets/ResourcesAssets/Scenes/MainWorld.unity
+    ABLabel: MainWorld
+    IsDirectory: 0
+    AssetType: 
+  - FullPath: Assets/ResourcesAssets/Settings/Input/InputActionMap.inputactions
+    ABLabel: InputActionMap
+    IsDirectory: 0
+    AssetType: 
+  - FullPath: Assets/ResourcesAssets/UI/Pages/Lobby
+    ABLabel: Lobby
+    IsDirectory: 1
+    AssetType: prefab
+  - FullPath: Assets/ResourcesAssets/UI/Pages/Main
+    ABLabel: Main
+    IsDirectory: 1
+    AssetType: prefab
+  - FullPath: Assets/ResourcesAssets/UI/Pages/Plot
+    ABLabel: Plot
+    IsDirectory: 1
+    AssetType: prefab
+  - FullPath: Assets/ResourcesAssets/UI/Pages/Start
+    ABLabel: Start
+    IsDirectory: 1
+    AssetType: prefab
+  - FullPath: Assets/ResourcesAssets/Worlds/MainWorld/Chunk_0_0
+    ABLabel: Chunk_0_0
+    IsDirectory: 1
+    AssetType: asset;bytes
+  - FullPath: Assets/ResourcesAssets/Worlds/MainWorld/Chunk_0_1
+    ABLabel: Chunk_0_1
+    IsDirectory: 1
+    AssetType: asset;bytes
+  - FullPath: Assets/ResourcesAssets/Worlds/MainWorld/Chunk_1_0
+    ABLabel: Chunk_1_0
+    IsDirectory: 1
+    AssetType: asset;bytes
+  - FullPath: Assets/ResourcesAssets/Worlds/MainWorld/Chunk_1_1
+    ABLabel: Chunk_1_1
+    IsDirectory: 1
+    AssetType: asset;bytes
+  - FullPath: Assets/ResourcesAssets/Worlds/MainWorld/WorldData.bytes
+    ABLabel: WorldData
+    IsDirectory: 0
+    AssetType: 

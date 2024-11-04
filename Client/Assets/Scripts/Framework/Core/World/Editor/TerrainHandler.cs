@@ -5,6 +5,10 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Runtime.Serialization;
+using System.Runtime.Serialization.Formatters.Binary;
+using Framework.Common;
+using Framework.Core.Manager.ResourcesLoad;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.Rendering;
@@ -36,7 +40,6 @@ namespace Framework.Core.World
         #region Variable
 
         private const string LOGTag = "TerrainHandler";
-        private const string TerrainSplitChar = "_";
         public readonly List<GameObject> terrainList = new();
         public readonly List<GameObject> colliderList = new();
 
@@ -85,39 +88,38 @@ namespace Framework.Core.World
                 return;
             }
 
-            DirectoryInfo dirInfo = new DirectoryInfo(worldDir);
-            DirectoryInfo[] subDirs = dirInfo.GetDirectories();
+            var dirInfo = new DirectoryInfo(worldDir);
+            var subDirs = dirInfo.GetDirectories();
             foreach (var t in subDirs)
             {
                 if (!t.Name.StartsWith("Chunk")) continue;
-                var split = t.Name.Split('_');
-                var y = int.Parse(split[1]);
-                var x = int.Parse(split[2]);
+                var split = t.Name.Split(DEF.TerrainSplitChar);
+                var row = int.Parse(split[1]);
+                var col = int.Parse(split[2]);
                 var saveDir = $"{worldDir}/{t.Name}";
                 if (!Directory.Exists(saveDir))
                 {
                     LogManager.Log(LOGTag, "There is no split terrain data");
                     continue;
                 }
-
-                // TerrainDataStruct terrainInfo = LoadTerrainInfo($"{saveDir}/data.bytes");
-                LoadTerrainChunk(worldName, envRoot, x, y);
+                
+                LoadTerrainChunk(worldName, envRoot, row, col);
             }
 
             callback?.Invoke();
         }
 
-        private void LoadTerrainChunk(string worldName, Transform envRoot, int x, int y)
+        private void LoadTerrainChunk(string worldName, Transform envRoot, int row, int col)
         {
-            var chunkDir = $"Chunk{TerrainSplitChar}{y}{TerrainSplitChar}{x}";
+            var chunkDir = $"Chunk{DEF.TerrainSplitChar}{row}{DEF.TerrainSplitChar}{col}";
             var saveDir = $"{DEF.RESOURCES_ASSETS_PATH}/Worlds/{worldName}/{chunkDir}";
             var td = AssetDatabase.LoadAssetAtPath<TerrainData>($"{saveDir}/Terrain.asset");
             var chunkRoot = new GameObject();
             chunkRoot.transform.SetParent(envRoot);
             chunkRoot.transform.localScale = Vector3.one;
             chunkRoot.transform.localRotation = Quaternion.identity;
-            chunkRoot.transform.localPosition = new Vector3(x * td.size.x, 0, y * td.size.z);
-            chunkRoot.name = $"Chunk_{y}_{x}";
+            chunkRoot.transform.localPosition = new Vector3(row * td.size.x, 0, col * td.size.z);
+            chunkRoot.name = $"Chunk{DEF.TerrainSplitChar}{row}{DEF.TerrainSplitChar}{col}";
             
             var go = Terrain.CreateTerrainGameObject(td);
             go.transform.SetParent(chunkRoot.transform);
@@ -184,7 +186,7 @@ namespace Framework.Core.World
                     for (var col = 0; col < columns; col++)
                     {
                         //创建资源
-                        var chunkDir = $"Chunk{TerrainSplitChar}{row}{TerrainSplitChar}{col}";
+                        var chunkDir = $"Chunk{DEF.TerrainSplitChar}{row}{DEF.TerrainSplitChar}{col}";
 
                         EditorUtility.DisplayProgressBar("正在分割地形", chunkDir,(row * rows + col) / (float)(rows * columns));
                         var saveDir = $"{DEF.RESOURCES_ASSETS_PATH}/Worlds/{worldName}/{chunkDir}";
@@ -202,13 +204,13 @@ namespace Framework.Core.World
 
                         // 创建一个新的GameObject用于表示子地图
                         var tileObject = Terrain.CreateTerrainGameObject(null);
-                        tileObject.name = "Tile_" + row + "_" + col;
+                        tileObject.name = $"Tile{DEF.TerrainSplitChar}{row}{DEF.TerrainSplitChar}{col}";
                         tileObject.transform.SetParent(terrain.transform);
 
                         //设置高度
                         var xBase = terrainData.heightmapResolution / rows;
                         var yBase = terrainData.heightmapResolution / rows;
-                        var height = terrainData.GetHeights(yBase * col, xBase * row, xBase + 1, yBase + 1);
+                        var height = terrainData.GetHeights( xBase * row,yBase * col, xBase + 1, yBase + 1);
 
                         // 添加Terrain组件并设置高度图
                         var tileTerrain = tileObject.GetComponent<Terrain>();
@@ -267,30 +269,33 @@ namespace Framework.Core.World
 
         private static void GenerateWorldData(Terrain terrain, string worldName,int rows, int columns,float tileWidth,float tileLength)
         {
-            var savePath = $"{DEF.RESOURCES_ASSETS_PATH}/Worlds/{worldName}/WorldData.bin";
+            var savePath = $"{DEF.RESOURCES_ASSETS_PATH}/Worlds/{worldName}/WorldData.bytes";
             if(File.Exists(savePath))
             {
                 File.Delete(savePath);
                 File.Delete($"{savePath}.meta");
             }
             
-            var fs = new FileStream(savePath, FileMode.Create);
-            var writer = new BinaryWriter(fs);
             try
             {
-                writer.Write(terrain.terrainData.size.y);//地形高度
-                writer.Write(rows);//行数
-                writer.Write(columns);//列数
-                writer.Write(tileWidth);//地形块尺寸宽
-                writer.Write(tileLength);//地形块尺寸高
+                var fs = File.Create(savePath);//new FileStream(savePath, FileMode.Create, FileAccess.Write, FileShare.None);
+                var formatter = new BinaryFormatter();
+                //序列化对象 生成2进制字节数组 写入到内存流当中
+                formatter.Serialize(fs, new WorldData
+                {
+                    TerrainHeight = terrain.terrainData.size.y,//地形高度
+                    ChunkRowCount = rows,
+                    ChunkColumnCount = columns,
+                    ChunkSizeX = tileWidth,
+                    ChunkSizeY = tileLength,
+                });
+                fs.Close();
             }
             catch (Exception e)
             {
                 LogManager.LogError(LOGTag, e.Message);
             }
 
-            writer.Close();
-            fs.Close();
             AssetDatabase.Refresh();
         }
 
@@ -407,16 +412,38 @@ namespace Framework.Core.World
             {
                 for (var col = 0; col < columns; ++col)
                 {
-                    GenColliderBox(envRoot, row, col, chunkSize, colliderSize, terrainHeight);
+                    InstantiateColliderBox(envRoot, row, col, new Vector3(0.5f * chunkSize.x, 0, 0.5f * chunkSize.y), new Vector3(colliderSize.x, terrainHeight, colliderSize.y));
                 }
             }
             callback?.Invoke();
         }
 
+        private void InstantiateColliderBox(Transform envRoot, int row, int col, Vector3 position, Vector3 colliderSize)
+        {
+            var chunkRoot = envRoot.Find($"Chunk{DEF.TerrainSplitChar}{row}{DEF.TerrainSplitChar}{col}");
+            var oldTrs = chunkRoot.Find("Collider");
+            if (oldTrs)
+            {
+                Object.DestroyImmediate(oldTrs.gameObject);
+            }
+
+            var go = new GameObject();
+            go.transform.SetParent(chunkRoot);
+            var trs = go.transform;
+            trs.name = "Collider";
+            trs.localRotation = Quaternion.identity;
+            trs.localScale = Vector3.one;
+            var collider = go.AddComponent<BoxCollider>();
+            trs.localPosition = position;
+            collider.size = colliderSize;
+            collider.isTrigger = true;
+            colliderList.Add(go);
+        }
+
         private void GenColliderBox(Transform envRoot, int row, int col, Vector2 chunkSize, Vector2 colliderSize, float terrainHeight,bool isPosition = false)
         {
-            // var nodeName = $"{row}_{col}";
-            var chunkRoot = envRoot.Find($"Chunk_{row}_{col}");
+            // var nodeName = $"{row}{DEF.TerrainSplitChar}{col}";
+            var chunkRoot = envRoot.Find($"Chunk{DEF.TerrainSplitChar}{row}{DEF.TerrainSplitChar}{col}");
             var oldTrs = chunkRoot.Find("Collider");
             if (oldTrs)
             {
@@ -456,32 +483,21 @@ namespace Framework.Core.World
             {
                 for (var col = 0; col < columns; col++)
                 {
-                    var chunkDir = $"Chunk{TerrainSplitChar}{row}{TerrainSplitChar}{col}";
-                    var savePath = $"{DEF.RESOURCES_ASSETS_PATH}/Worlds/{worldName}/{chunkDir}/Collider.bin";
-                    if (!File.Exists(savePath))
-                    {
-                        continue;
-                    }
-
-                    var fs = new FileStream(savePath, FileMode.Open, FileAccess.Read);
-                    var reader = new BinaryReader(fs);
                     try
                     {
-                        var px = reader.ReadSingle();
-                        var pz = reader.ReadSingle();
-                        var sizeX = reader.ReadSingle();
-                        var sizeY = reader.ReadSingle();
-                        var sizeZ = reader.ReadSingle();
-
-                        GenColliderBox(colliderRoot, row, col, new Vector2(px, pz), new Vector2(sizeX, sizeZ), sizeY,true);
+                        var chunkDir = $"Chunk{DEF.TerrainSplitChar}{row}{DEF.TerrainSplitChar}{col}";
+                        var savePath = $"{DEF.RESOURCES_ASSETS_PATH}/Worlds/{worldName}/{chunkDir}/Collider.bytes";
+                        if (!File.Exists(savePath))
+                        {
+                            continue;
+                        }
+                        var data = BinaryUtils.Bytes2Object<ChunkColiderInfo>(ResourcesLoadManager.LoadAsset<TextAsset>(savePath).bytes);
+                        InstantiateColliderBox(colliderRoot, row, col,new Vector3(data.PositionX,data.PositionY,data.PositionZ),new Vector3(data.SizeX,data.SizeY,data.SizeZ));
                     }
                     catch (Exception e)
                     {
                         LogManager.LogError(LOGTag, e.Message);
                     }
-
-                    reader.Close();
-                    fs.Close();
                 }
             }
 
@@ -495,27 +511,40 @@ namespace Framework.Core.World
             {
                 for (var col = 0; col < columns; col++)
                 {
-                    var chunkDir = $"Chunk{TerrainSplitChar}{row}{TerrainSplitChar}{col}";
-                    var savePath = $"{DEF.RESOURCES_ASSETS_PATH}/Worlds/{worldName}/{chunkDir}/Collider.bin";
-                    if(File.Exists(savePath))
+                    try
                     {
-                        File.Delete(savePath);
-                        File.Delete($"{savePath}.meta");
+                        var chunkDir = $"Chunk{DEF.TerrainSplitChar}{row}{DEF.TerrainSplitChar}{col}";
+                        var savePath = $"{DEF.RESOURCES_ASSETS_PATH}/Worlds/{worldName}/{chunkDir}/Collider.bytes";
+                        if(File.Exists(savePath))
+                        {
+                            File.Delete(savePath);
+                            File.Delete($"{savePath}.meta");
+                        }
+                        var colliderTrs = envRoot.Find(chunkDir).Find("Collider");
+                        var collider = colliderTrs.GetComponent<BoxCollider>();
+                        
+                        var fs = File.Create(savePath);//new FileStream(savePath, FileMode.Create, FileAccess.Write, FileShare.None);
+                        var formatter = new BinaryFormatter();
+                        //序列化对象 生成2进制字节数组 写入到内存流当中
+                        var localPosition = colliderTrs.localPosition;
+                        var size = collider.size;
+                        formatter.Serialize(fs, new ChunkColiderInfo
+                        {
+                            PositionX = localPosition.x,//位置
+                            PositionY = localPosition.y,//位置
+                            PositionZ = localPosition.z,//位置
+                            
+                            SizeX = size.x,//尺寸
+                            SizeY = size.y,//尺寸
+                            SizeZ = size.z,//尺寸
+          
+                        });
+                        fs.Close();
                     }
-                    var fs = new FileStream(savePath, FileMode.Create);
-                    var writer = new BinaryWriter(fs);
-
-                    var colliderTrs = envRoot.Find(chunkDir).Find("Collider");
-                    var collider = colliderTrs.GetComponent<BoxCollider>();
-                    var localPosition = colliderTrs.localPosition;
-                    writer.Write(localPosition.x);
-                    writer.Write(localPosition.z);
-                    writer.Write(collider.size.x);
-                    writer.Write(collider.size.y);
-                    writer.Write(collider.size.z);
-                    
-                    writer.Close();
-                    fs.Close();
+                    catch (Exception e)
+                    {
+                        LogManager.LogError(LOGTag, e.Message);
+                    }
                 }
             }
             callback?.Invoke();

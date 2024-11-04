@@ -8,6 +8,8 @@ using Framework.Core.Singleton;
 using Framework.Core.Manager.Camera;
 using Framework.Core.Manager.ResourcesLoad;
 using UnityEngine.EventSystems;
+using UnityEngine.InputSystem;
+using UnityEngine.InputSystem.UI;
 
 namespace Framework.Core.Manager.UI
 {
@@ -41,7 +43,7 @@ namespace Framework.Core.Manager.UI
         /// <summary>
         /// 定义各个UI界面数据
         /// </summary>
-        private readonly Dictionary< EUI, UIData> UIDataDict = new()
+        private static readonly Dictionary< EUI, UIData> UIDataDict = new()
         {
             {
                 EUI.ExampleUI,
@@ -86,15 +88,15 @@ namespace Framework.Core.Manager.UI
         };
 
         private const string LOGTag = "UIManager";
-        private readonly Stack<BaseUI> _uiStack = new();
-        private readonly Dictionary<int, BaseUI> _baseUIDict = new();
+        private static readonly Stack<BaseUI> _uiStack = new();
+        private static readonly Dictionary<int, BaseUI> _baseUIDict = new();
 
         private static Transform UICameraRoot => CameraManager.Instance.UICamera.transform;
         // private UnityEngine.Camera _uiCamera;
         // private static UnityEngine.Camera UICamera => CameraManager.Instance.UICamera;
         
-        private Transform _canvasRoot;
-        public Transform CanvasRoot
+        private static Transform _canvasRoot;
+        public static Transform CanvasRoot
         {
             get
             {
@@ -116,7 +118,20 @@ namespace Framework.Core.Manager.UI
             }
         }
 
-        
+        private InputSystemUIInputModule _inputSystemUIInputModule;
+
+        private InputSystemUIInputModule InputSystemUIInputModule
+        {
+            get
+            {
+                if (_inputSystemUIInputModule == null)
+                {
+                    _inputSystemUIInputModule = EventSystem.GetComponent<InputSystemUIInputModule>();
+                }
+
+                return _inputSystemUIInputModule;
+            }
+        }
 
         /// <summary>
         /// UI框架初始化
@@ -125,6 +140,7 @@ namespace Framework.Core.Manager.UI
         {
             RegisterUIBinding();
             InitUIData();
+            InputSystemUIInputModule.actionsAsset = ResourcesLoadManager.LoadAsset<InputActionAsset>("Assets/ResourcesAssets/Settings/Input/InputActionMap.inputactions");
         }
         private static void RegisterUIBinding()
         {
@@ -145,12 +161,12 @@ namespace Framework.Core.Manager.UI
         /// </summary>
         /// <param name="id"></param>
         /// <param name="options"></param>
-        public void OpenUI( EUI id, dynamic options = null)
+        public static void OpenUI( EUI id, dynamic options = null)
         {
             UIStackPush(id, options);
         }
 
-        private BaseUI GetUIById( EUI id,bool IsAsync = false)
+        private static BaseUI GetUIById( EUI id,bool IsAsync = false)
         {
             _baseUIDict.TryGetValue((int)id, out var ui);
             if (ui != null)
@@ -166,7 +182,7 @@ namespace Framework.Core.Manager.UI
             return ui;
         }
 
-        private void UIStackPush( EUI uiId, dynamic options = null)
+        private static void UIStackPush( EUI uiId, dynamic options = null)
         {
             var ui = GetUIById(uiId);
             LogManager.Log("Open UI === ", ui.name);
@@ -193,7 +209,7 @@ namespace Framework.Core.Manager.UI
         /// 关闭窗口
         /// </summary>
         /// <param name="id"></param>
-        public void Close( EUI id)
+        public static void Close( EUI id)
         {
             var ui = GetUIById(id);
             ui.OnExit();
@@ -204,7 +220,7 @@ namespace Framework.Core.Manager.UI
         /// <summary>
         /// 
         /// </summary>
-        public void UIStackPop()
+        public static void UIStackPop()
         {
             if (_uiStack.Count <= 0) return;
             _uiStack.Pop(); //关闭栈顶界面

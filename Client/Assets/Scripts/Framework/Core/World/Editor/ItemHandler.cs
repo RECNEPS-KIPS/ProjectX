@@ -63,7 +63,7 @@ namespace Framework.Core.World
         public void SaveItemChunk(Transform itemRoot, string worldName, int chunkX, int chunkY, Action callback = null)
         {
             //record data
-            string filePath = $"{DEF.RESOURCES_ASSETS_PATH}Environment/{worldName}/Chunk_{chunkX}_{chunkY}/data.bytes";
+            string filePath = $"{DEF.RESOURCES_ASSETS_PATH}Environment/{worldName}/Chunk{DEF.TerrainSplitChar}{chunkX}{DEF.TerrainSplitChar}{chunkY}/data.bytes";
             if (!File.Exists(filePath))
             {
                 LogManager.Log(logTag, "The item data file does not exist");
@@ -117,7 +117,7 @@ namespace Framework.Core.World
             fs.Close();
             if (success)
             {
-                Transform chunkRoot = itemRoot.Find($"{chunkX}_{chunkY}");
+                Transform chunkRoot = itemRoot.Find($"{chunkX}{DEF.TerrainSplitChar}{chunkY}");
                 if (chunkRoot == null)
                 {
                     return;
@@ -230,7 +230,7 @@ namespace Framework.Core.World
         public void LoadItemChunk(Transform itemRoot, string worldName, int chunkX, int chunkY, Vector2 chunkSize,
             Action callback = null)
         {
-            var nodeName = $"{chunkY}_{chunkX}";
+            var nodeName = $"{chunkY}{DEF.TerrainSplitChar}{chunkX}";
             if (!chunkItemsDict.ContainsKey(nodeName))
             {
                 chunkItemsDict.Add(nodeName, new List<ModelInfo>());
@@ -242,7 +242,7 @@ namespace Framework.Core.World
                 chunkRoot = AddItemChunkRoot(itemRoot, chunkX, chunkY, chunkSize);
             }
 
-            var filePath = $"{DEF.RESOURCES_ASSETS_PATH}Environment/{worldName}/Chunk_{chunkY}_{chunkX}/data.bytes";
+            var filePath = $"{DEF.RESOURCES_ASSETS_PATH}Environment/{worldName}/Chunk{DEF.TerrainSplitChar}{chunkY}{DEF.TerrainSplitChar}{chunkX}/data.bytes";
             if (!File.Exists(filePath))
             {
                 LogManager.Log(logTag, "There is no scene object data");
@@ -371,11 +371,11 @@ namespace Framework.Core.World
             if (CommonUtils.Find<Transform>(itemRoot, asset.name) != null)
             {
                 var num = 1;
-                var tempName = asset.name + "_1";
+                var tempName = asset.name + DEF.TerrainSplitChar + "1";
                 while (CommonUtils.Find<Transform>(itemRoot, tempName) != default)
                 {
                     num++;
-                    tempName = asset.name + "_" + num;
+                    tempName = asset.name + DEF.TerrainSplitChar + num;
                 }
 
                 name = tempName;
@@ -389,7 +389,7 @@ namespace Framework.Core.World
             go.transform.localScale = Vector3.one;
             var newParent = CheckParentChunk(go.transform.position, xMax, yMax, chunkSize);
             if (!(newParent.x >= 0) || !(newParent.y >= 0)) return;
-            var nodeName = $"{(int)newParent.y}_{(int)newParent.x}";
+            var nodeName = $"{(int)newParent.y}{DEF.TerrainSplitChar}{(int)newParent.x}";
             if (!chunkItemsDict.ContainsKey(nodeName))
             {
                 chunkItemsDict.Add(nodeName, new List<ModelInfo>());
@@ -426,7 +426,7 @@ namespace Framework.Core.World
         //卸载指定item chunk
         public void UnloadItemChunk(Transform itemRoot, int x, int y, Action callback = null)
         {
-            var rootName = $"{y}_{x}";
+            var rootName = $"{y}{DEF.TerrainSplitChar}{x}";
             var itemChunkTrs = itemRoot.Find(rootName);
             if (chunkItemsDict.TryGetValue(rootName, out var value))
             {
@@ -447,7 +447,7 @@ namespace Framework.Core.World
 
         public static void FocusItemChunk(Transform itemRoot, int x, int y, Vector2 chunkSize)
         {
-            var iName = $"{y}_{x}";
+            var iName = $"{y}{DEF.TerrainSplitChar}{x}";
             var trs = itemRoot.Find(iName);
             if (trs)
             {
@@ -464,7 +464,7 @@ namespace Framework.Core.World
 
         private Transform AddItemChunkRoot(Transform itemRoot, int x, int y, Vector2 chunkSize)
         {
-            var go = new GameObject($"{y}_{x}");
+            var go = new GameObject($"{y}{DEF.TerrainSplitChar}{x}");
             var trs = go.transform;
             trs.SetParent(itemRoot);
             trs.localRotation = Quaternion.identity;

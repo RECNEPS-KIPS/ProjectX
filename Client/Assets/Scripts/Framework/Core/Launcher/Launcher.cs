@@ -11,6 +11,7 @@ using Framework.Core.Manager.UI;
 using Framework.Core.Manager;
 using Framework.Core.Manager.Input;
 using Framework.Core.Manager.Scene;
+using Framework.Core.World;
 using GamePlay.Item;
 using GamePlay.Player;
 
@@ -33,13 +34,14 @@ namespace Framework.Core.Launcher
             AntiCheatManager.Instance.Launch();
             LanguageManager.Instance.Launch();
             SceneManager.Instance.Launch();
+            WorldManager.Instance.Launch();
             UIManager.Instance.Launch();
 
             //gameplay玩法相关manager后启动
             PlayerManager.Instance.Launch();
             ItemManager.Instance.Launch();
             
-            UIManager.Instance.OpenUI(EUI.PlotUI);
+            UIManager.OpenUI(EUI.PlotUI);
         }
     }
 }

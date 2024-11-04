@@ -1,0 +1,34 @@
+ManifestFileVersion: 0
+CRC: 1425036617
+Hashes:
+  AssetFileHash:
+    serializedVersion: 2
+    Hash: f00c97e1284ec5f7352db4609d942e7b
+  TypeTreeHash:
+    serializedVersion: 2
+    Hash: 76e1b17adc3658637ed1930dc31e12bd
+  IncrementalBuildHash:
+    serializedVersion: 2
+    Hash: f00c97e1284ec5f7352db4609d942e7b
+HashAppended: 0
+ClassTypes:
+- Class: 114
+  Script: {fileID: 11500000, guid: 39fa3d8997a24136984ca6e2c99902bc, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: fc1515ab76e54f068e2f2207940fab32, type: 3}
+- Class: 115
+  Script: {instanceID: 0}
+SerializeReferenceClassIdentifiers:
+- AssemblyName: Unity.InputSystem
+  ClassName: UnityEngine.InputSystem.InputAction
+- AssemblyName: Unity.InputSystem
+  ClassName: UnityEngine.InputSystem.InputActionMap
+- AssemblyName: Unity.InputSystem
+  ClassName: UnityEngine.InputSystem.InputBinding
+- AssemblyName: Unity.InputSystem
+  ClassName: UnityEngine.InputSystem.InputControlScheme
+- AssemblyName: Unity.InputSystem
+  ClassName: UnityEngine.InputSystem.InputControlScheme/DeviceRequirement
+Assets:
+- Assets/ResourcesAssets/Settings/Input/InputActionMap.inputactions
+Dependencies: []

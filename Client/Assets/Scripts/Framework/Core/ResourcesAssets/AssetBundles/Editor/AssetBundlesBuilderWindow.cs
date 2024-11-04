@@ -1,6 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
+using Framework.Core.Manager.ResourcesLoad;
 using UnityEditor;
 using UnityEngine;
 
@@ -10,36 +10,26 @@ namespace Framework.Core.ResourcesAssets
     {
         private static string abOutPath;
         // private static List<AssetBundleBuild> ListAssets = new List<AssetBundleBuild>();
-        private static Dictionary<string,InnerAssetBundleBuild> AssetsDict = new Dictionary<string,InnerAssetBundleBuild>();
-        private static List<DirectoryInfo> ListFileInfo = new List<DirectoryInfo>();
+        private static readonly Dictionary<string,InnerAssetBundleBuild> AssetsDict = new ();
+
         private static bool IsFinished; //是否检查完成 可以打包
 
-        class InnerAssetBundleBuild
+        private class InnerAssetBundleBuild
         {
             public string assetBundleName;
             public string assetBundleVariant;
             public List<string> assetNames;
         }
         private const string LOGTag = "AssetBundlesBuilder";
-
-        private static readonly HashSet<string> BundleFileTypeMap = new()
-        {
-            "unity","prefab","asset"
-        };
+        
         private static AssetBundlesBuilderWindow window;
-        private const int leftBorder = 2;
-        private const int rightBorder = 2;
         private const int normalSpace = 20;
-        private const int border = leftBorder + rightBorder;
+
         private static float screenScale => Screen.dpi / DEF.SYSTEM_STANDARD_DPI;
         // private Rect _windowSize;
         private static Rect windowSize => new (0, 0, Screen.width / screenScale, Screen.height / screenScale);
-        public static bool GetState()
-        {
-            return IsFinished;
-        }
 
-        static void CollectAllAssetBundlesData()
+        private static void CollectAllAssetBundlesData()
         {
             LogManager.Log(LOGTag,"CollectAllAssetBundlesData");
             //先把资源映射表的引用添加进来
@@ -51,7 +41,7 @@ namespace Framework.Core.ResourcesAssets
                 AssetsDict["Misc"].assetBundleName = "Misc";
             }
             
-            var assetMapPath = DEF.ASSET_BUNDLE_PATH;
+            const string assetMapPath = DEF.ASSET_BUNDLE_PATH;
             var assetMap = AssetDatabase.LoadAssetAtPath<AssetBundlesMap>(assetMapPath);
             if (assetMap) {
                 assetMap.Map.Clear();
@@ -59,7 +49,7 @@ namespace Framework.Core.ResourcesAssets
             else
             {
                 AssetsDict["Misc"].assetNames.Add(assetMapPath);
-                assetMap = ScriptableObject.CreateInstance<AssetBundlesMap>();
+                assetMap = CreateInstance<AssetBundlesMap>();
                 AssetDatabase.CreateAsset(assetMap,assetMapPath);
             }
             var tmpImportObj = AssetImporter.GetAtPath(assetMapPath);
@@ -87,10 +77,20 @@ namespace Framework.Core.ResourcesAssets
                     assetNames = kvp.Value.assetNames.ToArray()
                 });
             }
-            return abList.ToArray();
+
+            var arr = abList.ToArray();
+            foreach (var abb in arr)
+            {
+                LogManager.Log(LOGTag,$"assetBundleName:{abb.assetBundleName}");
+                foreach (var name in abb.assetNames)
+                {
+                    LogManager.Log(LOGTag,$"asset Name:{name}");
+                }
+            }
+            return arr ;
         }
 
-        [MenuItem("Tools/资源相关/构建AssetsBundle", false)]
+        [MenuItem("Tools/构建AssetsBundle面板", false,-1000)]
         public static void OpenBuildAssetBundlesWindow()
         {
             window = GetWindow<AssetBundlesBuilderWindow>("Build AssetsBundle Window");
@@ -99,13 +99,41 @@ namespace Framework.Core.ResourcesAssets
             window.minSize = new Vector2(560, 510);
             window.InitWindow();
         }
+        
+        private AssetBundlesBuildRule AssetBundlesBuildRule;
+        private readonly Dictionary<string, AssetBundlesRule> RuleMap = new();
         private void InitWindow()
         {
+            AssetBundlesBuildRule = ResourcesLoadManager.LoadAsset<AssetBundlesBuildRule>(DEF.ASSET_BUNDLE_RULE_PATH);
+            if (AssetBundlesBuildRule != null)
+            {
+                foreach (var rule in AssetBundlesBuildRule.AssetBundlesRules)
+                {
+                    var vaild = (rule.IsDirectory && Directory.Exists(rule.FullPath)) || (!rule.IsDirectory && File.Exists(rule.FullPath));
+                    if (vaild)
+                    {
+                        RuleMap.Add(rule.FullPath,rule);
+                        SelectMap.Add(rule.FullPath,true);
+                    }
+                }
+            }
             AssetsDict.Clear();
             abOutPath = AssetBundlesPathTools.GetABOutPath();
         }
-        private static void BuildAssetBundles()
+        private void BuildAssetBundles()
         {
+            AssetsDict.Clear();
+            RemoveABLabel();
+            AssetBundlesBuildRule.AssetBundlesRules.Clear();
+            foreach (var kvp in RuleMap)
+            {
+                AssetBundlesBuildRule.AssetBundlesRules.Add(kvp.Value);
+            }
+
+            EditorUtility.SetDirty(AssetBundlesBuildRule);
+            AssetDatabase.SaveAssets();
+            AssetDatabase.Refresh();
+            
             // LogManager.Log(LOGTag,"GetABOutPath",abOutPath);
             if (Directory.Exists(abOutPath))
             {
@@ -113,117 +141,233 @@ namespace Framework.Core.ResourcesAssets
             }
             Directory.CreateDirectory(abOutPath);
             LogManager.Log(LOGTag,AssetBundlesPathTools.GetABResourcesPath(),abOutPath);
-            
-            SearchFileAssetBundleBuild(AssetBundlesPathTools.GetABResourcesPath());
+            SearchFileAssetBundleBuild();
             var assetBundleBuilds = GetAssetBundleBuilds();
-   
+            
             BuildPipeline.BuildAssetBundles(abOutPath,assetBundleBuilds , BuildAssetBundleOptions.None,EditorUserBuildSettings.activeBuildTarget);
             LogManager.Log(LOGTag,"AssetBundle打包完毕");
-            // var assetMapPath = DEF.ASSET_BUNDLE_PATH;
-            // var assetMap = AssetDatabase.LoadAssetAtPath<AssetBundlesMap>(assetMapPath);
-            // LogManager.Log(LOGTag,assetMap.Map.Count);
+        }
+        
+        private readonly Dictionary<string, bool> RuleFlodMap = new();
+        private readonly Dictionary<string, bool> SelectMap = new();
+        private void DrawDir(string dirPath,string drawName,int layer)
+        {
+            if (!Directory.Exists(dirPath)) return;
+            var dirInfo = new DirectoryInfo(dirPath);
+            GUILayout.BeginHorizontal();
+
+            GUILayout.Space(layer * tabSpace);
+            RuleFlodMap.TryAdd(dirPath, false);
+            var foldHeader = drawName.Replace("\\", "/");
+     
+            RuleFlodMap[dirPath] = EditorGUILayout.BeginFoldoutHeaderGroup(RuleFlodMap[dirPath], foldHeader);
+            EditorGUILayout.EndFoldoutHeaderGroup();
+            var projectDirPath = $"Assets/{dirInfo.FullName.Replace("\\","/").Replace(Application.dataPath+"/","")}";
+            // LogManager.Log(LOGTag,projectDirPath);
+            GUILayout.FlexibleSpace();
+            DrawRowRightPart(projectDirPath, dirInfo.Name,true);
+            GUILayout.EndHorizontal();
+
+            var dirs = dirInfo.GetDirectories();
+            var files = dirInfo.GetFiles();
+            if (dirs.Length > 0 || files.Length > 0)
+            {
+                layer++;
+                if (RuleFlodMap[dirPath])
+                {
+                    foreach (var t in dirs)
+                    {
+                        DrawDir(t.FullName,t.Name,layer);
+                    }
+
+                    foreach (var t in files)
+                    {
+                        if (t.Name.EndsWith(".meta")) continue;
+
+                        GUILayout.BeginHorizontal();
+                        GUILayout.Space(layer * tabSpace);
+                        GUILayout.Label(t.Name.Replace("\\", "/"));
+                        var projectFilePath = $"Assets/{t.FullName.Replace("\\","/").Replace(Application.dataPath+"/","")}";
+                        GUILayout.FlexibleSpace();
+                        DrawRowRightPart(projectFilePath, t.Name.Replace(t.Extension,""));
+                        GUILayout.EndHorizontal();
+                    }
+                }
+            }
         }
 
+        private void DrawRowRightPart(string fullProjectPath,string labelName,bool isDirectory = false)
+        {
+            GUILayout.Label("Build",GUILayout.Height(20),GUILayout.Width(35));
+            SelectMap.TryAdd(fullProjectPath, false);
+            SelectMap[fullProjectPath] = EditorGUILayout.Toggle(SelectMap[fullProjectPath],GUILayout.Height(20),GUILayout.Width(20));
+            // var autoTagUI = false;
+            var assetTypeUI = false;
+            const int abLabelWidth = 55;
+            const int abLabelTextFieldWidth = 150;
+            const int assetTypeWidth = 65;
+            const int assetTypeTextFieldWidth = 150;
+            if (SelectMap[fullProjectPath])
+            {
+                if (!RuleMap.ContainsKey(fullProjectPath))
+                {
+                    RuleMap.Add(fullProjectPath,new AssetBundlesRule
+                    {
+                        FullPath = fullProjectPath,
+                        ABLabel = labelName,
+                        IsDirectory = isDirectory,
+                        AssetType = "",
+                    });
+                }
+                
+                GUILayout.Label("ABLabel",GUILayout.Height(20),GUILayout.Width(abLabelWidth));
+                RuleMap[fullProjectPath].ABLabel = EditorGUILayout.TextField(RuleMap[fullProjectPath].ABLabel,GUILayout.Height(20),GUILayout.Width(abLabelTextFieldWidth));
+   
+                if (RuleMap[fullProjectPath].IsDirectory)
+                {
+                    assetTypeUI = true;
+                    GUILayout.Label("AssetType",GUILayout.Height(20),GUILayout.Width(assetTypeWidth));
+                    RuleMap[fullProjectPath].AssetType = EditorGUILayout.TextField(RuleMap[fullProjectPath].AssetType,GUILayout.Height(20),GUILayout.Width(assetTypeTextFieldWidth));
+                }
+                
+                var totalSpace = 0;
+                if (!assetTypeUI)
+                {
+                    totalSpace += assetTypeTextFieldWidth + assetTypeWidth + verticalScrollBar / 2;
+                }
+                GUILayout.Space(totalSpace);
+            }
+            else
+            {
+                if (RuleMap.ContainsKey(fullProjectPath))
+                {
+                    RuleMap.Remove(fullProjectPath);
+                }
+                GUILayout.Space(abLabelWidth + abLabelTextFieldWidth + assetTypeTextFieldWidth + assetTypeWidth + verticalScrollBar);
+            }
+        }
+
+        private Vector2 sceneScrollPosition;
+        private const int verticalScrollBar = 16;
+        private const int tabSpace = 25;
         private void OnGUI()
         {
             GUILayout.BeginVertical();
-            
-            
-            
+            sceneScrollPosition = GUILayout.BeginScrollView(sceneScrollPosition, false, true, GUILayout.Width(windowSize.width - 2), GUILayout.Height(windowSize.height - normalSpace * 6));
+            DrawDir("Assets/ResourcesAssets","ResourcesAssets",0);
+            GUILayout.EndScrollView();
             GUILayout.FlexibleSpace();
+            
+            if (GUILayout.Button("Collapse All", GUILayout.Width(windowSize.width - 6), GUILayout.Height(normalSpace)))
+            {
+                var mapKeys = RuleFlodMap.Keys;
+                var keys = new string[mapKeys.Count];
+                mapKeys.CopyTo(keys,0);
+                foreach (var t in keys)
+                {
+                    if (RuleFlodMap.ContainsKey(t))
+                    {
+                        RuleFlodMap[t] = false;
+                    }
+                }
+            }
+            if (GUILayout.Button("Expand All", GUILayout.Width(windowSize.width - 6), GUILayout.Height(normalSpace)))
+            {
+                var mapKeys = RuleFlodMap.Keys;
+                var keys = new string[mapKeys.Count];
+                mapKeys.CopyTo(keys,0);
+                foreach (var t in keys)
+                {
+                    if (RuleFlodMap.ContainsKey(t))
+                    {
+                        RuleFlodMap[t] = true;
+                    }
+                }
+            }
+            
+            var c = GUI.backgroundColor;
+            GUI.backgroundColor = Color.green;
             if (GUILayout.Button("Build AssetBundle", GUILayout.Width(windowSize.width - 6), GUILayout.Height(normalSpace)))
             {
                 BuildAssetBundles();
+                GUIUtility.ExitGUI();
             }
+            GUI.backgroundColor = Color.red;
+            if (GUILayout.Button("Remove All Label", GUILayout.Width(windowSize.width - 6), GUILayout.Height(normalSpace)))
+            {
+                RemoveABLabel();
+                GUIUtility.ExitGUI();
+            }
+            GUI.backgroundColor = c;
             GUILayout.Space(3);
             GUILayout.EndVertical();
         }
 
         //是文件 继续向下
-        public static void SearchFileAssetBundleBuild(string path)
+        public static void SearchFileAssetBundleBuild()
         {
-            var directory = new DirectoryInfo(path);
-            // LogManager.Log("SearchFileAssetBundleBuild",Application.dataPath,path,directory == null);
-            var fileSystemInfos = directory.GetFileSystemInfos();
-            ListFileInfo.Clear();
-            // LogManager.Log(LOGTag,"fileSystemInfos Length:",fileSystemInfos.Length);
-            //遍历所有文件夹中所有文件
-            foreach (var item in fileSystemInfos)
+            var ruleAsset = ResourcesLoadManager.LoadAsset<AssetBundlesBuildRule>(DEF.ASSET_BUNDLE_RULE_PATH);
+            // LogManager.Log(LOGTag,ruleAsset == null);
+            if (ruleAsset == null) return;
+            // LogManager.Log(LOGTag,ruleAsset.AssetBundlesRules.Count);
+            foreach (var rule in ruleAsset.AssetBundlesRules)
             {
-                var str = item.ToString();
-                var idx = str.LastIndexOf(@"\", StringComparison.Ordinal);
-                var name = str[(idx + 1)..];
-                //item为文件夹 添加进ListFileInfo 递归调用
-                if (item is DirectoryInfo info)
+                //文件夹拿取底下所有文件
+                var tag = rule.ABLabel.ToLower();
+                if (rule.IsDirectory)
                 {
-                    // LogManager.Log(LOGTag,"SearchFileAssetBundleBuild Info:",info.FullName);
-                    ListFileInfo.Add(info);
-                }
-
-                //剔除meta文件 其他文件都创建AssetBundleBuild,添加进ListAssets；
-                if (!name.Contains(".meta"))
-                {
-                    CheckFileOrDirectoryReturnBundleName(item, path + "/" + name);
-                }
-            }
-
-            if (ListFileInfo.Count == 0)
-            {
-                IsFinished = true;
-            }
-            else
-            {
-                // LogManager.LogError(ListFileInfo.Count);
-            }
-        }
-
-        public static bool CheckBuildAssetBundle(string str)
-        {
-            if (str.EndsWith(".meta"))
-            {
-                return false;
-            }
-            var idx = str.LastIndexOf(@".", StringComparison.Ordinal);
-            var type = str[(idx + 1)..];
-            return BundleFileTypeMap.Contains(type);
-        }
-
-        //判断是文件还是文件夹
-        public static void CheckFileOrDirectoryReturnBundleName(FileSystemInfo fileSystemInfo, string path)
-        {
-            if (fileSystemInfo is FileInfo)
-            {
-                path = $"Assets/{path.Replace($"{Application.dataPath}/", "")}";
-                var tag = path.Replace($"Assets/{AssetBundlesPathTools.AB_RESOURCES}/","").Split("/")[0];
-                var tmpImportObj = AssetImporter.GetAtPath(path);
-                tmpImportObj.assetBundleName = tag;
-                
-                var Build = CheckBuildAssetBundle(path);
-                LogManager.Log(LOGTag,$"Check File{path} {Build}");
-                if (!Build) return;
-                LogManager.Log(LOGTag,$"path:{path},tag:{tag}");
-                if (AssetsDict.ContainsKey(tag))
-                {
-                    AssetsDict[tag].assetNames.Add(path);
+                    // rule.AssetType
+                    var list =  Directory.EnumerateFiles(rule.FullPath, "*.*", SearchOption.AllDirectories);
+                    if (rule.AssetType == string.Empty) continue;
+                    var types = rule.AssetType.Split(";");
+                    var typeDict = new HashSet<string>();
+                    foreach (var type in types)
+                    {
+                        typeDict.Add($".{type}");
+                    }
+                    LogManager.Log(LOGTag,"types",types);
+                    // LogManager.Log(LOGTag,list.Count());
+                    foreach (var path in list)
+                    {
+                        if (path.EndsWith(".meta")) continue;
+                        var fi = new FileInfo(path);
+                        LogManager.Log(LOGTag,fi.Extension);
+                        if (!typeDict.Contains(fi.Extension))continue;
+                        
+                        if (AssetsDict.TryGetValue(tag, out var value))
+                        {
+                            value.assetNames.Add(path);
+                        }
+                        else
+                        {
+                            AssetsDict.Add(tag,new InnerAssetBundleBuild
+                            {
+                                assetNames = new List<string> { path },
+                                assetBundleName = tag,
+                                assetBundleVariant = DEF.ASSET_BUNDLE_SUFFIX
+                            });
+                        }
+                    }
                 }
                 else
                 {
-                    AssetsDict.Add(tag,new InnerAssetBundleBuild
+                    if (AssetsDict.TryGetValue(tag, out var value))
                     {
-                        assetNames = new List<string> { path },
-                        assetBundleName = tag,
-                        assetBundleVariant = DEF.ASSET_BUNDLE_SUFFIX
-                    });
+                        value.assetNames.Add(rule.FullPath);
+                    }
+                    else
+                    {
+                        AssetsDict.Add(tag,new InnerAssetBundleBuild
+                        {
+                            assetNames = new List<string> { rule.FullPath },
+                            assetBundleName = tag,
+                            assetBundleVariant = DEF.ASSET_BUNDLE_SUFFIX
+                        });
+                    }
                 }
-            }
-            else
-            {
-                SearchFileAssetBundleBuild(path);
             }
         }
         
-        
-        [MenuItem("Tools/资源相关/清理AB包Label")]
         public static void RemoveABLabel()
         {
             // 需要移除标记的根目录
@@ -291,7 +435,7 @@ namespace Framework.Core.ResourcesAssets
         /// 给文件移除 Asset Bundle 标记
         /// </summary>
         /// <param name="fileInfoObj">文件（文件信息）</param>
-        static void RemoveFileABLabel(FileInfo fileInfoObj)
+        private static void RemoveFileABLabel(FileSystemInfo fileInfoObj)
         {
             // AssetBundle 包名称
             // 参数检查（*.meta 文件不做处理）

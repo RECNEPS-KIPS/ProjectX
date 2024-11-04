@@ -101,10 +101,9 @@ namespace Framework.Core.World
             Lightmapping.Bake();
         }
 
-        private void RecordChunkLightmapOffset(Transform terrainRoot, Transform itemRoot, string worldName, int x,
-            int y)
+        private void RecordChunkLightmapOffset(Transform terrainRoot, Transform itemRoot, string worldName, int x, int y)
         {
-            var filePath = $"{DEF.RESOURCES_ASSETS_PATH}Environment/{worldName}/Chunk_{x}_{y}/data.bytes";
+            var filePath = $"{DEF.RESOURCES_ASSETS_PATH}Environment/{worldName}/Chunk{DEF.TerrainSplitChar}{x}{DEF.TerrainSplitChar}{y}/data.bytes";
             // EditorUtility.DisplayProgressBar("build lightmap", "正在生成lightmap相关配置", 0.1f);
             var fs = new FileStream(filePath, FileMode.Open, FileAccess.Read);
             var reader = new BinaryReader(fs);
@@ -200,7 +199,7 @@ namespace Framework.Core.World
                 writer.Write(oldData.heightmapMaximumLOD);
                 writer.Write(oldData.basemapDistance);
                 writer.Write((int)oldData.shadowCastingMode);
-                var terr = terrainRoot.Find($"{x}_{y}").GetComponent<Terrain>();
+                var terr = terrainRoot.Find($"{x}{DEF.TerrainSplitChar}{y}").GetComponent<Terrain>();
                 writer.Write(terr.lightmapIndex);
                 writer.Write(terr.lightmapScaleOffset.x);
                 writer.Write(terr.lightmapScaleOffset.y);
@@ -212,7 +211,7 @@ namespace Framework.Core.World
                 writer.Write((int)colliderSize.z);
 
                 //record items data
-                var itemTrs = itemRoot.Find($"{x}_{y}");
+                var itemTrs = itemRoot.Find($"{x}{DEF.TerrainSplitChar}{y}");
                 if (itemTrs == null)
                 {
                     return;
@@ -320,7 +319,7 @@ namespace Framework.Core.World
 
         private void LoadLightmapOffsetInfo(Transform terrainRoot, Transform itemRoot, string worldName, int chunkX, int chunkY)
         {
-            var filePath = $"{DEF.RESOURCES_ASSETS_PATH}Environment/{worldName}/Chunk_{chunkX}_{chunkY}/data.bytes";
+            var filePath = $"{DEF.RESOURCES_ASSETS_PATH}Environment/{worldName}/Chunk{DEF.TerrainSplitChar}{chunkX}{DEF.TerrainSplitChar}{chunkY}/data.bytes";
             // EditorUtility.DisplayProgressBar("build lightmap", "正在生成lightmap相关配置", 0.1f);
             var fs = new FileStream(filePath, FileMode.Open, FileAccess.Read);
             var reader = new BinaryReader(fs);
@@ -343,7 +342,7 @@ namespace Framework.Core.World
             var lightmapScaleOffsetY = reader.ReadSingle();
             var lightmapScaleOffsetZ = reader.ReadSingle();
             var lightmapScaleOffsetW = reader.ReadSingle();
-            var terrain = terrainRoot.Find($"{chunkX}_{chunkY}").gameObject.GetComponent<Terrain>();
+            var terrain = terrainRoot.Find($"{chunkX}{DEF.TerrainSplitChar}{chunkY}").gameObject.GetComponent<Terrain>();
             // terrain.lightmapIndex = lmIndex;
             // terrain.lightmapScaleOffset = new Vector4(lightmapScaleOffsetX, lightmapScaleOffsetY, lightmapScaleOffsetZ, lightmapScaleOffsetW);
             reader.ReadString();
@@ -353,7 +352,7 @@ namespace Framework.Core.World
             reader.ReadInt32();
             reader.ReadInt32();
             var meshRendererMap = new Dictionary<string, MeshRenderer>();
-            foreach (var r in itemRoot.Find($"{chunkX}_{chunkY}").gameObject.GetComponentsInChildren<MeshRenderer>())
+            foreach (var r in itemRoot.Find($"{chunkX}{DEF.TerrainSplitChar}{chunkY}").gameObject.GetComponentsInChildren<MeshRenderer>())
             {
                 Debug.Log(r.name + "scene");
                 meshRendererMap.Add(r.name, r);

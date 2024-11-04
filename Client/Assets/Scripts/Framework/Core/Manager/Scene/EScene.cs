@@ -2,6 +2,6 @@
 {
     public enum EScene
     {
-        DeepDesert = 10001,
+        MainWorld = 10001,
     }
 }

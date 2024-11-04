@@ -69,20 +69,16 @@ namespace GamePlay.Player
 
         void OnSceneLoadFinished(dynamic sceneCf)
         {
-            if (CharacterController != null)
-            {
-                return;
-            }
-            var loadPlayer = sceneCf != null && sceneCf["loadPlayer"];
-            if (loadPlayer)
-            {
-                LoadPlayerController(sceneCf);
-            }
+            // if (CharacterController != null)
+            // {
+            //     return;
+            // }
+            // LoadPlayerController(sceneCf);
         }
 
         public Transform CharacterControllerRoot;
 
-        void LoadPlayerController(dynamic sceneCf)
+        public void LoadPlayerController(Vector3 initPlayerPos = default)
         {
             LogManager.Log(LOGTag,"LoadPlayerController");
             var playerCf = ConfigManager.GetConfigByID(EConfig.Character, PROTAGONIST_ID);
@@ -90,28 +86,17 @@ namespace GamePlay.Player
             var ctrlType = playerCf["ctrlType"];
             var ctrlCfList = ConfigManager.GetConfig(EConfig.CharacterController);
             dynamic ctrlCf = null;
-            for (int i = 0; i < ctrlCfList.Count; i++)
+            for (var i = 0; i < ctrlCfList.Count; i++)
             {
-                if (ctrlCfList[i]["ctrlType"] == ctrlType)
-                {
-                    ctrlCf = ctrlCfList[i];
-                    break;
-                }
+                if (ctrlCfList[i]["ctrlType"] != ctrlType) continue;
+                ctrlCf = ctrlCfList[i];
+                break;
             }
 
             if (ctrlCf != null)
             {
-                var initPos = Vector3.zero;
-                if (sceneCf != null)
-                {
-                    var cfInitPos = sceneCf["initPos"];
-                    if (cfInitPos != null)
-                    {
-                        initPos = cfInitPos;
-                        LogManager.Log(LOGTag,"CharacterCtrl initPos:",initPos);
-                    }
-                }
-                GameObject ctrlGo = Instantiate(ResourcesLoadManager.LoadAsset<GameObject>(ctrlCf["path"]), initPos, Quaternion.identity);
+                LogManager.Log(LOGTag,"CharacterCtrl initPos:",initPlayerPos);
+                GameObject ctrlGo = Instantiate(ResourcesLoadManager.LoadAsset<GameObject>(ctrlCf["path"]), initPlayerPos, Quaternion.identity);
                 CharacterController = ctrlGo.GetComponent<CharacterController>();
                 ctrlGo.name = "CharacterController";
                 CharacterControllerRoot = ctrlGo.transform;
@@ -136,12 +121,12 @@ namespace GamePlay.Player
             UpdateAttr();
         }
 
-        void UpdateStatus()
+        private void UpdateStatus()
         {
             
         }
 
-        void UpdateAttr()
+        private void UpdateAttr()
         {
             
         }   

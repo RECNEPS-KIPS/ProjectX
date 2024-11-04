@@ -50,6 +50,20 @@ namespace Framework.Common
             var res = target.GetComponent<T>();
             return res;
         }
+        
+        public static Transform CreateNode(string nodeName, Transform parent = null)
+        {
+            var go = new GameObject(nodeName);
+            var trs = go.transform;
+            if (parent)
+            {
+                trs.SetParent(parent);
+            }
+            trs.localPosition = Vector3.zero;
+            trs.localScale = Vector3.one;
+            trs.localRotation = Quaternion.identity;
+            return trs;
+        }
 
         // 递归查找父节点下的对象
         private static Transform GetChild(Transform root, string childName)

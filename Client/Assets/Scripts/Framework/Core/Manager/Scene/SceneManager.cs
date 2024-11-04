@@ -16,13 +16,13 @@ namespace Framework.Core.Manager.Scene
     {
         private const string LOGTag = "SceneManager";
         
-        private Dictionary<string, int> _scenePathIDMap;
+        private static Dictionary<string, int> _scenePathIDMap;
         
-        private Dictionary<string, int> ScenePathIDMap => _scenePathIDMap ??= new Dictionary<string, int>();
-        private Dictionary<int, dynamic> _sceneCfMap;
+        private static Dictionary<string, int> ScenePathIDMap => _scenePathIDMap ??= new Dictionary<string, int>();
+        private static Dictionary<int, dynamic> _sceneCfMap;
 
         //scene id-cf
-        private Dictionary<int, dynamic> SceneCfMap
+        private static Dictionary<int, dynamic> SceneCfMap
         {
             get
             {
@@ -42,9 +42,9 @@ namespace Framework.Core.Manager.Scene
         }
         private UnityAction<UnityEngine.SceneManagement.Scene, UnityEngine.SceneManagement.LoadSceneMode> SceneLoadFinished;
         private UnityAction<UnityEngine.SceneManagement.Scene> SceneUnloadFinished;
-        private Dictionary<string, UnityAction> _loadedCallbackMap;
+        private static Dictionary<string, UnityAction> _loadedCallbackMap;
 
-        private Dictionary<string, UnityAction> LoadedCallbackMap
+        private static Dictionary<string, UnityAction> LoadedCallbackMap
         {
             get
             {
@@ -99,13 +99,13 @@ namespace Framework.Core.Manager.Scene
             UnityEngine.SceneManagement.SceneManager.sceneUnloaded -= SceneUnloadFinished;
         }
 
-        public dynamic GetSceneConfig(int sceneID)
+        public static dynamic GetSceneConfig(int sceneID)
         {
             SceneCfMap.TryGetValue(sceneID,out var cf);
             return cf;
         }
 
-        public void LoadSceneByID(EScene sceneID,UnityAction callback = null)
+        public static void LoadSceneByID(EScene sceneID,UnityAction callback = null)
         {
             var sceneCf = GetSceneConfig((int)sceneID);
             if (sceneCf == null) return;
@@ -113,7 +113,7 @@ namespace Framework.Core.Manager.Scene
         }
 
         //同步从assetbundle中加载场景
-        public void LoadSceneByID(int sceneID,UnityAction callback = null)
+        public static void LoadSceneByID(int sceneID,UnityAction callback = null)
         {
             LogManager.Log(LOGTag,$"Scene load start === name:{sceneID}");
             var sceneCf = GetSceneConfig(sceneID);

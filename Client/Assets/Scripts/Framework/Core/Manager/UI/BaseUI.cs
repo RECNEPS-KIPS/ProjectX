@@ -249,7 +249,7 @@ namespace Framework.Core.Manager.UI
         public virtual void OnExit()
         {
             LogManager.Log(LOGTag, "OnExit");
-            UIManager.Instance.UIStackPop();
+            UIManager.UIStackPop();
             IsShow = false;
         }
 
