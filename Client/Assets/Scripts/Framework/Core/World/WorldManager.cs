@@ -14,14 +14,13 @@ namespace Framework.Core.World
     public class WorldData
     {
         [SerializeField]public float TerrainHeight;
-        [SerializeField]public int ChunkRowCount;//长宽的数量
-        [SerializeField]public int ChunkColumnCount;//长宽的数量
+        [SerializeField]public int PiecesPerAxis;//长宽的数量
         [SerializeField]public float ChunkSizeX;//长宽的尺寸
         [SerializeField]public float ChunkSizeY;//长宽的尺寸
 
         public override string ToString()
         {
-            return $"TerrainHeight:{TerrainHeight},ChunkRowCount:{ChunkRowCount},ChunkColumnCount:{ChunkColumnCount},ChunkSizeX:{ChunkSizeX},ChunkSizeY:{ChunkSizeY}";
+            return $"TerrainHeight:{TerrainHeight},PiecesPerAxis:{PiecesPerAxis},ChunkSizeX:{ChunkSizeX},ChunkSizeY:{ChunkSizeY}";
         }
     }
     
@@ -82,27 +81,24 @@ namespace Framework.Core.World
             var assetData = ResourcesLoadManager.LoadAsset<TextAsset>(worldDataPath);
             var data = BinaryUtils.Bytes2Object<WorldData>(assetData.bytes);
 
-            for (var row = 0; row < data.ChunkRowCount; row++)
+            for (var i = 0; i < data.PiecesPerAxis * data.PiecesPerAxis; i++)
             {
-                for (var col = 0; col < data.ChunkColumnCount; col++)
-                {
-                    LoadTerrainChunk(worldName, row, col);
-                }
+                LoadTerrainChunk(worldName, i);
             }
 
             callback?.Invoke();
         }
-        private static void LoadTerrainChunk(string worldName, int row, int col)
+        private static void LoadTerrainChunk(string worldName, int index)
         {
-            var chunkDir = $"Chunk{DEF.TerrainSplitChar}{row}{DEF.TerrainSplitChar}{col}";
+            var chunkDir = $"Chunk{DEF.TerrainSplitChar}{index}";
             var saveDir = $"{DEF.RESOURCES_ASSETS_PATH}/Worlds/{worldName}/{chunkDir}";
             var td = ResourcesLoadManager.LoadAsset<TerrainData>($"{saveDir}/Terrain.asset");
             var chunkRoot = new GameObject();
             chunkRoot.transform.SetParent(envRoot);
             chunkRoot.transform.localScale = Vector3.one;
             chunkRoot.transform.localRotation = Quaternion.identity;
-            chunkRoot.transform.localPosition = new Vector3(row * td.size.x, 0, col * td.size.z);
-            chunkRoot.name = $"Chunk{DEF.TerrainSplitChar}{row}{DEF.TerrainSplitChar}{col}";
+            // chunkRoot.transform.localPosition = new Vector3(row * td.size.x, 0, col * td.size.z);
+            // chunkRoot.name = $"Chunk{DEF.TerrainSplitChar}{row}{DEF.TerrainSplitChar}{col}";
             
             var go = Terrain.CreateTerrainGameObject(td);
             go.transform.SetParent(chunkRoot.transform);
