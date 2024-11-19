@@ -257,7 +257,7 @@ namespace Framework.Core.Manager.Config
 
         private static dynamic HandleArray1D<T>(IReadOnlyCollection<JToken> array)
         {
-            LogManager.Log(LOGTag,"array.Count",array.Count);
+            // LogManager.Log(LOGTag,"array.Count",array.Count);
             dynamic table = new List<T>();
             foreach (var t in array)
             {

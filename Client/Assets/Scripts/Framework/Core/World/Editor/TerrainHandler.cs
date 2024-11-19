@@ -170,117 +170,6 @@ namespace Framework.Core.World
 
             try
             {
-                var terrainData = terrain.terrainData;
-                // var heightmap = terrainData.GetHeights(0, 0, terrainData.heightmapResolution, terrainData.heightmapResolution);
-                // var originalHeightmapResolution = terrainData.heightmapResolution;
-                // 计算适应原地图分辨率的混合贴图分辨率和基础贴图分辨率
-                // var adaptedAlphamapResolution = terrainData.baseMapResolution / rows;
-                // var adaptedBaseMapResolution = terrainData.alphamapResolution / rows;
-                // var heightmapResolution = (terrainData.heightmapResolution - 1) / rows;
-                // // var splatProtos = terrainData.splatPrototypes;
-                // var terrainLayers = terrainData.terrainLayers;
-                // // 计算子地图的大小
-                // var originalSize = terrainData.size;
-                // var tileWidth = originalSize.x / rows;
-                // var tileLength = originalSize.z / columns;
-                //
-                // //循环宽和长,生成小块地形
-                // for (var row = 0; row < rows; row++)
-                // {
-                //     for (var col = 0; col < columns; col++)
-                //     {
-                //         //创建资源
-                //         var chunkDir = $"Chunk{DEF.TerrainSplitChar}{row}{DEF.TerrainSplitChar}{col}";
-                //
-                //         EditorUtility.DisplayProgressBar("正在分割地形", chunkDir,(row * rows + col) / (float)(rows * columns));
-                //         var saveDir = $"{DEF.RESOURCES_ASSETS_PATH}/Worlds/{worldName}/{chunkDir}";
-                //         if (!Directory.Exists(saveDir))
-                //         {
-                //             Directory.CreateDirectory(saveDir);
-                //         }
-                //
-                //         var assetPath = $"{saveDir}/Terrain.asset";
-                //         if (File.Exists(assetPath))
-                //         {
-                //             File.Delete(assetPath);
-                //             File.Delete($"{assetPath}.meta");
-                //         }
-                //
-                //         // 创建一个新的GameObject用于表示子地图
-                //         var tileObject = Terrain.CreateTerrainGameObject(null);
-                //         tileObject.name = $"Tile{DEF.TerrainSplitChar}{row}{DEF.TerrainSplitChar}{col}";
-                //         tileObject.transform.SetParent(terrain.transform);
-                //
-                //         //设置高度
-                //         var xBase = terrainData.heightmapResolution / rows;
-                //         var yBase = terrainData.heightmapResolution / rows;
-                //         var height = terrainData.GetHeights( xBase * row,yBase * col, xBase + 1, yBase + 1);
-                //
-                //         // 添加Terrain组件并设置高度图
-                //         var tileTerrain = tileObject.GetComponent<Terrain>();
-                //         var terrainData1 = CreateTerrainData(height, adaptedAlphamapResolution, adaptedBaseMapResolution, heightmapResolution, originalSize, rows, columns);
-                //         tileTerrain.terrainData = terrainData1;
-                //         terrainData1.name = tileTerrain.name + "_terrainData";
-                //
-                //         // //设置地形原型
-                //         // var newSplats = new SplatPrototype[splatProtos.Length];
-                //         // for (var i = 0; i < splatProtos.Length; ++i)
-                //         // {
-                //         //     newSplats[i] = new SplatPrototype
-                //         //     {
-                //         //         texture = splatProtos[i].texture,
-                //         //         tileSize = splatProtos[i].tileSize
-                //         //     };
-                //         //
-                //         //     var offsetX = (terrainData1.size.x * row) % splatProtos[i].tileSize.x + splatProtos[i].tileOffset.x;
-                //         //     var offsetY = (terrainData1.size.z * col) % splatProtos[i].tileSize.y + splatProtos[i].tileOffset.y;
-                //         //     newSplats[i].tileOffset = new Vector2(offsetX, offsetY);
-                //         // }
-                //         //
-                //         // terrainData1.splatPrototypes = newSplats;
-                //
-                //         // var newLayers = new TerrainLayer[terrainLayers.Length];
-                //         // for (var i = 0; i < terrainLayers.Length; ++i)
-                //         // {
-                //         //     var offsetX = (terrainData1.size.x * row) % terrainLayers[i].tileSize.x + terrainLayers[i].tileOffset.x;
-                //         //     var offsetY = (terrainData1.size.z * col) % terrainLayers[i].tileSize.y + terrainLayers[i].tileOffset.y;
-                //         //     newLayers[i] = new TerrainLayer
-                //         //     {
-                //         //         tileSize = terrainLayers[i].tileSize,
-                //         //         tileOffset = new Vector2(offsetX, offsetY),
-                //         //         // diffuseTexture = terrainLayers[i].diffuseTexture,
-                //         //         // maskMapTexture = terrainLayers[i].maskMapTexture,
-                //         //         // normalMapTexture = terrainLayers[i].normalMapTexture,
-                //         //         // normalScale = terrainLayers[i].normalScale,
-                //         //         // diffuseRemapMin = terrainLayers[i].diffuseRemapMin,
-                //         //         // diffuseRemapMax = terrainLayers[i].diffuseRemapMax,
-                //         //         // maskMapRemapMin = terrainLayers[i].maskMapRemapMin,
-                //         //         // maskMapRemapMax = terrainLayers[i].maskMapRemapMax,
-                //         //         // specular = terrainLayers[i].specular,
-                //         //         // metallic = terrainLayers[i].metallic,
-                //         //         // smoothness = terrainLayers[i].smoothness,
-                //         //     };
-                //         //     // newLayers[i].tileOffset = new Vector2(offsetX, offsetY);
-                //         //     LogManager.Log(LOGTag,"newLayers",terrainData1.size,terrainLayers[i].tileSize,terrainLayers[i].tileOffset,offsetX,offsetY);
-                //         // }
-                //
-                //         terrainData1.terrainLayers = terrainData.terrainLayers;//newLayers;
-                //         terrainData1.detailPrototypes = terrainData.detailPrototypes;
-                //         // terrainData1.treePrototypes = terrainData.treePrototypes;
-                //         // 调整子地图的大小和位置
-                //         var data = tileTerrain.terrainData;
-                //         data.size = new Vector3(tileWidth, originalSize.y, tileLength);
-                //         tileObject.transform.localPosition = new Vector3(row * tileLength, 0,col * tileWidth );
-                //         //Tree
-                //         CopyVegetationData(terrainData, data, row, col, rows, columns);
-                //
-                //         // 设置地形纹理,草地
-                //         CopyTerrainTextureData(terrain, tileTerrain, row, col, rows, columns);
-                //         
-                //         AssetDatabase.CreateAsset(terrainData1, assetPath);
-                //         AssetDatabase.SaveAssets();
-                //     }
-                // }
                 SplitTerrainTile(piecesPerAxis, terrain, worldName);
 
                 // GenerateWorldData(terrain,worldName,piecesPerAxis,tileWidth,tileLength);
@@ -292,8 +181,6 @@ namespace Framework.Core.World
             finally
             {
                 terrain.enabled = false;
-                // AssetDatabase.SaveAssets();
-                // AssetDatabase.Refresh();
                 EditorUtility.ClearProgressBar();
             }
         }
@@ -336,14 +223,13 @@ namespace Framework.Core.World
                     File.Delete(assetPath);
                     File.Delete($"{assetPath}.meta");
                 }
-
-                // SaveNewAsset(targetTerrainData, assetPath);
+                
                 AssetDatabase.CreateAsset(targetTerrainData, assetPath);
 
                 CopyPrototypes(worldName,sourceTerrainData, targetTerrainData, piecesPerAxis, sliceIndex);
                 CopyTerrainProperties(sourceTerrain, targetTerrain, piecesPerAxis);
                 SetTerrainSlicePosition(sourceTerrain, piecesPerAxis, sliceIndex, terrainGameObject.transform);
-                SplitHeightMap(worldName,targetTerrainData, piecesPerAxis, sliceIndex, sourceTerrainData);
+                SplitHeightMap(targetTerrainData, piecesPerAxis, sliceIndex, sourceTerrainData);
                 SplitControlTexture(targetTerrainData, piecesPerAxis, sliceIndex, sourceTerrainData, sourceControlTextures);
                 SplitDetailMap(targetTerrainData, piecesPerAxis, sliceIndex, sourceTerrainData);
 
@@ -398,7 +284,7 @@ namespace Framework.Core.World
             }
         }
 
-        private static void SplitHeightMap(string worldName,TerrainData targetTerrainData, int piecesPerAxis, int sliceIndex, TerrainData sourceTerrainData)
+        private static void SplitHeightMap(TerrainData targetTerrainData, int piecesPerAxis, int sliceIndex, TerrainData sourceTerrainData)
         {
             var sourceHeightmapResolutionPlusOne = sourceTerrainData.heightmapResolution;
             var sourceHeightmapResolution = sourceHeightmapResolutionPlusOne - 1;
@@ -421,7 +307,9 @@ namespace Framework.Core.World
             for (var x = 0; x <= targetHeightmapResolution; x++)
             {
                 if (x % 100 == 0)
+                {
                     EditorUtility.DisplayProgressBar("Split terrain", "Split height", (float)x / targetHeightmapResolution);
+                }
 
                 var xPos = xShift + x / sampleRatio;
                 for (var y = 0; y <= targetHeightmapResolution; y++)
@@ -480,24 +368,21 @@ namespace Framework.Core.World
             }
 
             var originalLayer = (layerSource, Vector2.zero);
-            if (!layerData.ContainsKey(originalLayer))
-                layerData[originalLayer] = layerSource;
+            layerData.TryAdd(originalLayer, layerSource);
 
-            if (!layerData.TryGetValue((layerSource, newTileOffset), out var layer))
+            if (layerData.TryGetValue((layerSource, newTileOffset), out var layer)) return layer;
+            assetPath = CreateLayerPath(assetPath, newTileOffset);
+
+            var terrainLayer = CloneTerrainLayer(layerSource, layerSource.name, newTileOffset);
+            if (File.Exists(assetPath))
             {
-                assetPath = CreateLayerPath(assetPath, newTileOffset);
-
-                var terrainLayer = CloneTerrainLayer(layerSource, layerSource.name, newTileOffset);
-                if (File.Exists(assetPath))
-                {
-                    File.Delete(assetPath);
-                    File.Delete($"{assetPath}.meta");
-                }
-                // SaveNewAsset(terrainLayer, assetPath);
-                AssetDatabase.CreateAsset(layerSource, assetPath);
-
-                layerData[(layerSource, newTileOffset)] = layer = terrainLayer;
+                File.Delete(assetPath);
+                File.Delete($"{assetPath}.meta");
             }
+            // SaveNewAsset(terrainLayer, assetPath);
+            AssetDatabase.CreateAsset(layerSource, assetPath);
+
+            layerData[(layerSource, newTileOffset)] = layer = terrainLayer;
 
             return layer;
         }
@@ -563,7 +448,7 @@ namespace Framework.Core.World
 
                 for (var i = 0; i < tiles.Length; i++)
                 {
-                    var splitRect = new Rect(i / terraPieces * stepSize, i % terraPieces * stepSize, stepSize, stepSize);
+                    var splitRect = new Rect(i / (float)terraPieces * stepSize, i % terraPieces * stepSize, stepSize, stepSize);
 
                     if (!splitRect.Contains(new Vector2(treePosition.x, treePosition.z)))
                         continue;
@@ -598,10 +483,12 @@ namespace Framework.Core.World
 
             SetLightmapScale(sourceTerrain, targetTerrain, piecesPerAxis);
 
-            targetTerrain.terrainData.wavingGrassAmount = sourceTerrain.terrainData.wavingGrassAmount;
-            targetTerrain.terrainData.wavingGrassSpeed = sourceTerrain.terrainData.wavingGrassSpeed;
-            targetTerrain.terrainData.wavingGrassStrength = sourceTerrain.terrainData.wavingGrassStrength;
-            targetTerrain.terrainData.wavingGrassTint = sourceTerrain.terrainData.wavingGrassTint;
+            var terrainData = targetTerrain.terrainData;
+            var data = sourceTerrain.terrainData;
+            terrainData.wavingGrassAmount = data.wavingGrassAmount;
+            terrainData.wavingGrassSpeed = data.wavingGrassSpeed;
+            terrainData.wavingGrassStrength = data.wavingGrassStrength;
+            terrainData.wavingGrassTint = data.wavingGrassTint;
         }
 
         private static void SetLightmapScale(Terrain sourceTerrain, Terrain targetTerrain, int piecesPerAxis)
@@ -617,17 +504,19 @@ namespace Framework.Core.World
 
         private static void SetTerrainSlicePosition(Terrain sourceTerrain, int piecesPerAxis, int sliceIndex, Transform terrainTransform)
         {
-            Vector3 parentPosition = sourceTerrain.GetPosition();
+            var parentPosition = sourceTerrain.GetPosition();
 
-            var sizeY = sourceTerrain.terrainData.size.z;
-            var sizeX = sourceTerrain.terrainData.size.x;
+            var terrainData = sourceTerrain.terrainData;
+            var sizeY = terrainData.size.z;
+            var sizeX = terrainData.size.x;
 
             var wShift = ComputeShift(piecesPerAxis, sliceIndex, sizeY, sizeX);
 
-            terrainTransform.position = new Vector3(terrainTransform.position.x + wShift.y, terrainTransform.position.y, terrainTransform.position.z + wShift.x);
+            var position = terrainTransform.position;
+            position = new Vector3(position.x + wShift.y, position.y, position.z + wShift.x);
 
-            terrainTransform.position = new Vector3(terrainTransform.position.x + parentPosition.x, terrainTransform.position.y + parentPosition.y,
-                terrainTransform.position.z + parentPosition.z);
+            position = new Vector3(position.x + parentPosition.x, position.y + parentPosition.y, position.z + parentPosition.z);
+            terrainTransform.position = position;
         }
 
         private static Vector2 ComputeShift(int piecesPerAxis, int sliceIndex, float sizeY, float sizeX)
@@ -636,7 +525,7 @@ namespace Framework.Core.World
             var spaceShiftY = sizeX / piecesPerAxis;
 
             var xWShift = sliceIndex % piecesPerAxis * spaceShiftX;
-            var zWShift = sliceIndex / piecesPerAxis * spaceShiftY;
+            var zWShift = sliceIndex / (float)piecesPerAxis * spaceShiftY;
             return new Vector2(xWShift, zWShift);
         }
 
@@ -921,167 +810,6 @@ namespace Framework.Core.World
 
         #endregion
 
-        #region Convert Terrain
-
-        //To Mesh
-        public void Converter()
-        {
-            if (Selection.objects.Length <= 0)
-            {
-                LogManager.Log(LOGTag, "Please select the [Terrain] in the [Hierarchy]");
-                return;
-            }
-
-            var terrainObj = Selection.objects[0] as GameObject;
-            if (terrainObj == null)
-            {
-                LogManager.Log(LOGTag, "Select objects is not [GameObject]");
-                return;
-            }
-
-            var terrain = terrainObj.GetComponent<Terrain>();
-            if (terrain == null)
-            {
-                LogManager.Log(LOGTag, "Select the object missing [Terrain] component");
-                return;
-            }
-
-            var terrainData = terrain.terrainData;
-            if (terrainData == null)
-            {
-                LogManager.Log(LOGTag, "Terrain component missing TerrainData");
-                return;
-            }
-
-            const int vertexCountScale = 4;
-            var w = terrainData.heightmapResolution;
-            var h = terrainData.heightmapResolution;
-            var size = terrainData.size;
-            var alphaMapData = terrainData.GetAlphamaps(0, 0, terrainData.alphamapWidth, terrainData.alphamapHeight);
-            var meshScale = new Vector3(size.x / (w - 1f) * vertexCountScale, 1, size.z / (h - 1f) * vertexCountScale);
-            // [dev] terrainData.splatPrototypes 有问题,若每个图片大小不一,则出问题
-            var uvScale = new Vector2(1f / (w - 1f), 1f / (h - 1f)) * vertexCountScale * (size.x / terrainData.splatPrototypes[0].tileSize.x);
-            w = (w - 1) / vertexCountScale + 1;
-            h = (h - 1) / vertexCountScale + 1;
-            var vertices = new Vector3[w * h];
-            var uvs = new Vector2[w * h];
-            var alphasWeight = new Vector4[w * h];
-            for (var i = 0; i < w; i++)
-            {
-                for (var j = 0; j < h; j++)
-                {
-                    var index = j * w + i;
-                    var z = terrainData.GetHeight(i * vertexCountScale, j * vertexCountScale);
-                    vertices[index] = Vector3.Scale(new Vector3(i, z, j), meshScale);
-                    uvs[index] = Vector2.Scale(new Vector2(i, j), uvScale);
-
-                    // alpha map
-                    var i2 = (int)(i * terrainData.alphamapWidth / (w - 1f));
-                    var j2 = (int)(j * terrainData.alphamapHeight / (h - 1f));
-                    i2 = Mathf.Min(terrainData.alphamapWidth - 1, i2);
-                    j2 = Mathf.Min(terrainData.alphamapHeight - 1, j2);
-                    var alpha0 = alphaMapData[j2, i2, 0];
-                    var alpha1 = alphaMapData[j2, i2, 1];
-                    var alpha2 = alphaMapData[j2, i2, 2];
-                    var alpha3 = alphaMapData[j2, i2, 3];
-                    alphasWeight[index] = new Vector4(alpha0, alpha1, alpha2, alpha3);
-                }
-            }
-
-            /*
-             * 三角形
-             *     b       c
-             *      *******
-             *      *   * *
-             *      * *   *
-             *      *******
-             *     a       d
-             */
-            var triangles = new int[(w - 1) * (h - 1) * 6];
-            var triangleIndex = 0;
-            for (var i = 0; i < w - 1; i++)
-            {
-                for (var j = 0; j < h - 1; j++)
-                {
-                    var a = j * w + i;
-                    var b = (j + 1) * w + i;
-                    var c = (j + 1) * w + i + 1;
-                    var d = j * w + i + 1;
-                    triangles[triangleIndex++] = a;
-                    triangles[triangleIndex++] = b;
-                    triangles[triangleIndex++] = c;
-                    triangles[triangleIndex++] = a;
-                    triangles[triangleIndex++] = c;
-                    triangles[triangleIndex++] = d;
-                }
-            }
-
-            var mesh = new Mesh
-            {
-                vertices = vertices,
-                uv = uvs,
-                triangles = triangles,
-                tangents = alphasWeight // 将地形纹理的比重写入到切线中
-            };
-            const string transName = "[dev]MeshFromTerrainData";
-            var t = terrainObj.transform.parent.Find(transName);
-            if (t == null)
-            {
-                var go = new GameObject(transName, typeof(MeshFilter), typeof(MeshRenderer), typeof(MeshCollider));
-                t = go.transform;
-            }
-
-            // 地形渲染
-            var mr = t.GetComponent<MeshRenderer>();
-            var mat = mr.sharedMaterial;
-            if (!mat) mat = new Material(Shader.Find("Custom/Environment/TerrainSimple"));
-            for (var i = 0; i < terrainData.splatPrototypes.Length; i++)
-            {
-                var sp = terrainData.splatPrototypes[i];
-                mat.SetTexture("_Texture" + i, sp.texture);
-            }
-
-            t.parent = terrainObj.transform.parent;
-            t.position = terrainObj.transform.position;
-            t.gameObject.layer = terrainObj.layer;
-            t.GetComponent<MeshFilter>().sharedMesh = mesh;
-            t.GetComponent<MeshCollider>().sharedMesh = mesh;
-            mr.sharedMaterial = mat;
-            t.gameObject.SetActive(true);
-            terrainObj.SetActive(false);
-            LogManager.Log(LOGTag, "Convert terrain to mesh finished!");
-        }
-
-        #endregion
-
-
-        public static Vector2 XZ(Vector3 that)
-        {
-            return new Vector2(that.x, that.z);
-        }
-
-        /// <summary>
-        /// If all fields are the same except of the tile offset it is considered similar.
-        /// </summary>
-        public static bool IsVisuallySame(TerrainLayer that, TerrainLayer other)
-        {
-            if (that == null && other != null)
-                return false;
-
-            if (that != null && other == null)
-                return false;
-
-            if (that == null)
-                return true;
-
-            return that.diffuseTexture == other.diffuseTexture && that.maskMapTexture == other.maskMapTexture &&
-                   that.normalMapTexture == other.normalMapTexture && that.diffuseRemapMax == other.diffuseRemapMax &&
-                   that.diffuseRemapMin == other.diffuseRemapMin && that.maskMapRemapMax == other.maskMapRemapMax &&
-                   that.maskMapRemapMin == other.maskMapRemapMin && Math.Abs(that.metallic - other.metallic) <= float.Epsilon &&
-                   Math.Abs(that.normalScale - other.normalScale) <= float.Epsilon && Math.Abs(that.smoothness - other.smoothness) <= float.Epsilon &&
-                   that.specular == other.specular && that.tileSize == other.tileSize;
-        }
-
         public static TerrainLayer CloneTerrainLayer(TerrainLayer layerSource, string layerSourceName, Vector2 newTileOffset)
         {
             var terrainLayer = new TerrainLayer
@@ -1104,32 +832,6 @@ namespace Framework.Core.World
             pathWithoutExtension = pathWithoutExtension.Substring(0, pathWithoutExtension.Length - 1);
             var newPath = $"{pathWithoutExtension}_{newTileOffset.x}_{newTileOffset.y}{extension}";
             return newPath;
-        }
-
-        public static void SaveNewAsset<T>(T asset, string newAssetPath) where T : Object
-        {
-            Object currentAssetAtPath = null;
-
-            do
-            {
-                currentAssetAtPath = AssetDatabase.LoadAssetAtPath<Object>(newAssetPath);
-
-                if (currentAssetAtPath != null)
-                {
-                    var filePath = newAssetPath.Substring(0, newAssetPath.LastIndexOf('/'));
-                    var fileName = Path.GetFileNameWithoutExtension(newAssetPath);
-                    var fileNameNumber = new string(fileName.Reverse().TakeWhile(x => char.IsDigit(x)).Reverse().ToArray());
-                    var fileNameText = fileName.Substring(0, fileName.Length - fileNameNumber.Length);
-                    var fileExtension = Path.GetExtension(newAssetPath);
-
-                    int number;
-                    fileNameNumber = int.TryParse(fileNameNumber, out number) ? (number + 1).ToString() : "1";
-
-                    newAssetPath = $"{filePath}/{fileNameText}{fileNameNumber}{fileExtension}";
-                }
-            } while (currentAssetAtPath != null);
-
-            AssetDatabase.CreateAsset(asset, newAssetPath);
         }
 
         public static float Interpolate(float[,] data, float xPos, float yPos, int parentWidthMinus1)
@@ -1180,24 +882,24 @@ namespace Framework.Core.World
 
         public static float Interpolate(float[,,] data, float xPos, float yPos, int layerIndex, int parentWidthMinus1)
         {
-            float x = parentWidthMinus1 >= xPos ? xPos : parentWidthMinus1;
-            float y = parentWidthMinus1 >= yPos ? yPos : parentWidthMinus1;
-            int xi = (int)x;
-            int yi = (int)y;
-            int b = xi + 1;
-            int xiPlus1 = parentWidthMinus1 >= b ? b : parentWidthMinus1;
-            int b1 = yi + 1;
-            int yiPlus1 = parentWidthMinus1 >= b1 ? b1 : parentWidthMinus1;
+            var x = parentWidthMinus1 >= xPos ? xPos : parentWidthMinus1;
+            var y = parentWidthMinus1 >= yPos ? yPos : parentWidthMinus1;
+            var xi = (int)x;
+            var yi = (int)y;
+            var b = xi + 1;
+            var xiPlus1 = parentWidthMinus1 >= b ? b : parentWidthMinus1;
+            var b1 = yi + 1;
+            var yiPlus1 = parentWidthMinus1 >= b1 ? b1 : parentWidthMinus1;
 
-            float c00 = data[xi, yi, layerIndex];
-            float c10 = data[xiPlus1, yi, layerIndex];
-            float c01 = data[xi, yiPlus1, layerIndex];
-            float c11 = data[xiPlus1, yiPlus1, layerIndex];
+            var c00 = data[xi, yi, layerIndex];
+            var c10 = data[xiPlus1, yi, layerIndex];
+            var c01 = data[xi, yiPlus1, layerIndex];
+            var c11 = data[xiPlus1, yiPlus1, layerIndex];
 
-            float tx = x - xi;
-            float ty = y - yi;
-            float s = c00 + (c10 - c00) * tx;
-            float e = c01 + (c11 - c01) * tx;
+            var tx = x - xi;
+            var ty = y - yi;
+            var s = c00 + (c10 - c00) * tx;
+            var e = c01 + (c11 - c01) * tx;
             return s + (e - s) * ty;
         }
     }
