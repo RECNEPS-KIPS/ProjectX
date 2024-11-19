@@ -14,6 +14,7 @@ using UnityEditor;
 using UnityEngine;
 using UnityEngine.Experimental.Rendering;
 using UnityEngine.Rendering;
+using MathUtils = Framework.Common.MathUtils;
 using Object = UnityEngine.Object;
 
 namespace Framework.Core.World
@@ -91,6 +92,16 @@ namespace Framework.Core.World
                 LogManager.Log(LOGTag, "There is no split terrain data");
                 return;
             }
+            
+            
+            var worldDataPath = $"{DEF.RESOURCES_ASSETS_PATH}/Worlds/{worldName}/WorldData.bytes";
+            if (!File.Exists(worldDataPath))
+            {
+                LogManager.Log(LOGTag, $"There is no world data,path:{worldName}");
+                return;
+            }
+            var assetData = ResourcesLoadManager.LoadAsset<TextAsset>(worldDataPath);
+            var data = BinaryUtils.Bytes2Object<WorldData>(assetData.bytes);
 
             var dirInfo = new DirectoryInfo(worldDir);
             var subDirs = dirInfo.GetDirectories();
@@ -98,8 +109,7 @@ namespace Framework.Core.World
             {
                 if (!t.Name.StartsWith("Chunk")) continue;
                 var split = t.Name.Split(DEF.TerrainSplitChar);
-                var row = int.Parse(split[1]);
-                var col = int.Parse(split[2]);
+                var index = int.Parse(split[1]);
                 var saveDir = $"{worldDir}/{t.Name}";
                 if (!Directory.Exists(saveDir))
                 {
@@ -107,23 +117,25 @@ namespace Framework.Core.World
                     continue;
                 }
 
-                LoadTerrainChunk(worldName, envRoot, row, col);
+                LoadTerrainChunk(worldName, envRoot, data.PiecesPerAxis,index);
             }
 
             callback?.Invoke();
         }
 
-        private void LoadTerrainChunk(string worldName, Transform envRoot, int row, int col)
+        private void LoadTerrainChunk(string worldName, Transform envRoot,int piecesPerAxis, int index)
         {
-            var chunkDir = $"Chunk{DEF.TerrainSplitChar}{row}{DEF.TerrainSplitChar}{col}";
+            var chunkDir = $"Chunk{DEF.TerrainSplitChar}{index}";
+            int x = Mathf.FloorToInt(index / (float)piecesPerAxis);
+            int y = index - x * piecesPerAxis;
             var saveDir = $"{DEF.RESOURCES_ASSETS_PATH}/Worlds/{worldName}/{chunkDir}";
             var td = AssetDatabase.LoadAssetAtPath<TerrainData>($"{saveDir}/Terrain.asset");
             var chunkRoot = new GameObject();
             chunkRoot.transform.SetParent(envRoot);
             chunkRoot.transform.localScale = Vector3.one;
             chunkRoot.transform.localRotation = Quaternion.identity;
-            chunkRoot.transform.localPosition = new Vector3(row * td.size.x, 0, col * td.size.z);
-            chunkRoot.name = $"Chunk{DEF.TerrainSplitChar}{row}{DEF.TerrainSplitChar}{col}";
+            chunkRoot.transform.localPosition = new Vector3(x * td.size.x, 0, y * td.size.z);
+            chunkRoot.name = $"Chunk{DEF.TerrainSplitChar}{index}";
 
             var go = Terrain.CreateTerrainGameObject(td);
             go.transform.SetParent(chunkRoot.transform);
@@ -171,8 +183,8 @@ namespace Framework.Core.World
             try
             {
                 SplitTerrainTile(piecesPerAxis, terrain, worldName);
-
-                // GenerateWorldData(terrain,worldName,piecesPerAxis,tileWidth,tileLength);
+                var terrainData = terrain.terrainData;
+                GenerateWorldData(terrain,worldName,piecesPerAxis,terrainData.size.x / piecesPerAxis,terrainData.size.z / piecesPerAxis);
             }
             catch (Exception e)
             {
@@ -288,7 +300,7 @@ namespace Framework.Core.World
         {
             var sourceHeightmapResolutionPlusOne = sourceTerrainData.heightmapResolution;
             var sourceHeightmapResolution = sourceHeightmapResolutionPlusOne - 1;
-            var targetHeightmapResolution = NextPowerOf2(sourceHeightmapResolution / piecesPerAxis);
+            var targetHeightmapResolution = MathUtils.NextPowerOf2(sourceHeightmapResolution / piecesPerAxis);
             targetHeightmapResolution = Math.Max(MINIMAL_HEIGHTMAP_RESOLUTION - 1, targetHeightmapResolution);
 
             targetTerrainData.heightmapResolution = targetHeightmapResolution;
@@ -342,9 +354,7 @@ namespace Framework.Core.World
             var shift = ComputeShift(piecesPerAxis, sliceIndex, targetSize.y, targetSize.x);
             Vector2 layerSize = layerSource.tileSize;
 
-            var newTileOffset = new Vector2(
-                (layerSource.tileOffset.x + shift.y * piecesPerAxis + layerSize.x) % layerSize.x,
-                (layerSource.tileOffset.y + shift.x * piecesPerAxis + layerSize.y) % layerSize.y);
+            var newTileOffset = new Vector2((layerSource.tileOffset.x + shift.y * piecesPerAxis + layerSize.x) % layerSize.x, (layerSource.tileOffset.y + shift.x * piecesPerAxis + layerSize.y) % layerSize.y);
 
             var assetPath = AssetDatabase.GetAssetPath(layerSource);
             var isSourceLayerAnAsset = !string.IsNullOrEmpty(assetPath);
@@ -352,7 +362,9 @@ namespace Framework.Core.World
             if (!isSourceLayerAnAsset)
             {
                 if (!AssetDatabase.IsValidFolder("Assets/TerrainLayers"))
+                {
                     AssetDatabase.CreateFolder("Assets", "TerrainLayers");
+                }
 
                 var layerSourceName = Guid.NewGuid().ToString();
                 assetPath = $"{GetAssetPathBySliceIndex(worldName,sliceIndex)}/TerrainLayers/{layerSourceName}.terrainlayer";
@@ -440,7 +452,9 @@ namespace Framework.Core.World
             for (var t = 0; t < terrainDataTreeInstances.Length; t++)
             {
                 if (t % 100 == 0)
+                {
                     EditorUtility.DisplayProgressBar("Split terrain", "Split trees ", (float)t / terrainDataTreeInstances.Length);
+                }
 
                 // Get tree instance					
                 TreeInstance ti = terrainDataTreeInstances[t];
@@ -529,30 +543,6 @@ namespace Framework.Core.World
             return new Vector2(xWShift, zWShift);
         }
 
-        public static bool IsPowerOf2(int value)
-        {
-            return (value & (value - 1)) == 0;
-        }
-
-        public static int ClosestPowerOf2(int value)
-        {
-            var next = (int)Math.Pow(2, Math.Ceiling(Math.Log(value) / Math.Log(2)));
-            return next;
-        }
-
-        public static int NextPowerOf2(int value)
-        {
-            value--;
-            value |= value >> 1;
-            value |= value >> 2;
-            value |= value >> 4;
-            value |= value >> 8;
-            value |= value >> 16;
-            value++;
-
-            return value;
-        }
-
         private const int MINIMAL_HEIGHTMAP_RESOLUTION = 33;
         private const int MINIMAL_CONTROL_TEXTURE_RESOLUTION = 16;
         private const int MINIMAL_BASE_TEXTURE_RESOLUTION = 16;
@@ -563,9 +553,9 @@ namespace Framework.Core.World
             var sourceControlTextureResolution = sourceTerrainData.alphamapResolution;
             var sourceControlTextureResolutionMinus1 = sourceControlTextureResolution - 1;
             var sourceBaseMapResolution = sourceTerrainData.baseMapResolution;
-            var controlTextureResolution = NextPowerOf2(sourceControlTextureResolution / piecesPerAxis);
+            var controlTextureResolution = MathUtils.NextPowerOf2(sourceControlTextureResolution / piecesPerAxis);
             var targetControlTextureResolution = Math.Max(MINIMAL_CONTROL_TEXTURE_RESOLUTION, controlTextureResolution);
-            var baseMapResolution = NextPowerOf2(sourceBaseMapResolution / piecesPerAxis);
+            var baseMapResolution = MathUtils.NextPowerOf2(sourceBaseMapResolution / piecesPerAxis);
             var targetBaseMapResolution = Math.Max(MINIMAL_BASE_TEXTURE_RESOLUTION, baseMapResolution);
 
             targetTerrainData.alphamapResolution = targetControlTextureResolution;
@@ -582,7 +572,9 @@ namespace Framework.Core.World
                 for (var x = 0; x < targetControlTextureResolution; x++)
                 {
                     if (x % 100 == 0)
+                    {
                         EditorUtility.DisplayProgressBar("Split terrain", "Split splat", (float)x / targetControlTextureResolution);
+                    }
 
                     var xPos = xShift + x / sampleRatio;
                     for (var y = 0; y < targetControlTextureResolution; y++)
@@ -751,7 +743,7 @@ namespace Framework.Core.World
                         continue;
                     }
 
-                    var data = BinaryUtils.Bytes2Object<ChunkColiderInfo>(ResourcesLoadManager.LoadAsset<TextAsset>(savePath).bytes);
+                    var data = BinaryUtils.Bytes2Object<ChunkColliderInfo>(ResourcesLoadManager.LoadAsset<TextAsset>(savePath).bytes);
                     InstantiateColliderBox(colliderRoot, i, new Vector3(data.PositionX, data.PositionY, data.PositionZ), new Vector3(data.SizeX, data.SizeY, data.SizeZ));
                 }
                 catch (Exception e)
@@ -786,7 +778,7 @@ namespace Framework.Core.World
                     //序列化对象 生成2进制字节数组 写入到内存流当中
                     var localPosition = colliderTrs.localPosition;
                     var size = collider.size;
-                    formatter.Serialize(fs, new ChunkColiderInfo
+                    formatter.Serialize(fs, new ChunkColliderInfo
                     {
                         PositionX = localPosition.x, //位置
                         PositionY = localPosition.y, //位置

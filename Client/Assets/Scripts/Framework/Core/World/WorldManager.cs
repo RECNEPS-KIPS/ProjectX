@@ -25,7 +25,7 @@ namespace Framework.Core.World
     }
     
     [Serializable]
-    public class ChunkColiderInfo
+    public class ChunkColliderInfo
     {
         [SerializeField]public float PositionX;
         [SerializeField]public float PositionY;
@@ -36,7 +36,7 @@ namespace Framework.Core.World
 
         public override string ToString()
         {
-            return $"ChunkColiderInfo Position:{new Vector3(PositionX,PositionY,PositionZ)},Size:{new Vector3(SizeX,SizeY,SizeZ)}";
+            return $"ChunkColliderInfo Position:{new Vector3(PositionX,PositionY,PositionZ)},Size:{new Vector3(SizeX,SizeY,SizeZ)}";
         }
     }
     
