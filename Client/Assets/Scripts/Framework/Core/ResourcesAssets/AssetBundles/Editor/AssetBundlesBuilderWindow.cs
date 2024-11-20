@@ -120,6 +120,20 @@ namespace Framework.Core.ResourcesAssets
             AssetsDict.Clear();
             abOutPath = AssetBundlesPathTools.GetABOutPath();
         }
+
+        void Expand()
+        {
+            var mapKeys = RuleFlodMap.Keys;
+            var keys = new string[mapKeys.Count];
+            mapKeys.CopyTo(keys,0);
+            foreach (var t in keys)
+            {
+                if (RuleFlodMap.ContainsKey(t))
+                {
+                    RuleFlodMap[t] = true;
+                }
+            }
+        }
         private void BuildAssetBundles()
         {
             AssetsDict.Clear();
@@ -157,7 +171,7 @@ namespace Framework.Core.ResourcesAssets
             GUILayout.BeginHorizontal();
 
             GUILayout.Space(layer * tabSpace);
-            RuleFlodMap.TryAdd(dirPath, false);
+            RuleFlodMap.TryAdd(dirPath, layer <= 1);
             var foldHeader = drawName.Replace("\\", "/");
      
             RuleFlodMap[dirPath] = EditorGUILayout.BeginFoldoutHeaderGroup(RuleFlodMap[dirPath], foldHeader);
@@ -274,16 +288,7 @@ namespace Framework.Core.ResourcesAssets
             }
             if (GUILayout.Button("Expand All", GUILayout.Width(windowSize.width - 6), GUILayout.Height(normalSpace)))
             {
-                var mapKeys = RuleFlodMap.Keys;
-                var keys = new string[mapKeys.Count];
-                mapKeys.CopyTo(keys,0);
-                foreach (var t in keys)
-                {
-                    if (RuleFlodMap.ContainsKey(t))
-                    {
-                        RuleFlodMap[t] = true;
-                    }
-                }
+                Expand();
             }
             
             var c = GUI.backgroundColor;
