@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
 using Framework.Common;
@@ -23,9 +24,40 @@ namespace Framework.Core.World
             return $"TerrainHeight:{TerrainHeight},PiecesPerAxis:{PiecesPerAxis},ChunkSizeX:{ChunkSizeX},ChunkSizeY:{ChunkSizeY}";
         }
     }
-    
+    //场景模型数据
     [Serializable]
-    public class ChunkColliderInfo
+    public class ItemInfo
+    {
+        [Serializable]
+        public struct Item
+        {
+            [SerializeField] public float posX;
+            [SerializeField] public float posY;
+            [SerializeField] public float posZ;
+            [SerializeField] public float rotX;
+            [SerializeField] public float rotY;
+            [SerializeField] public float rotZ;
+            [SerializeField] public float scaleX;
+            [SerializeField] public float scaleY;
+            [SerializeField] public float scaleZ;
+            [SerializeField] public int prefabIndex;
+        }
+        [SerializeField] public List<string> PrefabDict;
+        [SerializeField] public List<Item> ItemList;
+    }
+
+    //地形数据
+    [Serializable]
+    public class TerrainInfo
+    {
+        [SerializeField]public float X;
+        [SerializeField]public float Y;
+        [SerializeField]public float Z;
+    }
+    
+    //碰撞盒数据
+    [Serializable]
+    public class ColliderInfo
     {
         [SerializeField]public float PositionX;
         [SerializeField]public float PositionY;
@@ -36,7 +68,7 @@ namespace Framework.Core.World
 
         public override string ToString()
         {
-            return $"ChunkColliderInfo Position:{new Vector3(PositionX,PositionY,PositionZ)},Size:{new Vector3(SizeX,SizeY,SizeZ)}";
+            return $"ColliderInfo Position:{new Vector3(PositionX,PositionY,PositionZ)},Size:{new Vector3(SizeX,SizeY,SizeZ)}";
         }
     }
     
@@ -83,22 +115,35 @@ namespace Framework.Core.World
 
             for (var i = 0; i < data.PiecesPerAxis * data.PiecesPerAxis; i++)
             {
-                LoadTerrainChunk(worldName, i);
+                LoadTerrainChunk(worldName,data.PiecesPerAxis ,i);
             }
 
             callback?.Invoke();
         }
-        private static void LoadTerrainChunk(string worldName, int index)
+        private static void LoadTerrainChunk(string worldName,int piecesPerAxis, int index)
         {
             var chunkDir = $"Chunk{DEF.TerrainSplitChar}{index}";
+            
+            var terrainInfoPath = $"{DEF.RESOURCES_ASSETS_PATH}/Worlds/{worldName}/{chunkDir}/TerrainInfo.bytes";
+            if (!File.Exists(terrainInfoPath))
+            {
+                LogManager.Log(LOGTag, $"There is no terrain info,path:{terrainInfoPath}");
+                return;
+            }
+            var assetData = ResourcesLoadManager.LoadAsset<TextAsset>(terrainInfoPath);
+            var data = BinaryUtils.Bytes2Object<TerrainInfo>(assetData.bytes);
+            
             var saveDir = $"{DEF.RESOURCES_ASSETS_PATH}/Worlds/{worldName}/{chunkDir}";
             var td = ResourcesLoadManager.LoadAsset<TerrainData>($"{saveDir}/Terrain.asset");
             var chunkRoot = new GameObject();
             chunkRoot.transform.SetParent(envRoot);
             chunkRoot.transform.localScale = Vector3.one;
             chunkRoot.transform.localRotation = Quaternion.identity;
-            // chunkRoot.transform.localPosition = new Vector3(row * td.size.x, 0, col * td.size.z);
-            // chunkRoot.name = $"Chunk{DEF.TerrainSplitChar}{row}{DEF.TerrainSplitChar}{col}";
+            var x = Mathf.FloorToInt(index / (float)piecesPerAxis);
+            var y = index - x * piecesPerAxis;
+            // chunkRoot.transform.localPosition = new Vector3(x * td.size.x, 0, y * td.size.z);
+            chunkRoot.transform.localPosition = new Vector3(data.X,data.Y,data.Z);
+            chunkRoot.name = $"Chunk{DEF.TerrainSplitChar}{index}";
             
             var go = Terrain.CreateTerrainGameObject(td);
             go.transform.SetParent(chunkRoot.transform);
@@ -108,7 +153,6 @@ namespace Framework.Core.World
             go.transform.localRotation = Quaternion.identity;
             go.gameObject.isStatic = true;
             go.layer = LayerMask.NameToLayer("Ground");
-
         }
     }
 }

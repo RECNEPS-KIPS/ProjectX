@@ -71,9 +71,9 @@ namespace Framework.Core.World
         //清理切分的地形
         public void ClearSplitTerrains()
         {
-            foreach (var t in terrainList)
+            for (var i = 0; i < terrainList.Count; i++)
             {
-                Object.DestroyImmediate(t);
+                GameObject.DestroyImmediate(terrainList[i]);
             }
 
             terrainList.Clear();
@@ -126,15 +126,26 @@ namespace Framework.Core.World
         private void LoadTerrainChunk(string worldName, Transform envRoot,int piecesPerAxis, int index)
         {
             var chunkDir = $"Chunk{DEF.TerrainSplitChar}{index}";
-            int x = Mathf.FloorToInt(index / (float)piecesPerAxis);
-            int y = index - x * piecesPerAxis;
+            var terrainInfoPath = $"{DEF.RESOURCES_ASSETS_PATH}/Worlds/{worldName}/{chunkDir}/TerrainInfo.bytes";
+            if (!File.Exists(terrainInfoPath))
+            {
+                LogManager.Log(LOGTag, $"There is no terrain info,path:{terrainInfoPath}");
+                return;
+            }
+            var assetData = ResourcesLoadManager.LoadAsset<TextAsset>(terrainInfoPath);
+            var data = BinaryUtils.Bytes2Object<TerrainInfo>(assetData.bytes);
+            
+            
+            // var x = Mathf.FloorToInt(index / (float)piecesPerAxis);
+            // var y = index - x * piecesPerAxis;
             var saveDir = $"{DEF.RESOURCES_ASSETS_PATH}/Worlds/{worldName}/{chunkDir}";
             var td = AssetDatabase.LoadAssetAtPath<TerrainData>($"{saveDir}/Terrain.asset");
             var chunkRoot = new GameObject();
             chunkRoot.transform.SetParent(envRoot);
             chunkRoot.transform.localScale = Vector3.one;
             chunkRoot.transform.localRotation = Quaternion.identity;
-            chunkRoot.transform.localPosition = new Vector3(x * td.size.x, 0, y * td.size.z);
+            // chunkRoot.transform.localPosition = new Vector3(x * td.size.x, 0, y * td.size.z);
+            chunkRoot.transform.localPosition = new Vector3(data.X, data.Y, data.Z);
             chunkRoot.name = $"Chunk{DEF.TerrainSplitChar}{index}";
 
             var go = Terrain.CreateTerrainGameObject(td);
@@ -148,7 +159,7 @@ namespace Framework.Core.World
             terrainList.Add(go);
         }
 
-        public static Terrain LoadSingleTerrain(Transform envRoot, string terrainAssetPath, Action<GameObject> callback = null)
+        public Terrain LoadSingleTerrain(Transform envRoot, string terrainAssetPath, Action<GameObject> callback = null)
         {
             if (!File.Exists(terrainAssetPath))
             {
@@ -172,7 +183,7 @@ namespace Framework.Core.World
         #region Split Terrain
 
         //分割地形
-        public static void SplitTerrain(Terrain terrain, string worldName, int piecesPerAxis)
+        public void SplitTerrain(Terrain terrain, string worldName, int piecesPerAxis,Transform envRoot)
         {
             if (terrain == null)
             {
@@ -182,7 +193,7 @@ namespace Framework.Core.World
 
             try
             {
-                SplitTerrainTile(piecesPerAxis, terrain, worldName);
+                SplitTerrainTile(piecesPerAxis, terrain, worldName,envRoot);
                 var terrainData = terrain.terrainData;
                 GenerateWorldData(terrain,worldName,piecesPerAxis,terrainData.size.x / piecesPerAxis,terrainData.size.z / piecesPerAxis);
             }
@@ -197,13 +208,13 @@ namespace Framework.Core.World
             }
         }
 
-        public static string GetAssetPathBySliceIndex(string worldName,int sliceIndex)
+        public string GetAssetPathBySliceIndex(string worldName,int sliceIndex)
         {
             var chunkDir = $"Chunk{DEF.TerrainSplitChar}{sliceIndex}";
             return $"{DEF.RESOURCES_ASSETS_PATH}/Worlds/{worldName}/{chunkDir}";
         }
 
-        private static void SplitTerrainTile(int piecesPerAxis, Terrain sourceTerrain, string worldName)
+        private void SplitTerrainTile(int piecesPerAxis, Terrain sourceTerrain, string worldName,Transform envRoot)
         {
             TerrainData sourceTerrainData = sourceTerrain.terrainData;
             var terrains = new Terrain[piecesPerAxis * piecesPerAxis];
@@ -217,7 +228,7 @@ namespace Framework.Core.World
                 var targetTerrainData = new TerrainData();
                 GameObject terrainGameObject = Terrain.CreateTerrainGameObject(targetTerrainData);
 
-                terrainGameObject.name = $"{sourceTerrain.name}_{sliceIndex}";
+                terrainGameObject.name = $"Chunk{DEF.TerrainSplitChar}{sliceIndex}";
 
                 Terrain targetTerrain = terrains[sliceIndex] = terrainGameObject.GetComponent<Terrain>();
                 targetTerrain.terrainData = targetTerrainData;
@@ -240,11 +251,10 @@ namespace Framework.Core.World
 
                 CopyPrototypes(worldName,sourceTerrainData, targetTerrainData, piecesPerAxis, sliceIndex);
                 CopyTerrainProperties(sourceTerrain, targetTerrain, piecesPerAxis);
-                SetTerrainSlicePosition(sourceTerrain, piecesPerAxis, sliceIndex, terrainGameObject.transform);
+                SetTerrainSlicePosition(worldName,sourceTerrain, piecesPerAxis, sliceIndex, terrainGameObject.transform,envRoot);
                 SplitHeightMap(targetTerrainData, piecesPerAxis, sliceIndex, sourceTerrainData);
                 SplitControlTexture(targetTerrainData, piecesPerAxis, sliceIndex, sourceTerrainData, sourceControlTextures);
                 SplitDetailMap(targetTerrainData, piecesPerAxis, sliceIndex, sourceTerrainData);
-
                 AssetDatabase.SaveAssets();
             }
 
@@ -338,7 +348,7 @@ namespace Framework.Core.World
             targetTerrainData.SetHeights(0, 0, pieceHeight);
         }
 
-        private static void CopyPrototypes(string worldName,TerrainData sourceTerrainData, TerrainData targetTerrainData, int piecesPerAxis, int sliceIndex)
+        private void CopyPrototypes(string worldName,TerrainData sourceTerrainData, TerrainData targetTerrainData, int piecesPerAxis, int sliceIndex)
         {
             targetTerrainData.terrainLayers = sourceTerrainData.terrainLayers
                 .Select(x => GetOrCreateTerrainLayer(worldName,sourceTerrainData.size, piecesPerAxis, sliceIndex, x))
@@ -348,7 +358,7 @@ namespace Framework.Core.World
             targetTerrainData.treePrototypes = sourceTerrainData.treePrototypes;
         }
 
-        private static TerrainLayer GetOrCreateTerrainLayer(string worldName,Vector3 sourceSize, int piecesPerAxis, int sliceIndex, TerrainLayer layerSource)
+        private TerrainLayer GetOrCreateTerrainLayer(string worldName,Vector3 sourceSize, int piecesPerAxis, int sliceIndex, TerrainLayer layerSource)
         {
             var targetSize = new Vector2(sourceSize.x / piecesPerAxis, sourceSize.z / piecesPerAxis);
             var shift = ComputeShift(piecesPerAxis, sliceIndex, targetSize.y, targetSize.x);
@@ -361,10 +371,10 @@ namespace Framework.Core.World
 
             if (!isSourceLayerAnAsset)
             {
-                if (!AssetDatabase.IsValidFolder("Assets/TerrainLayers"))
-                {
-                    AssetDatabase.CreateFolder("Assets", "TerrainLayers");
-                }
+                // if (!AssetDatabase.IsValidFolder($"{GetAssetPathBySliceIndex(worldName,sliceIndex)}/TerrainLayers"))
+                // {
+                //     AssetDatabase.CreateFolder("Assets", "TerrainLayers");
+                // }
 
                 var layerSourceName = Guid.NewGuid().ToString();
                 assetPath = $"{GetAssetPathBySliceIndex(worldName,sliceIndex)}/TerrainLayers/{layerSourceName}.terrainlayer";
@@ -516,21 +526,67 @@ namespace Framework.Core.World
             so.ApplyModifiedProperties();
         }
 
-        private static void SetTerrainSlicePosition(Terrain sourceTerrain, int piecesPerAxis, int sliceIndex, Transform terrainTransform)
+        private void SetTerrainSlicePosition(string worldName,Terrain sourceTerrain, int piecesPerAxis, int sliceIndex, Transform terrainTransform,Transform envRoot)
         {
             var parentPosition = sourceTerrain.GetPosition();
 
             var terrainData = sourceTerrain.terrainData;
-            var sizeY = terrainData.size.z;
             var sizeX = terrainData.size.x;
+            var sizeY = terrainData.size.z;
 
-            var wShift = ComputeShift(piecesPerAxis, sliceIndex, sizeY, sizeX);
+            // var wShift = ComputeShift(piecesPerAxis, sliceIndex, sizeY, sizeX);
+            var x = Mathf.FloorToInt(sliceIndex / (float)piecesPerAxis);
+            var y = sliceIndex - x * piecesPerAxis;
 
             var position = terrainTransform.position;
-            position = new Vector3(position.x + wShift.y, position.y, position.z + wShift.x);
+            // position = new Vector3(position.x + wShift.y, position.y, position.z + wShift.x);
+            position = new Vector3(position.x + sizeX / piecesPerAxis * x, position.y, position.z + sizeY / piecesPerAxis * y);
 
             position = new Vector3(position.x + parentPosition.x, position.y + parentPosition.y, position.z + parentPosition.z);
-            terrainTransform.position = position;
+            
+            var chunkRoot = new GameObject();
+            chunkRoot.transform.SetParent(envRoot);
+            chunkRoot.transform.localScale = Vector3.one;
+            chunkRoot.transform.localRotation = Quaternion.identity;
+            chunkRoot.transform.localPosition = position;
+            var chunkName = $"Chunk{DEF.TerrainSplitChar}{sliceIndex}";
+            chunkRoot.name = chunkName;
+
+            terrainTransform.name = "Terrain";
+            terrainTransform.SetParent(chunkRoot.transform);
+            terrainTransform.localPosition = Vector3.zero;
+            terrainTransform.localScale = Vector3.one;
+            terrainTransform.localRotation = Quaternion.identity;
+            terrainList.Add(terrainTransform.gameObject);
+            
+            
+            var savePath = $"{DEF.RESOURCES_ASSETS_PATH}/Worlds/{worldName}/{chunkName}/TerrainInfo.bytes";
+            if (File.Exists(savePath))
+            {
+                File.Delete(savePath);
+                File.Delete($"{savePath}.meta");
+            }
+
+            try
+            {
+                var fs = File.Create(savePath); //new FileStream(savePath, FileMode.Create, FileAccess.Write, FileShare.None);
+                var formatter = new BinaryFormatter();
+                //序列化对象 生成2进制字节数组 写入到内存流当中
+                var localPosition = chunkRoot.transform.localPosition;
+                formatter.Serialize(fs, new TerrainInfo
+                {
+                    X = localPosition.x,
+                    Y = localPosition.y,
+                    Z = localPosition.z,
+                });
+                fs.Close();
+            }
+            catch (Exception e)
+            {
+                LogManager.LogError(LOGTag, e.Message);
+            }
+
+            AssetDatabase.Refresh();
         }
 
         private static Vector2 ComputeShift(int piecesPerAxis, int sliceIndex, float sizeY, float sizeX)
@@ -665,15 +721,15 @@ namespace Framework.Core.World
             colliderList.Clear();
             for (var i = 0; i < PiecesPerAxis * PiecesPerAxis; ++i)
             {
-                InstantiateColliderBox(envRoot, i, new Vector3(0.5f * chunkSize.x, 0, 0.5f * chunkSize.y), new Vector3(colliderSize.x, terrainHeight, colliderSize.y));
+                InstantiateColliderBox(envRoot, i, new Vector3(0.5f * chunkSize.x, terrainHeight / 2, 0.5f * chunkSize.y), new Vector3(colliderSize.x, terrainHeight, colliderSize.y));
             }
 
             callback?.Invoke();
         }
 
-        private void InstantiateColliderBox(Transform envRoot, int PiecesPerAxis, Vector3 position, Vector3 colliderSize)
+        private void InstantiateColliderBox(Transform envRoot, int index, Vector3 position, Vector3 colliderSize)
         {
-            var chunkRoot = envRoot.Find($"Chunk{DEF.TerrainSplitChar}{PiecesPerAxis}");
+            var chunkRoot = envRoot.Find($"Chunk{DEF.TerrainSplitChar}{index}");
             var oldTrs = chunkRoot.Find("Collider");
             if (oldTrs)
             {
@@ -743,7 +799,7 @@ namespace Framework.Core.World
                         continue;
                     }
 
-                    var data = BinaryUtils.Bytes2Object<ChunkColliderInfo>(ResourcesLoadManager.LoadAsset<TextAsset>(savePath).bytes);
+                    var data = BinaryUtils.Bytes2Object<ColliderInfo>(ResourcesLoadManager.LoadAsset<TextAsset>(savePath).bytes);
                     InstantiateColliderBox(colliderRoot, i, new Vector3(data.PositionX, data.PositionY, data.PositionZ), new Vector3(data.SizeX, data.SizeY, data.SizeZ));
                 }
                 catch (Exception e)
@@ -778,7 +834,7 @@ namespace Framework.Core.World
                     //序列化对象 生成2进制字节数组 写入到内存流当中
                     var localPosition = colliderTrs.localPosition;
                     var size = collider.size;
-                    formatter.Serialize(fs, new ChunkColliderInfo
+                    formatter.Serialize(fs, new ColliderInfo
                     {
                         PositionX = localPosition.x, //位置
                         PositionY = localPosition.y, //位置

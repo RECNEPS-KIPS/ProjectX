@@ -49,7 +49,7 @@ namespace Framework.Core.World
 
         private readonly int[] sliceChunkSizeList = { 32, 64, 128, 256, 512, 1024, 2048, 4096 };
 
-        int currentTilesPerAxis;
+        private int currentTilesPerAxis;
 
         private enum ChunkStatus
         {
@@ -91,8 +91,23 @@ namespace Framework.Core.World
         private int selectIndex = -1;
         private List<dynamic> _config;
         private List<dynamic> config => _config ??= LoadConfig();
+        private GizmosHandler _gizmosHandler;
+        private GizmosHandler gizmosHandler
+        {
+            get
+            {
+                if (_gizmosHandler != null) return _gizmosHandler;
+                var gh = envRoot.GetComponent<GizmosHandler>();
+                if (gh != null)
+                {
+                    _gizmosHandler = gh;
+                    return _gizmosHandler;
+                }
+                _gizmosHandler = _envRoot.gameObject.AddComponent<GizmosHandler>();
+                return _gizmosHandler;
 
-        private GizmosHandler gizmosHandler;
+            }
+        }
 
         private dynamic worldConfig => selectIndex >= 0 ? config[selectIndex] : null;
         
@@ -169,10 +184,6 @@ namespace Framework.Core.World
             {
                 GameObject root = GameObject.Find(DEF.ENV_ROOT);
                 _envRoot = root == null ? CommonUtils.CreateNode(DEF.ENV_ROOT) : root.transform;
-                if (_envRoot.GetComponent<GizmosHandler>() == null)
-                {
-                    gizmosHandler = _envRoot.gameObject.AddComponent<GizmosHandler>();
-                }
                 return _envRoot;
             }
         }
@@ -252,7 +263,7 @@ namespace Framework.Core.World
                         showSliceTerrain = true;
                     }
 
-                    terrain = TerrainHandler.LoadSingleTerrain(envRoot, worldConfig["terrainAssetPath"],(Action<GameObject>)Callback);
+                    terrain = terrainHandler.LoadSingleTerrain(envRoot, worldConfig["terrainAssetPath"],(Action<GameObject>)Callback);
                     GUIUtility.ExitGUI();
                 }
                 GUILayout.EndHorizontal();
@@ -271,7 +282,7 @@ namespace Framework.Core.World
                 GUILayout.EndHorizontal();
             }
             EditorGUILayout.EndFoldoutHeaderGroup();
-            var usedHeight = 5 + 45 + (showSourceTerrain ? 70 : 25) + (hasSourceTerrain ? (showSliceTerrain ? 71 : 28) : 9) + (showSlicedTerrainChunks ? 70 : 25) + (showColliderSettings ? 195 : 27) + ((showColliderSettings && drawColliderBoxesGizmos) ? 25 : 5) + 25;
+            var usedHeight = 5 + 45 + (showSourceTerrain ? 70 : 25) + (hasSourceTerrain ? (showSliceTerrain ? 91 : 28) : 9) + (showSlicedTerrainChunks ? 100 : 25) + (showColliderSettings ? 235 : 27) + ((showColliderSettings && drawColliderBoxesGizmos) ? 25 : 5) + 25;
             if (hasSourceTerrain)
             {
                 showSliceTerrain = EditorGUILayout.BeginFoldoutHeaderGroup(showSliceTerrain, "Slice Terrain");
@@ -293,11 +304,7 @@ namespace Framework.Core.World
                     {
                         if (chunkSizeIndex >= 0 && chunkSizeIndex <= sliceChunkSizeList.Length - 1)
                         {
-                            var size = sliceChunkSizeList[chunkSizeIndex];
-                            var terrainData = terrain.terrainData;
-                            var rows = (int)terrainData.size.x / size;
-                            var columns = (int)terrainData.size.z / size;
-                            TerrainHandler.SplitTerrain(terrain, worldName, currentTilesPerAxis);
+                            terrainHandler.SplitTerrain(terrain, worldName, currentTilesPerAxis,envRoot);
                         }
                         GUIUtility.ExitGUI();
                     }
@@ -478,245 +485,252 @@ namespace Framework.Core.World
         //Item工具
         private void DrawItemToolPanel()
         {
+            // GUILayout.BeginVertical();
+            // GUILayout.BeginHorizontal();
+            // GUILayout.BeginVertical(GUILayout.Width(windowSize.width - rightHandlePanelWidth));
+            // showSceneScroll = EditorGUILayout.BeginFoldoutHeaderGroup(showSceneScroll, "Scene Items");
+            // var usableHeight = (int)windowSize.height - 20 * 6 - 12 - ((!hasTerrainChunks && !hasSourceTerrain) ? helpBoxHeight : 0);
+            // if (showSceneScroll)
+            // {
+            //     GUILayout.BeginHorizontal();
+            //     GUILayout.Space(normalSpace);
+            //     sceneScrollPosition = GUILayout.BeginScrollView(sceneScrollPosition, false, true, GUILayout.Width(windowSize.width - normalSpace - rightHandlePanelWidth), GUILayout.Height(showModelPrefabsScroll ? usableHeight / 2f : usableHeight));
+            //     if (!worldChunkStatusDict.ContainsKey(selectIndex))
+            //     {
+            //         worldChunkStatusDict.Add(selectIndex, new Dictionary<string, int[]>());
+            //     }
+            //     var chunkStatusDict = worldChunkStatusDict[selectIndex];
+            //     var c = GUI.backgroundColor;
+            //     var line = 0;
+            //     // for (var row = 0; row < worldData.ChunkRowCount; row++)
+            //     // {
+            //     //     for (var col = 0; col < worldData.ChunkColumnCount; col++)
+            //     //     {
+            //     //         GUILayout.BeginHorizontal();
+            //     //         var chunkName = $"Chunk{DEF.TerrainSplitChar}{row}{DEF.TerrainSplitChar}{col}";
+            //     //         if (!chunkStatusDict.ContainsKey(chunkName))
+            //     //         {
+            //     //             chunkStatusDict.Add(chunkName, new int[2]);
+            //     //         }
+            //     //         line++;
+            //     //         GUI.backgroundColor = line % 2 == 0 ? Color.white : Color.black;
+            //     //         var unfold = chunkStatusDict[chunkName][(int)ChunkStatus.Fold] == DEF.TRUE;
+            //     //         if (GUILayout.Button(new GUIContent(EditorGUIUtility.IconContent(unfold ? "IN foldout on" : "IN foldout").image), guiSkin.box, GUILayout.Width(20), GUILayout.Height(20)))
+            //     //         {
+            //     //             chunkStatusDict[chunkName][(int)ChunkStatus.Fold] = 1 - chunkStatusDict[chunkName][(int)ChunkStatus.Fold];
+            //     //             GUIUtility.ExitGUI();
+            //     //         }
+            //     //         if (GUILayout.Button(chunkName, guiSkin.box, GUILayout.Height(20), GUILayout.Width(windowSize.width - 20 * 4 - rightBorder - 9.4f - normalSpace - border - rightHandlePanelWidth)))
+            //     //         {
+            //     //             chunkStatusDict[chunkName][(int)ChunkStatus.Fold] = 1 - chunkStatusDict[chunkName][(int)ChunkStatus.Fold];
+            //     //             GUIUtility.ExitGUI();
+            //     //         }
+            //     //         GUILayout.FlexibleSpace();
+            //     //         var visible = chunkStatusDict[chunkName][(int)ChunkStatus.Visible] == DEF.TRUE;
+            //     //         if (GUILayout.Button(new GUIContent(EditorGUIUtility.IconContent(visible ? "d_animationvisibilitytoggleon" : "d_animationvisibilitytoggleoff").image, "Display or Hide Chunk Items"), guiSkin.box, GUILayout.Height(20), GUILayout.Width(20)))
+            //     //         {
+            //     //             chunkStatusDict[chunkName][(int)ChunkStatus.Visible] = 1 - chunkStatusDict[chunkName][(int)ChunkStatus.Visible];
+            //     //             if (visible)
+            //     //             {
+            //     //                 itemHandler.UnloadItemChunk(envRoot, row, col,() => { LogManager.Log(LOGTag, $"{chunkName} items unload finished"); });
+            //     //             } else
+            //     //             {
+            //     //                 itemHandler.LoadItemChunk(envRoot, worldName, row, col, chunkSize, () => { LogManager.Log(LOGTag, $"{chunkName} items load finished"); });
+            //     //             }
+            //     //             GUIUtility.ExitGUI();
+            //     //         }
+            //     //         if (GUILayout.Button(new GUIContent(EditorGUIUtility.IconContent("d_ToolHandleCenter").image, "Focus Chunk Items"), guiSkin.box, GUILayout.Height(20), GUILayout.Width(20)))
+            //     //         {
+            //     //             ItemHandler.FocusItemChunk(envRoot, row, col, chunkSize);
+            //     //             GUIUtility.ExitGUI();
+            //     //         }
+            //     //         if (GUILayout.Button(new GUIContent(EditorGUIUtility.IconContent("SceneSaveGrey").image, "Save Chunk Items"), guiSkin.box, GUILayout.Height(20), GUILayout.Width(20)))
+            //     //         {
+            //     //             itemHandler.SaveItemChunk(envRoot, worldName, row, col, () => { LogManager.Log(LOGTag, $"{chunkName} items save success"); });
+            //     //             GUIUtility.ExitGUI();
+            //     //         }
+            //     //         GUILayout.Space(rightBorder);
+            //     //         GUILayout.EndHorizontal();
+            //     //         if (chunkStatusDict[chunkName][(int)ChunkStatus.Fold] != DEF.TRUE) continue;
+            //     //         var itemName = $"{row}{DEF.TerrainSplitChar}{col}";
+            //     //         if (!itemHandler.chunkItemsDict.ContainsKey(itemName))
+            //     //         {
+            //     //             itemHandler.chunkItemsDict.Add(itemName, new List<ModelInfo>());
+            //     //         }
+            //     //         var usableW = windowSize.width - normalSpace * 4 - 17.5f - verticalScrollBar - rightHandlePanelWidth;
+            //     //         for (var i = 0; i < itemHandler.chunkItemsDict[itemName].Count; i++)
+            //     //         {
+            //     //             line++;
+            //     //             GUI.backgroundColor = line % 2 == 0 ? Color.white : Color.black;
+            //     //             GUILayout.BeginHorizontal();
+            //     //             GUILayout.Box("", guiSkin.box, GUILayout.Height(normalSpace), GUILayout.Width(normalSpace));
+            //     //             var mi = itemHandler.chunkItemsDict[itemName][i];
+            //     //             GUILayout.Box(new GUIContent(EditorGUIUtility.IconContent(mi.suffix == "fbx" ? "d_PrefabModel Icon" : "d_Prefab Icon")), guiSkin.box, GUILayout.Width(18), GUILayout.Height(normalSpace));
+            //     //             if (mi.go != null)
+            //     //             {
+            //     //                 var go = mi.go;
+            //     //                 GUILayout.Box(go.name, guiSkin.box, GUILayout.Width(usableW), GUILayout.Height(normalSpace));
+            //     //             } else
+            //     //             {
+            //     //                 if (!markDeleteDict.ContainsKey(itemName))
+            //     //                 {
+            //     //                     markDeleteDict.Add(itemName, new List<ModelInfo>());
+            //     //                 }
+            //     //                 if (!markDeleteDict[itemName].Contains(mi))
+            //     //                 {
+            //     //                     markDeleteDict[itemName].Add(mi);
+            //     //                 }
+            //     //             }
+            //     //             GUILayout.FlexibleSpace();
+            //     //             if (GUILayout.Button(new GUIContent(EditorGUIUtility.IconContent("d_ToolHandleCenter")), guiSkin.box, GUILayout.Width(normalSpace), GUILayout.Height(normalSpace)))
+            //     //             {
+            //     //                 if (mi.go != null)
+            //     //                 {
+            //     //                     Selection.activeGameObject = mi.go;
+            //     //                     SceneView.FrameLastActiveSceneView();
+            //     //                 }
+            //     //                 GUIUtility.ExitGUI();
+            //     //             }
+            //     //             if (GUILayout.Button(new GUIContent(EditorGUIUtility.IconContent("d_winbtn_win_close@2x")), guiSkin.box, GUILayout.Width(normalSpace), GUILayout.Height(normalSpace)))
+            //     //             {
+            //     //                 if (mi.go != null)
+            //     //                 {
+            //     //                     var m = itemHandler.chunkItemsDict[itemName].Find(obj => obj.go == mi.go);
+            //     //                     itemHandler.chunkItemsDict[itemName].Remove(m);
+            //     //                     DestroyImmediate(mi.go);
+            //     //                 }
+            //     //                 GUIUtility.ExitGUI();
+            //     //             }
+            //     //             GUILayout.Space(2);
+            //     //             GUILayout.EndHorizontal();
+            //     //         }
+            //     //     }
+            //     // }
+            //     GUI.backgroundColor = c;
+            //     GUILayout.EndScrollView();
+            //     GUILayout.EndHorizontal();
+            // }
+            // EditorGUILayout.EndFoldoutHeaderGroup();
+            // GUILayout.EndVertical();
+            // GUILayout.BeginVertical(GUILayout.Width(rightHandlePanelWidth));
+            // showSceneScroll = EditorGUILayout.BeginFoldoutHeaderGroup(showSceneScroll, "Global Handler");
+            // if (showSceneScroll)
+            // {
+            //     if (GUILayout.Button("Load All", GUILayout.Width(rightHandlePanelWidth - border * 2)))
+            //     {
+            //         if (!itemChunksLoaded)
+            //         {
+            //             itemHandler.LoadAllItemChunks(envRoot, worldName, worldData.PiecesPerAxis, chunkSize, () =>
+            //             {
+            //                 LogManager.Log(LOGTag, "All item chunks load finished!");
+            //                 itemChunksLoaded = true;
+            //             });
+            //             if (!worldChunkStatusDict.ContainsKey(selectIndex))
+            //             {
+            //                 worldChunkStatusDict.Add(selectIndex, new Dictionary<string, int[]>());
+            //             }
+            //             var chunkStatusDict = worldChunkStatusDict[selectIndex];
+            //             // for (var row = 0; row < worldData.ChunkRowCount; row++)
+            //             // {
+            //             //     for (var col = 0; col < worldData.ChunkColumnCount; col++)
+            //             //     {
+            //             //         var chunkName = $"Chunk{DEF.TerrainSplitChar}{row}{DEF.TerrainSplitChar}{col}";
+            //             //         if (!chunkStatusDict.ContainsKey(chunkName))
+            //             //         {
+            //             //             chunkStatusDict.Add(chunkName, new int[2]);
+            //             //         }
+            //             //         chunkStatusDict[chunkName][(int)ChunkStatus.Visible] = 1;
+            //             //     }
+            //             // }
+            //         }
+            //         GUIUtility.ExitGUI();
+            //     }
+            //     if (GUILayout.Button("Clear All", GUILayout.Width(rightHandlePanelWidth - border * 2)))
+            //     {
+            //         itemChunksLoaded = false;
+            //         // itemHandler.UnloadAllItemChunks(envRoot, worldData.PiecesPerAxis, () => { LogManager.Log(LOGTag, "All item chunks unload finished!"); });
+            //         // var chunkStatusDict = worldChunkStatusDict[selectIndex];
+            //         // for (var row = 0; row < worldData.ChunkRowCount; row++)
+            //         // {
+            //         //     for (var col = 0; col < worldData.ChunkColumnCount; col++)
+            //         //     {
+            //         //         var chunkName = $"Chunk{DEF.TerrainSplitChar}{row}{DEF.TerrainSplitChar}{col}";
+            //         //         if (!chunkStatusDict.ContainsKey(chunkName))
+            //         //         {
+            //         //             chunkStatusDict.Add(chunkName, new int[2]);
+            //         //         }
+            //         //         chunkStatusDict[chunkName][(int)ChunkStatus.Visible] = 0;
+            //         //     }
+            //         // }
+            //         GUIUtility.ExitGUI();
+            //     }
+            //     if (GUILayout.Button("Save All", GUILayout.Width(rightHandlePanelWidth - border * 2)))
+            //     {
+            //         // itemHandler.SaveAllItemChunks(envRoot, worldName, worldData.PiecesPerAxis, () => { LogManager.Log(LOGTag, "Save succeed!"); });
+            //         GUIUtility.ExitGUI();
+            //     }
+            //     if (GUILayout.Button("Switch All Fold", GUILayout.Width(rightHandlePanelWidth - border * 2)))
+            //     {
+            //         if (worldChunkStatusDict.ContainsKey(selectIndex))
+            //         {
+            //             foreach (var kvp in worldChunkStatusDict[selectIndex])
+            //             {
+            //                 kvp.Value[(int)ChunkStatus.Fold] = 1 - kvp.Value[(int)ChunkStatus.Fold];
+            //             }
+            //         }
+            //         GUIUtility.ExitGUI();
+            //     }
+            // }
+            // EditorGUILayout.EndFoldoutHeaderGroup();
+            // GUILayout.EndVertical();
+            // GUILayout.EndHorizontal();
+            //
+            // //模型预制体
+            // GUILayout.BeginHorizontal();
+            // GUILayout.BeginVertical(GUILayout.Width(windowSize.width - rightHandlePanelWidth));
+            // showModelPrefabsScroll = EditorGUILayout.BeginFoldoutHeaderGroup(showModelPrefabsScroll, "Model Prefabs");
+            // if (showModelPrefabsScroll)
+            // {
+            //     modelPrefabsScrollPosition = GUILayout.BeginScrollView(modelPrefabsScrollPosition, false, true, GUILayout.Width(windowSize.width - rightHandlePanelWidth), GUILayout.Height(showSceneScroll ? usableHeight / 2f : usableHeight));
+            //     var c = GUI.backgroundColor;
+            //     var temp = itemHandler.modelAssetRoot;
+            //     DrawPrefabModelsFold(temp, 0);
+            //     modelSwitchFoldStatusTrigger = false;
+            //     GUI.backgroundColor = c;
+            //     GUILayout.EndScrollView();
+            // }
+            // EditorGUILayout.EndFoldoutHeaderGroup();
+            // GUILayout.EndVertical();
+            // GUILayout.BeginVertical(GUILayout.Width(rightHandlePanelWidth));
+            // showModelPrefabsScroll = EditorGUILayout.BeginFoldoutHeaderGroup(showModelPrefabsScroll, "Model Prefabs Handler");
+            // if (showModelPrefabsScroll)
+            // {
+            //     if (GUILayout.Button("Refresh Models", GUILayout.Width(rightHandlePanelWidth - border * 2)))
+            //     {
+            //         // itemHandler.LoadAllItems(itemRoot,worldName,chunkSliceX,chunkSliceY);
+            //         itemHandler.ResetModelPrefabs();
+            //         GUIUtility.ExitGUI();
+            //     }
+            //     if (GUILayout.Button("Switch All Fold", GUILayout.Width(rightHandlePanelWidth - border * 2)))
+            //     {
+            //         modelSwitchFoldStatus = !modelSwitchFoldStatus;
+            //         modelSwitchFoldStatusTrigger = true;
+            //         GUIUtility.ExitGUI();
+            //     }
+            // }
+            // EditorGUILayout.EndFoldoutHeaderGroup();
+            // GUILayout.EndVertical();
+            // GUILayout.EndHorizontal();
+            // if (!hasTerrainChunks && !hasSourceTerrain)
+            // {
+            //     EditorGUILayout.HelpBox("There is no terrain in the scene!", MessageType.Warning, true);
+            // }
+            // GUILayout.EndVertical();
             GUILayout.BeginVertical();
-            GUILayout.BeginHorizontal();
-            GUILayout.BeginVertical(GUILayout.Width(windowSize.width - rightHandlePanelWidth));
-            showSceneScroll = EditorGUILayout.BeginFoldoutHeaderGroup(showSceneScroll, "Scene Items");
-            var usableHeight = (int)windowSize.height - 20 * 6 - 12 - ((!hasTerrainChunks && !hasSourceTerrain) ? helpBoxHeight : 0);
-            if (showSceneScroll)
+            if (GUILayout.Button("Split Scene Item", GUILayout.Width(windowSize.width - 6), GUILayout.Height(normalSpace)))
             {
-                GUILayout.BeginHorizontal();
-                GUILayout.Space(normalSpace);
-                sceneScrollPosition = GUILayout.BeginScrollView(sceneScrollPosition, false, true, GUILayout.Width(windowSize.width - normalSpace - rightHandlePanelWidth), GUILayout.Height(showModelPrefabsScroll ? usableHeight / 2f : usableHeight));
-                if (!worldChunkStatusDict.ContainsKey(selectIndex))
-                {
-                    worldChunkStatusDict.Add(selectIndex, new Dictionary<string, int[]>());
-                }
-                var chunkStatusDict = worldChunkStatusDict[selectIndex];
-                var c = GUI.backgroundColor;
-                var line = 0;
-                // for (var row = 0; row < worldData.ChunkRowCount; row++)
-                // {
-                //     for (var col = 0; col < worldData.ChunkColumnCount; col++)
-                //     {
-                //         GUILayout.BeginHorizontal();
-                //         var chunkName = $"Chunk{DEF.TerrainSplitChar}{row}{DEF.TerrainSplitChar}{col}";
-                //         if (!chunkStatusDict.ContainsKey(chunkName))
-                //         {
-                //             chunkStatusDict.Add(chunkName, new int[2]);
-                //         }
-                //         line++;
-                //         GUI.backgroundColor = line % 2 == 0 ? Color.white : Color.black;
-                //         var unfold = chunkStatusDict[chunkName][(int)ChunkStatus.Fold] == DEF.TRUE;
-                //         if (GUILayout.Button(new GUIContent(EditorGUIUtility.IconContent(unfold ? "IN foldout on" : "IN foldout").image), guiSkin.box, GUILayout.Width(20), GUILayout.Height(20)))
-                //         {
-                //             chunkStatusDict[chunkName][(int)ChunkStatus.Fold] = 1 - chunkStatusDict[chunkName][(int)ChunkStatus.Fold];
-                //             GUIUtility.ExitGUI();
-                //         }
-                //         if (GUILayout.Button(chunkName, guiSkin.box, GUILayout.Height(20), GUILayout.Width(windowSize.width - 20 * 4 - rightBorder - 9.4f - normalSpace - border - rightHandlePanelWidth)))
-                //         {
-                //             chunkStatusDict[chunkName][(int)ChunkStatus.Fold] = 1 - chunkStatusDict[chunkName][(int)ChunkStatus.Fold];
-                //             GUIUtility.ExitGUI();
-                //         }
-                //         GUILayout.FlexibleSpace();
-                //         var visible = chunkStatusDict[chunkName][(int)ChunkStatus.Visible] == DEF.TRUE;
-                //         if (GUILayout.Button(new GUIContent(EditorGUIUtility.IconContent(visible ? "d_animationvisibilitytoggleon" : "d_animationvisibilitytoggleoff").image, "Display or Hide Chunk Items"), guiSkin.box, GUILayout.Height(20), GUILayout.Width(20)))
-                //         {
-                //             chunkStatusDict[chunkName][(int)ChunkStatus.Visible] = 1 - chunkStatusDict[chunkName][(int)ChunkStatus.Visible];
-                //             if (visible)
-                //             {
-                //                 itemHandler.UnloadItemChunk(envRoot, row, col,() => { LogManager.Log(LOGTag, $"{chunkName} items unload finished"); });
-                //             } else
-                //             {
-                //                 itemHandler.LoadItemChunk(envRoot, worldName, row, col, chunkSize, () => { LogManager.Log(LOGTag, $"{chunkName} items load finished"); });
-                //             }
-                //             GUIUtility.ExitGUI();
-                //         }
-                //         if (GUILayout.Button(new GUIContent(EditorGUIUtility.IconContent("d_ToolHandleCenter").image, "Focus Chunk Items"), guiSkin.box, GUILayout.Height(20), GUILayout.Width(20)))
-                //         {
-                //             ItemHandler.FocusItemChunk(envRoot, row, col, chunkSize);
-                //             GUIUtility.ExitGUI();
-                //         }
-                //         if (GUILayout.Button(new GUIContent(EditorGUIUtility.IconContent("SceneSaveGrey").image, "Save Chunk Items"), guiSkin.box, GUILayout.Height(20), GUILayout.Width(20)))
-                //         {
-                //             itemHandler.SaveItemChunk(envRoot, worldName, row, col, () => { LogManager.Log(LOGTag, $"{chunkName} items save success"); });
-                //             GUIUtility.ExitGUI();
-                //         }
-                //         GUILayout.Space(rightBorder);
-                //         GUILayout.EndHorizontal();
-                //         if (chunkStatusDict[chunkName][(int)ChunkStatus.Fold] != DEF.TRUE) continue;
-                //         var itemName = $"{row}{DEF.TerrainSplitChar}{col}";
-                //         if (!itemHandler.chunkItemsDict.ContainsKey(itemName))
-                //         {
-                //             itemHandler.chunkItemsDict.Add(itemName, new List<ModelInfo>());
-                //         }
-                //         var usableW = windowSize.width - normalSpace * 4 - 17.5f - verticalScrollBar - rightHandlePanelWidth;
-                //         for (var i = 0; i < itemHandler.chunkItemsDict[itemName].Count; i++)
-                //         {
-                //             line++;
-                //             GUI.backgroundColor = line % 2 == 0 ? Color.white : Color.black;
-                //             GUILayout.BeginHorizontal();
-                //             GUILayout.Box("", guiSkin.box, GUILayout.Height(normalSpace), GUILayout.Width(normalSpace));
-                //             var mi = itemHandler.chunkItemsDict[itemName][i];
-                //             GUILayout.Box(new GUIContent(EditorGUIUtility.IconContent(mi.suffix == "fbx" ? "d_PrefabModel Icon" : "d_Prefab Icon")), guiSkin.box, GUILayout.Width(18), GUILayout.Height(normalSpace));
-                //             if (mi.go != null)
-                //             {
-                //                 var go = mi.go;
-                //                 GUILayout.Box(go.name, guiSkin.box, GUILayout.Width(usableW), GUILayout.Height(normalSpace));
-                //             } else
-                //             {
-                //                 if (!markDeleteDict.ContainsKey(itemName))
-                //                 {
-                //                     markDeleteDict.Add(itemName, new List<ModelInfo>());
-                //                 }
-                //                 if (!markDeleteDict[itemName].Contains(mi))
-                //                 {
-                //                     markDeleteDict[itemName].Add(mi);
-                //                 }
-                //             }
-                //             GUILayout.FlexibleSpace();
-                //             if (GUILayout.Button(new GUIContent(EditorGUIUtility.IconContent("d_ToolHandleCenter")), guiSkin.box, GUILayout.Width(normalSpace), GUILayout.Height(normalSpace)))
-                //             {
-                //                 if (mi.go != null)
-                //                 {
-                //                     Selection.activeGameObject = mi.go;
-                //                     SceneView.FrameLastActiveSceneView();
-                //                 }
-                //                 GUIUtility.ExitGUI();
-                //             }
-                //             if (GUILayout.Button(new GUIContent(EditorGUIUtility.IconContent("d_winbtn_win_close@2x")), guiSkin.box, GUILayout.Width(normalSpace), GUILayout.Height(normalSpace)))
-                //             {
-                //                 if (mi.go != null)
-                //                 {
-                //                     var m = itemHandler.chunkItemsDict[itemName].Find(obj => obj.go == mi.go);
-                //                     itemHandler.chunkItemsDict[itemName].Remove(m);
-                //                     DestroyImmediate(mi.go);
-                //                 }
-                //                 GUIUtility.ExitGUI();
-                //             }
-                //             GUILayout.Space(2);
-                //             GUILayout.EndHorizontal();
-                //         }
-                //     }
-                // }
-                GUI.backgroundColor = c;
-                GUILayout.EndScrollView();
-                GUILayout.EndHorizontal();
-            }
-            EditorGUILayout.EndFoldoutHeaderGroup();
-            GUILayout.EndVertical();
-            GUILayout.BeginVertical(GUILayout.Width(rightHandlePanelWidth));
-            showSceneScroll = EditorGUILayout.BeginFoldoutHeaderGroup(showSceneScroll, "Global Handler");
-            if (showSceneScroll)
-            {
-                if (GUILayout.Button("Load All", GUILayout.Width(rightHandlePanelWidth - border * 2)))
-                {
-                    if (!itemChunksLoaded)
-                    {
-                        itemHandler.LoadAllItemChunks(envRoot, worldName, worldData.PiecesPerAxis, chunkSize, () =>
-                        {
-                            LogManager.Log(LOGTag, "All item chunks load finished!");
-                            itemChunksLoaded = true;
-                        });
-                        if (!worldChunkStatusDict.ContainsKey(selectIndex))
-                        {
-                            worldChunkStatusDict.Add(selectIndex, new Dictionary<string, int[]>());
-                        }
-                        var chunkStatusDict = worldChunkStatusDict[selectIndex];
-                        // for (var row = 0; row < worldData.ChunkRowCount; row++)
-                        // {
-                        //     for (var col = 0; col < worldData.ChunkColumnCount; col++)
-                        //     {
-                        //         var chunkName = $"Chunk{DEF.TerrainSplitChar}{row}{DEF.TerrainSplitChar}{col}";
-                        //         if (!chunkStatusDict.ContainsKey(chunkName))
-                        //         {
-                        //             chunkStatusDict.Add(chunkName, new int[2]);
-                        //         }
-                        //         chunkStatusDict[chunkName][(int)ChunkStatus.Visible] = 1;
-                        //     }
-                        // }
-                    }
-                    GUIUtility.ExitGUI();
-                }
-                if (GUILayout.Button("Clear All", GUILayout.Width(rightHandlePanelWidth - border * 2)))
-                {
-                    itemChunksLoaded = false;
-                    // itemHandler.UnloadAllItemChunks(envRoot, worldData.PiecesPerAxis, () => { LogManager.Log(LOGTag, "All item chunks unload finished!"); });
-                    // var chunkStatusDict = worldChunkStatusDict[selectIndex];
-                    // for (var row = 0; row < worldData.ChunkRowCount; row++)
-                    // {
-                    //     for (var col = 0; col < worldData.ChunkColumnCount; col++)
-                    //     {
-                    //         var chunkName = $"Chunk{DEF.TerrainSplitChar}{row}{DEF.TerrainSplitChar}{col}";
-                    //         if (!chunkStatusDict.ContainsKey(chunkName))
-                    //         {
-                    //             chunkStatusDict.Add(chunkName, new int[2]);
-                    //         }
-                    //         chunkStatusDict[chunkName][(int)ChunkStatus.Visible] = 0;
-                    //     }
-                    // }
-                    GUIUtility.ExitGUI();
-                }
-                if (GUILayout.Button("Save All", GUILayout.Width(rightHandlePanelWidth - border * 2)))
-                {
-                    // itemHandler.SaveAllItemChunks(envRoot, worldName, worldData.PiecesPerAxis, () => { LogManager.Log(LOGTag, "Save succeed!"); });
-                    GUIUtility.ExitGUI();
-                }
-                if (GUILayout.Button("Switch All Fold", GUILayout.Width(rightHandlePanelWidth - border * 2)))
-                {
-                    if (worldChunkStatusDict.ContainsKey(selectIndex))
-                    {
-                        foreach (var kvp in worldChunkStatusDict[selectIndex])
-                        {
-                            kvp.Value[(int)ChunkStatus.Fold] = 1 - kvp.Value[(int)ChunkStatus.Fold];
-                        }
-                    }
-                    GUIUtility.ExitGUI();
-                }
-            }
-            EditorGUILayout.EndFoldoutHeaderGroup();
-            GUILayout.EndVertical();
-            GUILayout.EndHorizontal();
-
-            //模型预制体
-            GUILayout.BeginHorizontal();
-            GUILayout.BeginVertical(GUILayout.Width(windowSize.width - rightHandlePanelWidth));
-            showModelPrefabsScroll = EditorGUILayout.BeginFoldoutHeaderGroup(showModelPrefabsScroll, "Model Prefabs");
-            if (showModelPrefabsScroll)
-            {
-                modelPrefabsScrollPosition = GUILayout.BeginScrollView(modelPrefabsScrollPosition, false, true, GUILayout.Width(windowSize.width - rightHandlePanelWidth), GUILayout.Height(showSceneScroll ? usableHeight / 2f : usableHeight));
-                var c = GUI.backgroundColor;
-                var temp = itemHandler.modelAssetRoot;
-                DrawPrefabModelsFold(temp, 0);
-                modelSwitchFoldStatusTrigger = false;
-                GUI.backgroundColor = c;
-                GUILayout.EndScrollView();
-            }
-            EditorGUILayout.EndFoldoutHeaderGroup();
-            GUILayout.EndVertical();
-            GUILayout.BeginVertical(GUILayout.Width(rightHandlePanelWidth));
-            showModelPrefabsScroll = EditorGUILayout.BeginFoldoutHeaderGroup(showModelPrefabsScroll, "Model Prefabs Handler");
-            if (showModelPrefabsScroll)
-            {
-                if (GUILayout.Button("Refresh Models", GUILayout.Width(rightHandlePanelWidth - border * 2)))
-                {
-                    // itemHandler.LoadAllItems(itemRoot,worldName,chunkSliceX,chunkSliceY);
-                    itemHandler.ResetModelPrefabs();
-                    GUIUtility.ExitGUI();
-                }
-                if (GUILayout.Button("Switch All Fold", GUILayout.Width(rightHandlePanelWidth - border * 2)))
-                {
-                    modelSwitchFoldStatus = !modelSwitchFoldStatus;
-                    modelSwitchFoldStatusTrigger = true;
-                    GUIUtility.ExitGUI();
-                }
-            }
-            EditorGUILayout.EndFoldoutHeaderGroup();
-            GUILayout.EndVertical();
-            GUILayout.EndHorizontal();
-            if (!hasTerrainChunks && !hasSourceTerrain)
-            {
-                EditorGUILayout.HelpBox("There is no terrain in the scene!", MessageType.Warning, true);
+                itemHandler.SplitSceneItemWithChunk(envRoot,worldName,terrainHandler);
+                GUIUtility.ExitGUI();
             }
             GUILayout.EndVertical();
         }

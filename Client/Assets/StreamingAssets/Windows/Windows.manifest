@@ -1,5 +1,5 @@
 ManifestFileVersion: 0
-CRC: 268931919
+CRC: 664107060
 AssetBundleManifest:
   AssetBundleInfos:
     Info_0:
@@ -34,17 +34,53 @@ AssetBundleManifest:
       Name: start.ab
       Dependencies: {}
     Info_10:
-      Name: chunk_0_0.ab
+      Name: worlddata.ab
       Dependencies: {}
     Info_11:
-      Name: chunk_0_1.ab
+      Name: chunk_0.ab
       Dependencies: {}
     Info_12:
-      Name: chunk_1_0.ab
+      Name: chunk_1.ab
       Dependencies: {}
     Info_13:
-      Name: chunk_1_1.ab
+      Name: chunk_10.ab
       Dependencies: {}
     Info_14:
-      Name: worlddata.ab
+      Name: chunk_11.ab
+      Dependencies: {}
+    Info_15:
+      Name: chunk_12.ab
+      Dependencies: {}
+    Info_16:
+      Name: chunk_13.ab
+      Dependencies: {}
+    Info_17:
+      Name: chunk_14.ab
+      Dependencies: {}
+    Info_18:
+      Name: chunk_15.ab
+      Dependencies: {}
+    Info_19:
+      Name: chunk_2.ab
+      Dependencies: {}
+    Info_20:
+      Name: chunk_3.ab
+      Dependencies: {}
+    Info_21:
+      Name: chunk_4.ab
+      Dependencies: {}
+    Info_22:
+      Name: chunk_6.ab
+      Dependencies: {}
+    Info_23:
+      Name: chunk_7.ab
+      Dependencies: {}
+    Info_24:
+      Name: chunk_8.ab
+      Dependencies: {}
+    Info_25:
+      Name: chunk_5.ab
+      Dependencies: {}
+    Info_26:
+      Name: chunk_9.ab
       Dependencies: {}

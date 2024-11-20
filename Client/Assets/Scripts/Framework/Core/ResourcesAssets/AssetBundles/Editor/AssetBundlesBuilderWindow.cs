@@ -226,7 +226,8 @@ namespace Framework.Core.ResourcesAssets
                 if (RuleMap[fullProjectPath].IsDirectory)
                 {
                     assetTypeUI = true;
-                    GUILayout.Label("AssetType",GUILayout.Height(20),GUILayout.Width(assetTypeWidth));
+                    GUIContent c = new GUIContent("AssetType", "asset type split with ';' exp: prefab;png");
+                    GUILayout.Label(c,GUILayout.Height(20),GUILayout.Width(assetTypeWidth));
                     RuleMap[fullProjectPath].AssetType = EditorGUILayout.TextField(RuleMap[fullProjectPath].AssetType,GUILayout.Height(20),GUILayout.Width(assetTypeTextFieldWidth));
                 }
                 
@@ -323,7 +324,10 @@ namespace Framework.Core.ResourcesAssets
                     var typeDict = new HashSet<string>();
                     foreach (var type in types)
                     {
-                        typeDict.Add($".{type}");
+                        if (!string.IsNullOrEmpty(type) && !typeDict.Contains(type))
+                        {
+                            typeDict.Add($".{type}");
+                        }
                     }
                     LogManager.Log(LOGTag,"types",types);
                     // LogManager.Log(LOGTag,list.Count());

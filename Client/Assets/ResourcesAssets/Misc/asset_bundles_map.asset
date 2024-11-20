@@ -48,23 +48,55 @@ MonoBehaviour:
     - Assets/ResourcesAssets/UI/Pages/Start\StartUI.prefab
     bundleName: start
   - assetBundlesMap:
-    - Assets/ResourcesAssets/Worlds/MainWorld/Chunk_0_0\Collider.bytes
-    - Assets/ResourcesAssets/Worlds/MainWorld/Chunk_0_0\Terrain.asset
-    bundleName: chunk_0_0
-  - assetBundlesMap:
-    - Assets/ResourcesAssets/Worlds/MainWorld/Chunk_0_1\Collider.bytes
-    - Assets/ResourcesAssets/Worlds/MainWorld/Chunk_0_1\Terrain.asset
-    bundleName: chunk_0_1
-  - assetBundlesMap:
-    - Assets/ResourcesAssets/Worlds/MainWorld/Chunk_1_0\Collider.bytes
-    - Assets/ResourcesAssets/Worlds/MainWorld/Chunk_1_0\Terrain.asset
-    bundleName: chunk_1_0
-  - assetBundlesMap:
-    - Assets/ResourcesAssets/Worlds/MainWorld/Chunk_1_1\Collider.bytes
-    - Assets/ResourcesAssets/Worlds/MainWorld/Chunk_1_1\Terrain.asset
-    bundleName: chunk_1_1
-  - assetBundlesMap:
     - Assets/ResourcesAssets/Worlds/MainWorld/WorldData.bytes
     bundleName: worlddata
+  - assetBundlesMap:
+    - Assets/ResourcesAssets/Worlds/MainWorld/Chunk_0\Terrain.asset
+    bundleName: chunk_0
+  - assetBundlesMap:
+    - Assets/ResourcesAssets/Worlds/MainWorld/Chunk_1\Terrain.asset
+    bundleName: chunk_1
+  - assetBundlesMap:
+    - Assets/ResourcesAssets/Worlds/MainWorld/Chunk_10\Terrain.asset
+    bundleName: chunk_10
+  - assetBundlesMap:
+    - Assets/ResourcesAssets/Worlds/MainWorld/Chunk_11\Terrain.asset
+    bundleName: chunk_11
+  - assetBundlesMap:
+    - Assets/ResourcesAssets/Worlds/MainWorld/Chunk_12\Terrain.asset
+    bundleName: chunk_12
+  - assetBundlesMap:
+    - Assets/ResourcesAssets/Worlds/MainWorld/Chunk_13\Terrain.asset
+    bundleName: chunk_13
+  - assetBundlesMap:
+    - Assets/ResourcesAssets/Worlds/MainWorld/Chunk_14\Terrain.asset
+    bundleName: chunk_14
+  - assetBundlesMap:
+    - Assets/ResourcesAssets/Worlds/MainWorld/Chunk_15\Terrain.asset
+    bundleName: chunk_15
+  - assetBundlesMap:
+    - Assets/ResourcesAssets/Worlds/MainWorld/Chunk_2\Terrain.asset
+    bundleName: chunk_2
+  - assetBundlesMap:
+    - Assets/ResourcesAssets/Worlds/MainWorld/Chunk_3\Terrain.asset
+    bundleName: chunk_3
+  - assetBundlesMap:
+    - Assets/ResourcesAssets/Worlds/MainWorld/Chunk_4\Terrain.asset
+    bundleName: chunk_4
+  - assetBundlesMap:
+    - Assets/ResourcesAssets/Worlds/MainWorld/Chunk_6\Terrain.asset
+    bundleName: chunk_6
+  - assetBundlesMap:
+    - Assets/ResourcesAssets/Worlds/MainWorld/Chunk_7\Terrain.asset
+    bundleName: chunk_7
+  - assetBundlesMap:
+    - Assets/ResourcesAssets/Worlds/MainWorld/Chunk_8\Terrain.asset
+    bundleName: chunk_8
+  - assetBundlesMap:
+    - Assets/ResourcesAssets/Worlds/MainWorld/Chunk_5\Terrain.asset
+    bundleName: chunk_5
+  - assetBundlesMap:
+    - Assets/ResourcesAssets/Worlds/MainWorld/Chunk_9\Terrain.asset
+    bundleName: chunk_9
   - assetBundlesMap: []
     bundleName: Misc

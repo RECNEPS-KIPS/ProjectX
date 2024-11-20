@@ -1,0 +1,26 @@
+ManifestFileVersion: 0
+CRC: 2115276295
+Hashes:
+  AssetFileHash:
+    serializedVersion: 2
+    Hash: 643ae966597b9c710cd854deeadc30a2
+  TypeTreeHash:
+    serializedVersion: 2
+    Hash: 2d467e57f96dcb7b82cd412dd5249b61
+  IncrementalBuildHash:
+    serializedVersion: 2
+    Hash: 643ae966597b9c710cd854deeadc30a2
+HashAppended: 0
+ClassTypes:
+- Class: 28
+  Script: {instanceID: 0}
+- Class: 48
+  Script: {instanceID: 0}
+- Class: 156
+  Script: {instanceID: 0}
+- Class: 1953259897
+  Script: {instanceID: 0}
+SerializeReferenceClassIdentifiers: []
+Assets:
+- Assets/ResourcesAssets/Worlds/MainWorld/Chunk_15/Terrain.asset
+Dependencies: []

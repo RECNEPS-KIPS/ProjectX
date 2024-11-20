@@ -32,8 +32,6 @@ namespace Framework
             TPS_C = 3,
             TOPDOWN = 4,
         }
-        
-        public const int CHUNK_SIZE = 256;
         public const string ENV_ROOT = "[Environment]"; //根节点
         
         // public const string COLLIDER_ROOT = "[Collider]"; //碰撞盒节点

@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using Framework.Common;
+using Framework.Core.Manager.ResourcesLoad;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.Rendering;
@@ -40,7 +41,7 @@ namespace Framework.Core.World
 
     public class ItemHandler
     {
-        private const string logTag = "ItemHandler";
+        private const string LOGTag = "ItemHandler";
         private FolderLevelNode m_modelAssetRoot;
         public FolderLevelNode modelAssetRoot => m_modelAssetRoot ??= SearchModelAssetDir();
         public readonly Dictionary<string, List<ModelInfo>> chunkItemsDict = new();
@@ -66,7 +67,7 @@ namespace Framework.Core.World
             string filePath = $"{DEF.RESOURCES_ASSETS_PATH}Environment/{worldName}/Chunk{DEF.TerrainSplitChar}{chunkX}{DEF.TerrainSplitChar}{chunkY}/data.bytes";
             if (!File.Exists(filePath))
             {
-                LogManager.Log(logTag, "The item data file does not exist");
+                LogManager.Log(LOGTag, "The item data file does not exist");
                 return;
             }
 
@@ -109,7 +110,7 @@ namespace Framework.Core.World
             }
             catch (Exception e)
             {
-                LogManager.LogError(logTag, e.Message);
+                LogManager.LogError(LOGTag, e.Message);
                 success = false;
             }
 
@@ -240,7 +241,7 @@ namespace Framework.Core.World
             // var filePath = $"{DEF.RESOURCES_ASSETS_PATH}Environment/{worldName}/Chunk{DEF.TerrainSplitChar}{chunkY}{DEF.TerrainSplitChar}{chunkX}/data.bytes";
             // if (!File.Exists(filePath))
             // {
-            //     LogManager.Log(logTag, "There is no scene object data");
+            //     LogManager.Log(LOGTag, "There is no scene object data");
             //     return;
             // }
             //
@@ -280,7 +281,7 @@ namespace Framework.Core.World
             // }
             // catch (Exception)
             // {
-            //     LogManager.Log(logTag, "There is no scene object data");
+            //     LogManager.Log(LOGTag, "There is no scene object data");
             //     return;
             // }
             //
@@ -453,7 +454,7 @@ namespace Framework.Core.World
             }
             else
             {
-                LogManager.LogWarning(logTag, $"Unable to focus because the item chunk[{iName}] does not exist");
+                LogManager.LogWarning(LOGTag, $"Unable to focus because the item chunk[{iName}] does not exist");
             }
         }
 
@@ -520,12 +521,93 @@ namespace Framework.Core.World
                         parent.subdirectories.Add(temp);
                     }
                 }
-                // LogManager.Log(logTag,partDir);
+                // LogManager.Log(LOGTag,partDir);
             }
 
             return root;
         }
 
         #endregion
+        
+        public void SplitSceneItemWithChunk(Transform envRoot,string worldName,TerrainHandler handler)
+        {
+            var worldDataPath = $"{DEF.RESOURCES_ASSETS_PATH}/Worlds/{worldName}/WorldData.bytes";
+            if (!File.Exists(worldDataPath))
+            {
+                LogManager.Log(LOGTag, $"There is no world data,path:{worldName}");
+                return;
+            }
+            var assetData = ResourcesLoadManager.LoadAsset<TextAsset>(worldDataPath);
+            var data = BinaryUtils.Bytes2Object<WorldData>(assetData.bytes);
+            var cnt = data.PiecesPerAxis * data.PiecesPerAxis;
+            var Bounds = new Bounds[cnt];
+            var chunkRoots = new Transform[cnt];
+            for (var i = 0; i < cnt; i++)
+            {
+                var chunkName = $"Chunk{DEF.TerrainSplitChar}{i}";
+                var chunkRoot = envRoot.Find(chunkName);
+                
+                var colliderDataPath = $"{DEF.RESOURCES_ASSETS_PATH}/Worlds/{worldName}/{chunkName}/Collider.bytes";
+                if (!File.Exists(colliderDataPath))
+                {
+                    LogManager.Log(LOGTag, $"There is no colliderData,path:{colliderDataPath}");
+                    return;
+                }
+                var colliderAsset = ResourcesLoadManager.LoadAsset<TextAsset>(colliderDataPath);
+                var colliderData = BinaryUtils.Bytes2Object<ColliderInfo>(colliderAsset.bytes);
+                
+                if (chunkRoot == null)
+                {
+                    chunkRoot = new GameObject(chunkName).transform;
+                }
+                var colliderTrs = chunkRoot.Find("Collider");
+                if (colliderTrs == null)
+                {
+                    colliderTrs = new GameObject("Collider").transform;
+                }
+
+                colliderTrs.transform.SetParent(chunkRoot);
+                colliderTrs.localRotation = Quaternion.identity;
+                colliderTrs.localScale = Vector3.one;
+                var collider = colliderTrs.gameObject.AddComponent<BoxCollider>();
+                colliderTrs.localPosition = new Vector3(colliderData.PositionX,colliderData.PositionY,colliderData.PositionZ);
+                collider.size = new Vector3(colliderData.SizeX,colliderData.SizeY,colliderData.SizeZ);
+                collider.isTrigger = true;
+                Bounds[i] = collider.bounds;
+                chunkRoots[i] = chunkRoot;
+            }
+            for (var i = 0; i < envRoot.childCount; i++)
+            {
+                var t = envRoot.GetChild(i);
+                var chunkIdx = -1;
+                for (var j = 0; j < Bounds.Length; j++)
+                {
+                    if (Bounds[j].Contains(t.position))
+                    {
+                        LogManager.Log(LOGTag,$"{t.name} is in chunk: {j}");
+                        chunkIdx = j;
+                        break;
+                    }
+                }
+
+                if (chunkIdx >= 0)
+                {
+                    var itemTrs = chunkRoots[chunkIdx].Find("[Item]");
+                    if (itemTrs == null)
+                    {
+                        itemTrs = new GameObject("[Item]").transform;
+                        itemTrs.SetParent(chunkRoots[chunkIdx]);
+                        itemTrs.localRotation = Quaternion.identity;
+                        itemTrs.localScale = Vector3.one;
+                        itemTrs.localPosition = Vector3.zero;
+                    }
+                    t.SetParent(itemTrs);
+                }
+                else
+                {
+                    LogManager.LogWarning(LOGTag,$"{t.name} is not in any chunk");
+                }
+            }
+        }
     }
 }
