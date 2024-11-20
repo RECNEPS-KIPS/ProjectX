@@ -727,11 +727,34 @@ namespace Framework.Core.World
             // }
             // GUILayout.EndVertical();
             GUILayout.BeginVertical();
+            GUILayout.FlexibleSpace();
+            GUILayout.BeginVertical();
             if (GUILayout.Button("Split Scene Item", GUILayout.Width(windowSize.width - 6), GUILayout.Height(normalSpace)))
             {
                 itemHandler.SplitSceneItemWithChunk(envRoot,worldName,terrainHandler);
                 GUIUtility.ExitGUI();
             }
+            GUILayout.EndVertical();
+            
+            GUILayout.BeginVertical();
+            if (GUILayout.Button("Revert Scene Item", GUILayout.Width(windowSize.width - 6), GUILayout.Height(normalSpace)))
+            {
+                itemHandler.RevertSceneItem(envRoot,worldName);
+                GUIUtility.ExitGUI();
+            }
+            GUILayout.EndVertical();
+
+            Color c = GUI.backgroundColor;
+            GUI.backgroundColor = Color.green;
+            GUILayout.BeginVertical();
+            if (GUILayout.Button("Export", GUILayout.Width(windowSize.width - 6), GUILayout.Height(normalSpace)))
+            {
+                itemHandler.ExportScene(envRoot,worldName);
+                GUIUtility.ExitGUI();
+            }
+
+            GUI.backgroundColor = c;
+            GUILayout.EndVertical();
             GUILayout.EndVertical();
         }
 

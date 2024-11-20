@@ -51,52 +51,95 @@ MonoBehaviour:
     - Assets/ResourcesAssets/Worlds/MainWorld/WorldData.bytes
     bundleName: worlddata
   - assetBundlesMap:
+    - Assets/ResourcesAssets/Worlds/MainWorld/Chunk_0\Collider.bytes
+    - Assets/ResourcesAssets/Worlds/MainWorld/Chunk_0\ItemChunk.prefab
     - Assets/ResourcesAssets/Worlds/MainWorld/Chunk_0\Terrain.asset
+    - Assets/ResourcesAssets/Worlds/MainWorld/Chunk_0\TerrainInfo.bytes
     bundleName: chunk_0
   - assetBundlesMap:
+    - Assets/ResourcesAssets/Worlds/MainWorld/Chunk_1\Collider.bytes
+    - Assets/ResourcesAssets/Worlds/MainWorld/Chunk_1\ItemChunk.prefab
     - Assets/ResourcesAssets/Worlds/MainWorld/Chunk_1\Terrain.asset
+    - Assets/ResourcesAssets/Worlds/MainWorld/Chunk_1\TerrainInfo.bytes
     bundleName: chunk_1
   - assetBundlesMap:
+    - Assets/ResourcesAssets/Worlds/MainWorld/Chunk_10\Collider.bytes
     - Assets/ResourcesAssets/Worlds/MainWorld/Chunk_10\Terrain.asset
+    - Assets/ResourcesAssets/Worlds/MainWorld/Chunk_10\TerrainInfo.bytes
     bundleName: chunk_10
   - assetBundlesMap:
+    - Assets/ResourcesAssets/Worlds/MainWorld/Chunk_11\Collider.bytes
+    - Assets/ResourcesAssets/Worlds/MainWorld/Chunk_11\ItemChunk.prefab
     - Assets/ResourcesAssets/Worlds/MainWorld/Chunk_11\Terrain.asset
+    - Assets/ResourcesAssets/Worlds/MainWorld/Chunk_11\TerrainInfo.bytes
     bundleName: chunk_11
   - assetBundlesMap:
+    - Assets/ResourcesAssets/Worlds/MainWorld/Chunk_12\Collider.bytes
     - Assets/ResourcesAssets/Worlds/MainWorld/Chunk_12\Terrain.asset
+    - Assets/ResourcesAssets/Worlds/MainWorld/Chunk_12\TerrainInfo.bytes
     bundleName: chunk_12
   - assetBundlesMap:
+    - Assets/ResourcesAssets/Worlds/MainWorld/Chunk_13\Collider.bytes
     - Assets/ResourcesAssets/Worlds/MainWorld/Chunk_13\Terrain.asset
+    - Assets/ResourcesAssets/Worlds/MainWorld/Chunk_13\TerrainInfo.bytes
     bundleName: chunk_13
   - assetBundlesMap:
+    - Assets/ResourcesAssets/Worlds/MainWorld/Chunk_14\Collider.bytes
+    - Assets/ResourcesAssets/Worlds/MainWorld/Chunk_14\ItemChunk.prefab
     - Assets/ResourcesAssets/Worlds/MainWorld/Chunk_14\Terrain.asset
+    - Assets/ResourcesAssets/Worlds/MainWorld/Chunk_14\TerrainInfo.bytes
     bundleName: chunk_14
   - assetBundlesMap:
+    - Assets/ResourcesAssets/Worlds/MainWorld/Chunk_15\Collider.bytes
+    - Assets/ResourcesAssets/Worlds/MainWorld/Chunk_15\ItemChunk.prefab
     - Assets/ResourcesAssets/Worlds/MainWorld/Chunk_15\Terrain.asset
+    - Assets/ResourcesAssets/Worlds/MainWorld/Chunk_15\TerrainInfo.bytes
     bundleName: chunk_15
   - assetBundlesMap:
+    - Assets/ResourcesAssets/Worlds/MainWorld/Chunk_2\Collider.bytes
+    - Assets/ResourcesAssets/Worlds/MainWorld/Chunk_2\ItemChunk.prefab
     - Assets/ResourcesAssets/Worlds/MainWorld/Chunk_2\Terrain.asset
+    - Assets/ResourcesAssets/Worlds/MainWorld/Chunk_2\TerrainInfo.bytes
     bundleName: chunk_2
   - assetBundlesMap:
+    - Assets/ResourcesAssets/Worlds/MainWorld/Chunk_3\Collider.bytes
+    - Assets/ResourcesAssets/Worlds/MainWorld/Chunk_3\ItemChunk.prefab
     - Assets/ResourcesAssets/Worlds/MainWorld/Chunk_3\Terrain.asset
+    - Assets/ResourcesAssets/Worlds/MainWorld/Chunk_3\TerrainInfo.bytes
     bundleName: chunk_3
   - assetBundlesMap:
+    - Assets/ResourcesAssets/Worlds/MainWorld/Chunk_4\Collider.bytes
+    - Assets/ResourcesAssets/Worlds/MainWorld/Chunk_4\ItemChunk.prefab
     - Assets/ResourcesAssets/Worlds/MainWorld/Chunk_4\Terrain.asset
+    - Assets/ResourcesAssets/Worlds/MainWorld/Chunk_4\TerrainInfo.bytes
     bundleName: chunk_4
   - assetBundlesMap:
+    - Assets/ResourcesAssets/Worlds/MainWorld/Chunk_6\Collider.bytes
+    - Assets/ResourcesAssets/Worlds/MainWorld/Chunk_6\ItemChunk.prefab
     - Assets/ResourcesAssets/Worlds/MainWorld/Chunk_6\Terrain.asset
+    - Assets/ResourcesAssets/Worlds/MainWorld/Chunk_6\TerrainInfo.bytes
     bundleName: chunk_6
   - assetBundlesMap:
+    - Assets/ResourcesAssets/Worlds/MainWorld/Chunk_7\Collider.bytes
+    - Assets/ResourcesAssets/Worlds/MainWorld/Chunk_7\ItemChunk.prefab
     - Assets/ResourcesAssets/Worlds/MainWorld/Chunk_7\Terrain.asset
+    - Assets/ResourcesAssets/Worlds/MainWorld/Chunk_7\TerrainInfo.bytes
     bundleName: chunk_7
   - assetBundlesMap:
+    - Assets/ResourcesAssets/Worlds/MainWorld/Chunk_8\Collider.bytes
     - Assets/ResourcesAssets/Worlds/MainWorld/Chunk_8\Terrain.asset
+    - Assets/ResourcesAssets/Worlds/MainWorld/Chunk_8\TerrainInfo.bytes
     bundleName: chunk_8
   - assetBundlesMap:
+    - Assets/ResourcesAssets/Worlds/MainWorld/Chunk_5\Collider.bytes
+    - Assets/ResourcesAssets/Worlds/MainWorld/Chunk_5\ItemChunk.prefab
     - Assets/ResourcesAssets/Worlds/MainWorld/Chunk_5\Terrain.asset
+    - Assets/ResourcesAssets/Worlds/MainWorld/Chunk_5\TerrainInfo.bytes
     bundleName: chunk_5
   - assetBundlesMap:
+    - Assets/ResourcesAssets/Worlds/MainWorld/Chunk_9\Collider.bytes
     - Assets/ResourcesAssets/Worlds/MainWorld/Chunk_9\Terrain.asset
+    - Assets/ResourcesAssets/Worlds/MainWorld/Chunk_9\TerrainInfo.bytes
     bundleName: chunk_9
   - assetBundlesMap: []
     bundleName: Misc

@@ -45,6 +45,17 @@ namespace Framework.Common
                 LogManager.LogWarning("提取mesh失败：" + e.ToString());
             }
         }
+        
+        public static bool IsPrefabInstance(UnityEngine.GameObject obj){
+            var type = PrefabUtility.GetPrefabAssetType(obj);
+            var status = PrefabUtility.GetPrefabInstanceStatus(obj);
+            // 是否为预制体实例判断
+            if (type == PrefabAssetType.NotAPrefab || status == PrefabInstanceStatus.NotAPrefab)
+            {
+                return false;
+            }
+            return true;
+        }
     }
     
 }

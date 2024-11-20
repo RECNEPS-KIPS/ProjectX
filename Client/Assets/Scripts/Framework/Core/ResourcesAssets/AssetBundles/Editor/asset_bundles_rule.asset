@@ -60,64 +60,64 @@ MonoBehaviour:
   - FullPath: Assets/ResourcesAssets/Worlds/MainWorld/Chunk_0
     ABLabel: Chunk_0
     IsDirectory: 1
-    AssetType: asset
+    AssetType: asset;bytes;prefab
   - FullPath: Assets/ResourcesAssets/Worlds/MainWorld/Chunk_1
     ABLabel: Chunk_1
     IsDirectory: 1
-    AssetType: asset
+    AssetType: asset;bytes;prefab
   - FullPath: Assets/ResourcesAssets/Worlds/MainWorld/Chunk_10
     ABLabel: Chunk_10
     IsDirectory: 1
-    AssetType: asset
+    AssetType: asset;bytes;prefab
   - FullPath: Assets/ResourcesAssets/Worlds/MainWorld/Chunk_11
     ABLabel: Chunk_11
     IsDirectory: 1
-    AssetType: asset
+    AssetType: asset;bytes;prefab
   - FullPath: Assets/ResourcesAssets/Worlds/MainWorld/Chunk_12
     ABLabel: Chunk_12
     IsDirectory: 1
-    AssetType: asset
+    AssetType: asset;bytes;prefab
   - FullPath: Assets/ResourcesAssets/Worlds/MainWorld/Chunk_13
     ABLabel: Chunk_13
     IsDirectory: 1
-    AssetType: asset
+    AssetType: asset;bytes;prefab
   - FullPath: Assets/ResourcesAssets/Worlds/MainWorld/Chunk_14
     ABLabel: Chunk_14
     IsDirectory: 1
-    AssetType: asset
+    AssetType: asset;bytes;prefab
   - FullPath: Assets/ResourcesAssets/Worlds/MainWorld/Chunk_15
     ABLabel: Chunk_15
     IsDirectory: 1
-    AssetType: asset
+    AssetType: asset;bytes;prefab
   - FullPath: Assets/ResourcesAssets/Worlds/MainWorld/Chunk_2
     ABLabel: Chunk_2
     IsDirectory: 1
-    AssetType: asset
+    AssetType: asset;bytes;prefab
   - FullPath: Assets/ResourcesAssets/Worlds/MainWorld/Chunk_3
     ABLabel: Chunk_3
     IsDirectory: 1
-    AssetType: asset
+    AssetType: asset;bytes;prefab
   - FullPath: Assets/ResourcesAssets/Worlds/MainWorld/Chunk_4
     ABLabel: Chunk_4
     IsDirectory: 1
-    AssetType: asset
+    AssetType: asset;bytes;prefab
   - FullPath: Assets/ResourcesAssets/Worlds/MainWorld/Chunk_6
     ABLabel: Chunk_6
     IsDirectory: 1
-    AssetType: asset
+    AssetType: asset;bytes;prefab
   - FullPath: Assets/ResourcesAssets/Worlds/MainWorld/Chunk_7
     ABLabel: Chunk_7
     IsDirectory: 1
-    AssetType: asset
+    AssetType: asset;bytes;prefab
   - FullPath: Assets/ResourcesAssets/Worlds/MainWorld/Chunk_8
     ABLabel: Chunk_8
     IsDirectory: 1
-    AssetType: asset
+    AssetType: asset;bytes;prefab
   - FullPath: Assets/ResourcesAssets/Worlds/MainWorld/Chunk_5
     ABLabel: Chunk_5
     IsDirectory: 1
-    AssetType: asset
+    AssetType: asset;bytes;prefab
   - FullPath: Assets/ResourcesAssets/Worlds/MainWorld/Chunk_9
     ABLabel: Chunk_9
     IsDirectory: 1
-    AssetType: asset
+    AssetType: asset;bytes;prefab

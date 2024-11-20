@@ -1,20 +1,34 @@
 ManifestFileVersion: 0
-CRC: 2552683534
+CRC: 4173217760
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: 9ec3f527f8586f6047df55fc6f674da4
+    Hash: fbfb5e45d288c1c2909f1d1b894c2e43
   TypeTreeHash:
     serializedVersion: 2
-    Hash: 2d467e57f96dcb7b82cd412dd5249b61
+    Hash: 976d62a8d9f4d7b4b4469b9dff0ae2ed
   IncrementalBuildHash:
     serializedVersion: 2
-    Hash: 9ec3f527f8586f6047df55fc6f674da4
+    Hash: fbfb5e45d288c1c2909f1d1b894c2e43
 HashAppended: 0
 ClassTypes:
+- Class: 1
+  Script: {instanceID: 0}
+- Class: 4
+  Script: {instanceID: 0}
+- Class: 21
+  Script: {instanceID: 0}
+- Class: 23
+  Script: {instanceID: 0}
 - Class: 28
   Script: {instanceID: 0}
+- Class: 33
+  Script: {instanceID: 0}
+- Class: 43
+  Script: {instanceID: 0}
 - Class: 48
+  Script: {instanceID: 0}
+- Class: 49
   Script: {instanceID: 0}
 - Class: 156
   Script: {instanceID: 0}
@@ -23,4 +37,7 @@ ClassTypes:
 SerializeReferenceClassIdentifiers: []
 Assets:
 - Assets/ResourcesAssets/Worlds/MainWorld/Chunk_2/Terrain.asset
+- Assets/ResourcesAssets/Worlds/MainWorld/Chunk_2/Collider.bytes
+- Assets/ResourcesAssets/Worlds/MainWorld/Chunk_2/ItemChunk.prefab
+- Assets/ResourcesAssets/Worlds/MainWorld/Chunk_2/TerrainInfo.bytes
 Dependencies: []

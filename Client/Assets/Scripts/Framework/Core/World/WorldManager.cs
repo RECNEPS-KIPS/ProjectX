@@ -24,27 +24,6 @@ namespace Framework.Core.World
             return $"TerrainHeight:{TerrainHeight},PiecesPerAxis:{PiecesPerAxis},ChunkSizeX:{ChunkSizeX},ChunkSizeY:{ChunkSizeY}";
         }
     }
-    //场景模型数据
-    [Serializable]
-    public class ItemInfo
-    {
-        [Serializable]
-        public struct Item
-        {
-            [SerializeField] public float posX;
-            [SerializeField] public float posY;
-            [SerializeField] public float posZ;
-            [SerializeField] public float rotX;
-            [SerializeField] public float rotY;
-            [SerializeField] public float rotZ;
-            [SerializeField] public float scaleX;
-            [SerializeField] public float scaleY;
-            [SerializeField] public float scaleZ;
-            [SerializeField] public int prefabIndex;
-        }
-        [SerializeField] public List<string> PrefabDict;
-        [SerializeField] public List<Item> ItemList;
-    }
 
     //地形数据
     [Serializable]
@@ -115,12 +94,13 @@ namespace Framework.Core.World
 
             for (var i = 0; i < data.PiecesPerAxis * data.PiecesPerAxis; i++)
             {
-                LoadTerrainChunk(worldName,data.PiecesPerAxis ,i);
+                LoadTerrainChunk(worldName,i);
+                LoadItemChunk(worldName, i);
             }
 
             callback?.Invoke();
         }
-        private static void LoadTerrainChunk(string worldName,int piecesPerAxis, int index)
+        private static void LoadTerrainChunk(string worldName, int index)
         {
             var chunkDir = $"Chunk{DEF.TerrainSplitChar}{index}";
             
@@ -135,24 +115,52 @@ namespace Framework.Core.World
             
             var saveDir = $"{DEF.RESOURCES_ASSETS_PATH}/Worlds/{worldName}/{chunkDir}";
             var td = ResourcesLoadManager.LoadAsset<TerrainData>($"{saveDir}/Terrain.asset");
-            var chunkRoot = new GameObject();
-            chunkRoot.transform.SetParent(envRoot);
-            chunkRoot.transform.localScale = Vector3.one;
-            chunkRoot.transform.localRotation = Quaternion.identity;
-            var x = Mathf.FloorToInt(index / (float)piecesPerAxis);
-            var y = index - x * piecesPerAxis;
+            // var chunkName = $"Chunk{DEF.TerrainSplitChar}{index}";
+            var chunkRoot = envRoot.Find(chunkDir);
+            if (chunkRoot == null)
+            {
+                chunkRoot = new GameObject(chunkDir).transform;
+            }
+            chunkRoot.SetParent(envRoot);
+            chunkRoot.localScale = Vector3.one;
+            chunkRoot.localRotation = Quaternion.identity;
+            // var x = Mathf.FloorToInt(index / (float)piecesPerAxis);
+            // var y = index - x * piecesPerAxis;
             // chunkRoot.transform.localPosition = new Vector3(x * td.size.x, 0, y * td.size.z);
             chunkRoot.transform.localPosition = new Vector3(data.X,data.Y,data.Z);
-            chunkRoot.name = $"Chunk{DEF.TerrainSplitChar}{index}";
             
             var go = Terrain.CreateTerrainGameObject(td);
-            go.transform.SetParent(chunkRoot.transform);
+            go.transform.SetParent(chunkRoot);
             go.name = "Terrain";
             go.transform.localPosition = Vector3.zero;
             go.transform.localScale = Vector3.one;
             go.transform.localRotation = Quaternion.identity;
             go.gameObject.isStatic = true;
             go.layer = LayerMask.NameToLayer("Ground");
+        }
+
+        private static void LoadItemChunk(string worldName, int index)
+        {
+            var chunkDir = $"Chunk{DEF.TerrainSplitChar}{index}";
+            var saveDir = $"{DEF.RESOURCES_ASSETS_PATH}/Worlds/{worldName}/{chunkDir}";
+            var chunkRoot = envRoot.Find(chunkDir);
+            if (chunkRoot == null)
+            {
+                chunkRoot = new GameObject(chunkDir).transform;
+            }
+
+            var item = ResourcesLoadManager.LoadAsset<GameObject>($"{saveDir}/ItemChunk.prefab");
+            if (item != null)
+            {
+                var go = Object.Instantiate(item, chunkRoot, true);
+
+                go.name = "ItemChunk";
+                go.transform.localPosition = Vector3.zero;
+                go.transform.localScale = Vector3.one;
+                go.transform.localRotation = Quaternion.identity;
+                go.gameObject.isStatic = true;
+                go.layer = LayerMask.NameToLayer("Ground");
+            }
         }
     }
 }

@@ -8,6 +8,7 @@ using System.IO;
 using System.Linq;
 using Framework.Common;
 using Framework.Core.Manager.ResourcesLoad;
+using NUnit.Framework;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.Rendering;
@@ -528,7 +529,96 @@ namespace Framework.Core.World
         }
 
         #endregion
-        
+
+        public void ExportScene(Transform envRoot,string worldName)
+        {
+            var worldDataPath = $"{DEF.RESOURCES_ASSETS_PATH}/Worlds/{worldName}/WorldData.bytes";
+            if (!File.Exists(worldDataPath))
+            {
+                LogManager.Log(LOGTag, $"There is no world data,path:{worldName}");
+                return;
+            }
+            var assetData = ResourcesLoadManager.LoadAsset<TextAsset>(worldDataPath);
+            var data = BinaryUtils.Bytes2Object<WorldData>(assetData.bytes);
+            var cnt = data.PiecesPerAxis * data.PiecesPerAxis;
+
+            for (var i = 0; i < cnt; i++)
+            {
+                var chunkName = $"Chunk{DEF.TerrainSplitChar}{i}";
+                var chunkRoot = envRoot.Find(chunkName);
+                if (chunkRoot != null)
+                {
+                    var itemTrs = chunkRoot.Find("[Item]");
+                    if (itemTrs != null)
+                    {
+                        var assetPath = $"{DEF.RESOURCES_ASSETS_PATH}/Worlds/{worldName}/{chunkName}/ItemChunk.prefab";
+                        if (File.Exists(assetPath))
+                        {
+                            File.Delete(assetPath);
+                            File.Delete($"{assetPath}.meta");
+                        }
+                        PrefabUtility.SaveAsPrefabAsset(itemTrs.gameObject,assetPath,out var succ);
+                        if (!succ)
+                        {
+                            LogManager.LogWarning(LOGTag, $"Export Chunk:{i} failed reason : PrefabUtility.SaveAsPrefabAsset excute failed");
+                        }
+                    }
+                    else
+                    {
+                        LogManager.LogWarning(LOGTag, $"Export Chunk:{i} failed,chunk root has not [Item]");
+                    }
+
+                }
+                else
+                {
+                    LogManager.LogWarning(LOGTag, $"Export Chunk:{i} failed,not chunkRoot");
+                }
+            }
+
+        }
+
+        public void RevertSceneItem(Transform envRoot,string worldName)
+        {
+            var worldDataPath = $"{DEF.RESOURCES_ASSETS_PATH}/Worlds/{worldName}/WorldData.bytes";
+            if (!File.Exists(worldDataPath))
+            {
+                LogManager.Log(LOGTag, $"There is no world data,path:{worldName}");
+                return;
+            }
+            var assetData = ResourcesLoadManager.LoadAsset<TextAsset>(worldDataPath);
+            var data = BinaryUtils.Bytes2Object<WorldData>(assetData.bytes);
+            var cnt = data.PiecesPerAxis * data.PiecesPerAxis;
+            for (var i = 0; i < cnt; i++)
+            {
+                var chunkName = $"Chunk{DEF.TerrainSplitChar}{i}";
+                var chunkRoot = envRoot.Find(chunkName);
+                if (chunkRoot != null)
+                {
+                    var itemTrs = chunkRoot.Find("[Item]");
+                    if (itemTrs != null)
+                    {
+                        var transList = new List<Transform>();
+                        for (var j = 0; j < itemTrs.childCount; j++)
+                        {
+                            var t = itemTrs.GetChild(j);
+                            transList.Add(t);
+                        }
+                        foreach (var t in transList)
+                        {
+                            t.SetParent(envRoot);
+                        }
+                    }
+                }
+            }
+        }
+
+        struct Bound
+        {
+            public float xMin;
+            public float zMin;
+            public float xMax;
+            public float zMax;
+        }
         public void SplitSceneItemWithChunk(Transform envRoot,string worldName,TerrainHandler handler)
         {
             var worldDataPath = $"{DEF.RESOURCES_ASSETS_PATH}/Worlds/{worldName}/WorldData.bytes";
@@ -540,7 +630,7 @@ namespace Framework.Core.World
             var assetData = ResourcesLoadManager.LoadAsset<TextAsset>(worldDataPath);
             var data = BinaryUtils.Bytes2Object<WorldData>(assetData.bytes);
             var cnt = data.PiecesPerAxis * data.PiecesPerAxis;
-            var Bounds = new Bounds[cnt];
+            var Bounds = new Bound[cnt];
             var chunkRoots = new Transform[cnt];
             for (var i = 0; i < cnt; i++)
             {
@@ -556,9 +646,23 @@ namespace Framework.Core.World
                 var colliderAsset = ResourcesLoadManager.LoadAsset<TextAsset>(colliderDataPath);
                 var colliderData = BinaryUtils.Bytes2Object<ColliderInfo>(colliderAsset.bytes);
                 
+                var terrainDataPath = $"{DEF.RESOURCES_ASSETS_PATH}/Worlds/{worldName}/{chunkName}/TerrainInfo.bytes";
+                if (!File.Exists(terrainDataPath))
+                {
+                    LogManager.Log(LOGTag, $"There is no terrainDataPath,path:{terrainDataPath}");
+                    return;
+                }
+                var terrainAsset = ResourcesLoadManager.LoadAsset<TextAsset>(terrainDataPath);
+                var terrainData = BinaryUtils.Bytes2Object<TerrainInfo>(terrainAsset.bytes);
+                
                 if (chunkRoot == null)
                 {
                     chunkRoot = new GameObject(chunkName).transform;
+                    var transform = chunkRoot.transform;
+                    transform.SetParent(envRoot);
+                    transform.localScale = Vector3.one;
+                    transform.localRotation = Quaternion.identity;
+                    chunkRoot.localPosition = new Vector3(terrainData.X, terrainData.Y, terrainData.Z);
                 }
                 var colliderTrs = chunkRoot.Find("Collider");
                 if (colliderTrs == null)
@@ -573,41 +677,62 @@ namespace Framework.Core.World
                 colliderTrs.localPosition = new Vector3(colliderData.PositionX,colliderData.PositionY,colliderData.PositionZ);
                 collider.size = new Vector3(colliderData.SizeX,colliderData.SizeY,colliderData.SizeZ);
                 collider.isTrigger = true;
-                Bounds[i] = collider.bounds;
+
+                var position = colliderTrs.position;
+                Bounds[i] = new Bound
+                {
+                    xMin = position.x - colliderData.SizeX / 2f,
+                    zMin = position.z - colliderData.SizeZ / 2f,
+                    xMax = position.x + colliderData.SizeX / 2f,
+                    zMax = position.z + colliderData.SizeZ / 2f,
+                };
                 chunkRoots[i] = chunkRoot;
             }
+            
+            var prefabChildCnt = 0;
+            var transList = new List<Transform>();
             for (var i = 0; i < envRoot.childCount; i++)
             {
                 var t = envRoot.GetChild(i);
-                var chunkIdx = -1;
+                if (!CommonEditorUtils.IsPrefabInstance(t.gameObject))
+                {
+                    LogManager.Log(LOGTag,$"<color=#ff0000>NOT</color> prefab asset:{t.name}");
+                    continue;
+                }
+                transList.Add(t);
+                prefabChildCnt++;
+                LogManager.Log(LOGTag,$"<color=#00ff00>YES</color> prefab asset:{t.name} childCnt:{prefabChildCnt}");
+            }
+
+            foreach (var t in transList)
+            {
+                var find = false;
                 for (var j = 0; j < Bounds.Length; j++)
                 {
-                    if (Bounds[j].Contains(t.position))
-                    {
-                        LogManager.Log(LOGTag,$"{t.name} is in chunk: {j}");
-                        chunkIdx = j;
-                        break;
-                    }
-                }
-
-                if (chunkIdx >= 0)
-                {
-                    var itemTrs = chunkRoots[chunkIdx].Find("[Item]");
+                    var position = t.position;
+                    var inBox = position.x >= Bounds[j].xMin && position.x <= Bounds[j].xMax && position.z >= Bounds[j].zMin && position.z <= Bounds[j].zMax;
+                    if (find || !inBox) continue;
+                    LogManager.Log(LOGTag,$"{t.name} is in chunk: {j}");
+                    var itemTrs = chunkRoots[j].Find("[Item]");
                     if (itemTrs == null)
                     {
                         itemTrs = new GameObject("[Item]").transform;
-                        itemTrs.SetParent(chunkRoots[chunkIdx]);
+                        itemTrs.SetParent(chunkRoots[j]);
                         itemTrs.localRotation = Quaternion.identity;
                         itemTrs.localScale = Vector3.one;
                         itemTrs.localPosition = Vector3.zero;
                     }
                     t.SetParent(itemTrs);
+                    find = true;
                 }
-                else
+            
+                if (!find)
                 {
                     LogManager.LogWarning(LOGTag,$"{t.name} is not in any chunk");
                 }
             }
+            
+            LogManager.Log(LOGTag,$"envRoot total child Count:{envRoot.childCount}, prefab count:{prefabChildCnt}");
         }
     }
 }

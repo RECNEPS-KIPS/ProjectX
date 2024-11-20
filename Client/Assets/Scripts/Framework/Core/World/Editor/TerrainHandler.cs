@@ -140,16 +140,21 @@ namespace Framework.Core.World
             // var y = index - x * piecesPerAxis;
             var saveDir = $"{DEF.RESOURCES_ASSETS_PATH}/Worlds/{worldName}/{chunkDir}";
             var td = AssetDatabase.LoadAssetAtPath<TerrainData>($"{saveDir}/Terrain.asset");
-            var chunkRoot = new GameObject();
-            chunkRoot.transform.SetParent(envRoot);
-            chunkRoot.transform.localScale = Vector3.one;
-            chunkRoot.transform.localRotation = Quaternion.identity;
+            var chunkName = $"Chunk{DEF.TerrainSplitChar}{index}";
+            var chunkRoot = envRoot.Find(chunkName);
+            if (chunkRoot == null)
+            {
+                chunkRoot = new GameObject(chunkName).transform;
+            }
+            chunkRoot.SetParent(envRoot);
+            chunkRoot.localScale = Vector3.one;
+            chunkRoot.localRotation = Quaternion.identity;
             // chunkRoot.transform.localPosition = new Vector3(x * td.size.x, 0, y * td.size.z);
-            chunkRoot.transform.localPosition = new Vector3(data.X, data.Y, data.Z);
-            chunkRoot.name = $"Chunk{DEF.TerrainSplitChar}{index}";
+            chunkRoot.localPosition = new Vector3(data.X, data.Y, data.Z);
+            // chunkRoot.name = $"Chunk{DEF.TerrainSplitChar}{index}";
 
             var go = Terrain.CreateTerrainGameObject(td);
-            go.transform.SetParent(chunkRoot.transform);
+            go.transform.SetParent(chunkRoot);
             go.name = "Terrain";
             go.transform.localPosition = Vector3.zero;
             go.transform.localScale = Vector3.one;
@@ -543,17 +548,20 @@ namespace Framework.Core.World
             position = new Vector3(position.x + sizeX / piecesPerAxis * x, position.y, position.z + sizeY / piecesPerAxis * y);
 
             position = new Vector3(position.x + parentPosition.x, position.y + parentPosition.y, position.z + parentPosition.z);
-            
-            var chunkRoot = new GameObject();
-            chunkRoot.transform.SetParent(envRoot);
-            chunkRoot.transform.localScale = Vector3.one;
-            chunkRoot.transform.localRotation = Quaternion.identity;
-            chunkRoot.transform.localPosition = position;
             var chunkName = $"Chunk{DEF.TerrainSplitChar}{sliceIndex}";
-            chunkRoot.name = chunkName;
+            var chunkRoot = envRoot.Find(chunkName);
+            if (chunkRoot == null)
+            {
+                chunkRoot = new GameObject(chunkName).transform;
+            }
+            chunkRoot.SetParent(envRoot);
+            chunkRoot.localScale = Vector3.one;
+            chunkRoot.localRotation = Quaternion.identity;
+            chunkRoot.localPosition = position;
+            // chunkRoot.name = chunkName;
 
             terrainTransform.name = "Terrain";
-            terrainTransform.SetParent(chunkRoot.transform);
+            terrainTransform.SetParent(chunkRoot);
             terrainTransform.localPosition = Vector3.zero;
             terrainTransform.localScale = Vector3.one;
             terrainTransform.localRotation = Quaternion.identity;
@@ -749,28 +757,28 @@ namespace Framework.Core.World
             colliderList.Add(go);
         }
 
-        private void GenColliderBox(Transform envRoot, int index, Vector2 chunkSize, Vector2 colliderSize, float terrainHeight, bool isPosition = false)
-        {
-            // var nodeName = $"{row}{DEF.TerrainSplitChar}{col}";
-            var chunkRoot = envRoot.Find($"Chunk{DEF.TerrainSplitChar}{index}");
-            var oldTrs = chunkRoot.Find("Collider");
-            if (oldTrs)
-            {
-                Object.DestroyImmediate(oldTrs.gameObject);
-            }
-
-            var go = new GameObject();
-            go.transform.SetParent(chunkRoot);
-            var trs = go.transform;
-            trs.name = "Collider";
-            trs.localRotation = Quaternion.identity;
-            trs.localScale = Vector3.one;
-            var collider = go.AddComponent<BoxCollider>();
-            trs.localPosition = new Vector3(isPosition ? chunkSize.x : (0.5f * chunkSize.x), 0, isPosition ? chunkSize.y : (0.5f * chunkSize.y));
-            collider.size = new Vector3(colliderSize.x, terrainHeight, colliderSize.y);
-            collider.isTrigger = true;
-            colliderList.Add(go);
-        }
+        // private void GenColliderBox(Transform envRoot, int index, Vector2 chunkSize, Vector2 colliderSize, float terrainHeight, bool isPosition = false)
+        // {
+        //     // var nodeName = $"{row}{DEF.TerrainSplitChar}{col}";
+        //     var chunkRoot = envRoot.Find($"Chunk{DEF.TerrainSplitChar}{index}");
+        //     var oldTrs = chunkRoot.Find("Collider");
+        //     if (oldTrs)
+        //     {
+        //         Object.DestroyImmediate(oldTrs.gameObject);
+        //     }
+        //
+        //     var go = new GameObject();
+        //     go.transform.SetParent(chunkRoot);
+        //     var trs = go.transform;
+        //     trs.name = "Collider";
+        //     trs.localRotation = Quaternion.identity;
+        //     trs.localScale = Vector3.one;
+        //     var collider = go.AddComponent<BoxCollider>();
+        //     trs.localPosition = new Vector3(isPosition ? chunkSize.x : (0.5f * chunkSize.x), 0, isPosition ? chunkSize.y : (0.5f * chunkSize.y));
+        //     collider.size = new Vector3(colliderSize.x, terrainHeight, colliderSize.y);
+        //     collider.isTrigger = true;
+        //     colliderList.Add(go);
+        // }
 
         //清理碰撞盒
         public void ClearColliderBoxes(Action callback = null)
