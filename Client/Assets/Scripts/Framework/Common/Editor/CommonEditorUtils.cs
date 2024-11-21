@@ -11,7 +11,7 @@ namespace Framework.Common
 {
     public static class CommonEditorUtils
     {
-        [MenuItem("Tools/启动游戏",false,-9999999)]
+        [MenuItem("Tools/场景/启动游戏",false,-9999999)]
         private static void GameLaunch()
         {
             const string path = "Assets/ResourcesAssets/Scenes/Launch.unity";
@@ -23,6 +23,41 @@ namespace Framework.Common
                 EditorSceneManager.OpenScene(path);
             }
             EditorApplication.ExecuteMenuItem("Edit/Play");
+        }
+        [MenuItem("Tools/场景/角色编辑",false,-9999998)]
+        private static void CharacterEditorScene()
+        {
+            const string path = "Assets/Scenes/CharacterEditor.unity";
+            var sceneName = Path.GetFileNameWithoutExtension(path);
+            var bIsCurScene = SceneManager.GetActiveScene().name.Equals(sceneName);//是否为当前场景
+            if (!bIsCurScene)
+            {
+                EditorSceneManager.OpenScene(path);
+            }
+        }
+        
+        [MenuItem("Tools/场景/UI编辑",false,-9999998)]
+        private static void UIEditorScene()
+        {
+            const string path = "Assets/Scenes/UIEditor.unity";
+            var sceneName = Path.GetFileNameWithoutExtension(path);
+            var bIsCurScene = SceneManager.GetActiveScene().name.Equals(sceneName);//是否为当前场景
+            if (!bIsCurScene)
+            {
+                EditorSceneManager.OpenScene(path);
+            }
+        }
+        
+        [MenuItem("Tools/场景/World编辑",false,-9999998)]
+        private static void WorldEditorScene()
+        {
+            const string path = "Assets/Scenes/WorldEditor.unity";
+            var sceneName = Path.GetFileNameWithoutExtension(path);
+            var bIsCurScene = SceneManager.GetActiveScene().name.Equals(sceneName);//是否为当前场景
+            if (!bIsCurScene)
+            {
+                EditorSceneManager.OpenScene(path);
+            }
         }
         
         [MenuItem("Tools/Mesh导出",false)]

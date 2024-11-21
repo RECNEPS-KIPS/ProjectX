@@ -1,0 +1,64 @@
+ManifestFileVersion: 0
+CRC: 2046436186
+Hashes:
+  AssetFileHash:
+    serializedVersion: 2
+    Hash: 3598a1036b5fcee64fbbfa8167c5be6c
+  TypeTreeHash:
+    serializedVersion: 2
+    Hash: dafa28bf9dc0c76a923a318e65919b45
+  IncrementalBuildHash:
+    serializedVersion: 2
+    Hash: 3598a1036b5fcee64fbbfa8167c5be6c
+HashAppended: 0
+ClassTypes:
+- Class: 1
+  Script: {instanceID: 0}
+- Class: 21
+  Script: {instanceID: 0}
+- Class: 28
+  Script: {instanceID: 0}
+- Class: 48
+  Script: {instanceID: 0}
+- Class: 114
+  Script: {fileID: 11500000, guid: 7f6e514f60a549d89115be19e20309cc, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: dc42784cf147c0c48a680349fa168899, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: 149e5f9721d048efb82307836a18998a, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: 80b15d191c744178b093a0f6f56053ed, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: 531d24f0378a419b8d1a09013d24d59b, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: d23a9f88497e4ea5b5877710721d4421, type: 3}
+- Class: 115
+  Script: {instanceID: 0}
+- Class: 128
+  Script: {instanceID: 0}
+- Class: 222
+  Script: {instanceID: 0}
+- Class: 223
+  Script: {instanceID: 0}
+- Class: 224
+  Script: {instanceID: 0}
+SerializeReferenceClassIdentifiers:
+- AssemblyName: UnityEngine.CoreModule
+  ClassName: UnityEngine.Events.PersistentCallGroup
+- AssemblyName: UnityEngine.UI
+  ClassName: UnityEngine.UI.AnimationTriggers
+- AssemblyName: UnityEngine.UI
+  ClassName: UnityEngine.UI.Button/ButtonClickedEvent
+- AssemblyName: UnityEngine.UI
+  ClassName: UnityEngine.UI.ColorBlock
+- AssemblyName: UnityEngine.UI
+  ClassName: UnityEngine.UI.FontData
+- AssemblyName: UnityEngine.UI
+  ClassName: UnityEngine.UI.MaskableGraphic/CullStateChangedEvent
+- AssemblyName: UnityEngine.UI
+  ClassName: UnityEngine.UI.Navigation
+- AssemblyName: UnityEngine.UI
+  ClassName: UnityEngine.UI.SpriteState
+Assets:
+- Assets/ResourcesAssets/UI/Pages/Lobby/LobbyMainUI.prefab
+Dependencies: []

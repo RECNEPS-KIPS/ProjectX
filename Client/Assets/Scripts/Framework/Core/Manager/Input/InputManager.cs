@@ -58,7 +58,7 @@ namespace Framework.Core.Manager.Input
 
         public Vector2 GetMoveInput()
         {
-            // LogManager.Log("GetMoveInput",InputControls.PC.Move.ReadValue<Vector2>());
+            // LogManager.Log("GetMoveInput",InputControls.Player.Move.ReadValue<Vector2>());
             return InputControls.Player.Move.ReadValue<Vector2>();
         }
 

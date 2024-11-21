@@ -1,0 +1,89 @@
+ManifestFileVersion: 0
+CRC: 625120287
+AssetBundleManifest:
+  AssetBundleInfos:
+    Info_0:
+      Name: bagboy.ab
+      Dependencies: {}
+    Info_1:
+      Name: controllers.ab
+      Dependencies: {}
+    Info_2:
+      Name: misc.ab
+      Dependencies: {}
+    Info_3:
+      Name: launch.ab
+      Dependencies:
+        Dependency_0: inputactionmap.ab
+    Info_4:
+      Name: mainworld.ab
+      Dependencies: {}
+    Info_5:
+      Name: inputactionmap.ab
+      Dependencies: {}
+    Info_6:
+      Name: lobby.ab
+      Dependencies: {}
+    Info_7:
+      Name: main.ab
+      Dependencies: {}
+    Info_8:
+      Name: plot.ab
+      Dependencies: {}
+    Info_9:
+      Name: start.ab
+      Dependencies: {}
+    Info_10:
+      Name: worlddata.ab
+      Dependencies: {}
+    Info_11:
+      Name: chunk_0.ab
+      Dependencies: {}
+    Info_12:
+      Name: chunk_1.ab
+      Dependencies: {}
+    Info_13:
+      Name: chunk_10.ab
+      Dependencies: {}
+    Info_14:
+      Name: chunk_11.ab
+      Dependencies: {}
+    Info_15:
+      Name: chunk_12.ab
+      Dependencies: {}
+    Info_16:
+      Name: chunk_13.ab
+      Dependencies: {}
+    Info_17:
+      Name: chunk_14.ab
+      Dependencies: {}
+    Info_18:
+      Name: chunk_15.ab
+      Dependencies: {}
+    Info_19:
+      Name: chunk_2.ab
+      Dependencies: {}
+    Info_20:
+      Name: chunk_3.ab
+      Dependencies: {}
+    Info_21:
+      Name: chunk_4.ab
+      Dependencies: {}
+    Info_22:
+      Name: chunk_6.ab
+      Dependencies: {}
+    Info_23:
+      Name: chunk_7.ab
+      Dependencies: {}
+    Info_24:
+      Name: chunk_8.ab
+      Dependencies: {}
+    Info_25:
+      Name: chunk_5.ab
+      Dependencies: {}
+    Info_26:
+      Name: chunk_9.ab
+      Dependencies: {}
+    Info_27:
+      Name: unknown.ab
+      Dependencies: {}
