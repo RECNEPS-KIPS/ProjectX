@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using Unity.VisualScripting;
 using UnityEditor;
@@ -55,6 +56,40 @@ namespace Framework.Common
                 return false;
             }
             return true;
+        }
+        
+        public static List<T> FindAssetInFolder<T>(string folder) where T : UnityEngine.Object
+        {
+
+            var result = new List<T>();
+            //定位到指定文件夹
+            if (!Directory.Exists(folder))
+            {
+                return null;
+            }
+            var directory = new DirectoryInfo(folder);
+ 
+            //查询该文件夹下的所有文件；
+            var files = directory.GetFiles();
+            var length = files.Length;
+            for (var i = 0; i < length; i++)
+            {
+                var file = files[i];
+ 
+                //跳过Unity的meta文件（后缀名为.meta）
+                if (file.Extension.Contains("meta"))
+                    continue;
+ 
+                //根据路径直接拼出对应的文件的相对路径
+                var path = $"{folder}/{file.Name}";
+                var asset = AssetDatabase.LoadAssetAtPath<T>(path);
+                if (asset != null)
+                {
+                    result.Add(asset);
+                }
+            }
+
+            return result;
         }
     }
     
