@@ -2,5 +2,5 @@
 id,_desc,modelPath,ctrlType,baseHP,baseStamina,baseThirsty,baseHungry,baseDefense,baseAttack,growthTemp
 int,,string,int,int,int,int,int,int,int,int
 ,,,,,,,,,,
-10001,机器人,Assets/ResourcesAssets/Characters/Robot/Robot.prefab,1,1000,1000,1000,1000,100,50,0
+10001,未知,Assets/ResourcesAssets/Characters/Unknown/Unknown.prefab,1,1000,1000,1000,1000,100,50,0
 10002,背包男孩,Assets/ResourcesAssets/Characters/BagBoy/BagBoy.prefab,1,1000,1000,1000,1000,100,50,0

@@ -121,3 +121,7 @@ MonoBehaviour:
     ABLabel: Chunk_9
     IsDirectory: 1
     AssetType: asset;bytes;prefab
+  - FullPath: Assets/ResourcesAssets/Characters/Unknown/Unknown.prefab
+    ABLabel: Unknown
+    IsDirectory: 0
+    AssetType: 

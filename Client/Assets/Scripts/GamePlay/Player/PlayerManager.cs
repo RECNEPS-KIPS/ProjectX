@@ -13,11 +13,17 @@ using CharacterController = GamePlay.Character.CharacterController;
 
 namespace GamePlay.Player
 {
+    public enum ECharacter
+    {
+        Unknown = 10001,
+        BagBoy = 10002,
+    }
+    
     [MonoSingletonPath("[Manager]/PlayerManager")]
     public class PlayerManager:MonoSingleton<PlayerManager>
     {
         [NonSerialized]
-        public const int PROTAGONIST_ID = 10002;
+        public const int PROTAGONIST_ID = (int)ECharacter.Unknown;
         
         private const string LOGTag = "PlayerManager";
 
@@ -81,7 +87,7 @@ namespace GamePlay.Player
         public void LoadPlayerController(Vector3 initPlayerPos = default)
         {
             LogManager.Log(LOGTag,"LoadPlayerController");
-            var playerCf = ConfigManager.GetConfigByID(EConfig.Character, PROTAGONIST_ID);
+            var playerCf = ConfigManager.GetConfigByID(EConfig.Character, PlayerManager.PROTAGONIST_ID);
             var modelPath = playerCf["modelPath"];
             var ctrlType = playerCf["ctrlType"];
             var ctrlCfList = ConfigManager.GetConfig(EConfig.CharacterController);

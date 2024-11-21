@@ -141,5 +141,8 @@ MonoBehaviour:
     - Assets/ResourcesAssets/Worlds/MainWorld/Chunk_9\Terrain.asset
     - Assets/ResourcesAssets/Worlds/MainWorld/Chunk_9\TerrainInfo.bytes
     bundleName: chunk_9
+  - assetBundlesMap:
+    - Assets/ResourcesAssets/Characters/Unknown/Unknown.prefab
+    bundleName: unknown
   - assetBundlesMap: []
     bundleName: Misc
