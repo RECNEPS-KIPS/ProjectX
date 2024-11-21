@@ -20,5 +20,11 @@ namespace Framework.Core.Manager.Event
         PLAYER_PICK_ITEM,
         
         #endregion
+        
+        #region 角色动画状态
+        ENTER_IDLE,
+        ENTER_WALK_RUN,
+        ENTER_JUMP,
+        #endregion
     }
 }
