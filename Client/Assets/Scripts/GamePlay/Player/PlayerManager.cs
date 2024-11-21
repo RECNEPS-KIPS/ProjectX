@@ -23,7 +23,7 @@ namespace GamePlay.Player
     public class PlayerManager:MonoSingleton<PlayerManager>
     {
         [NonSerialized]
-        public const int PROTAGONIST_ID = (int)ECharacter.Unknown;
+        public const int PROTAGONIST_ID = (int)ECharacter.BagBoy;
         
         private const string LOGTag = "PlayerManager";
 
@@ -87,7 +87,7 @@ namespace GamePlay.Player
         public void LoadPlayerController(Vector3 initPlayerPos = default)
         {
             LogManager.Log(LOGTag,"LoadPlayerController");
-            var playerCf = ConfigManager.GetConfigByID(EConfig.Character, PlayerManager.PROTAGONIST_ID);
+            var playerCf = ConfigManager.GetConfigByID(EConfig.Character, PROTAGONIST_ID);
             var modelPath = playerCf["modelPath"];
             var ctrlType = playerCf["ctrlType"];
             var ctrlCfList = ConfigManager.GetConfig(EConfig.CharacterController);

@@ -114,8 +114,8 @@ namespace GamePlay.Character
             curVerticalVelocity = _verticalVelocity.magnitude * VectorMath.GetDotProduct(_verticalVelocity.normalized, up);
             curHorizontalVelocity = _horizontalVelocity.magnitude;
             
-            // LogManager.Log("ID_VerticalSpeed",curVerticalVelocity);
-            // LogManager.Log("ID_HorizontalSpeed",curHorizontalVelocity);
+            LogManager.Log("VerticalVelocity",curVerticalVelocity,_verticalVelocity);
+            // LogManager.Log("HorizontalVelocity",curHorizontalVelocity,_horizontalVelocity);
             
             animator.SetFloat(ID_VerticalSpeed, curVerticalVelocity);
             animator.SetFloat(ID_HorizontalSpeed, curHorizontalVelocity);

@@ -34,8 +34,8 @@ namespace GamePlay.Character
         private Vector3 hitPosition;
         private Vector3 hitNormal;
         private float hitDistance;
-        private List<Collider> hitColliders = new List<Collider>();
-        private List<Transform> hitTransforms = new List<Transform>();
+        private List<Collider> hitColliders = new ();
+        private List<Transform> hitTransforms = new ();
 
         //Backup normal used for specific edge cases when using spherecasts;
         private Vector3 backupNormal;
@@ -62,10 +62,10 @@ namespace GamePlay.Character
         //Spherecast settings;
 
         //Cast an additional ray to get the true surface normal;
-        public bool calculateRealSurfaceNormal = false;
+        public bool calculateRealSurfaceNormal;
 
         //Cast an additional ray to get the true distance to the ground;
-        public bool calculateRealDistance = false;
+        public bool calculateRealDistance;
 
         //Array raycast settings;
 
@@ -88,10 +88,10 @@ namespace GamePlay.Character
         private int[] ignoreListLayers;
 
         //Whether to draw debug information (hit positions, hit normals...) in the editor;
-        public bool isInDebugMode = false;
+        public bool isInDebugMode;
 
-        List<Vector3> arrayNormals = new List<Vector3>();
-        List<Vector3> arrayPoints = new List<Vector3>();
+        private List<Vector3> arrayNormals = new ();
+        private List<Vector3> arrayPoints = new ();
 
         //Constructor;
         public Sensor(Transform _transform, Collider _collider)
@@ -135,33 +135,34 @@ namespace GamePlay.Character
         }
 
         //Returns an array containing the starting positions of all array rays (in local coordinates) based on the input arguments;
-        public static Vector3[] GetRaycastStartPositions(int sensorRows, int sensorRayCount, bool offsetRows,
-            float sensorRadius)
+        public static Vector3[] GetRaycastStartPositions(int sensorRows, int sensorRayCount, bool offsetRows, float sensorRadius)
         {
             //Initialize list used to store the positions;
-            List<Vector3> _positions = new List<Vector3>();
+            var _positions = new List<Vector3>();
 
             //Add central start position to the list;
-            Vector3 _startPosition = Vector3.zero;
+            var _startPosition = Vector3.zero;
             _positions.Add(_startPosition);
 
-            for (int i = 0; i < sensorRows; i++)
+            for (var i = 0; i < sensorRows; i++)
             {
                 //Calculate radius for all positions on this row;
-                float _rowRadius = (float)(i + 1) / sensorRows;
+                var _rowRadius = (float)(i + 1) / sensorRows;
 
-                for (int j = 0; j < sensorRayCount * (i + 1); j++)
+                for (var j = 0; j < sensorRayCount * (i + 1); j++)
                 {
                     //Calculate angle (in degrees) for this individual position;
-                    float _angle = (360f / (sensorRayCount * (i + 1))) * j;
+                    var _angle = (360f / (sensorRayCount * (i + 1))) * j;
 
                     //If 'offsetRows' is set to 'true', every other row is offset;
                     if (offsetRows && i % 2 == 0)
+                    {
                         _angle += (360f / (sensorRayCount * (i + 1))) / 2f;
+                    }
 
                     //Combine radius and angle into one position and add it to the list;
-                    float _x = _rowRadius * Mathf.Cos(Mathf.Deg2Rad * _angle);
-                    float _y = _rowRadius * Mathf.Sin(Mathf.Deg2Rad * _angle);
+                    var _x = _rowRadius * Mathf.Cos(Mathf.Deg2Rad * _angle);
+                    var _y = _rowRadius * Mathf.Sin(Mathf.Deg2Rad * _angle);
 
                     _positions.Add(new Vector3(_x, 0f, _y) * sensorRadius);
                 }
@@ -177,8 +178,8 @@ namespace GamePlay.Character
             ResetFlags();
 
             //Calculate origin and direction of ray in world coordinates;
-            Vector3 _worldDirection = GetCastDirection();
-            Vector3 _worldOrigin = tr.TransformPoint(origin);
+            var _worldDirection = GetCastDirection();
+            var _worldOrigin = tr.TransformPoint(origin);
 
             //Check if ignore list length has been changed since last frame;
             if (ignoreListLayers.Length != ignoreList.Length)
@@ -212,7 +213,7 @@ namespace GamePlay.Character
             }
 
             //Reset collider layers in ignoreList;
-            for (int i = 0; i < ignoreList.Length; i++)
+            for (var i = 0; i < ignoreList.Length; i++)
             {
                 ignoreList[i].gameObject.layer = ignoreListLayers[i];
             }
@@ -222,33 +223,28 @@ namespace GamePlay.Character
         private void CastRayArray(Vector3 _origin, Vector3 _direction)
         {
             //Calculate origin and direction of ray in world coordinates;
-            Vector3 _rayStartPosition = Vector3.zero;
-            Vector3 rayDirection = GetCastDirection();
+            var rayDirection = GetCastDirection();
 
             //Clear results from last frame;
             arrayNormals.Clear();
             arrayPoints.Clear();
 
-            RaycastHit _hit;
-
             //Cast array;
-            for (int i = 0; i < raycastArrayStartPositions.Length; i++)
+            foreach (var t in raycastArrayStartPositions)
             {
                 //Calculate ray start position;
-                _rayStartPosition = _origin + tr.TransformDirection(raycastArrayStartPositions[i]);
+                var _rayStartPosition = _origin + tr.TransformDirection(t);
 
-                if (Physics.Raycast(_rayStartPosition, rayDirection, out _hit, castLength, layermask, QueryTriggerInteraction.Ignore))
+                if (!Physics.Raycast(_rayStartPosition, rayDirection, out var _hit, castLength, layermask, QueryTriggerInteraction.Ignore)) continue;
+                if (isInDebugMode)
                 {
-                    if (isInDebugMode)
-                    {
-                        Debug.DrawRay(_hit.point, _hit.normal, Color.red, Time.fixedDeltaTime * 1.01f);
-                    }
-
-                    hitColliders.Add(_hit.collider);
-                    hitTransforms.Add(_hit.transform);
-                    arrayNormals.Add(_hit.normal);
-                    arrayPoints.Add(_hit.point);
+                    Debug.DrawRay(_hit.point, _hit.normal, Color.red, Time.fixedDeltaTime * 1.01f);
                 }
+
+                hitColliders.Add(_hit.collider);
+                hitTransforms.Add(_hit.transform);
+                arrayNormals.Add(_hit.normal);
+                arrayPoints.Add(_hit.point);
             }
 
             //Evaluate results;
@@ -257,10 +253,10 @@ namespace GamePlay.Character
             if (hasDetectedHit)
             {
                 //Calculate average surface normal;
-                Vector3 _averageNormal = Vector3.zero;
-                for (int i = 0; i < arrayNormals.Count; i++)
+                var _averageNormal = Vector3.zero;
+                foreach (var t in arrayNormals)
                 {
-                    _averageNormal += arrayNormals[i];
+                    _averageNormal += t;
                 }
 
                 _averageNormal.Normalize();
@@ -283,8 +279,7 @@ namespace GamePlay.Character
         //Cast a single ray into '_direction' from '_origin';
         private void CastRay(Vector3 _origin, Vector3 _direction)
         {
-            RaycastHit _hit;
-            hasDetectedHit = Physics.Raycast(_origin, _direction, out _hit, castLength, layermask, QueryTriggerInteraction.Ignore);
+            hasDetectedHit = Physics.Raycast(_origin, _direction, out var _hit, castLength, layermask, QueryTriggerInteraction.Ignore);
 
             if (hasDetectedHit)
             {
@@ -321,7 +316,7 @@ namespace GamePlay.Character
                     hitDistance = VectorMath.ExtractDotVector(_origin - hitPosition, _direction).magnitude;
                 }
 
-                Collider _col = hitColliders[0];
+                var _col = hitColliders[0];
 
                 //Calculate real surface normal by casting an additional raycast;
                 if (calculateRealSurfaceNormal)
@@ -380,7 +375,7 @@ namespace GamePlay.Character
             if (hasDetectedHit && isInDebugMode)
             {
                 Debug.DrawRay(hitPosition, hitNormal, Color.red, Time.deltaTime);
-                float _markerSize = 0.2f;
+                const float _markerSize = 0.2f;
                 Debug.DrawLine(hitPosition + Vector3.up * _markerSize, hitPosition - Vector3.up * _markerSize, Color.green, Time.deltaTime);
                 Debug.DrawLine(hitPosition + Vector3.right * _markerSize, hitPosition - Vector3.right * _markerSize, Color.green, Time.deltaTime);
                 Debug.DrawLine(hitPosition + Vector3.forward * _markerSize, hitPosition - Vector3.forward * _markerSize, Color.green, Time.deltaTime);

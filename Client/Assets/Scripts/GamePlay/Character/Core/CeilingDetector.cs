@@ -8,7 +8,7 @@ using UnityEngine;
 //The 'AdvancedWalkerController' then can use that information to react to ceiling hits; 
 public class CeilingDetector : MonoBehaviour
 {
-    bool ceilingWasHit = false;
+    private bool ceilingWasHit;
 
     //Angle limit for ceiling hits;
     public float ceilingAngleLimit = 10f;
@@ -27,7 +27,7 @@ public class CeilingDetector : MonoBehaviour
     public CeilingDetectionMethod ceilingDetectionMethod;
 
     //If enabled, draw debug information to show hit positions and hit normals;
-    public bool isInDebugMode = false;
+    public bool isInDebugMode;
 
     //How long debug information is drawn on the screen;
     float debugDrawDuration = 2.0f;

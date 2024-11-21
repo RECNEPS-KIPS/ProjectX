@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 using System.Collections;
 
 namespace GamePlay.Character
@@ -364,7 +365,7 @@ namespace GamePlay.Character
         //Set height of collider;
         public void SetColliderHeight(float _newColliderHeight)
         {
-            if (colliderHeight == _newColliderHeight)
+            if (Math.Abs(colliderHeight - _newColliderHeight) < 0.01f)
             {
                 return;
             }
@@ -376,7 +377,7 @@ namespace GamePlay.Character
         //Set thickness/width of collider;
         public void SetColliderThickness(float _newColliderThickness)
         {
-            if (colliderThickness == _newColliderThickness)
+            if (Math.Abs(colliderThickness - _newColliderThickness) < 0.01f)
             {
                 return;
             }
