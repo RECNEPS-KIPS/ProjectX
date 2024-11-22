@@ -104,23 +104,23 @@ namespace GamePlay.Player
             if (ctrlCf != null)
             {
                 LogManager.Log(LOGTag,"CharacterCtrl initPos:",initPlayerPos);
+                //模型
+                GameObject modelGo = Instantiate(ResourcesLoadManager.LoadAsset<GameObject>(modelPath));
+                var animator = modelGo.GetComponentInChildren<Animator>();
+                //控制器
                 GameObject ctrlGo = Instantiate(ResourcesLoadManager.LoadAsset<GameObject>(ctrlCf["path"]), initPlayerPos, Quaternion.identity);
                 // CharacterController = ctrlGo.GetComponent<CharacterController>();
                 ctrlGo.name = "CharacterController";
                 CharacterControllerRoot = ctrlGo.transform;
                 DontDestroyOnLoad(CharacterControllerRoot);
-                if ((DEF.ECharacterControllerType)ctrlCf["ctrlType"] != DEF.ECharacterControllerType.FPS)
-                {
-                    GameObject modelGo = Instantiate(ResourcesLoadManager.LoadAsset<GameObject>(modelPath));
-                    // var animCtrl = modelGo.AddComponent<AnimationControl>();
-                    // animCtrl.Init(ctrlGo.GetComponent<MovementController>());
-                    var mounter = ctrlGo.GetComponentInChildren<MountController>();
-                    LogManager.Log(LOGTag,$"LoadPlayerController ctrlGo:{ctrlGo !=null},mounter:{mounter!=null},modelGo:{modelGo!=null}");
-                    mounter.MountModel(modelGo.transform);
-                    // var mt = modelGo.transform;
-                    
-                    // CommonUtils.ResetGO(mt,CharacterController.ModelMountRoot);
-                }
+
+                var mounter = ctrlGo.GetComponentInChildren<MountController>();
+                var ac = ctrlGo.GetComponentInChildren<AnimationController>();
+                ac.SetAnimator(animator);
+                
+                // animator.;
+                LogManager.Log(LOGTag,$"LoadPlayerController ctrlGo:{ctrlGo !=null},mounter:{mounter!=null},modelGo:{modelGo!=null}");
+                mounter.MountModel(modelGo.transform);
             }
             EventManager.Dispatch(EEvent.PLAYER_LOAD_FINISHED);
         }

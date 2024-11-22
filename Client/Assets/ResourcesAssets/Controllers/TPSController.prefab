@@ -133,7 +133,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6142639261444650879}
-  - component: {fileID: 8270703563840935243}
   - component: {fileID: 1195506514914601717}
   - component: {fileID: 1558473632452358640}
   - component: {fileID: 6686046721653814463}
@@ -163,27 +162,6 @@ Transform:
   - {fileID: 2344416807017451834}
   m_Father: {fileID: 6783737809122019813}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!95 &8270703563840935243
-Animator:
-  serializedVersion: 5
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4329898259356858872}
-  m_Enabled: 1
-  m_Avatar: {fileID: 9000000, guid: d124cff50c46a43458088f05b9ef32a9, type: 2}
-  m_Controller: {fileID: 9100000, guid: a3a348fc313b53a44ab5b8f348e2a5eb, type: 2}
-  m_CullingMode: 1
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 1
-  m_LinearVelocityBlending: 0
-  m_StabilizeFeet: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorStateOnDisable: 0
-  m_WriteDefaultValuesOnDisable: 0
 --- !u!143 &1195506514914601717
 CharacterController:
   m_ObjectHideFlags: 0
@@ -240,7 +218,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _cameraController: {fileID: 4429099987441791784}
   _inputReader: {fileID: 1558473632452358640}
-  _animator: {fileID: 8270703563840935243}
+  _animator: {fileID: 0}
   _controller: {fileID: 1195506514914601717}
   _alwaysStrafe: 1
   _walkSpeed: 1.4
@@ -605,7 +583,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f35617dd18fdbac4fb05187bac222064, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _syntyCharacter: {fileID: 4329898259356858872}
+  Character: {fileID: 4329898259356858872}
   _mainCamera: {fileID: 9170680903529165313}
   _playerTarget: {fileID: 0}
   _lockOnTarget: {fileID: 0}

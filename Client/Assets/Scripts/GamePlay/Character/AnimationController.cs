@@ -605,9 +605,20 @@ namespace GamePlay.Character
 
         #region Updates
 
+        private bool isVaild = false;
+        public void SetAnimator(Animator animator)
+        {
+            _animator = animator;
+            isVaild = true;
+        }
+
         /// <inheritdoc cref="Update" />
         private void Update()
         {
+            if (!isVaild)
+            {
+                return;
+            }
             switch (_currentState)
             {
                 case AnimationState.Locomotion:
@@ -630,6 +641,10 @@ namespace GamePlay.Character
         /// </summary>
         private void UpdateAnimatorController()
         {
+            if (!isVaild)
+            {
+                return;
+            }
             _animator.SetFloat(_leanValueHash, _leanValue);
             _animator.SetFloat(_headLookXHash, _headLookX);
             _animator.SetFloat(_headLookYHash, _headLookY);

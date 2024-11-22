@@ -8,11 +8,10 @@ namespace GamePlay.Character
 
         [Tooltip("The character game object")]
         [SerializeField]
-        private GameObject _syntyCharacter;
+        private GameObject Character;
         [Tooltip("Main camera used for player perspective")]
         [SerializeField]
         private Camera _mainCamera;
-
         [SerializeField]
         private Transform _playerTarget;
         [SerializeField]
@@ -55,16 +54,16 @@ namespace GamePlay.Character
         private float _rotationX;
         private float _rotationY;
 
-        private Transform _syntyCamera;
+        private Transform Camera;
 
         /// <inheritdoc cref="Start" />
         private void Start()
         {
-            _syntyCamera = gameObject.transform.GetChild(0);
+            Camera = gameObject.transform.GetChild(0);
 
-            _inputReader = _syntyCharacter.GetComponent<InputReader>();
-            _playerTarget = _syntyCharacter.transform.Find("LookAt");
-            _lockOnTarget = _syntyCharacter.transform.Find("TargetLockOnPos");
+            _inputReader = Character.GetComponent<InputReader>();
+            _playerTarget = Character.transform.Find("LookAt");
+            _lockOnTarget = Character.transform.Find("TargetLockOnPos");
 
             if (_hideCursor)
             {
@@ -79,8 +78,8 @@ namespace GamePlay.Character
 
             _lastPosition = transform.position;
 
-            _syntyCamera.localPosition = new Vector3(_cameraHorizontalOffset, _cameraHeightOffset, _cameraDistance * -1);
-            _syntyCamera.localEulerAngles = new Vector3(_cameraTiltOffset, 0f, 0f);
+            Camera.localPosition = new Vector3(_cameraHorizontalOffset, _cameraHeightOffset, _cameraDistance * -1);
+            Camera.localEulerAngles = new Vector3(_cameraTiltOffset, 0f, 0f);
         }
 
         /// <inheritdoc cref="Update" />
@@ -116,8 +115,8 @@ namespace GamePlay.Character
             transform.position = _newPosition;
             transform.eulerAngles = new Vector3(_newAngleX, _newAngleY, 0);
 
-            _syntyCamera.localPosition = new Vector3(_cameraHorizontalOffset, _cameraHeightOffset, _cameraDistance * -1);
-            _syntyCamera.localEulerAngles = new Vector3(_cameraTiltOffset, 0f, 0f);
+            Camera.localPosition = new Vector3(_cameraHorizontalOffset, _cameraHeightOffset, _cameraDistance * -1);
+            Camera.localEulerAngles = new Vector3(_cameraTiltOffset, 0f, 0f);
 
             _lastPosition = _newPosition;
             _lastAngleX = _newAngleX;

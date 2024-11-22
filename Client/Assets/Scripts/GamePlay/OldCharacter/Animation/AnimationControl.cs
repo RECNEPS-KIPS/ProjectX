@@ -5,10 +5,7 @@
 // {
 //     public class AnimationControl : MonoBehaviour
 //     {
-//
-//
 //         public MovementController controller;
-//
 //  
 //         private Animator _animator;
 //
