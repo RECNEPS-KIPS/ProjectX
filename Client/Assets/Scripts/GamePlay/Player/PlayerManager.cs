@@ -8,8 +8,9 @@ using Framework.Core.Manager.ResourcesLoad;
 using Framework.Core.Singleton;
 using Framework.Core.SpaceSegment;
 using GamePlay.Character;
+// using GamePlay.Character;
 using UnityEngine;
-using CharacterController = GamePlay.Character.CharacterController;
+// using CharacterController = GamePlay.Character.CharacterController;
 
 namespace GamePlay.Player
 {
@@ -57,7 +58,7 @@ namespace GamePlay.Player
             }
         }
         
-        public CharacterController CharacterController;
+        // public CharacterController CharacterController;
 
         public void Launch()
         {
@@ -91,6 +92,7 @@ namespace GamePlay.Player
             var modelPath = playerCf["modelPath"];
             var ctrlType = playerCf["ctrlType"];
             var ctrlCfList = ConfigManager.GetConfig(EConfig.CharacterController);
+            LogManager.Log(LOGTag,$"LoadPlayerController ctrlType:{ctrlType},modelPath:{modelPath}");
             dynamic ctrlCf = null;
             for (var i = 0; i < ctrlCfList.Count; i++)
             {
@@ -103,19 +105,21 @@ namespace GamePlay.Player
             {
                 LogManager.Log(LOGTag,"CharacterCtrl initPos:",initPlayerPos);
                 GameObject ctrlGo = Instantiate(ResourcesLoadManager.LoadAsset<GameObject>(ctrlCf["path"]), initPlayerPos, Quaternion.identity);
-                CharacterController = ctrlGo.GetComponent<CharacterController>();
+                // CharacterController = ctrlGo.GetComponent<CharacterController>();
                 ctrlGo.name = "CharacterController";
                 CharacterControllerRoot = ctrlGo.transform;
                 DontDestroyOnLoad(CharacterControllerRoot);
                 if ((DEF.ECharacterControllerType)ctrlCf["ctrlType"] != DEF.ECharacterControllerType.FPS)
                 {
                     GameObject modelGo = Instantiate(ResourcesLoadManager.LoadAsset<GameObject>(modelPath));
-                    var animCtrl = modelGo.AddComponent<AnimationControl>();
-                    animCtrl.Init(ctrlGo.GetComponent<MovementController>());
-                    var mt = modelGo.transform;
+                    // var animCtrl = modelGo.AddComponent<AnimationControl>();
+                    // animCtrl.Init(ctrlGo.GetComponent<MovementController>());
+                    var mounter = ctrlGo.GetComponentInChildren<MountController>();
+                    LogManager.Log(LOGTag,$"LoadPlayerController ctrlGo:{ctrlGo !=null},mounter:{mounter!=null},modelGo:{modelGo!=null}");
+                    mounter.MountModel(modelGo.transform);
+                    // var mt = modelGo.transform;
                     
-                    // LogManager.Log(LOGTag,"LoadPlayerController",mt==null,cc==null);
-                    CommonUtils.ResetGO(mt,CharacterController.ModelMountRoot);
+                    // CommonUtils.ResetGO(mt,CharacterController.ModelMountRoot);
                 }
             }
             EventManager.Dispatch(EEvent.PLAYER_LOAD_FINISHED);

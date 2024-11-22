@@ -25,6 +25,11 @@
 		"path":"Assets/ResourcesAssets/Controllers/TopDownController.prefab"
 	},
 	{
+		"id":10006,
+		"ctrlType":5,
+		"path":"Assets/ResourcesAssets/Controllers/TPSController.prefab"
+	},
+	{
 		"__metatable":"true",
 		"id":"int",
 		"ctrlType":"int",

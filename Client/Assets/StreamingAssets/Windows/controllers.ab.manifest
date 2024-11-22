@@ -1,15 +1,15 @@
 ManifestFileVersion: 0
-CRC: 79804604
+CRC: 2608713230
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: 1c178aef79f7fe5464d0b66b971b36df
+    Hash: c82b5d2831c90c124cd13c0599bc1945
   TypeTreeHash:
     serializedVersion: 2
-    Hash: b6aa373448691d56bd2417f1ccf9dc72
+    Hash: 185e75513552c2fc67d887529073e6ca
   IncrementalBuildHash:
     serializedVersion: 2
-    Hash: 1c178aef79f7fe5464d0b66b971b36df
+    Hash: c82b5d2831c90c124cd13c0599bc1945
 HashAppended: 0
 ClassTypes:
 - Class: 1
@@ -18,9 +18,25 @@ ClassTypes:
   Script: {instanceID: 0}
 - Class: 20
   Script: {instanceID: 0}
+- Class: 21
+  Script: {instanceID: 0}
+- Class: 28
+  Script: {instanceID: 0}
+- Class: 43
+  Script: {instanceID: 0}
+- Class: 48
+  Script: {instanceID: 0}
 - Class: 54
   Script: {instanceID: 0}
+- Class: 74
+  Script: {instanceID: 0}
 - Class: 81
+  Script: {instanceID: 0}
+- Class: 90
+  Script: {instanceID: 0}
+- Class: 91
+  Script: {instanceID: 0}
+- Class: 95
   Script: {instanceID: 0}
 - Class: 114
   Script: {fileID: 11500000, guid: e9be22bce34010f43b12190b15d84b00, type: 3}
@@ -46,11 +62,23 @@ ClassTypes:
   Script: {fileID: 11500000, guid: 7f1e2da4ada84c7dad9b7088ee95061f, type: 3}
 - Class: 114
   Script: {fileID: 11500000, guid: 28e6a5e4a8574db5878123dfff3b07c1, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: e00b029906eec204b82c90899d4343a6, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: f35617dd18fdbac4fb05187bac222064, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: 095b8cf16ffa0984f8a9b6237c5e15ad, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: 39ca4c5f70b744dd9e7c8f83ab3d8fc5, type: 3}
 - Class: 115
   Script: {instanceID: 0}
 - Class: 134
   Script: {instanceID: 0}
 - Class: 136
+  Script: {instanceID: 0}
+- Class: 137
+  Script: {instanceID: 0}
+- Class: 143
   Script: {instanceID: 0}
 SerializeReferenceClassIdentifiers: []
 Assets:
@@ -58,5 +86,6 @@ Assets:
 - Assets/ResourcesAssets/Controllers/FirstPersonController.prefab
 - Assets/ResourcesAssets/Controllers/ThirdPersonControllerB.prefab
 - Assets/ResourcesAssets/Controllers/TopDownController.prefab
+- Assets/ResourcesAssets/Controllers/TPSController.prefab
 - Assets/ResourcesAssets/Controllers/ThirdPersonControllerA.prefab
 Dependencies: []

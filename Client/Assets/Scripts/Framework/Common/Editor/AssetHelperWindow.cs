@@ -82,21 +82,27 @@ namespace Framework.Common
                 }
                 LogManager.Log(LOGTag,path,dstPath);
                 
-                var srcClip = AssetDatabase.LoadAssetAtPath(relPath, typeof(AnimationClip)) as AnimationClip;
-                if (srcClip == null)
+                var srcObjs = AssetDatabase.LoadAllAssetsAtPath(relPath);
+                foreach (var obj in srcObjs)
                 {
-                    continue;
+                    if (obj == null || obj is not AnimationClip || obj.name.StartsWith("__preview__"))
+                    {
+                        continue;
+                    }
+                    
+                    var dts = dstPath + "/" + obj.name + ".anim";
+                    var dstclip = AssetDatabase.LoadAssetAtPath(dts, typeof(AnimationClip)) as AnimationClip;
+                    if (dstclip != null)
+                    {
+                        AssetDatabase.DeleteAsset(dts);
+                    }
+                    
+                    var tempClip = new AnimationClip();
+                    EditorUtility.CopySerialized(obj, tempClip);
+                    AssetDatabase.CreateAsset(tempClip, dts);
+                    LogManager.Log(obj.name);
                 }
                 
-                var dstclip = AssetDatabase.LoadAssetAtPath(dstPath, typeof(AnimationClip)) as AnimationClip;
-                if (dstclip != null)
-                {
-                    AssetDatabase.DeleteAsset(dstPath);
-                }
-                
-                var tempClip = new AnimationClip();
-                EditorUtility.CopySerialized(srcClip, tempClip);
-                AssetDatabase.CreateAsset(tempClip, dstPath + "/" + srcClip.name + ".anim");
             }
         }
     }

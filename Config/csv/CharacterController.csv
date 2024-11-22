@@ -7,3 +7,4 @@ int,,int,string
 10003,第三人称控制B,2,Assets/ResourcesAssets/Controllers/ThirdPersonControllerB.prefab
 10004,第三人称控制C,3,Assets/ResourcesAssets/Controllers/ThirdPersonControllerC.prefab
 10005,俯视角,4,Assets/ResourcesAssets/Controllers/TopDownController.prefab
+10006,第三人称控制,5,Assets/ResourcesAssets/Controllers/TPSController.prefab

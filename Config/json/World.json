@@ -2,7 +2,7 @@
 	{
 		"id":10001,
 		"worldName":"MainWorld",
-		"initPos":[4.5,1.6,12],
+		"initPos":[4.5,5,12],
 		"terrainAssetPath":"Assets/ResourcesAssets/Worlds/MainWorld/RawInfo/Terrain/Terrain.asset"
 	},
 	{

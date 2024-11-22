@@ -2,7 +2,7 @@
 	{
 		"id":10001,
 		"modelPath":"Assets/ResourcesAssets/Characters/Unknown/Unknown.prefab",
-		"ctrlType":1,
+		"ctrlType":5,
 		"baseHP":1000,
 		"baseStamina":1000,
 		"baseThirsty":1000,
@@ -14,7 +14,7 @@
 	{
 		"id":10002,
 		"modelPath":"Assets/ResourcesAssets/Characters/BagBoy/BagBoy.prefab",
-		"ctrlType":1,
+		"ctrlType":5,
 		"baseHP":1000,
 		"baseStamina":1000,
 		"baseThirsty":1000,

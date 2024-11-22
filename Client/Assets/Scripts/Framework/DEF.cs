@@ -31,6 +31,7 @@ namespace Framework
             TPS_B = 2,
             TPS_C = 3,
             TOPDOWN = 4,
+            TPS = 5,
         }
         public const string ENV_ROOT = "[Environment]"; //根节点
         

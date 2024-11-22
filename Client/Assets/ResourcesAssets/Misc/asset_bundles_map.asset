@@ -22,6 +22,7 @@ MonoBehaviour:
     - Assets/ResourcesAssets/Controllers\ThirdPersonControllerB.prefab
     - Assets/ResourcesAssets/Controllers\ThirdPersonControllerC.prefab
     - Assets/ResourcesAssets/Controllers\TopDownController.prefab
+    - Assets/ResourcesAssets/Controllers\TPSController.prefab
     bundleName: controllers
   - assetBundlesMap:
     - Assets/ResourcesAssets/Misc\asset_bundles_map.asset

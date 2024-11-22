@@ -2,4 +2,4 @@ worldID,场景描述,世界名称,初始位置,地形资源
 id,_desc,worldName,initPos,terrainAssetPath
 int,,string,vector3,string
 ,,,,
-10001,主世界,MainWorld,"4.5,1.6,12",Assets/ResourcesAssets/Worlds/MainWorld/RawInfo/Terrain/Terrain.asset
+10001,主世界,MainWorld,"4.5,5,12",Assets/ResourcesAssets/Worlds/MainWorld/RawInfo/Terrain/Terrain.asset
