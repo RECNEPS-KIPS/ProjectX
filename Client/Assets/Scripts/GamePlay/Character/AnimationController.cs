@@ -605,20 +605,9 @@ namespace GamePlay.Character
 
         #region Updates
 
-        private bool isVaild = false;
-        public void SetAnimator(Animator animator)
-        {
-            _animator = animator;
-            isVaild = true;
-        }
-
         /// <inheritdoc cref="Update" />
         private void Update()
         {
-            if (!isVaild)
-            {
-                return;
-            }
             switch (_currentState)
             {
                 case AnimationState.Locomotion:
@@ -641,10 +630,6 @@ namespace GamePlay.Character
         /// </summary>
         private void UpdateAnimatorController()
         {
-            if (!isVaild)
-            {
-                return;
-            }
             _animator.SetFloat(_leanValueHash, _leanValue);
             _animator.SetFloat(_headLookXHash, _headLookX);
             _animator.SetFloat(_headLookYHash, _headLookY);
@@ -1009,11 +994,9 @@ namespace GamePlay.Character
         /// </summary>
         private void GroundedCheck()
         {
-            Vector3 spherePosition = new Vector3(
-                _controller.transform.position.x,
-                _controller.transform.position.y - _groundedOffset,
-                _controller.transform.position.z
-            );
+            var transform1 = _controller.transform;
+            var position = transform1.position;
+            Vector3 spherePosition = new Vector3(position.x, position.y - _groundedOffset, position.z);
             _isGrounded = Physics.CheckSphere(spherePosition, _controller.radius, _groundLayerMask, QueryTriggerInteraction.Ignore);
 
             if (_isGrounded)
@@ -1028,17 +1011,12 @@ namespace GamePlay.Character
         private void GroundInclineCheck()
         {
             float rayDistance = Mathf.Infinity;
-            _rearRayPos.rotation = Quaternion.Euler(transform.rotation.x, 0, 0);
-            _frontRayPos.rotation = Quaternion.Euler(transform.rotation.x, 0, 0);
+            var rotation = transform.rotation;
+            _rearRayPos.rotation = Quaternion.Euler(rotation.x, 0, 0);
+            _frontRayPos.rotation = Quaternion.Euler(rotation.x, 0, 0);
 
             Physics.Raycast(_rearRayPos.position, _rearRayPos.TransformDirection(-Vector3.up), out RaycastHit rearHit, rayDistance, _groundLayerMask);
-            Physics.Raycast(
-                _frontRayPos.position,
-                _frontRayPos.TransformDirection(-Vector3.up),
-                out RaycastHit frontHit,
-                rayDistance,
-                _groundLayerMask
-            );
+            Physics.Raycast(_frontRayPos.position, _frontRayPos.TransformDirection(-Vector3.up), out RaycastHit frontHit, rayDistance, _groundLayerMask);
 
             Vector3 hitDifference = frontHit.point - rearHit.point;
             float xPlaneLength = new Vector2(hitDifference.x, hitDifference.z).magnitude;
@@ -1052,9 +1030,10 @@ namespace GamePlay.Character
         private void CeilingHeightCheck()
         {
             float rayDistance = Mathf.Infinity;
-            float minimumStandingHeight = _capsuleStandingHeight - _frontRayPos.localPosition.y;
-
-            Vector3 midpoint = new Vector3(transform.position.x, transform.position.y + _frontRayPos.localPosition.y, transform.position.z);
+            var localPosition = _frontRayPos.localPosition;
+            float minimumStandingHeight = _capsuleStandingHeight - localPosition.y;
+            var position = transform.position;
+            Vector3 midpoint = new Vector3(position.x, position.y + localPosition.y, position.z);
             if (Physics.Raycast(midpoint, transform.TransformDirection(Vector3.up), out RaycastHit ceilingHit, rayDistance, _groundLayerMask))
             {
                 _cannotStandUp = ceilingHit.distance < minimumStandingHeight;

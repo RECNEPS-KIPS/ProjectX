@@ -90,38 +90,32 @@ namespace GamePlay.Player
             LogManager.Log(LOGTag,"LoadPlayerController");
             var playerCf = ConfigManager.GetConfigByID(EConfig.Character, PROTAGONIST_ID);
             var modelPath = playerCf["modelPath"];
-            var ctrlType = playerCf["ctrlType"];
-            var ctrlCfList = ConfigManager.GetConfig(EConfig.CharacterController);
-            LogManager.Log(LOGTag,$"LoadPlayerController ctrlType:{ctrlType},modelPath:{modelPath}");
-            dynamic ctrlCf = null;
-            for (var i = 0; i < ctrlCfList.Count; i++)
-            {
-                if (ctrlCfList[i]["ctrlType"] != ctrlType) continue;
-                ctrlCf = ctrlCfList[i];
-                break;
-            }
+            // var ctrlType = playerCf["ctrlType"];
+            // var ctrlCfList = ConfigManager.GetConfig(EConfig.CharacterController);
+            // LogManager.Log(LOGTag,$"LoadPlayerController ctrlType:{ctrlType},modelPath:{modelPath}");
+            // dynamic ctrlCf = null;
+            // for (var i = 0; i < ctrlCfList.Count; i++)
+            // {
+            //     if (ctrlCfList[i]["ctrlType"] != ctrlType) continue;
+            //     ctrlCf = ctrlCfList[i];
+            //     break;
+            // }
+            
+            LogManager.Log(LOGTag,"CharacterCtrl initPos:",initPlayerPos);
+            //模型
+            GameObject modelGo = Instantiate(ResourcesLoadManager.LoadAsset<GameObject>(modelPath),initPlayerPos,Quaternion.identity);
+            var animator = modelGo.GetComponentInChildren<Animator>();
+            //控制器
+            // GameObject ctrlGo = Instantiate(ResourcesLoadManager.LoadAsset<GameObject>(ctrlCf["path"]), initPlayerPos, Quaternion.identity);
+            // CharacterController = ctrlGo.GetComponent<CharacterController>();
+            // ctrlGo.name = "CharacterController";
+            CharacterControllerRoot = modelGo.transform;
+            DontDestroyOnLoad(CharacterControllerRoot);
 
-            if (ctrlCf != null)
-            {
-                LogManager.Log(LOGTag,"CharacterCtrl initPos:",initPlayerPos);
-                //模型
-                GameObject modelGo = Instantiate(ResourcesLoadManager.LoadAsset<GameObject>(modelPath));
-                var animator = modelGo.GetComponentInChildren<Animator>();
-                //控制器
-                GameObject ctrlGo = Instantiate(ResourcesLoadManager.LoadAsset<GameObject>(ctrlCf["path"]), initPlayerPos, Quaternion.identity);
-                // CharacterController = ctrlGo.GetComponent<CharacterController>();
-                ctrlGo.name = "CharacterController";
-                CharacterControllerRoot = ctrlGo.transform;
-                DontDestroyOnLoad(CharacterControllerRoot);
-
-                var mounter = ctrlGo.GetComponentInChildren<MountController>();
-                var ac = ctrlGo.GetComponentInChildren<AnimationController>();
-                ac.SetAnimator(animator);
-                
-                // animator.;
-                LogManager.Log(LOGTag,$"LoadPlayerController ctrlGo:{ctrlGo !=null},mounter:{mounter!=null},modelGo:{modelGo!=null}");
-                mounter.MountModel(modelGo.transform);
-            }
+            // var mounter = modelGo.GetComponentInChildren<MountController>();
+            // animator.;
+            LogManager.Log(LOGTag,$"LoadPlayerController modelGo:{modelGo!=null}");
+            // mounter.MountModel(modelGo.transform);
             EventManager.Dispatch(EEvent.PLAYER_LOAD_FINISHED);
         }
 

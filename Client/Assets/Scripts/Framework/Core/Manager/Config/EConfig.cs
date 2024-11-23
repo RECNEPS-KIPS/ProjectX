@@ -8,7 +8,6 @@
         Scene,
         ColorDef,
         Character,
-        CharacterController,
         GrowthTemp,
         Item,
         World,

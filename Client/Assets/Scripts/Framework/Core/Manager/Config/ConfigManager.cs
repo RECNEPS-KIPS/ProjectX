@@ -26,7 +26,6 @@ namespace Framework.Core.Manager.Config
             { EConfig.Scene, "Scene" },
             { EConfig.ColorDef, "ColorDef" },
             { EConfig.Character, "Character" },
-            { EConfig.CharacterController, "CharacterController" },
             { EConfig.GrowthTemp, "GrowthTemp" },
             { EConfig.Item,"Item"},
             { EConfig.World,"World"},

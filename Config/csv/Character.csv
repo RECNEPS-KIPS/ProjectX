@@ -1,6 +1,6 @@
-索引id,描述,模型资源路径,控制器类型,基础血量,基础体力,基础蓄水量,基础饱食度,基础防御,基础攻击,成长模板
-id,_desc,modelPath,ctrlType,baseHP,baseStamina,baseThirsty,baseHungry,baseDefense,baseAttack,growthTemp
-int,,string,int,int,int,int,int,int,int,int
-,,,,,,,,,,
-10001,未知,Assets/ResourcesAssets/Characters/Unknown/Unknown.prefab,5,1000,1000,1000,1000,100,50,0
-10002,背包男孩,Assets/ResourcesAssets/Characters/BagBoy/BagBoy.prefab,5,1000,1000,1000,1000,100,50,0
+索引id,描述,模型资源路径,基础血量,基础体力,基础蓄水量,基础饱食度,基础防御,基础攻击,成长模板
+id,_desc,modelPath,baseHP,baseStamina,baseThirsty,baseHungry,baseDefense,baseAttack,growthTemp
+int,,string,int,int,int,int,int,int,int
+,,,,,,,,,
+10001,未知,Assets/ResourcesAssets/Characters/Unknown/Unknown.prefab,1000,1000,1000,1000,100,50,0
+10002,背包男孩,Assets/ResourcesAssets/Characters/BagBoy/CharacterController.prefab,1000,1000,1000,1000,100,50,0

@@ -23,16 +23,7 @@ namespace Framework
         public const string RESOURCES_ASSETS_PATH = "Assets/ResourcesAssets";
         
         public const string ASSET_BUNDLE_SUFFIX = "ab";
-
-        public enum ECharacterControllerType
-        {
-            FPS = 0,
-            TPS_A = 1,
-            TPS_B = 2,
-            TPS_C = 3,
-            TOPDOWN = 4,
-            TPS = 5,
-        }
+        
         public const string ENV_ROOT = "[Environment]"; //根节点
         
         // public const string COLLIDER_ROOT = "[Collider]"; //碰撞盒节点

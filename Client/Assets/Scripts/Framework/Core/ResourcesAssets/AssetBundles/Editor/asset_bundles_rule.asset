@@ -13,14 +13,6 @@ MonoBehaviour:
   m_Name: asset_bundles_rule
   m_EditorClassIdentifier: 
   AssetBundlesRules:
-  - FullPath: Assets/ResourcesAssets/Characters/BagBoy/BagBoy.prefab
-    ABLabel: BagBoy
-    IsDirectory: 0
-    AssetType: 
-  - FullPath: Assets/ResourcesAssets/Controllers
-    ABLabel: Controllers
-    IsDirectory: 1
-    AssetType: prefab
   - FullPath: Assets/ResourcesAssets/Misc
     ABLabel: Misc
     IsDirectory: 1
@@ -123,5 +115,9 @@ MonoBehaviour:
     AssetType: asset;bytes;prefab
   - FullPath: Assets/ResourcesAssets/Characters/Unknown/Unknown.prefab
     ABLabel: Unknown
+    IsDirectory: 0
+    AssetType: 
+  - FullPath: Assets/ResourcesAssets/Characters/BagBoy/CharacterController.prefab
+    ABLabel: CharacterController
     IsDirectory: 0
     AssetType: 

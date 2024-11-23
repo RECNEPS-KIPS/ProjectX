@@ -24,7 +24,6 @@ namespace GamePlay.Player
         
         public int GrowthTemp = -1;
         public int Level = 1;
-        public int ControllerType;
 
         private int GrowthHP;
         private int GrowthStamina;
@@ -46,8 +45,6 @@ namespace GamePlay.Player
             BaseStamina = characterCf["baseStamina"];
             BaseThirsty = characterCf["baseThirsty"];
             BaseHungry = characterCf["baseHungry"];
-                
-            ControllerType = characterCf["ctrlType"];
             GrowthTemp = characterCf["growthTemp"];
             if (GrowthTemp < 0) return;
             var growthCf = ConfigManager.GetConfigByID(EConfig.GrowthTemp, GrowthTemp);
@@ -82,7 +79,7 @@ namespace GamePlay.Player
 
         public override string ToString()
         {
-            return $"BaseDefense:{ BaseDefense}, BaseAttack:{ BaseAttack}, BaseHP:{ BaseHP}, BaseStamina:{ BaseStamina}, BaseThirsty:{ BaseThirsty}, BaseHungry:{ BaseHungry}, CurDefense:{ CurDefense}, CurAttack:{ CurAttack}, CurHP:{ CurHP}, CurStamina:{ CurStamina}, CurThirsty:{ CurThirsty}, CurHungry:{ CurHungry}, GrowthTemp:{ GrowthTemp}, Level:{ Level}, ControllerType:{ ControllerType}, GrowthHP:{ GrowthHP}, GrowthStamina:{ GrowthStamina}, GrowthThirsty:{ GrowthThirsty}, GrowthHungry:{ GrowthHungry}, GrowthDefense:{ GrowthDefense}, GrowthAttack:{ GrowthAttack},";
+            return $"BaseDefense:{ BaseDefense}, BaseAttack:{ BaseAttack}, BaseHP:{ BaseHP}, BaseStamina:{ BaseStamina}, BaseThirsty:{ BaseThirsty}, BaseHungry:{ BaseHungry}, CurDefense:{ CurDefense}, CurAttack:{ CurAttack}, CurHP:{ CurHP}, CurStamina:{ CurStamina}, CurThirsty:{ CurThirsty}, CurHungry:{ CurHungry}, GrowthTemp:{ GrowthTemp}, Level:{ Level}, GrowthHP:{ GrowthHP}, GrowthStamina:{ GrowthStamina}, GrowthThirsty:{ GrowthThirsty}, GrowthHungry:{ GrowthHungry}, GrowthDefense:{ GrowthDefense}, GrowthAttack:{ GrowthAttack},";
         }
     }
 }

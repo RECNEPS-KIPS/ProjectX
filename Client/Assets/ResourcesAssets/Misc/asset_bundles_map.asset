@@ -14,17 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   map:
   - assetBundlesMap:
-    - Assets/ResourcesAssets/Characters/BagBoy/BagBoy.prefab
-    bundleName: bagboy
-  - assetBundlesMap:
-    - Assets/ResourcesAssets/Controllers\FirstPersonController.prefab
-    - Assets/ResourcesAssets/Controllers\ThirdPersonControllerA.prefab
-    - Assets/ResourcesAssets/Controllers\ThirdPersonControllerB.prefab
-    - Assets/ResourcesAssets/Controllers\ThirdPersonControllerC.prefab
-    - Assets/ResourcesAssets/Controllers\TopDownController.prefab
-    - Assets/ResourcesAssets/Controllers\TPSController.prefab
-    bundleName: controllers
-  - assetBundlesMap:
     - Assets/ResourcesAssets/Misc\asset_bundles_map.asset
     bundleName: misc
   - assetBundlesMap:
@@ -145,5 +134,8 @@ MonoBehaviour:
   - assetBundlesMap:
     - Assets/ResourcesAssets/Characters/Unknown/Unknown.prefab
     bundleName: unknown
+  - assetBundlesMap:
+    - Assets/ResourcesAssets/Characters/BagBoy/CharacterController.prefab
+    bundleName: charactercontroller
   - assetBundlesMap: []
     bundleName: Misc
