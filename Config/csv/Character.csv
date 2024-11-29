@@ -4,3 +4,4 @@ int,,string,int,int,int,int,int,int,int
 ,,,,,,,,,
 10001,未知,Assets/ResourcesAssets/Characters/Unknown/Unknown.prefab,1000,1000,1000,1000,100,50,0
 10002,背包男孩,Assets/ResourcesAssets/Characters/BagBoy/CharacterController.prefab,1000,1000,1000,1000,100,50,0
+10003,测试,Assets/ResourcesAssets/Characters/TestBody/CharacterController.prefab,1000,1000,1000,1000,100,50,0

@@ -22,6 +22,17 @@
 		"growthTemp":0
 	},
 	{
+		"id":10003,
+		"modelPath":"Assets/ResourcesAssets/Characters/TestBody/CharacterController.prefab",
+		"baseHP":1000,
+		"baseStamina":1000,
+		"baseThirsty":1000,
+		"baseHungry":1000,
+		"baseDefense":100,
+		"baseAttack":50,
+		"growthTemp":0
+	},
+	{
 		"__metatable":"true",
 		"id":"int",
 		"modelPath":"string",

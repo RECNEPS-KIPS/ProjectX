@@ -18,13 +18,14 @@ namespace GamePlay.Player
     {
         Unknown = 10001,
         BagBoy = 10002,
+        TestBody = 10003,
     }
     
     [MonoSingletonPath("[Manager]/PlayerManager")]
     public class PlayerManager:MonoSingleton<PlayerManager>
     {
         [NonSerialized]
-        public const int PROTAGONIST_ID = (int)ECharacter.BagBoy;
+        public const int PROTAGONIST_ID = (int)ECharacter.TestBody;
         
         private const string LOGTag = "PlayerManager";
 
