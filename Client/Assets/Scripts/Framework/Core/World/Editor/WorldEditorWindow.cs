@@ -729,6 +729,15 @@ namespace Framework.Core.World
             GUILayout.BeginVertical();
             GUILayout.FlexibleSpace();
             GUILayout.BeginVertical();
+            
+            if (GUILayout.Button("Load All Item Chunks", GUILayout.Width(windowSize.width - 6), GUILayout.Height(normalSpace)))
+            {
+                itemHandler.LoadAllItemChunks(envRoot,worldName);
+                GUIUtility.ExitGUI();
+            }
+            GUILayout.EndVertical();
+            GUILayout.BeginVertical();
+            
             if (GUILayout.Button("Split Scene Item", GUILayout.Width(windowSize.width - 6), GUILayout.Height(normalSpace)))
             {
                 itemHandler.SplitSceneItemWithChunk(envRoot,worldName,terrainHandler);

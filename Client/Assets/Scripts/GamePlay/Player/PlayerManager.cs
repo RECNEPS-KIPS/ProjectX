@@ -25,7 +25,7 @@ namespace GamePlay.Player
     public class PlayerManager:MonoSingleton<PlayerManager>
     {
         [NonSerialized]
-        public const int PROTAGONIST_ID = (int)ECharacter.TestBody;
+        public const int PROTAGONIST_ID = (int)ECharacter.BagBoy;
         
         private const string LOGTag = "PlayerManager";
 

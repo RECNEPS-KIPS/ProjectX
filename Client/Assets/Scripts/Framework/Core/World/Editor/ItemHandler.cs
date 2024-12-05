@@ -215,128 +215,128 @@ namespace Framework.Core.World
 
         #region Load
 
-        public void LoadAllItemChunks(Transform itemRoot, string worldName, int piecesPerAxis, Vector2 chunkSize, Action callback = null)
-        {
-            for (int i = 0; i < piecesPerAxis * piecesPerAxis; i++)
-            {
-                LoadItemChunk(itemRoot, worldName, i, chunkSize);
-            }
+        // public void LoadAllItemChunks(Transform itemRoot, string worldName, int piecesPerAxis, Vector2 chunkSize, Action callback = null)
+        // {
+        //     for (int i = 0; i < piecesPerAxis * piecesPerAxis; i++)
+        //     {
+        //         LoadItemChunk(itemRoot, worldName, i, chunkSize);
+        //     }
+        //
+        //     callback?.Invoke();
+        // }
 
-            callback?.Invoke();
-        }
-
-        public void LoadItemChunk(Transform itemRoot, string worldName, int index, Vector2 chunkSize, Action callback = null)
-        {
-            // var nodeName = $"{chunkY}{DEF.TerrainSplitChar}{chunkX}";
-            // if (!chunkItemsDict.ContainsKey(nodeName))
-            // {
-            //     chunkItemsDict.Add(nodeName, new List<ModelInfo>());
-            // }
-            //
-            // var chunkRoot = itemRoot.Find(nodeName);
-            // if (chunkRoot == null)
-            // {
-            //     chunkRoot = AddItemChunkRoot(itemRoot, chunkX, chunkY, chunkSize);
-            // }
-
-            // var filePath = $"{DEF.RESOURCES_ASSETS_PATH}Environment/{worldName}/Chunk{DEF.TerrainSplitChar}{chunkY}{DEF.TerrainSplitChar}{chunkX}/data.bytes";
-            // if (!File.Exists(filePath))
-            // {
-            //     LogManager.Log(LOGTag, "There is no scene object data");
-            //     return;
-            // }
-            //
-            // var fs = new FileStream(filePath, FileMode.OpenOrCreate, FileAccess.Read);
-            // var reader = new BinaryReader(fs);
-            // int cnt;
-            // try
-            // {
-            //     //ignore read terrain
-            //     reader.ReadSingle();
-            //     reader.ReadSingle();
-            //     reader.ReadSingle();
-            //     reader.ReadInt32();
-            //     reader.ReadSingle();
-            //     reader.ReadSingle();
-            //     reader.ReadInt32();
-            //     reader.ReadInt32();
-            //     reader.ReadSingle();
-            //     reader.ReadSingle();
-            //     reader.ReadSingle();
-            //     reader.ReadInt32();
-            //     reader.ReadSingle();
-            //     reader.ReadInt32();
-            //     reader.ReadInt32();
-            //     reader.ReadSingle();
-            //     reader.ReadSingle();
-            //     reader.ReadSingle();
-            //     reader.ReadSingle();
-            //     reader.ReadString();
-            //     //ignore read collider
-            //     reader.ReadInt32();
-            //     reader.ReadInt32();
-            //     reader.ReadInt32();
-            //
-            //     //item count
-            //     cnt = reader.ReadInt32();
-            // }
-            // catch (Exception)
-            // {
-            //     LogManager.Log(LOGTag, "There is no scene object data");
-            //     return;
-            // }
-            //
-            // for (var i = 0; i < cnt; i++)
-            // {
-            //     var x = reader.ReadSingle();
-            //     var y = reader.ReadSingle();
-            //     var z = reader.ReadSingle();
-            //     var pos = new Vector3(x, y, z);
-            //     x = reader.ReadSingle();
-            //     y = reader.ReadSingle();
-            //     z = reader.ReadSingle();
-            //     var rotate = Quaternion.Euler(x, y, z);
-            //     x = reader.ReadSingle();
-            //     y = reader.ReadSingle();
-            //     z = reader.ReadSingle();
-            //     var scale = new Vector3(x, y, z);
-            //     var lightingMapIndex = reader.ReadInt32();
-            //     x = reader.ReadSingle();
-            //     y = reader.ReadSingle();
-            //     z = reader.ReadSingle();
-            //     var w = reader.ReadSingle();
-            //     var lightingMapOffsetScale = new Vector4(x, y, z, w);
-            //     var guid = reader.ReadString();
-            //     var name = reader.ReadString();
-            //     //加载预制体
-            //     var asset = AssetDatabase.LoadAssetAtPath<Object>(AssetDatabase.GUIDToAssetPath(guid));
-            //     var go = PrefabUtility.InstantiatePrefab(asset) as GameObject;
-            //     if (go == null) continue;
-            //     go.isStatic = true;
-            //     go.name = name;
-            //     go.transform.position = pos;
-            //     go.transform.localScale = scale;
-            //     go.transform.rotation = rotate;
-            //     go.transform.SetParent(chunkRoot);
-            //     var rend = go.GetComponent<MeshRenderer>();
-            //     if (rend != null && lightingMapIndex != -1)
-            //     {
-            //         rend.lightmapIndex = lightingMapIndex;
-            //         rend.lightmapScaleOffset = lightingMapOffsetScale;
-            //     }
-            //
-            //     var mi = new ModelInfo
-            //     {
-            //         go = go,
-            //         suffix = AssetDatabase.GUIDToAssetPath(guid).Split(".").Last().ToLower()
-            //     };
-            //     chunkItemsDict[nodeName].Add(mi);
-            // }
-            //
-            // reader.Close();
-            // fs.Close();
-            // callback?.Invoke();
-        }
+        // public void LoadItemChunk(Transform itemRoot, string worldName, int index, Vector2 chunkSize, Action callback = null)
+        // {
+        //     // var nodeName = $"{chunkY}{DEF.TerrainSplitChar}{chunkX}";
+        //     // if (!chunkItemsDict.ContainsKey(nodeName))
+        //     // {
+        //     //     chunkItemsDict.Add(nodeName, new List<ModelInfo>());
+        //     // }
+        //     //
+        //     // var chunkRoot = itemRoot.Find(nodeName);
+        //     // if (chunkRoot == null)
+        //     // {
+        //     //     chunkRoot = AddItemChunkRoot(itemRoot, chunkX, chunkY, chunkSize);
+        //     // }
+        //
+        //     // var filePath = $"{DEF.RESOURCES_ASSETS_PATH}Environment/{worldName}/Chunk{DEF.TerrainSplitChar}{chunkY}{DEF.TerrainSplitChar}{chunkX}/data.bytes";
+        //     // if (!File.Exists(filePath))
+        //     // {
+        //     //     LogManager.Log(LOGTag, "There is no scene object data");
+        //     //     return;
+        //     // }
+        //     //
+        //     // var fs = new FileStream(filePath, FileMode.OpenOrCreate, FileAccess.Read);
+        //     // var reader = new BinaryReader(fs);
+        //     // int cnt;
+        //     // try
+        //     // {
+        //     //     //ignore read terrain
+        //     //     reader.ReadSingle();
+        //     //     reader.ReadSingle();
+        //     //     reader.ReadSingle();
+        //     //     reader.ReadInt32();
+        //     //     reader.ReadSingle();
+        //     //     reader.ReadSingle();
+        //     //     reader.ReadInt32();
+        //     //     reader.ReadInt32();
+        //     //     reader.ReadSingle();
+        //     //     reader.ReadSingle();
+        //     //     reader.ReadSingle();
+        //     //     reader.ReadInt32();
+        //     //     reader.ReadSingle();
+        //     //     reader.ReadInt32();
+        //     //     reader.ReadInt32();
+        //     //     reader.ReadSingle();
+        //     //     reader.ReadSingle();
+        //     //     reader.ReadSingle();
+        //     //     reader.ReadSingle();
+        //     //     reader.ReadString();
+        //     //     //ignore read collider
+        //     //     reader.ReadInt32();
+        //     //     reader.ReadInt32();
+        //     //     reader.ReadInt32();
+        //     //
+        //     //     //item count
+        //     //     cnt = reader.ReadInt32();
+        //     // }
+        //     // catch (Exception)
+        //     // {
+        //     //     LogManager.Log(LOGTag, "There is no scene object data");
+        //     //     return;
+        //     // }
+        //     //
+        //     // for (var i = 0; i < cnt; i++)
+        //     // {
+        //     //     var x = reader.ReadSingle();
+        //     //     var y = reader.ReadSingle();
+        //     //     var z = reader.ReadSingle();
+        //     //     var pos = new Vector3(x, y, z);
+        //     //     x = reader.ReadSingle();
+        //     //     y = reader.ReadSingle();
+        //     //     z = reader.ReadSingle();
+        //     //     var rotate = Quaternion.Euler(x, y, z);
+        //     //     x = reader.ReadSingle();
+        //     //     y = reader.ReadSingle();
+        //     //     z = reader.ReadSingle();
+        //     //     var scale = new Vector3(x, y, z);
+        //     //     var lightingMapIndex = reader.ReadInt32();
+        //     //     x = reader.ReadSingle();
+        //     //     y = reader.ReadSingle();
+        //     //     z = reader.ReadSingle();
+        //     //     var w = reader.ReadSingle();
+        //     //     var lightingMapOffsetScale = new Vector4(x, y, z, w);
+        //     //     var guid = reader.ReadString();
+        //     //     var name = reader.ReadString();
+        //     //     //加载预制体
+        //     //     var asset = AssetDatabase.LoadAssetAtPath<Object>(AssetDatabase.GUIDToAssetPath(guid));
+        //     //     var go = PrefabUtility.InstantiatePrefab(asset) as GameObject;
+        //     //     if (go == null) continue;
+        //     //     go.isStatic = true;
+        //     //     go.name = name;
+        //     //     go.transform.position = pos;
+        //     //     go.transform.localScale = scale;
+        //     //     go.transform.rotation = rotate;
+        //     //     go.transform.SetParent(chunkRoot);
+        //     //     var rend = go.GetComponent<MeshRenderer>();
+        //     //     if (rend != null && lightingMapIndex != -1)
+        //     //     {
+        //     //         rend.lightmapIndex = lightingMapIndex;
+        //     //         rend.lightmapScaleOffset = lightingMapOffsetScale;
+        //     //     }
+        //     //
+        //     //     var mi = new ModelInfo
+        //     //     {
+        //     //         go = go,
+        //     //         suffix = AssetDatabase.GUIDToAssetPath(guid).Split(".").Last().ToLower()
+        //     //     };
+        //     //     chunkItemsDict[nodeName].Add(mi);
+        //     // }
+        //     //
+        //     // reader.Close();
+        //     // fs.Close();
+        //     // callback?.Invoke();
+        // }
 
         public Vector2 CheckParentChunk(Vector3 pos, int xMax, int yMax, Vector2 chunkSize)
         {
@@ -733,6 +733,43 @@ namespace Framework.Core.World
             }
             
             LogManager.Log(LOGTag,$"envRoot total child Count:{envRoot.childCount}, prefab count:{prefabChildCnt}");
+        }
+        
+        public void LoadAllItemChunks(Transform envRoot,string worldName, Action callback = null)
+        {
+            var worldDataPath = $"{DEF.RESOURCES_ASSETS_PATH}/Worlds/{worldName}/WorldData.bytes";
+            var assetData = ResourcesLoadManager.LoadAsset<TextAsset>(worldDataPath);
+            var data = BinaryUtils.Bytes2Object<WorldData>(assetData.bytes);
+
+            for (var i = 0; i < data.PiecesPerAxis * data.PiecesPerAxis; i++)
+            {
+                LoadItemChunk(envRoot,worldName, i);
+            }
+
+            callback?.Invoke();
+        }
+        private void LoadItemChunk(Transform envRoot,string worldName, int index)
+        {
+            var chunkDir = $"Chunk{DEF.TerrainSplitChar}{index}";
+            var saveDir = $"{DEF.RESOURCES_ASSETS_PATH}/Worlds/{worldName}/{chunkDir}";
+            var chunkRoot = envRoot.Find(chunkDir);
+            if (chunkRoot == null)
+            {
+                chunkRoot = new GameObject(chunkDir).transform;
+            }
+
+            var item = ResourcesLoadManager.LoadAsset<GameObject>($"{saveDir}/ItemChunk.prefab");
+            if (item != null)
+            {
+                var go = Object.Instantiate(item, chunkRoot, true);
+
+                go.name = "[Item]";
+                go.transform.localPosition = Vector3.zero;
+                go.transform.localScale = Vector3.one;
+                go.transform.localRotation = Quaternion.identity;
+                go.gameObject.isStatic = true;
+                go.layer = LayerMask.NameToLayer("Ground");
+            }
         }
     }
 }
