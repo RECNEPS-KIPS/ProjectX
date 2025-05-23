@@ -4,7 +4,6 @@ using Framework.Core.Manager.Event;
 using Framework.Core.Manager.ResourcesLoad;
 using Framework.Core.Singleton;
 using Framework.Core.SpaceSegment;
-using GamePlay.Player;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Events;

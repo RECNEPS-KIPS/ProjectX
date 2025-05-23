@@ -1,0 +1,78 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ba9a50ad2bfec3c499883961a98560a2, type: 3}
+  m_Name: "Player\uFF08\u5B89\u6BD4\uFF09"
+  m_EditorClassIdentifier: 
+  <movementData>k__BackingField:
+    <SidewaysCameraRecenteringData>k__BackingField:
+    - <minAngleRange>k__BackingField: 0
+      <maxAngleRange>k__BackingField: 80
+      <waitingTime>k__BackingField: -1
+      <recenteringTime>k__BackingField: -1
+    - <minAngleRange>k__BackingField: 80
+      <maxAngleRange>k__BackingField: 90
+      <waitingTime>k__BackingField: 0
+      <recenteringTime>k__BackingField: 0.3
+    <BackWardsCameraRecenteringData>k__BackingField:
+    - <minAngleRange>k__BackingField: 80
+      <maxAngleRange>k__BackingField: 90
+      <waitingTime>k__BackingField: 0
+      <recenteringTime>k__BackingField: 0.5
+    <bufferToIdleTime>k__BackingField: 0.08
+    <fadeToWalkStartTime>k__BackingField: 0.16
+    <turnBackAngle>k__BackingField: 135
+    <idleData>k__BackingField:
+      <inputMult>k__BackingField: 0
+      <rotationTime>k__BackingField: 0.04
+    <walkData>k__BackingField:
+      <speedMult>k__BackingField: 1
+      <inputMult>k__BackingField: 1
+      <rotationTime>k__BackingField: 0.05
+    <dashData>k__BackingField:
+      <frontDushAnimationName>k__BackingField: Dodge_Front
+      <backDushAnimationName>k__BackingField: Dodge_Back
+      <fadeTime>k__BackingField: 0.1555
+      <rotationTime>k__BackingField: 0.09
+      <dodgeBackApplyRotation>k__BackingField: 0
+      <coldTime>k__BackingField: 0.5
+    <runData>k__BackingField:
+      <speedMult>k__BackingField: 1
+      <inputMult>k__BackingField: 2
+      <rotationTime>k__BackingField: 0.07
+    <sprintData>k__BackingField:
+      <speedMult>k__BackingField: 1
+      <inputMult>k__BackingField: 3
+      <rotationTime>k__BackingField: 0.08
+    <returnRunData>k__BackingField:
+      <speedMult>k__BackingField: 1
+      <inputMult>k__BackingField: 2
+      <rotationTime>k__BackingField: 0.25
+    <comboRotationPercentage>k__BackingField: 0.18
+    <comboRotaionTime>k__BackingField: 0.05
+  <ComboData>k__BackingField:
+    <comboData>k__BackingField:
+      <lightCombo>k__BackingField: {fileID: 11400000, guid: f7b182422d9d8174fb6e4f4bf77a1fc0,
+        type: 2}
+      <heavyCombo>k__BackingField: {fileID: 0}
+      <executeCombo>k__BackingField: {fileID: 0}
+      <skillCombo>k__BackingField: {fileID: 11400000, guid: 05cf71462fa24774a88243d48d91ef43,
+        type: 2}
+      <finishSkillCombo>k__BackingField: {fileID: 11400000, guid: 6162601bdb44cf8409197c4038bf4d45,
+        type: 2}
+      <switchSkill>k__BackingField: {fileID: 11400000, guid: 8098a6c720b7f7942bbb08566c2656d2,
+        type: 2}
+    <playerEnemyDetectionData>k__BackingField:
+      <detectionRadius>k__BackingField: 3
+      <detectionLength>k__BackingField: 3
+      <WhatIsEnemy>k__BackingField:
+        serializedVersion: 2
+        m_Bits: 256

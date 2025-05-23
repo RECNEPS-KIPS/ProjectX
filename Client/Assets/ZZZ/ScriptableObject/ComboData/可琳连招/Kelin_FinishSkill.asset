@@ -1,0 +1,46 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f13413444ffc8b243bed7dc2a8fc7155, type: 3}
+  m_Name: Kelin_FinishSkill
+  m_EditorClassIdentifier: 
+  characterName: 2
+  _attackStyle: 2
+  _comboName: Corin_FinishSkill_Start
+  _comboColdTime: 0
+  _comboDamage: 5
+  _attackDistance: 2.5
+  _comboOffset: 0
+  _hitName:
+  - Hit_1
+  - Hit_2
+  _parryName:
+  - Hit_1
+  - Hit_2
+  appAudioPrefab: 1
+  _weaponSound: []
+  _characterVoice:
+  - {fileID: 8300000, guid: a62c671f42d30eb48ba08d18e7740c05, type: 3}
+  _universalSound: 0
+  _ATKCount: 15
+  _pauseFrameTime: 0
+  _shakeForceList:
+  - 0.2
+  - 0.1
+  - 0
+  - 0.1
+  - 0
+  - 0.1
+  _pauseFrameTimeList:
+  - 0.1
+  - 0.15
+  - 0.2
+  - 0.15

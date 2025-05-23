@@ -13,7 +13,6 @@ using Framework.Core.Manager.Input;
 using Framework.Core.Manager.Scene;
 using Framework.Core.World;
 using GamePlay.Item;
-using GamePlay.Player;
 
 namespace Framework.Core.Launcher
 {
@@ -38,7 +37,6 @@ namespace Framework.Core.Launcher
             UIManager.Instance.Launch();
 
             //gameplay玩法相关manager后启动
-            PlayerManager.Instance.Launch();
             ItemManager.Instance.Launch();
             
             UIManager.OpenUI(EUI.PlotUI);

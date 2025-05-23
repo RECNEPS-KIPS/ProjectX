@@ -1,0 +1,47 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f13413444ffc8b243bed7dc2a8fc7155, type: 3}
+  m_Name: Anbi_Skill
+  m_EditorClassIdentifier: 
+  characterName: 3
+  _attackStyle: 1
+  _comboName: Anbi_Skill
+  _comboColdTime: 0
+  _comboDamage: 20
+  _attackDistance: 3.5
+  _comboOffset: 1.7
+  _hitName:
+  - Hit_1
+  - Hit_2
+  _parryName:
+  - Hit_1
+  - Hit_2
+  appAudioPrefab: 1
+  _weaponSound:
+  - {fileID: 8300000, guid: 5a0d97607f3d5b444bd351c07ea70a9c, type: 3}
+  _characterVoice:
+  - {fileID: 8300000, guid: 67962eeb9da990d4880a13891fe5c269, type: 3}
+  - {fileID: 8300000, guid: 8a24dae1c820e8745906d92c5789b14b, type: 3}
+  - {fileID: 8300000, guid: 2d3571fbcdfd4ca4d8cf6ce5eb402353, type: 3}
+  - {fileID: 8300000, guid: e53c9bdd76fe4544cb78a5b9a781aa20, type: 3}
+  - {fileID: 0}
+  _universalSound: 0
+  _ATKCount: 3
+  _pauseFrameTime: 0
+  _shakeForceList:
+  - 0
+  - 0.12
+  - 0.2
+  _pauseFrameTimeList:
+  - 0.1
+  - 0
+  - 0

@@ -6,7 +6,6 @@ using Framework.Core.Manager.Config;
 using Framework.Core.Manager.Scene;
 using Framework.Core.Manager.UI;
 using Framework.Core.World;
-using GamePlay.Player;
 using UnityEngine;
 
 // using UnityEngine.SceneManagement;
@@ -37,7 +36,6 @@ namespace GamePlay.UI
                     {
                         initPos = cf["initPos"];
                     }
-                    PlayerManager.Instance.LoadPlayerController(initPos);
                 });
             });
         }

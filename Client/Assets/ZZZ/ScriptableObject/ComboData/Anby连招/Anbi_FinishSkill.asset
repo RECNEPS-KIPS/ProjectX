@@ -1,0 +1,44 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f13413444ffc8b243bed7dc2a8fc7155, type: 3}
+  m_Name: Anbi_FinishSkill
+  m_EditorClassIdentifier: 
+  characterName: 3
+  _attackStyle: 2
+  _comboName: Anbi_FinishSkill_Start
+  _comboColdTime: 0.35
+  _comboDamage: 30
+  _attackDistance: 4.5
+  _comboOffset: 3
+  _hitName:
+  - Hit_1
+  - Hit_2
+  _parryName:
+  - Hit_1
+  - Hit_2
+  appAudioPrefab: 1
+  _weaponSound: []
+  _characterVoice:
+  - {fileID: 8300000, guid: 8a24dae1c820e8745906d92c5789b14b, type: 3}
+  - {fileID: 8300000, guid: 1ac08f3f3e9dafd46b2a5143d85cd9bc, type: 3}
+  - {fileID: 8300000, guid: 99a70b5b0acb3c348b251706dda3ecfa, type: 3}
+  _universalSound: 0
+  _ATKCount: 3
+  _pauseFrameTime: 0
+  _shakeForceList:
+  - 0.2
+  - 0.21
+  - 0.25
+  _pauseFrameTimeList:
+  - 0.1
+  - 0.2
+  - 0.15

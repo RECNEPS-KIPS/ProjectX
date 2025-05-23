@@ -1,0 +1,40 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f13413444ffc8b243bed7dc2a8fc7155, type: 3}
+  m_Name: KeLin_Normal_1
+  m_EditorClassIdentifier: 
+  characterName: 2
+  _attackStyle: 0
+  _comboName: KeLin_Normal_1
+  _comboColdTime: 0
+  _comboDamage: 10
+  _attackDistance: 2.5
+  _comboOffset: 2
+  _hitName:
+  - Hit_1
+  - Hit_2
+  _parryName:
+  - Hit_1
+  - Hit_2
+  appAudioPrefab: 1
+  _weaponSound:
+  - {fileID: 8300000, guid: f5d8190fa161b3b44b4352b45d8c98be, type: 3}
+  _characterVoice:
+  - {fileID: 8300000, guid: ce821dad977b33b4eb1932d2772ff3fa, type: 3}
+  - {fileID: 8300000, guid: 7771d7c9ee6638144930af325dc41f59, type: 3}
+  - {fileID: 8300000, guid: 993d87346ae8f564bb0647cc798cd671, type: 3}
+  - {fileID: 0}
+  _universalSound: 0
+  _ATKCount: 1
+  _pauseFrameTime: 0.12
+  _shakeForceList: []
+  _pauseFrameTimeList: []
