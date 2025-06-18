@@ -1,0 +1,317 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &3570639117495338719
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8092054395485302498}
+  - component: {fileID: 4068905874191715322}
+  m_Layer: 0
+  m_Name: SFX_PoolManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &8092054395485302498
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3570639117495338719}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &4068905874191715322
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3570639117495338719}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 068f18f24c43eb84a8af04a5efdcc636, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  soundPools:
+  - soundStyle: 4
+    soundName: Corin_FinishSkill_Start
+    soundPrefab: {fileID: 8301337412719032232, guid: 7deee846cf5bd3641b92d81e0a55a9d0,
+      type: 3}
+    soundCount: 4
+    ApplyBigCenter: 1
+  - soundStyle: 5
+    soundName: KeLin_Normal_1
+    soundPrefab: {fileID: 7541552202898399322, guid: 62c5c0e0c8eda754ba16a3713bd67c94,
+      type: 3}
+    soundCount: 4
+    ApplyBigCenter: 1
+  - soundStyle: 4
+    soundName: KeLin_Normal_1
+    soundPrefab: {fileID: 6564843294072240058, guid: 62039116ef92ab04d89b4712c54a8159,
+      type: 3}
+    soundCount: 4
+    ApplyBigCenter: 1
+  - soundStyle: 5
+    soundName: KeLin_Normal_2
+    soundPrefab: {fileID: 4912618612194636311, guid: 335764c575ae9ab4ea745f4eb1a5080f,
+      type: 3}
+    soundCount: 4
+    ApplyBigCenter: 1
+  - soundStyle: 4
+    soundName: KeLin_Normal_2
+    soundPrefab: {fileID: 3563662572480997433, guid: 3936b46c59919214b948dbf603376747,
+      type: 3}
+    soundCount: 4
+    ApplyBigCenter: 1
+  - soundStyle: 5
+    soundName: KeLin_Normal_3
+    soundPrefab: {fileID: 7307790371137990318, guid: b4db5ad8f4136f246a8c2b56cefdf35a,
+      type: 3}
+    soundCount: 4
+    ApplyBigCenter: 1
+  - soundStyle: 5
+    soundName: KeLin_Normal_4
+    soundPrefab: {fileID: 7569237912268430483, guid: a92f7c4fe3657244aa836c8832780c83,
+      type: 3}
+    soundCount: 4
+    ApplyBigCenter: 1
+  - soundStyle: 4
+    soundName: KeLin_Normal_4
+    soundPrefab: {fileID: 5872010346413433389, guid: 53f652636e0855247bad17911a28fc7e,
+      type: 3}
+    soundCount: 4
+    ApplyBigCenter: 1
+  - soundStyle: 5
+    soundName: KeLin_Normal_5
+    soundPrefab: {fileID: 2772336808335222693, guid: e4363e53a3bc51844b7680e5e3b55d7b,
+      type: 3}
+    soundCount: 4
+    ApplyBigCenter: 1
+  - soundStyle: 4
+    soundName: KeLin_Normal_5
+    soundPrefab: {fileID: 2087083832870557401, guid: b0948264b000ac444b65122ec56d63d7,
+      type: 3}
+    soundCount: 4
+    ApplyBigCenter: 1
+  - soundStyle: 4
+    soundName: Corin_SwitchSkill_Start
+    soundPrefab: {fileID: 7029532828936452055, guid: 1c1e7be5896cd3c4fb7907c2321be5f3,
+      type: 3}
+    soundCount: 4
+    ApplyBigCenter: 1
+  - soundStyle: 1
+    soundName: Null
+    soundPrefab: {fileID: 4541009071066302561, guid: 6ec9a9d4e5abb06448932fc7232af9ba,
+      type: 3}
+    soundCount: 4
+    ApplyBigCenter: 0
+  - soundStyle: 9
+    soundName: Null
+    soundPrefab: {fileID: 4998059580250727331, guid: 50fab196a5512c643be76f580b4bfbfa,
+      type: 3}
+    soundCount: 4
+    ApplyBigCenter: 0
+  - soundStyle: 6
+    soundName: Null
+    soundPrefab: {fileID: 317089153584910260, guid: 38c258b9e5863e7428ea0b4cca3ae624,
+      type: 3}
+    soundCount: 4
+    ApplyBigCenter: 0
+  - soundStyle: 7
+    soundName: Null
+    soundPrefab: {fileID: 6846618638528064087, guid: 1e1020c9f3fdc744db0a34d22737e547,
+      type: 3}
+    soundCount: 4
+    ApplyBigCenter: 0
+  - soundStyle: 10
+    soundName: KeLin
+    soundPrefab: {fileID: 305273886841046703, guid: 987479d0fcaecb94f8c567eb8b228e83,
+      type: 3}
+    soundCount: 4
+    ApplyBigCenter: 1
+  - soundStyle: 8
+    soundName: KeLin
+    soundPrefab: {fileID: 2406041382205575443, guid: c84523c958b0e7443adb9334c76d7b4c,
+      type: 3}
+    soundCount: 4
+    ApplyBigCenter: 1
+  - soundStyle: 8
+    soundName: AnBi
+    soundPrefab: {fileID: 8626362808184763321, guid: 0451ee67fbc96784f8918a7caeb75287,
+      type: 3}
+    soundCount: 4
+    ApplyBigCenter: 1
+  - soundStyle: 4
+    soundName: Anbi_FinishSkill_Start
+    soundPrefab: {fileID: 2699435843512691557, guid: 9b05e1de2ea2d284d9a549584c9b05c1,
+      type: 3}
+    soundCount: 4
+    ApplyBigCenter: 1
+  - soundStyle: 5
+    soundName: Anbi_Normal_1
+    soundPrefab: {fileID: 1148834709852238990, guid: 03e15407e74000e4d93bdbc7c1ebac2a,
+      type: 3}
+    soundCount: 4
+    ApplyBigCenter: 1
+  - soundStyle: 4
+    soundName: Anbi_Normal_1
+    soundPrefab: {fileID: 1764274094984394227, guid: 4845235cfb65e444f9a0cb23eea09ef7,
+      type: 3}
+    soundCount: 4
+    ApplyBigCenter: 1
+  - soundStyle: 5
+    soundName: Anbi_Normal_2
+    soundPrefab: {fileID: 5175488313654885536, guid: 41b70d7e557185344b6b133bc3c0766e,
+      type: 3}
+    soundCount: 4
+    ApplyBigCenter: 1
+  - soundStyle: 4
+    soundName: Anbi_Normal_2
+    soundPrefab: {fileID: 7657410475824530824, guid: 51b90765c25d4474cae1c2c7585c23c0,
+      type: 3}
+    soundCount: 4
+    ApplyBigCenter: 1
+  - soundStyle: 5
+    soundName: Anbi_Normal_3
+    soundPrefab: {fileID: 7913918718503710640, guid: 6db5cc5b6fedbdf44b98cd3ec507e28e,
+      type: 3}
+    soundCount: 4
+    ApplyBigCenter: 1
+  - soundStyle: 4
+    soundName: Anbi_Normal_3
+    soundPrefab: {fileID: 2021519269857189866, guid: 515a68cb8c0fe8f41aafa5800049eb86,
+      type: 3}
+    soundCount: 4
+    ApplyBigCenter: 1
+  - soundStyle: 4
+    soundName: Anbi_Normal_4
+    soundPrefab: {fileID: 2971608789586788495, guid: 858d7b1269c401e4f8d36aceab4bdf2c,
+      type: 3}
+    soundCount: 4
+    ApplyBigCenter: 1
+  - soundStyle: 4
+    soundName: Anbi_Normal_5
+    soundPrefab: {fileID: 2174395392426425806, guid: f200706d169348643bb5d417fe4cc283,
+      type: 3}
+    soundCount: 4
+    ApplyBigCenter: 1
+  - soundStyle: 4
+    soundName: Anbi_QTE
+    soundPrefab: {fileID: 8873407047927318575, guid: ee1898b5077e2604dbef6525808ca838,
+      type: 3}
+    soundCount: 4
+    ApplyBigCenter: 1
+  - soundStyle: 4
+    soundName: Anbi_Rush_ATK
+    soundPrefab: {fileID: 3108499627576577042, guid: 860b2754c683f2d41ac507849c9c94d3,
+      type: 3}
+    soundCount: 4
+    ApplyBigCenter: 1
+  - soundStyle: 4
+    soundName: Anbi_Skill
+    soundPrefab: {fileID: 5147011143873099141, guid: 16ff92992c908b246bbb8a6136ad8e52,
+      type: 3}
+    soundCount: 4
+    ApplyBigCenter: 1
+  - soundStyle: 5
+    soundName: Anbi_Normal_4
+    soundPrefab: {fileID: 8501053449816001915, guid: ff0c8f827e9fca340a5d945921837aad,
+      type: 3}
+    soundCount: 4
+    ApplyBigCenter: 1
+  - soundStyle: 5
+    soundName: Anbi_Normal_5
+    soundPrefab: {fileID: 1327999795720584972, guid: 31c3c325ccd8adb4ca86467cf861e4c2,
+      type: 3}
+    soundCount: 4
+    ApplyBigCenter: 1
+  - soundStyle: 10
+    soundName: AnBi
+    soundPrefab: {fileID: 8042033325890277720, guid: 6610650f2760ae041b60b4b84872c9d0,
+      type: 3}
+    soundCount: 4
+    ApplyBigCenter: 1
+  - soundStyle: 11
+    soundName: AnBi
+    soundPrefab: {fileID: 3078063480657265538, guid: a15a38c29b8d8ef47930bef860da8feb,
+      type: 3}
+    soundCount: 4
+    ApplyBigCenter: 1
+  - soundStyle: 12
+    soundName: AnBi
+    soundPrefab: {fileID: 3800417576610397233, guid: 48d240b76fb6fcb4480a018787dde658,
+      type: 3}
+    soundCount: 4
+    ApplyBigCenter: 1
+  - soundStyle: 12
+    soundName: KeLin
+    soundPrefab: {fileID: 1210650959231421420, guid: c2bb7493cc0a8d644b0f355602714953,
+      type: 3}
+    soundCount: 4
+    ApplyBigCenter: 1
+  - soundStyle: 2
+    soundName: AnBi
+    soundPrefab: {fileID: 4127117480165642449, guid: 54a24fabb4a3d52478bf4fb3cad1e0d8,
+      type: 3}
+    soundCount: 4
+    ApplyBigCenter: 1
+  - soundStyle: 2
+    soundName: KeLin
+    soundPrefab: {fileID: 2135310213650520558, guid: b82bd423a5b38104882b65d6950e3a63,
+      type: 3}
+    soundCount: 4
+    ApplyBigCenter: 1
+  - soundStyle: 5
+    soundName: Anbi_Rush_ATK
+    soundPrefab: {fileID: 1269989812008286331, guid: 6700efa0467abd74f9b41459958c6861,
+      type: 3}
+    soundCount: 4
+    ApplyBigCenter: 1
+  - soundStyle: 5
+    soundName: Anbi_Skill
+    soundPrefab: {fileID: 4496059839778742894, guid: 88746b4beaea490489652930b1e598e8,
+      type: 3}
+    soundCount: 4
+    ApplyBigCenter: 1
+  - soundStyle: 5
+    soundName: Billy_FinishSkill_Start
+    soundPrefab: {fileID: 8937110198907780769, guid: 46d558b66d069484d94ed9e54bdd6c60,
+      type: 3}
+    soundCount: 4
+    ApplyBigCenter: 1
+  - soundStyle: 4
+    soundName: Billy_FinishSkill_Start
+    soundPrefab: {fileID: 214711324027039848, guid: e63a62b7a281cff48b6c339658edc185,
+      type: 3}
+    soundCount: 4
+    ApplyBigCenter: 1
+  - soundStyle: 8
+    soundName: BiLi
+    soundPrefab: {fileID: 7250333722395632100, guid: 9aab97f6bfcedde4ba91614591bcb158,
+      type: 3}
+    soundCount: 4
+    ApplyBigCenter: 1
+  - soundStyle: 12
+    soundName: BiLi
+    soundPrefab: {fileID: 6843871810651094414, guid: 6b3e594c25bae9545b0b154dbced8f67,
+      type: 3}
+    soundCount: 4
+    ApplyBigCenter: 1
+  - soundStyle: 4
+    soundName: Billy_QTE
+    soundPrefab: {fileID: 7476337745432995438, guid: 7601a2cdc1bc767438c7d695bd26fb68,
+      type: 3}
+    soundCount: 4
+    ApplyBigCenter: 1
