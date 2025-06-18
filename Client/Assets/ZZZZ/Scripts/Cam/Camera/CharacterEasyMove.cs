@@ -42,17 +42,13 @@ public class CharacterEasyMove : MonoBehaviour
     private void CharacterRotation()
     {
         if (CharacterInputSystem.MainInstance.PlayerMove == Vector2.zero) { return; }
-
-        // 获取摄像机的前向向量在水平平面上的投影
+        
         Vector3 camForward = new Vector3(Cam.forward.x, 0, Cam.forward.z).normalized;
 
-        // 计算玩家输入方向
         float targetAngle = Mathf.Atan2(CharacterInputSystem.MainInstance.PlayerMove.x, CharacterInputSystem.MainInstance.PlayerMove.y) * Mathf.Rad2Deg;
-
-        // 计算目标方向
+        
         targetDirection = Quaternion.Euler(0, targetAngle, 0) * camForward;
 
-        // 平滑地旋转角色到目标方向
         Quaternion targetRotation = Quaternion.LookRotation(targetDirection);
         transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, 0.2f);
     }

@@ -4,13 +4,13 @@ namespace HuHu
 {
     public class CameraController : MonoBehaviour
     {
-        #region µÚÒ»ÊÇ»ñÈ¡µ½Ïà»ú
+        #region
         private Transform cam;
         #endregion
 
-        #region ÉùÃ÷ÊäÈë±äÁ¿
-        private float Y_Pivot;//Êó±êµÄx·½ÏòÊäÈë
-        private float X_Pivot;//Êó±êµÄy·½ÏòÊäÈë
+        #region 
+        private float Y_Pivot;
+        private float X_Pivot;
 
         #endregion
 
@@ -18,7 +18,7 @@ namespace HuHu
         private Vector3 currentVelocity = Vector3.zero;
         private Vector3 targetPosition;
         [SerializeField] Transform lookAt;
-        //¿ØÖÆ²ÎÊı
+        //ï¿½ï¿½ï¿½Æ²ï¿½ï¿½ï¿½
         [SerializeField] private Vector2 angleRange;
         [SerializeField] float distance;
         [SerializeField] private float rotationTime;
@@ -41,43 +41,43 @@ namespace HuHu
         
         private void LateUpdate()
         {
-            //Í¨³£°Ñ¸Ä±äÎïÌåĞı×ªµÄ±ÈÊäÈëÍíÒ»Ö¡Ö´ĞĞ
+            //Í¨ï¿½ï¿½ï¿½Ñ¸Ä±ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½×ªï¿½Ä±ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ò»Ö¡Ö´ï¿½ï¿½
             CameraPosition();
             CameraRotation();
 
         }
         /// <summary>
-        /// Ğı×ªÏà»ú
+        /// ï¿½ï¿½×ªï¿½ï¿½ï¿½
         /// </summary>
         private void CameraRotation()
         {
             currentEulerAngler = Vector3.SmoothDamp(currentEulerAngler, new Vector3(X_Pivot, Y_Pivot, 0), ref currentVelocity, rotationTime);
             cam.eulerAngles = currentEulerAngler;
-            //Ò²¿ÉÒÔÓÃ×ª³ÉËÄÔªÊı
+            //Ò²ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½×ªï¿½ï¿½ï¿½ï¿½Ôªï¿½ï¿½
             //cam.rotation=Quaternion.Euler(currentEulerAngler);
         }
 
         /// <summary>
-        /// Ïà»úµÄÎ»ÖÃ
+        /// ï¿½ï¿½ï¿½ï¿½ï¿½Î»ï¿½ï¿½
         /// </summary>
         private void CameraPosition()
         {
-            //Ïà»úµÄÄ¿±êÎ»ÖÃ
+            //ï¿½ï¿½ï¿½ï¿½ï¿½Ä¿ï¿½ï¿½Î»ï¿½ï¿½
             targetPosition = lookAt.transform.position - cam.forward * distance;
-            //lerpÔÚ²»¶Ïµ÷ÓÃ*Ê±¼ä²¹³¥µÄ×´Ì¬ÏÂ£¬¿ÉÒÔÈÃÒ»¸öÖµ·ÇÏßĞÔµØ¿¿½üÄ¿±êÖµ
+            //lerpï¿½Ú²ï¿½ï¿½Ïµï¿½ï¿½ï¿½*Ê±ï¿½ä²¹ï¿½ï¿½ï¿½ï¿½×´Ì¬ï¿½Â£ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ò»ï¿½ï¿½Öµï¿½ï¿½ï¿½ï¿½ï¿½ÔµØ¿ï¿½ï¿½ï¿½Ä¿ï¿½ï¿½Öµ
             cam.position = Vector3.Lerp(cam.position, targetPosition, followSpeed * Time.deltaTime);
         }
 
         /// <summary>
-        /// Êó±êµÄÊäÈë
+        /// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
         /// </summary>
         private void UpdateCameraInput()
         {
-            //ÉèÖÃÁ½¸ö±äÁ¿½ÓÊÜÊäÈë
-            //ÕâÀïÎÒÊ¹ÓÃÁËĞÂÊäÈë·â×°ºÃµÄÊó±êÊäÈëµÄÊôĞÔ
+            //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+            //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê¹ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½×°ï¿½Ãµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
             Y_Pivot += CharacterInputSystem.MainInstance.CameraLook.x* X_Sensitivity;
             X_Pivot -= CharacterInputSystem.MainInstance.CameraLook.y* Y_Sensitivity;
-            //ÓÃClampÏŞÖÆÒ»ÏÂ
+            //ï¿½ï¿½Clampï¿½ï¿½ï¿½ï¿½Ò»ï¿½ï¿½
             X_Pivot = Mathf.Clamp(X_Pivot, angleRange.x, angleRange.y);
         }
 

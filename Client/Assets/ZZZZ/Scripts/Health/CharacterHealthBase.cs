@@ -118,7 +118,7 @@ public class CharacterHealthBase : MonoBehaviour
         if (value > 0)
         {
             healthInfo.onDead.Value = false;
-            ZZZZUIManager.MainInstance.stateBarUI.UpdateBlood(currentHP / healthInfo.maxHP);
+            // ZZZZUIManager.MainInstance.stateBarUI.UpdateBlood(currentHP / healthInfo.maxHP);
             return;
         }
         healthInfo.onDead.Value = true;

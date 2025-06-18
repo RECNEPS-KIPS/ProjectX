@@ -3,30 +3,26 @@ using UnityEngine;
 
 public class CharacterMoveControllerBase : MonoBehaviour
 {
-    //ÖØÁ¦
-    //µØÃæ¼ì²â
-    //ÆÂÃæ¼ì²â
-    //ÒÆ¶¯½Ó¿Ú
     public Animator characterAnimator { get; private set; }
     protected CharacterController characterController;
-    [SerializeField, Header("ÖØÁ¦")] private float characterGravity=-9;
+    [SerializeField, Header("")] private float characterGravity=-9;
     protected float fallOutdeltaTimer;
     protected float fallOutTimer = 0.2f;
     [SerializeField] protected float maxVerticalSpeed=20;
     [SerializeField] protected float minVerticalSpeed=-3;
     [SerializeField]protected float verticalSpeed;
     protected Vector3 verticalVelocity;
-    [SerializeField, Header("µØÃæ¼ì²â")] private float GroundDetectionRadius;
+    [SerializeField, Header("")] private float GroundDetectionRadius;
     [SerializeField] private float GroundDetectionOffset;
     [SerializeField] private LayerMask whatIsGround;
     [SerializeField] protected bool isOnGround;
     private Vector3 groundDetectionOrigin;
 
-    [SerializeField, Header("ÆÂÃæ¼ì²â")] private float SlopDetectionLenth=1;
+    [SerializeField, Header("")] private float SlopDetectionLenth=1;
     private ColliderHit groundHit;
 
-    [Range(0.2f, 100), SerializeField, Header("ÒÆ¶¯Î»ÒÆ±¶ÂÊ")] private float moveMult;
-    [Range(0.2f, 60), SerializeField, Header("ÉÁ±ÜÎ»ÒÆ±¶ÂÊ")] private float dodgeMult;
+    [Range(0.2f, 100), SerializeField, Header("")] private float moveMult;
+    [Range(0.2f, 60), SerializeField, Header("")] private float dodgeMult;
     protected virtual void Awake()
     {
         characterAnimator = GetComponent<Animator>();
@@ -46,11 +42,11 @@ public class CharacterMoveControllerBase : MonoBehaviour
 
     }
     /// <summary>
-    /// ¸üÐÂ¶¯»­¸ùÎ»ÒÆ
+    /// ï¿½ï¿½ï¿½Â¶ï¿½ï¿½ï¿½ï¿½ï¿½Î»ï¿½ï¿½
     /// </summary>
     protected virtual void OnAnimatorMove()
     {       
-        //¿ªÆô½ÇÉ«µÄRootMotion
+        //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½É«ï¿½ï¿½RootMotion
         characterAnimator.ApplyBuiltinRootMotion();
 
         UpdateCharacterVelocity(characterAnimator.deltaPosition);
@@ -58,7 +54,7 @@ public class CharacterMoveControllerBase : MonoBehaviour
     }
    
     /// <summary>
-    /// µØÃæ¼ì²â
+    /// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
     /// </summary>
     protected void GroundDetecion()
     {
@@ -66,7 +62,7 @@ public class CharacterMoveControllerBase : MonoBehaviour
         isOnGround = Physics.CheckSphere(groundDetectionOrigin, GroundDetectionRadius, whatIsGround, QueryTriggerInteraction.Ignore);
     }
     /// <summary>
-    /// ÖØÁ¦
+    /// ï¿½ï¿½ï¿½ï¿½
     /// </summary>
     protected void UpdateChracterGravity()
     {
@@ -97,7 +93,7 @@ public class CharacterMoveControllerBase : MonoBehaviour
 
     }
     /// <summary>
-    /// ¸üÐÂ´¹Ö±ËÙ¶È
+    /// ï¿½ï¿½ï¿½Â´ï¿½Ö±ï¿½Ù¶ï¿½
     /// </summary>
     protected void UpDateVerticalVelocity()
     {
@@ -106,7 +102,7 @@ public class CharacterMoveControllerBase : MonoBehaviour
     
     }
     /// <summary>
-    /// ÆÂÃæ¼ì²â
+    /// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
     /// </summary>
     /// <param name="characterVelosity"></param>
     protected Vector3 ResetVelocityOnSlop(Vector3 characterVelosity)
@@ -115,7 +111,7 @@ public class CharacterMoveControllerBase : MonoBehaviour
         if (Physics.Raycast(transform.position, Vector3.down, out var groundHit, SlopDetectionLenth,whatIsGround))
         {
             float newAngle = Vector3.Dot(Vector3.up, groundHit.normal);
-            //²»ÔÚÌì»¨°åºÍ½ÇÉ«ÔÚÆÂÃæÉÏÊ±
+            //ï¿½ï¿½ï¿½ï¿½ï¿½ì»¨ï¿½ï¿½Í½ï¿½É«ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê±
             if (newAngle != -1 && verticalSpeed <= 0)
             {
                 return Vector3.ProjectOnPlane(characterVelosity,groundHit.normal);
@@ -125,7 +121,7 @@ public class CharacterMoveControllerBase : MonoBehaviour
 
     }
     /// <summary>
-    ///¸üÐÂ½ÇÉ«ËÙ¶È
+    ///ï¿½ï¿½ï¿½Â½ï¿½É«ï¿½Ù¶ï¿½
     /// </summary>
    
     protected virtual void UpdateCharacterVelocity(Vector3 movement)
@@ -142,7 +138,7 @@ public class CharacterMoveControllerBase : MonoBehaviour
 
     }
     /// <summary>
-    /// »æÖÆµØÃæ¼ì²â
+    /// ï¿½ï¿½ï¿½Æµï¿½ï¿½ï¿½ï¿½ï¿½
     /// </summary>
     private void OnDrawGizmos()
     {

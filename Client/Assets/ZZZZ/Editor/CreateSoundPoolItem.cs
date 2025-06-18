@@ -10,34 +10,27 @@ public class CreateSoundPoolItem : Editor
     [MenuItem("HuHuTools/Create SoundDataPool")]
     public static void CreateSoundDataPool()
     { 
-        //µÃµ½³Ø×Ó
+
         SFX_PoolManager fX_PoolManager =SFX_PoolManager.MainInstance;
-        //´´½¨SerializedObject
+
         SerializedObject serializedSoundPool = new SerializedObject(fX_PoolManager);
-        //»ñÈ¡³Ø×ÓµÄÊôÐÔ
+ 
         SerializedProperty serializedPoolProperty = serializedSoundPool.FindProperty("soundPools");
 
         string[] guids = AssetDatabase.FindAssets("t:SoundData");
         foreach (string guid in guids) 
         {
-            //»ñµÃÂ·¾¶
-           string path =AssetDatabase.GUIDToAssetPath(guid);
-            //µÃµ½SOÎÄ¼þ
+            string path =AssetDatabase.GUIDToAssetPath(guid);
             SoundData soundData = AssetDatabase.LoadAssetAtPath<SoundData>(path);
-           
             if (soundData.soundInfoList.Count == 0) { return; }
             for (int i = 0; i < soundData.soundInfoList.Count; i++) 
             {
-                //´´½¨Ô¤ÖÆÌå
                 GameObject go = new GameObject(soundData.soundInfoList[i].soundStye.ToString());
                 AudioSource audioSource = go.AddComponent<AudioSource>();
                 SoundItem soundItem =go.AddComponent<SoundItem>();
-                //´«µÝSOÒýÓÃ
                 soundItem.GetSoundData(soundData);
-                //ÐÞ¸Ä½Å±¾ÉÏµÄSoundStyle
                 soundItem.SetSoundStyle(soundData.soundInfoList[i].soundStye);
                 soundItem.SetCharacterName(soundData.soundInfoList[i].characterName);
-                //Éú³ÉÂ·¾¶
                 string parentPath = "Assets/Prefabs/Audio";
                 if(!System.IO.Directory.Exists(parentPath))
                 { 
@@ -49,7 +42,7 @@ public class CreateSoundPoolItem : Editor
                     System.IO.Directory.CreateDirectory(targetPath);
                 }
                 string prefabPath;
-                //¹æ¶¨ÃüÃû£¬±ÜÃâ²»Í¬½ÇÉ«Ò²ÄÜÔÚÍ¬Ò»¸öÎÄ¼þ¼ÐÉú³É²»Í¬µÄÔ¤ÖÆÌå
+                //ï¿½æ¶¨ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½â²»Í¬ï¿½ï¿½É«Ò²ï¿½ï¿½ï¿½ï¿½Í¬Ò»ï¿½ï¿½ï¿½Ä¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½É²ï¿½Í¬ï¿½ï¿½Ô¤ï¿½ï¿½ï¿½ï¿½
                 if (soundData.soundInfoList[i].characterName != ZZZ.CharacterNameList.Null)
                 {
                     prefabPath = targetPath + "/" + soundData.soundInfoList[i].soundStye.ToString() + soundData.soundInfoList[i].characterName.ToString() + ".prefab";
@@ -58,10 +51,10 @@ public class CreateSoundPoolItem : Editor
                 {
                     prefabPath = targetPath + "/" + soundData.soundInfoList[i].soundStye.ToString() + ".prefab";
                 }
-                //Éú³ÉÔ¤ÖÆÌåÎÄ¼þ
+                //ï¿½ï¿½ï¿½ï¿½Ô¤ï¿½ï¿½ï¿½ï¿½ï¿½Ä¼ï¿½
                 GameObject prefab = PrefabUtility.SaveAsPrefabAssetAndConnect(go, prefabPath, InteractionMode.UserAction);
 
-                //×¢²á¶ÔÏó³Ø
+                //×¢ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
                  SFX_PoolManager.SoundItem soundItem1 =new SFX_PoolManager.SoundItem();
                 soundItem1.soundStyle = soundData.soundInfoList[i].soundStye;
                 soundItem1.soundName = soundData.soundInfoList[i].characterName.ToString();
@@ -76,19 +69,19 @@ public class CreateSoundPoolItem : Editor
                     soundItem1.ApplyBigCenter = true;
                 }
 
-                //¸üÐÂ¶ÔÏó³Ø
+                //ï¿½ï¿½ï¿½Â¶ï¿½ï¿½ï¿½ï¿½
                 serializedSoundPool.Update();
 
                 bool found = false;
                 List<int> duplicateIndices = new List<int>();
-                //¸üÐÂÔ­À´µÄÏîÄ¿
+                //ï¿½ï¿½ï¿½ï¿½Ô­ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä¿
                 UpdateOldPoolItem(serializedPoolProperty, soundItem1,ref found, duplicateIndices, soundItem1.ApplyBigCenter);
                 if (!found)
                 {
                     serializedPoolProperty.arraySize++;
-                    //Ìí¼ÓÐÂµÄÁÐ±í
+                    //ï¿½ï¿½ï¿½ï¿½Âµï¿½ï¿½Ð±ï¿½
                     SerializedProperty newSoundItem = serializedPoolProperty.GetArrayElementAtIndex(serializedPoolProperty.arraySize - 1);
-                    //È»ºó¶Ô×îºóÒ»¸öÖµ½øÐÐÐÞ¸Ä;
+                    //È»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ò»ï¿½ï¿½Öµï¿½ï¿½ï¿½ï¿½ï¿½Þ¸ï¿½;
                     newSoundItem.FindPropertyRelative("soundStyle").enumValueIndex = (int)soundItem1.soundStyle;
                     newSoundItem.FindPropertyRelative("soundName").stringValue = soundItem1.soundName;
                     newSoundItem.FindPropertyRelative("soundPrefab").objectReferenceValue = soundItem1.soundPrefab;
@@ -105,7 +98,7 @@ public class CreateSoundPoolItem : Editor
 
 
                 serializedSoundPool.ApplyModifiedProperties();
-                //Ïú»Ù³¡¾°ÖÐµÄ¶ÔÏó
+                //ï¿½ï¿½ï¿½Ù³ï¿½ï¿½ï¿½ï¿½ÐµÄ¶ï¿½ï¿½ï¿½
                 DestroyImmediate(go);
 
 
@@ -131,7 +124,7 @@ public class CreateSoundPoolItem : Editor
                 }
                 else
                 {
-                    //¼ÇÂ¼ÖØ¸´ÔªËØµÄË÷ÒýÖµ
+                    //ï¿½ï¿½Â¼ï¿½Ø¸ï¿½Ôªï¿½Øµï¿½ï¿½ï¿½ï¿½ï¿½Öµ
                     duplicateIndices.Add(j);
                 }
             }

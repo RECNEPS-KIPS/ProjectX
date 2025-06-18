@@ -12,7 +12,7 @@ namespace ZZZ
            
         }
 
-        #region ��A����
+        #region
        
 
         public  void DodgeComboInput()
@@ -43,15 +43,12 @@ namespace ZZZ
         }
 
         #endregion
+        
 
-        #region ��������
-       
-        #endregion
-
-        #region ���ܴ���
+        #region
 
         /// <summary>
-        /// ��������
+        ///
         /// </summary>
         /// <returns></returns>
         public bool CanFinishSkillInput()
@@ -78,7 +75,7 @@ namespace ZZZ
         }
 
         /// <summary>
-        /// �ռ�����
+        ///
         /// </summary>
         public void FinishSkillInput()
         {
@@ -90,7 +87,7 @@ namespace ZZZ
             ExecuteSkill();
         }
         /// <summary>
-        /// ����
+        ///
         /// </summary>
         public void SkillInput()
         {
@@ -103,20 +100,20 @@ namespace ZZZ
         }
        
         /// <summary>
-        /// ִ�д���
+        ///
         /// </summary>
         private void ExecuteSkill()
         {
             ReSetATKIndex(0);
-            //��������
+
             PlayCharacterVoice(reusableData.currentSkill);
-            //����������Ч
+
             PlayWeaponSound(reusableData.currentSkill);
             animator.CrossFadeInFixedTime(reusableData.currentSkill.comboName, 0.1f);
         }
 
         /// <summary>
-        /// ��������:�ȴ�ѡ���л��Ľ�ɫ
+        ///
         /// </summary>
         /// <param name="attacker"></param>
         protected override void CanSwitchSkill(Transform transform)
@@ -126,84 +123,49 @@ namespace ZZZ
         }
         protected override void TriggerSwitchSkill()
         {
-            //����������������
             CharacterInputSystem.MainInstance.inputActions.Player.Disable();
-            //�����������
             ReSetComboInfo();
-            //�����������
-            CameraSwitcher.MainInstance.ActiveSwitchCamera(true);   
-            //ע�����������¼�
             reusableData.canQTE = false;
-            //��0.5��ʱ��Ȼ���������Ϊ��ͷҪ�л���λ
             ZZZZTimerManager.MainInstance.GetOneTimer(0.3f, startSlowTime);
 
         }
         protected void startSlowTime()
         {
-            //����ʱ�䣬���ǻ���������
             SFX_PoolManager.MainInstance.TryGetSoundPool(SoundStyle.SwitchTime,player.characterName.ToString(),playerTransform.position); 
             CameraHitFeel.MainInstance.StartSlowTime(0.06f);
             ZZZZTimerManager.MainInstance.GetRealTimer(0.2f, StartSwitchSkill);
         }
         protected void StartSwitchSkill()
         {
-            //QTE����ʱ
             ZZZZTimerManager.MainInstance.GetRealTimer(3, CancelSwitchSkill);
-            //����UI
-            // ZZZZUIManager.MainInstance.switchTimeUI.ActiveImage(SwitchCharacter.MainInstance.waitingCharacterList[0], SwitchCharacter.MainInstance.waitingCharacterList[1],3);
             CharacterInputSystem.MainInstance.inputActions.SwitchSkill.L.started += SwitchL;
             CharacterInputSystem.MainInstance.inputActions.SwitchSkill.R.started += SwitchR;
         }
         protected void CancelSwitchSkill()
         {
-            //�ָ�ʱ��
+   
             CameraHitFeel.MainInstance.EndSlowTime();
-            //�ָ���ͷ
-            CameraSwitcher.MainInstance.ActiveSwitchCamera(false);
-            //�ر�UI
-            ZZZZUIManager.MainInstance.switchTimeUI.UnActive();
-            //ע������
+
             CharacterInputSystem.MainInstance.inputActions.SwitchSkill.L.started -= SwitchL;
             CharacterInputSystem.MainInstance.inputActions.SwitchSkill.R.started -= SwitchR;
-            //�ָ�����
+
             CharacterInputSystem.MainInstance.inputActions.Player.Enable();
         }
 
         private void SwitchR(InputAction.CallbackContext context)
         {
-            //ѡ�����˵Ľ�ɫ
-            // CharacterNameList selectCharacter = SwitchCharacter.MainInstance.waitingCharacterList[1];
-            // //֪ͨ������Ҫ�������ܣ�ͨ���ڰ�ģʽ֪ͨ
-            // GameBlackboard.MainInstance.GetGameData<Player>(selectCharacter.ToString()).comboStateMachine.ATKIngState.SwitchSkill();
-            // CharacterInputSystem.MainInstance.inputActions.SwitchSkill.L.started -= SwitchL;
-            // CharacterInputSystem.MainInstance.inputActions.SwitchSkill.R.started -= SwitchR;
         }
 
         private void SwitchL(InputAction.CallbackContext context)
         {
-            // CharacterNameList selectCharacter = SwitchCharacter.MainInstance.waitingCharacterList[0];
-            // //֪ͨ������Ҫ�������ܣ�ͨ���ڰ�ģʽ֪ͨ
-            // GameBlackboard.MainInstance.GetGameData<Player>(selectCharacter.ToString()).comboStateMachine.ATKIngState.SwitchSkill();
-            // CharacterInputSystem.MainInstance.inputActions.SwitchSkill.L.started -= SwitchL;
-            // CharacterInputSystem.MainInstance.inputActions.SwitchSkill.R.started -= SwitchR;
+
         }
         public void SwitchSkill(CharacterNameList characterName)
         {
-            //�ر�UI
-            ZZZZUIManager.MainInstance.switchTimeUI.UnActive();
-            //�ָ�ʱ��
             CameraHitFeel.MainInstance.EndSlowTime();
-            //�����������
-            CameraSwitcher.MainInstance.ActiveSwitchCamera(false);
-            //�ļ���
             reusableData.currentSkill = comboData.switchSkill;
-            //�������˶���,//֪ͨ�л���ɫ�����������л�����
-            // SwitchCharacter.MainInstance.SwitchSkillInput(characterName, reusableData.currentSkill.comboName);
-            //��������
             PlayCharacterVoice(reusableData.currentSkill);
-            //����������Ч
             PlayWeaponSound(reusableData.currentSkill);
-            //�ָ�����
             CharacterInputSystem.MainInstance.inputActions.Player.Enable();
            
 

@@ -7,7 +7,7 @@ using UnityEngine;
 public class CameraSwitcher : Singleton<CameraSwitcher>
 {
     private CinemachineBrain brain;
-    [SerializeField, Header("SwitchCharacterSkillCamera")] private CinemachineVirtualCamera switchCharacterSkillCamera;
+    // [SerializeField, Header("SwitchCharacterSkillCamera")] private CinemachineVirtualCamera switchCharacterSkillCamera;
     [System.Serializable]
     public class CharacterStateCameraInfo
     {
@@ -34,7 +34,7 @@ public class CameraSwitcher : Singleton<CameraSwitcher>
     private void Start()
     {
         InitSwitchCamera();
-        InitSkillCamera();
+        // InitSkillCamera();
     }
 
     private void InitSwitchCamera()
@@ -54,10 +54,10 @@ public class CameraSwitcher : Singleton<CameraSwitcher>
         }
     }
 
-    private void InitSkillCamera()
-    {
-        switchCharacterSkillCamera.Priority = 0;
-    }
+    // private void InitSkillCamera()
+    // {
+    //     switchCharacterSkillCamera.Priority = 0;
+    // }
     public void ActiveStateCamera(CharacterNameList characterName,AttackStyle attackStyle)
     {
         if (stateCameraPool.TryGetValue(characterName, out var stateCameraList))
@@ -84,14 +84,14 @@ public class CameraSwitcher : Singleton<CameraSwitcher>
     }
     public void ActiveSwitchCamera(bool applySwitchCamera)
     {
-        if (applySwitchCamera)
-        {
-            switchCharacterSkillCamera.Priority = 20;
-        }
-        else
-        {
-            switchCharacterSkillCamera.Priority = 0;
-        }
+        // if (applySwitchCamera)
+        // {
+        //     switchCharacterSkillCamera.Priority = 20;
+        // }
+        // else
+        // {
+        //     switchCharacterSkillCamera.Priority = 0;
+        // }
     }
 
     private void OnEnable()

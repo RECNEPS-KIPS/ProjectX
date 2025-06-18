@@ -17,7 +17,6 @@ namespace ZZZ
 
         public CharacterComboBase(Animator animator, Transform playerTransform,Transform cameraTransform , PlayerComboReusableData reusableData, PlayerComboSOData playerComboSOData, PlayerEnemyDetectionData playerEnemyDetectionData,Player player)
             {
-            //get·ÃÎÊÆ÷¿ÉÒÔÔÚ¹¹Ôìº¯ÊıÀïÃæ¸³Öµ£¬¶ø²»ÄÜÔÚÆäËûµØ·½¸³Öµ
                 this.animator = animator;
                 this.playerTransform = playerTransform;
                 this.reusableData = reusableData;
@@ -32,15 +31,14 @@ namespace ZZZ
                 }
                 if (comboData.lightCombo != null)
                 {
-                    //³õÊ¼»¯ÆäÊµ¾ÍÊÇ»º´æÊı¾İ
-                     comboData.lightCombo.Init();
+                    comboData.lightCombo.Init();
                 }
             }
 
         public void AddEventAction()
         {
             reusableData.currentIndex.OnValueChanged += ReSetATKIndex;
-            GameEventsManager.MainInstance.AddEventListening<Transform>("´ïµ½QTEÌõ¼ş", CanSwitchSkill);
+            GameEventsManager.MainInstance.AddEventListening<Transform>("", CanSwitchSkill);
            
         }
 
@@ -49,7 +47,7 @@ namespace ZZZ
         public void RemoveEventActon()
         {
             reusableData.currentIndex.OnValueChanged -= ReSetATKIndex;
-            GameEventsManager.MainInstance.ReMoveEvent<Transform>("´ïµ½QTEÌõ¼ş", CanSwitchSkill);
+            GameEventsManager.MainInstance.ReMoveEvent<Transform>("", CanSwitchSkill);
         }
 
        
@@ -72,7 +70,7 @@ namespace ZZZ
                 reusableData.comboIndex = 0;
             }
         }
-        #region Ò»°ã¹¥»÷
+        #region
         public virtual void LightComboInput()
         {
          
@@ -83,7 +81,7 @@ namespace ZZZ
                 reusableData.currentCombo = comboData.lightCombo;
                 ReSetComboInfo();
             }
-            //È·±£Çá¹¥»÷ÊÇµÚÒ»¸öÇá¹¥»÷
+            //
             reusableData.currentCombo.ResetComboDates();
 
             ExecuteBaseCombo();
@@ -131,7 +129,7 @@ namespace ZZZ
             reusableData.currentIndex.Value = reusableData.comboIndex;
             string comboName = reusableData.currentCombo.GetComboName(reusableData.currentIndex.Value);
             animator.CrossFade(comboName, 0.111f, 0);
-            //²¥·ÅÓïÒô
+            //
             PlayCharacterVoice(reusableData.currentCombo.comboDates[reusableData.currentIndex.Value]);
             StartPlayWeapon();
 
@@ -153,7 +151,7 @@ namespace ZZZ
         }
         #endregion
 
-        #region ±»¶¯¼¼ÄÜ
+        #region ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
         protected virtual void CanSwitchSkill(Transform transform)
         {
             
@@ -168,8 +166,8 @@ namespace ZZZ
 
 
 
-        #region ¶¯»­ÊÂ¼ş
-        public void DisConnectCombo()//ÊÂ¼şµ÷ÓÃ
+        #region ï¿½ï¿½ï¿½ï¿½ï¿½Â¼ï¿½
+        public void DisConnectCombo()//ï¿½Â¼ï¿½ï¿½ï¿½ï¿½ï¿½
         {
             reusableData.canLink = false;
         }
@@ -194,24 +192,22 @@ namespace ZZZ
         #endregion
 
 
-        //×¢²á×ªµİÉËº¦µÄ¶¯»­ÊÂ¼ş
+        //×¢ï¿½ï¿½×ªï¿½ï¿½ï¿½Ëºï¿½ï¿½Ä¶ï¿½ï¿½ï¿½ï¿½Â¼ï¿½
         public void ATK()
         {
             AttackTrigger();
 
         }
-        #region ÉËº¦¼ì²â
+        #region ï¿½Ëºï¿½ï¿½ï¿½ï¿½
         protected bool AttackDetection(ComboContainerData comboContainerData)
         {
-            //µĞÈË
-            //¾àÀë
-            //½Ç¶È
+
             if (GameBlackboard.MainInstance.GetEnemy() == null) { return false; }
-           // Debug.Log("µĞÈËÌõ¼şÂú×ã");
+ 
             if (DevelopmentToos.DistanceForTarget(GameBlackboard.MainInstance.GetEnemy(), playerTransform) > comboContainerData.GetComboDistance(reusableData.currentIndex.Value)) { return false; }
-           // Debug.Log("¾àÀëÂú×ã");
+ 
             if (DevelopmentToos.GetAngleForTargetDirection(GameBlackboard.MainInstance.GetEnemy(), playerTransform) < 80) { return false; }
-           // Debug.Log("½Ç¶ÈÌõ¼şÂú×ã");
+
             return true;
         }
 
@@ -228,12 +224,12 @@ namespace ZZZ
         {
             return Random.Range(0, containerData.GetComboMaxCount());
         }
-        #region ¸üĞÂÉËº¦µã
+        #region
         /// <summary>
-        /// ÖØÖÃÉËº¦µãµÄ¼ÆÊı
+        ///
         /// </summary>
-        /// <param name="Õâ¸ö²ÎÊıÃ»ÒâÒå"></param>
-        public void ReSetATKIndex(int index)//´óÕĞÃ¿Ò»´ÎĞèÒªÖ´ĞĞÊÖ¶¯ÇåÁã£¬¶øÆÕ¹¥ÊÇ¹¥»÷Ë÷ÒıÖµ·¢Éú±ä»¯¶øÇåÁã£¬»¹ÓĞÉÁAÒ²ÒªÊÖ¶¯ÇåÁã£¬ÒòÎªÉÁAµÄÁ¬ÕĞË÷ÒıÖµÊ¼ÖÕÎª0
+        /// <param name=""></param>
+        public void ReSetATKIndex(int index)//
         {
             reusableData.ATKIndex = 0;
         }
@@ -243,18 +239,18 @@ namespace ZZZ
         }
         #endregion
 
-        #region ´«µİÉËº¦
+        #region
         private void AttackTrigger()
         {
-            if (animator.AnimationAtTag("ATK") )//¸øÆÕÍ¨¹¥»÷´«µİÉËº¦ºÍ¿ÉÄÜ¶à¸ö¹¥»÷µãµÄÊÜ»÷¶¯»­
+            if (animator.AnimationAtTag("ATK") )
             {
                 UpdateATKIndex();
-               // Debug.Log("´ËÊ±ATKÖµÎª£º"+ reusableData.ATKIndex) ;
+            
                  CameraHitFeel.MainInstance.CameraShake(reusableData.currentCombo.GetComboShakeForce(reusableData.currentIndex.Value,reusableData.ATKIndex));
                 Debug.Log(reusableData.currentCombo);
                 if (!AttackDetection(reusableData.currentCombo)) { return; }
 
-                  GameEventsManager.MainInstance.CallEvent("´¥·¢ÉËº¦",
+                  GameEventsManager.MainInstance.CallEvent("",
                   reusableData.currentCombo.GetComboDamage(reusableData.currentIndex.Value),
                   reusableData.currentCombo.GetComboHitName(reusableData.currentIndex.Value),
                   reusableData.currentCombo.GetComboParryName(reusableData.currentIndex.Value),
@@ -262,10 +258,8 @@ namespace ZZZ
                   this);
 
                  CameraHitFeel.MainInstance.PF(reusableData.currentCombo.GetPauseFrameTime(reusableData.currentIndex.Value, reusableData.ATKIndex));
-                //Debug.Log("QTEµÄÌõ¼ş£º" + reusableData.canQTE);
-                //Debug.Log("ÈËÎïµÄATKË÷ÒıÖµ£º"+reusableData.ATKIndex);
-                //Debug.Log("ÉèÖÃµÄ×î´óATKÊıÁ¿Îª£º" + reusableData.currentCombo.GetComboATKCount(reusableData.currentIndex.Value));
-                #region ´¥·¢QTE
+               
+                #region
                 if (reusableData.canQTE && reusableData.ATKIndex >= reusableData.currentCombo.GetComboATKCount(reusableData.currentIndex.Value))
                 {
                     TriggerSwitchSkill();
@@ -279,9 +273,9 @@ namespace ZZZ
 
                 if (!SkillDetection(reusableData.currentSkill)) { return; }
                
-                GameEventsManager.MainInstance.CallEvent("´¥·¢ÉËº¦", reusableData.currentSkill.comboDamage, reusableData.currentSkill.hitName, reusableData.currentSkill.parryName, playerTransform, GameBlackboard.MainInstance.GetEnemy(),this);
+                GameEventsManager.MainInstance.CallEvent("", reusableData.currentSkill.comboDamage, reusableData.currentSkill.hitName, reusableData.currentSkill.parryName, playerTransform, GameBlackboard.MainInstance.GetEnemy(),this);
 
-                #region ¶ÙÖ¡
+                #region
                 if (reusableData.currentSkill.pauseFrameTimeList!=null && reusableData.currentSkill.pauseFrameTimeList.Length > 0&& reusableData.ATKIndex <= reusableData.currentSkill.pauseFrameTimeList.Length)
                 {       
                    CameraHitFeel.MainInstance.PF(reusableData.currentSkill.pauseFrameTimeList[reusableData.ATKIndex - 1]);
@@ -293,7 +287,7 @@ namespace ZZZ
 
                 #endregion
 
-                #region ´¥·¢QTE
+                #region
 
                 if (reusableData.canQTE && reusableData.ATKIndex >= reusableData.currentSkill.ATKCount)
                 {
@@ -301,18 +295,18 @@ namespace ZZZ
                 }
                 #endregion
 
-                #region ÕğÆÁ
-                if (reusableData.currentSkill.shakeForce==null||reusableData.ATKIndex > reusableData.currentSkill.shakeForce.Length)//±ÜÃâÃ»ÓĞÉèÖÃÍêÕûATKµÄforce¶øµ¼ÖÂ¸ø³öµÄATKindex³¬³ö¼¼ÄÜforceË÷ÒıÖµ
+                #region
+                if (reusableData.currentSkill.shakeForce==null||reusableData.ATKIndex > reusableData.currentSkill.shakeForce.Length)
                 {
                     return;
                 }
                 CameraHitFeel.MainInstance.CameraShake(reusableData.currentSkill.shakeForce[reusableData.ATKIndex-1]);
                 #endregion
             }
-            else//´¦ÀíÖ»ÓĞÒ»´ÎÊÜ»÷¶¯»­£¬µ«ÊÇ¿ÉÄÜÓĞ¶à´ÎÉËº¦
+            else//
             {
                 if (!AttackDetection(comboData.executeCombo)) { return; }
-                GameEventsManager.MainInstance.CallEvent("Éú³ÉÉËº¦", comboData.executeCombo.GetComboDamage(reusableData.executeIndex));
+                GameEventsManager.MainInstance.CallEvent("", comboData.executeCombo.GetComboDamage(reusableData.executeIndex));
             }
 
         }
@@ -347,7 +341,7 @@ namespace ZZZ
             }
         }
 
-        #region ²¥·ÅÒôĞ§
+        #region
         private void StartPlayWeapon()
         {
             PlayWeaponSound(reusableData.currentCombo.comboDates[reusableData.currentIndex.Value]);

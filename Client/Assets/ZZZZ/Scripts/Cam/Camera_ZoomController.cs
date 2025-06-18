@@ -4,9 +4,9 @@ using System;
 
 public class Camera_ZoomController : MonoBehaviour
 {
-    [Range(1, 8), SerializeField, Header("默认的距离")] private float defaultDistance;
-    [Range(0, 8), SerializeField, Header("最小的距离")] private float lookMinDistance;
-    [Range(1, 8), SerializeField, Header("最大的距离")] private float lookMaxDistance;
+    [Range(1, 8), SerializeField, Header("")] private float defaultDistance;
+    [Range(0, 8), SerializeField, Header("")] private float lookMinDistance;
+    [Range(1, 8), SerializeField, Header("")] private float lookMaxDistance;
     [SerializeField] private float zoomSensitivity=1;
     [SerializeField] private float zoomSpeed=4;
     public float ExternalSpeedVariable=1;
