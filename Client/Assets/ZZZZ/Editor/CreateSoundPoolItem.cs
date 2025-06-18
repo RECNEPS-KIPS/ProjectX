@@ -42,7 +42,6 @@ public class CreateSoundPoolItem : Editor
                     System.IO.Directory.CreateDirectory(targetPath);
                 }
                 string prefabPath;
-                //�涨���������ⲻͬ��ɫҲ����ͬһ���ļ������ɲ�ͬ��Ԥ����
                 if (soundData.soundInfoList[i].characterName != ZZZ.CharacterNameList.Null)
                 {
                     prefabPath = targetPath + "/" + soundData.soundInfoList[i].soundStye.ToString() + soundData.soundInfoList[i].characterName.ToString() + ".prefab";

@@ -5,7 +5,6 @@ using HuHu;
 
 public class SFX_PoolManager : Singleton<SFX_PoolManager>
 {
-    //有SoundName的代表分的更细的音频
     [System.Serializable]
     public class SoundItem
     {
@@ -33,15 +32,13 @@ public class SFX_PoolManager : Singleton<SFX_PoolManager>
             {
                 for (int j = 0; j < soundPools[i].soundCount;j++)
                 {
-                    //实例化
                     var go = Instantiate(soundPools[i].soundPrefab);
-                    //设置父级点
                     go.transform.parent = this.transform;
-                    //掩藏
+         
                     go.SetActive(false);
                     if (!bigSoundCenter.ContainsKey(soundPools[i].soundName))
                     {
-                        Debug.Log(soundPools[i].soundName + "加入对象池");
+                        Debug.Log(soundPools[i].soundName + "");
                         bigSoundCenter.Add(soundPools[i].soundName, new Dictionary<SoundStyle, Queue<GameObject>>());
                     }
                     if (!bigSoundCenter[soundPools[i].soundName].ContainsKey(soundPools[i].soundStyle))
@@ -55,23 +52,21 @@ public class SFX_PoolManager : Singleton<SFX_PoolManager>
             {
                 for (int j = 0; j < soundPools[i].soundCount; j++)
                 {
-                    //实例化
+              
                     var go = Instantiate(soundPools[i].soundPrefab);
-                    //设置父级点
+           
                     go.transform.parent = this.transform;
-                    //掩藏
+       
                     go.SetActive(false);
-                    //放入字典
+  
                     if (!soundCenter.ContainsKey(soundPools[i].soundStyle))
                     {
-                        //加入Kay
+        
                         soundCenter.Add(soundPools[i].soundStyle, new Queue<GameObject>());
-                        //把新实例加入Value，而不是预制体
                         soundCenter[soundPools[i].soundStyle].Enqueue(go);
                     }
                     else
                     {
-                        //只用加Value
                         soundCenter[soundPools[i].soundStyle].Enqueue(go);
                     }
                 }
@@ -91,17 +86,14 @@ public class SFX_PoolManager : Singleton<SFX_PoolManager>
                 go.transform.position = position;
                 go.gameObject.SetActive(true);
                 Q.Enqueue(go);
-               // Debug.Log("播放音乐"+ soundName+"类型是"+soundStyle);
               
             }
             else
             {
-               // Debug.LogWarning(soundStyle + "找不到");
             }
         }
         else
         {
-           // Debug.LogWarning(soundName + "找不到");
         }
 
     }
@@ -109,7 +101,6 @@ public class SFX_PoolManager : Singleton<SFX_PoolManager>
     {
         if (soundCenter.TryGetValue(soundStye, out var sound))
         {
-           // Debug.Log(soundStye + "播放");
             GameObject go = sound.Dequeue();
             go.transform.position = position;
             go.gameObject.SetActive(true);
@@ -117,7 +108,6 @@ public class SFX_PoolManager : Singleton<SFX_PoolManager>
         }
         else
         {
-           // Debug.Log(soundStye + "不存在");
         }
     }
    
