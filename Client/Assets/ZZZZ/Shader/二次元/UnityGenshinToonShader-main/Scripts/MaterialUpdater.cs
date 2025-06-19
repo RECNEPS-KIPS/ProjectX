@@ -3,14 +3,11 @@ using UnityEngine;
 
 public class MaterialUpdater : MonoBehaviour
 {
-    [SerializeField]
-    private GameObject m_headBone;
+    [SerializeField] private GameObject m_headBone;
 
-    [SerializeField]
-    private Vector3 m_headDirection = Vector3.up;
+    [SerializeField] private Vector3 m_headDirection = Vector3.up;
 
-    [SerializeField]
-    private List<SkinnedMeshRenderer> m_faceRenderers;
+    [SerializeField] private List<SkinnedMeshRenderer> m_faceRenderers;
 
     private void Update()
     {
@@ -18,6 +15,7 @@ public class MaterialUpdater : MonoBehaviour
         {
             return;
         }
+
         Vector3 direction = m_headBone.transform.rotation * m_headDirection;
         foreach (var renderer in m_faceRenderers)
         {

@@ -4,37 +4,46 @@ using System;
 
 public class Camera_ZoomController : MonoBehaviour
 {
-    [Range(1, 8), SerializeField, Header("")] private float defaultDistance;
-    [Range(0, 8), SerializeField, Header("")] private float lookMinDistance;
-    [Range(1, 8), SerializeField, Header("")] private float lookMaxDistance;
-    [SerializeField] private float zoomSensitivity=1;
-    [SerializeField] private float zoomSpeed=4;
-    public float ExternalSpeedVariable=1;
+    [Range(1, 8), SerializeField, Header("")]
+    private float defaultDistance;
+
+    [Range(0, 8), SerializeField, Header("")]
+    private float lookMinDistance;
+
+    [Range(1, 8), SerializeField, Header("")]
+    private float lookMaxDistance;
+
+    [SerializeField] private float zoomSensitivity = 1;
+    [SerializeField] private float zoomSpeed = 4;
+    public float ExternalSpeedVariable = 1;
 
 
     private CinemachineFramingTransposer CinemachineFramingTransposer;
     private CinemachineInputProvider CinemachineInputProvider;
     [SerializeField] public float currentDistance;
+
     private void Awake()
     {
-        CinemachineFramingTransposer=GetComponent<CinemachineVirtualCamera>().GetCinemachineComponent<CinemachineFramingTransposer>();
-        CinemachineInputProvider=GetComponent<CinemachineInputProvider>();
+        CinemachineFramingTransposer = GetComponent<CinemachineVirtualCamera>()
+            .GetCinemachineComponent<CinemachineFramingTransposer>();
+        CinemachineInputProvider = GetComponent<CinemachineInputProvider>();
         currentDistance = defaultDistance;
     }
+
     private void Update()
     {
         UpdateInput();
     }
+
     private void UpdateInput()
     {
         float inputZoomValue = CinemachineInputProvider.GetAxisValue(2) * zoomSensitivity;
         UpdateZoom(inputZoomValue);
     }
 
-    private void UpdateZoom(float inputZoomValue) 
+    private void UpdateZoom(float inputZoomValue)
     {
- 
-        currentDistance  = Mathf.Clamp(currentDistance + inputZoomValue, lookMinDistance, lookMaxDistance);
+        currentDistance = Mathf.Clamp(currentDistance + inputZoomValue, lookMinDistance, lookMaxDistance);
 
         float realDistance = CinemachineFramingTransposer.m_CameraDistance;
 
@@ -43,11 +52,14 @@ public class Camera_ZoomController : MonoBehaviour
         CinemachineFramingTransposer.m_CameraDistance = realDistance;
 
         if (realDistance == currentDistance)
-        { return; }
+        {
+            return;
+        }
     }
-    public void SetZoom(float distance,float speed)
+
+    public void SetZoom(float distance, float speed)
     {
         currentDistance = distance;
-        ExternalSpeedVariable=speed;
+        ExternalSpeedVariable = speed;
     }
 }

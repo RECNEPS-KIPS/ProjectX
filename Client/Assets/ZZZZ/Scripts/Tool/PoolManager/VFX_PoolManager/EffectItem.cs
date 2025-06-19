@@ -3,10 +3,9 @@ using UnityEngine;
 
 public class EffectItem : PoolItemBase
 {
-    //���߱��ο��ԣ���Ϊ���ܵ�������Ӱ�죬����loopȡ�������
-    [SerializeField,Header("��Ч����ʱ��")] private float playTime;
+    [SerializeField,Header("playTime")] private float playTime;
 
-    [SerializeField, Header("��Ч���ŵ��ٶ�")] private float playSpeed;
+    [SerializeField, Header("playSpeed")] private float playSpeed;
 
     private ParticleSystem[] ParticleSystem;
 

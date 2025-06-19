@@ -7,27 +7,31 @@ namespace TPF
     public class PlayerRunningState : PlayerMovementState
     {
         GameTimer gameTimer = null;
-        public PlayerRunningState(PlayerMovementStateMachine playerMovementStateMachine) : base(playerMovementStateMachine)
+
+        public PlayerRunningState(PlayerMovementStateMachine playerMovementStateMachine) : base(
+            playerMovementStateMachine)
         {
         }
+
         public override void Enter()
-        { 
+        {
             base.Enter();
             animator.CrossFadeInFixedTime("WalkStart", 0.14f);
 
             reusableDate.rotationTime = playerMovementData.runData.rotationTime;
 
-            animator.SetBool(AnimatorID.HasInputID,true);
+            animator.SetBool(AnimatorID.HasInputID, true);
 
             reusableDate.inputMult = playerMovementData.runData.inputMult;
-        
         }
+
         public override void Update()
         {
             base.Update();
-            
         }
-        #region ת��Idling
+
+        #region
+
         protected override void AddInputActionCallBacks()
         {
             base.AddInputActionCallBacks();
@@ -51,18 +55,16 @@ namespace TPF
         {
             movementStateMachine.ChangeState(movementStateMachine.idlingState);
         }
+
         private void OnKeepRunning(InputAction.CallbackContext context)
         {
-            //ע��ԭ���ļ�ʱ��
             ZZZZTimerManager.MainInstance.UnregisterTimer(gameTimer);
-            //��������
             animator.CrossFadeInFixedTime("WalkStart", 0.14f);
         }
 
-
         #endregion
 
-        #region ת��Walking
+        #region
 
         protected override void OnWalkStart(InputAction.CallbackContext context)
         {
@@ -70,7 +72,7 @@ namespace TPF
 
             movementStateMachine.ChangeState(movementStateMachine.walkingState);
         }
+
         #endregion
     }
 }
-

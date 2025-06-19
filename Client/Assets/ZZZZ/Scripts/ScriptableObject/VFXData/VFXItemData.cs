@@ -2,13 +2,11 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
-
 public class VFXItemData : MonoBehaviour
 {
     [System.Serializable]
     public class EffectItem
     {
-       
         [field: SerializeField] public string VFXName;
         [field: SerializeField] public GameObject VFXPrefab;
         [field: SerializeField] public bool applyParentPos;
@@ -18,7 +16,5 @@ public class VFXItemData : MonoBehaviour
         [field: SerializeField] public int count;
     }
 
-    [SerializeField] public List<EffectItem> effectItems=new List<EffectItem>();   
-
+    [SerializeField] public List<EffectItem> effectItems = new List<EffectItem>();
 }
-

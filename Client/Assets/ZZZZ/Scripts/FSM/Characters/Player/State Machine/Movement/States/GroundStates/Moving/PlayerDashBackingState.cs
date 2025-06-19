@@ -10,7 +10,6 @@ public class PlayerDashBackingState : PlayerMovementState
     {
         dashData = playerMovementData.dashData;
     }
-    //ʵ���ڲ��߼�
     public override void Enter()
     {
         base.Enter();
@@ -18,7 +17,6 @@ public class PlayerDashBackingState : PlayerMovementState
 
         reusableDate.canDash = false;
         ZZZZTimerManager.MainInstance.GetOneTimer(playerMovementData.dashData.coldTime, ResetDash);
-        //������Ч
         movementStateMachine.player.PlayDodgeSound();
     }
     public override void Update()
@@ -28,7 +26,7 @@ public class PlayerDashBackingState : PlayerMovementState
             base.Update();
         }
     }
-    #region Dashת�� Idle?Run
+    #region
     public override void OnAnimationExitEvent()
     {
         if (CharacterInputSystem.MainInstance.PlayerMove == Vector2.zero)

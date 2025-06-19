@@ -1,7 +1,7 @@
 using UnityEngine;
 using static OnAnimationTranslation;
 
-namespace ZZZ  
+namespace ZZZ
 {
     [RequireComponent(typeof(Animator), typeof(CharacterController))]
     public class Player : CharacterMoveControllerBase
@@ -18,19 +18,23 @@ namespace ZZZ
 
         [SerializeField] public PlayerCameraUtility playerCameraUtility;
 
-        public PlayerMovementStateMachine movementStateMachine { get;private set; }
+        public PlayerMovementStateMachine movementStateMachine { get; private set; }
 
-        public PlayerComboStateMachine comboStateMachine { get;private set; }
+        public PlayerComboStateMachine comboStateMachine { get; private set; }
         public new Transform camera { get; private set; }
 
         private bool canSprintOnSwitch;
-        public bool CanSprintOnSwitch
-        { 
-        get { return canSprintOnSwitch; } 
 
-        set {
+        public bool CanSprintOnSwitch
+        {
+            get { return canSprintOnSwitch; }
+
+            set
+            {
                 if (value != canSprintOnSwitch)
-                { canSprintOnSwitch = value; } 
+                {
+                    canSprintOnSwitch = value;
+                }
             }
         }
 
@@ -38,40 +42,37 @@ namespace ZZZ
         {
             base.Awake();
 
-            camera=Camera.main.transform;
-            movementStateMachine =new PlayerMovementStateMachine(this);
+            camera = Camera.main.transform;
+            movementStateMachine = new PlayerMovementStateMachine(this);
             comboStateMachine = new PlayerComboStateMachine(this);
             playerCameraUtility.Init();
         }
 
-       
 
         protected override void Start()
         {
             base.Start();
             if (characterName == CharacterNameList.AnBi)
             {
-                movementStateMachine.ChangeState(movementStateMachine.idlingState); 
+                movementStateMachine.ChangeState(movementStateMachine.idlingState);
             }
             else
             {
-                
                 movementStateMachine.ChangeState(movementStateMachine.onSwitchOutState);
             }
-         
+
             comboStateMachine.ChangeState(comboStateMachine.NullState);
 
 
-            Player player= GetComponent<Player>();
-            //ע��ڰ���Ϣ
+            Player player = GetComponent<Player>();
             GameBlackboard.MainInstance.SetGameData<Player>(characterName.ToString(), player);
-          
         }
-       protected override void Update()
+
+        protected override void Update()
         {
             base.Update();
 
-            if (characterName==CharacterNameList.AnBi)
+            if (characterName == CharacterNameList.AnBi)
             {
                 movementStateMachine.HandInput();
 
@@ -80,9 +81,10 @@ namespace ZZZ
                 comboStateMachine.Update();
             }
         }
-       
 
-        #region ��ض���������˳������ķ���
+
+        #region
+
         public void OnAnimationTranslateEvent(OnEnterAnimationPlayerState playerState)
         {
             switch (playerState)
@@ -110,7 +112,6 @@ namespace ZZZ
                     comboStateMachine.OnAnimationTranslateEvent(comboStateMachine.NullState);
                     break;
             }
-          
         }
 
         public void OnAnimationExitEvent()
@@ -119,17 +120,18 @@ namespace ZZZ
 
             comboStateMachine.OnAnimationExitEvent();
         }
+
         #endregion
 
-        #region ״̬����¼�
+        #region
+
         public void OnEnable()
         {
-            //ע��movement״̬���е�״̬����¼�
             movementStateMachine.currentState.OnValueChanged += MovementStateChanged;
             comboStateMachine.currentState.OnValueChanged += ComboStateChanged;
             GameBlackboard.MainInstance.enemy.OnValueChanged += EnemyChanged;
         }
-       
+
 
         public void OnDisable()
         {
@@ -137,41 +139,47 @@ namespace ZZZ
             comboStateMachine.currentState.OnValueChanged -= ComboStateChanged;
             GameBlackboard.MainInstance.enemy.OnValueChanged -= EnemyChanged;
         }
-    
+
 
         public void MovementStateChanged(IState currentState)
         {
-            currentMovementState= currentState.GetType().Name;
+            currentMovementState = currentState.GetType().Name;
         }
+
         private void ComboStateChanged(IState state)
         {
-           currentComboState= state.GetType().Name;
+            currentComboState = state.GetType().Name;
         }
+
         private void EnemyChanged(Transform transform)
         {
             enemy = transform;
         }
+
         #endregion
 
-        #region ���ж����¼�
+        #region
+
         public void EnablePreInput()
         {
             comboStateMachine.ATKIngState.EnablePreInput();
         }
+
         public void CancelAttackColdTime()
-        { 
-        comboStateMachine.ATKIngState.CancelAttackColdTime();
+        {
+            comboStateMachine.ATKIngState.CancelAttackColdTime();
         }
-      
+
         public void DisableLinkCombo()
-        { 
-        comboStateMachine.ATKIngState.DisableLinkCombo();
+        {
+            comboStateMachine.ATKIngState.DisableLinkCombo();
         }
+
         public void EnableMoveInterrupt()
         {
             comboStateMachine.ATKIngState.EnableMoveInterrupt();
         }
-     
+
         public void ATK()
         {
             comboStateMachine.ATKIngState.ATK();
@@ -179,7 +187,8 @@ namespace ZZZ
 
         #endregion
 
-        #region �����¼���Ч
+        #region
+
         //KeLin_Saw
         public void PlayVFX(string name)
         {
@@ -188,36 +197,44 @@ namespace ZZZ
 
         public void PlayFootSound()
         {
-            //Debug.Log("���ŽŲ���");
-            SFX_PoolManager.MainInstance.TryGetSoundPool(SoundStyle.FOOT,transform.position,Quaternion.identity);
+            SFX_PoolManager.MainInstance.TryGetSoundPool(SoundStyle.FOOT, transform.position, Quaternion.identity);
         }
+
         public void PlayFootBackSound()
         {
-            SFX_PoolManager.MainInstance.TryGetSoundPool(SoundStyle.FOOTBACK,transform.position,Quaternion.identity);
+            SFX_PoolManager.MainInstance.TryGetSoundPool(SoundStyle.FOOTBACK, transform.position, Quaternion.identity);
         }
 
         public void PlayWeaponBackSound()
         {
-            SFX_PoolManager.MainInstance.TryGetSoundPool(SoundStyle.WeaponBack, characterName.ToString(), transform.position);
+            SFX_PoolManager.MainInstance.TryGetSoundPool(SoundStyle.WeaponBack, characterName.ToString(),
+                transform.position);
         }
 
         public void PlayWeaponEndSound()
         {
-            SFX_PoolManager.MainInstance.TryGetSoundPool(SoundStyle.WeaponEnd, characterName.ToString(), transform.position);
+            SFX_PoolManager.MainInstance.TryGetSoundPool(SoundStyle.WeaponEnd, characterName.ToString(),
+                transform.position);
         }
 
         #endregion
+
         public void PlayDodgeSound()
         {
-            SFX_PoolManager.MainInstance.TryGetSoundPool(SoundStyle.DodgeSound, transform.position, Quaternion.identity);
+            SFX_PoolManager.MainInstance.TryGetSoundPool(SoundStyle.DodgeSound, transform.position,
+                Quaternion.identity);
         }
+
         public void PlaySwitchWindSound()
         {
-            SFX_PoolManager.MainInstance.TryGetSoundPool(SoundStyle.SwitchInWindSound, transform.position, Quaternion.identity);
+            SFX_PoolManager.MainInstance.TryGetSoundPool(SoundStyle.SwitchInWindSound, transform.position,
+                Quaternion.identity);
         }
+
         public void PlaySwitchInVoice()
         {
-            SFX_PoolManager.MainInstance.TryGetSoundPool(SoundStyle.SwitchInVoice, characterName.ToString(), transform.position);
-        }    
+            SFX_PoolManager.MainInstance.TryGetSoundPool(SoundStyle.SwitchInVoice, characterName.ToString(),
+                transform.position);
+        }
     }
 }

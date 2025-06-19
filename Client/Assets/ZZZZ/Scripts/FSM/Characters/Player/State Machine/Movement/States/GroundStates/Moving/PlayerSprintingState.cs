@@ -11,9 +11,11 @@ namespace ZZZ
         GameTimer gameTimer;
         Vector3 targetDir;
         float turnDeltaAngle;
+
         public PlayerSprintingState(PlayerMovementStateMachine playerMovementStateMachine) : base(playerMovementStateMachine)
         {
         }
+
         public override void Enter()
         {
             base.Enter();
@@ -22,9 +24,8 @@ namespace ZZZ
             animator.SetBool(AnimatorID.HasInputID, true);
 
             reusableDate.inputMult = playerMovementData.sprintData.inputMult;
-
-
         }
+
         public override void Update()
         {
             base.Update();
@@ -34,31 +35,28 @@ namespace ZZZ
             if (Mathf.Abs(turnDeltaAngle) > playerMovementData.turnBackAngle)
             {
                 animator.SetBool(AnimatorID.TurnBackID, true);
-              
             }
-           
-           
         }
+
         public override void Exit()
         {
             base.Exit();
-           
         }
-        #region ת��Idling
+
+        #region
+
         protected override void AddInputActionCallBacks()
         {
             base.AddInputActionCallBacks();
 
             CharacterInputSystem.MainInstance.inputActions.Player.Movement.canceled += OnBufferToIdle;
-
         }
+
         protected override void RemoveInputActionCallBacks()
         {
             base.RemoveInputActionCallBacks();
-            Debug.Log("�Ƴ�run��idle��ί��");
             CharacterInputSystem.MainInstance.inputActions.Player.Movement.canceled -= OnBufferToIdle;
             CharacterInputSystem.MainInstance.inputActions.Player.Movement.started -= OnUnregisterBufferTimer;
-
         }
 
         private void OnBufferToIdle(InputAction.CallbackContext context)
@@ -68,24 +66,26 @@ namespace ZZZ
         }
 
 
-
         private void IdleStart()
-        {           
-            movementStateMachine.ChangeState(movementStateMachine.idlingState);          
+        {
+            movementStateMachine.ChangeState(movementStateMachine.idlingState);
         }
+
         private void OnUnregisterBufferTimer(InputAction.CallbackContext context)
         {
-            Debug.Log("ע��Timer");
             ZZZZTimerManager.MainInstance.UnregisterTimer(gameTimer);
         }
+
         #endregion
 
-        #region ת����walk
+        #region
+
         protected override void OnWalkStart(InputAction.CallbackContext context)
         {
             base.OnWalkStart(context);
             movementStateMachine.ChangeState(movementStateMachine.walkingState);
         }
+
         #endregion
     }
 }

@@ -1,14 +1,17 @@
-
 using System.Collections.Generic;
 using UnityEngine;
+
 namespace ZZZ
 {
     [System.Serializable]
     public class PlayerMovementData
     {
-        [field: SerializeField] public List<PlayerCameraRecenteringData> SidewaysCameraRecenteringData { get; private set; }
+        [field: SerializeField]
+        public List<PlayerCameraRecenteringData> SidewaysCameraRecenteringData { get; private set; }
 
-        [field: SerializeField] public List<PlayerCameraRecenteringData> BackWardsCameraRecenteringData { get; private set; }
+        [field: SerializeField]
+        public List<PlayerCameraRecenteringData> BackWardsCameraRecenteringData { get; private set; }
+
         [field: SerializeField] public float bufferToIdleTime { get; private set; } = 0.15f;
 
         [field: SerializeField] public float fadeToWalkStartTime { get; private set; } = 0.16f;
@@ -28,7 +31,5 @@ namespace ZZZ
 
         [field: SerializeField] public float comboRotationPercentage { get; private set; }
         [field: SerializeField] public float comboRotaionTime { get; private set; }
-
-
     }
 }

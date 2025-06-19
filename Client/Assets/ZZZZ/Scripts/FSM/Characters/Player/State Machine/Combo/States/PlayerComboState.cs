@@ -1,4 +1,3 @@
-
 using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -6,41 +5,46 @@ using GGG.Tool;
 
 namespace ZZZ
 {
-
     public class PlayerComboState : IState
     {
-        protected Player player{ get; }
+        protected Player player { get; }
         protected PlayerComboStateMachine comboStateMachine { get; }
         protected CharacterCombo characterCombo { get; }
-        protected PlayerComboReusableData reusableData { get;  }
+        protected PlayerComboReusableData reusableData { get; }
         protected PlayerComboData playerComboData { get; }
         protected Animator animator { get; }
+
         public PlayerComboState(PlayerComboStateMachine comboStateMachine)
         {
-           this.comboStateMachine = comboStateMachine;
+            this.comboStateMachine = comboStateMachine;
 
             if (player == null)
             {
                 player = comboStateMachine.Player;
-            }  
+            }
+
             if (animator == null)
             {
                 animator = comboStateMachine.Player.characterAnimator;
             }
+
             if (playerComboData == null)
             {
                 playerComboData = player.playerSO.ComboData;
             }
+
             if (reusableData == null)
             {
                 reusableData = this.comboStateMachine.ReusableData;
             }
+
             if (characterCombo == null)
             {
-                characterCombo = new CharacterCombo(animator, player.transform,player.camera, reusableData, playerComboData.comboData,playerComboData.playerEnemyDetectionData,player);
+                characterCombo = new CharacterCombo(animator, player.transform, player.camera, reusableData,
+                    playerComboData.comboData, playerComboData.playerEnemyDetectionData, player);
             }
-           
         }
+
         public virtual void Enter()
         {
             AddInputActionEvent();
@@ -53,17 +57,14 @@ namespace ZZZ
 
         public virtual void HandInput()
         {
-          
         }
 
         public virtual void OnAnimationExitEvent()
         {
-
         }
 
         public virtual void OnAnimationTranslateEvent(IState state)
         {
-
         }
 
         public virtual void Update()
@@ -72,6 +73,7 @@ namespace ZZZ
             characterCombo.UpdateEnemy();
             characterCombo.CheckCanLinkCombo();
         }
+
         protected virtual void AddInputActionEvent()
         {
             CharacterInputSystem.MainInstance.inputActions.Player.L_AtK.started += OnAttackInput;
@@ -88,25 +90,24 @@ namespace ZZZ
             CharacterInputSystem.MainInstance.inputActions.Player.Execute.started -= OnSkill;
             characterCombo.RemoveEventActon();
         }
+
         private void OnAttackInput(InputAction.CallbackContext context)
         {
             // if (player.characterName != SwitchCharacter.MainInstance.newCharacterName.Value) { return; }
-          
+
             if (characterCombo.CanBaseComboInput())
             {
                 if (player.currentMovementState == "PlayerSprintingState" || animator.AnimationAtTag("Dodge"))
                 {
                     characterCombo.DodgeComboInput();
-                    Debug.Log("���ܹ���");
                 }
                 else
                 {
-                  
                     characterCombo.LightComboInput();
                 }
-
             }
         }
+
         private void OnFinishSkill(InputAction.CallbackContext context)
         {
             // if (player.characterName != SwitchCharacter.MainInstance.newCharacterName.Value) { return; }
@@ -116,6 +117,7 @@ namespace ZZZ
                 comboStateMachine.ChangeState(comboStateMachine.SkillState);
             }
         }
+
         private void OnSkill(InputAction.CallbackContext context)
         {
             // if (player.characterName != SwitchCharacter.MainInstance.newCharacterName.Value) { return; }
@@ -125,14 +127,11 @@ namespace ZZZ
                 comboStateMachine.ChangeState(comboStateMachine.SkillState);
             }
         }
+
         public void SwitchSkill()
         {
             characterCombo.SwitchSkill(player.characterName);
-            //�л�������״̬
             comboStateMachine.ChangeState(comboStateMachine.SkillState);
         }
-           
-
-
     }
 }

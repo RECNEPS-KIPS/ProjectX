@@ -9,7 +9,6 @@ namespace ybh
         // Start is called before the first frame update
         void Start()
         {
-
         }
 
         // Update is called once per frame
@@ -17,21 +16,23 @@ namespace ybh
         {
             if (CharacterInputSystem.MainInstance.Jump)
             {
-                GameEventsManager.MainInstance.CallEvent("事件");
+                GameEventsManager.MainInstance.CallEvent("");
             }
         }
+
         private void OnEnable()
         {
-            GameEventsManager.MainInstance.AddEventListening("事件", SendText);
-        }
-        private void OnDisable()
-        {
-            GameEventsManager.MainInstance.ReMoveEvent("事件", SendText);
-        }
-        private void SendText()
-        {
-            Debug.Log("事件成功被调用");
+            GameEventsManager.MainInstance.AddEventListening("", SendText);
         }
 
+        private void OnDisable()
+        {
+            GameEventsManager.MainInstance.ReMoveEvent("", SendText);
+        }
+
+        private void SendText()
+        {
+            Debug.Log("");
+        }
     }
 }

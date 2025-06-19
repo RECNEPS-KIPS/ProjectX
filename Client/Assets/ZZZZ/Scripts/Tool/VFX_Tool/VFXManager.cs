@@ -6,10 +6,10 @@ using HuHu;
 public class VFXManager : Singleton<VFXManager>
 {
     [SerializeField] private List<ParticleSystem> particleSystems = new List<ParticleSystem>();
-    [SerializeField, Header("特效播放倍率")] private float SpeedMult;
-  
-   
-    public void AddVFX(ParticleSystem particleSystem,float speedMult)
+    [SerializeField, Header("SpeedMult")] private float SpeedMult;
+
+
+    public void AddVFX(ParticleSystem particleSystem, float speedMult)
     {
         particleSystems.Add(particleSystem);
         foreach (var particle in particleSystems)
@@ -19,17 +19,17 @@ public class VFXManager : Singleton<VFXManager>
         }
     }
 
-    public List<ParticleSystem> allParticleSystems=>particleSystems;
+    public List<ParticleSystem> allParticleSystems => particleSystems;
 
     public void PauseVFX()
-    { 
-       foreach(var particleSystem in allParticleSystems) 
+    {
+        foreach (var particleSystem in allParticleSystems)
         {
-           var main = particleSystem.main;
+            var main = particleSystem.main;
             main.simulationSpeed = 0f;
         }
-    
     }
+
     public void SetVFXSpeed(float speedMult)
     {
         foreach (var particleSystem in allParticleSystems)
@@ -38,6 +38,7 @@ public class VFXManager : Singleton<VFXManager>
             main.simulationSpeed = speedMult;
         }
     }
+
     public void ResetVXF()
     {
         foreach (var particleSystem in allParticleSystems)
@@ -45,6 +46,5 @@ public class VFXManager : Singleton<VFXManager>
             var main = particleSystem.main;
             main.simulationSpeed = SpeedMult;
         }
-           
     }
 }

@@ -1,9 +1,8 @@
-
 using System.Collections.Generic;
 using UnityEngine;
 using HuHu;
 
-public class CharacterManager : Singleton<CharacterManager> 
+public class CharacterManager : Singleton<CharacterManager>
 {
     //GameObject.Tag
 
@@ -13,6 +12,7 @@ public class CharacterManager : Singleton<CharacterManager>
     [SerializeField] public List<GameObject> allEnemies;
     [SerializeField] public List<GameObject> activeEnemies;
     private GameObject[] enemies;
+
     protected override void Awake()
     {
         base.Awake();
@@ -20,7 +20,6 @@ public class CharacterManager : Singleton<CharacterManager>
         FindAllEnemies();
     }
 
- 
 
     private void Start()
     {
@@ -29,12 +28,12 @@ public class CharacterManager : Singleton<CharacterManager>
 
     private void InitEnemy()
     {
-       for (int i = 0; i < allEnemies.Count; i++)
+        for (int i = 0; i < allEnemies.Count; i++)
         {
             if (allEnemies[i].activeSelf)
             {
                 activeEnemies.Add(allEnemies[i]);
-            }   
+            }
         }
     }
 
@@ -44,28 +43,26 @@ public class CharacterManager : Singleton<CharacterManager>
         {
             allEnemies.Add(enemy);
         }
-      
     }
+
     public void RemoveEnemyFromActive(GameObject enemy)
     {
-
         if (activeEnemies.Contains(enemy))
         {
             activeEnemies.Remove(enemy);
         }
-
     }
-   
+
 
     private void FindAllPlayer()
     {
         players = GameObject.FindGameObjectsWithTag("Player");
-        for (int i = 0; i < players.Length; i++) 
+        for (int i = 0; i < players.Length; i++)
         {
             playerTransform.Add(players[i].transform);
-        
-         }
+        }
     }
+
     private void FindAllEnemies()
     {
         enemies = GameObject.FindGameObjectsWithTag("Enemy");

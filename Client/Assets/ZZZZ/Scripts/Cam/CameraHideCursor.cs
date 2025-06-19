@@ -12,7 +12,7 @@ public class CameraHideCursor : MonoBehaviour
 
     private void UpdateCorcur()
     {
-        Cursor.visible=false;
-        Cursor.lockState= CursorLockMode.Locked;
+        Cursor.visible = false;
+        Cursor.lockState = CursorLockMode.Locked;
     }
 }

@@ -8,17 +8,17 @@ public class PoolItemBase : MonoBehaviour
     {
         Spawn();
     }
+
     private void OnDisable()
     {
         ReSycle();
     }
+
     protected virtual void Spawn()
     {
-
     }
+
     protected virtual void ReSycle()
-    { 
-    
+    {
     }
-
 }

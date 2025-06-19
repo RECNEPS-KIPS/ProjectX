@@ -12,11 +12,15 @@ public class CameraHitFeel : Singleton<CameraHitFeel>
     [SerializeField] private Animator currentCharacterAnimator;
     [SerializeField] private Animator currentEnemyAnimator;
     [SerializeField] private float slowMotionResetSpeed;
-    [SerializeField] private Dictionary<CharacterNameList,Animator> characterAnimator=new Dictionary<CharacterNameList, Animator>();
+
+    [SerializeField]
+    private Dictionary<CharacterNameList, Animator> characterAnimator = new Dictionary<CharacterNameList, Animator>();
+
     [SerializeField] private Dictionary<Transform, Animator> enemiesAnimator = new Dictionary<Transform, Animator>();
+
     [SerializeField] private CinemachineImpulseSource cinemachineImpulseSource;
-   // [SerializeField] private Camera_ZoomController zoomController;
-    
+    // [SerializeField] private Camera_ZoomController zoomController;
+
     private void Start()
     {
         Init();
@@ -25,17 +29,17 @@ public class CameraHitFeel : Singleton<CameraHitFeel>
     private void Init()
     {
         List<Transform> allCharacters = CharacterManager.MainInstance.playerTransform;
-        foreach (Transform character in allCharacters) 
+        foreach (Transform character in allCharacters)
         {
-          
             if (character.gameObject.TryGetComponent<Player>(out var player))
             {
                 if (character.TryGetComponent<Animator>(out var animator))
                 {
-                    characterAnimator.Add(player.characterName,animator);
+                    characterAnimator.Add(player.characterName, animator);
                 }
             }
         }
+
         List<GameObject> allenemies = CharacterManager.MainInstance.allEnemies;
 
         foreach (var enemy in allenemies)
@@ -45,8 +49,6 @@ public class CameraHitFeel : Singleton<CameraHitFeel>
                 enemiesAnimator.Add(enemy.transform, animator);
             }
         }
-
-
     }
 
     Coroutine PauseFrameCoroutine;
@@ -54,34 +56,42 @@ public class CameraHitFeel : Singleton<CameraHitFeel>
 
     public void PF(float time)
     {
-        if (time == 0) { Debug.Log("��֡ʱ��Ϊ0�˳�");return; }
-        currentEnemyAnimator= GetEnemyAnimator();
-        currentCharacterAnimator=GetCurrentCharacterAnimator();
+        if (time == 0)
+        {
+            Debug.Log("��֡ʱ��Ϊ0�˳�");
+            return;
+        }
 
-        if (currentCharacterAnimator == null )
+        currentEnemyAnimator = GetEnemyAnimator();
+        currentCharacterAnimator = GetCurrentCharacterAnimator();
+
+        if (currentCharacterAnimator == null)
         {
             Debug.Log("currentCharacterAnimator is null!");
             return;
         }
+
         if (currentEnemyAnimator == null)
         {
             Debug.Log("currentEnemyAnimator is null!");
             return;
         }
-   
+
 
         if (PauseFrameCoroutine != null)
-        { 
-        StopCoroutine(PauseFrameCoroutine);
+        {
+            StopCoroutine(PauseFrameCoroutine);
         }
+
         PauseFrameCoroutine = StartCoroutine(PauseFrameOnAnimation(time));
     }
+
     /// <summary>
     /// ������Ч������
     /// </summary>
     /// <param name="time"></param>
     /// <param name="speedMult"></param>
-    public void SlowMotion(float time,float speedMult)
+    public void SlowMotion(float time, float speedMult)
     {
         currentEnemyAnimator = GetEnemyAnimator();
         currentCharacterAnimator = GetCurrentCharacterAnimator();
@@ -90,20 +100,26 @@ public class CameraHitFeel : Singleton<CameraHitFeel>
             Debug.LogWarning("Animator is null!");
             return;
         }
+
         if (SlowMotionCoroutine != null)
-        { StopCoroutine(SlowMotionCoroutine); }
+        {
+            StopCoroutine(SlowMotionCoroutine);
+        }
+
         SlowMotionCoroutine = StartCoroutine(SlowMotionOnAnimation(time, speedMult));
     }
+
     public void StartSlowTime(float timeScale)
-    { 
-      
-       Time.timeScale=timeScale;
+    {
+        Time.timeScale = timeScale;
     }
+
     public void EndSlowTime()
     {
         Time.timeScale = 1;
     }
-    IEnumerator SlowMotionOnAnimation(float time,float speedMult)
+
+    IEnumerator SlowMotionOnAnimation(float time, float speedMult)
     {
         float currentSpeed = speedMult;
         currentCharacterAnimator.speed = currentSpeed;
@@ -111,25 +127,25 @@ public class CameraHitFeel : Singleton<CameraHitFeel>
         VFXManager.MainInstance.SetVFXSpeed(currentSpeed);
         yield return new WaitForSeconds(time);
         float minValue = 0.001f;
-        while (Mathf.Abs(currentSpeed-1)>minValue)
+        while (Mathf.Abs(currentSpeed - 1) > minValue)
         {
-            currentSpeed = Mathf.Lerp(currentSpeed,1,Time.deltaTime* slowMotionResetSpeed);
+            currentSpeed = Mathf.Lerp(currentSpeed, 1, Time.deltaTime * slowMotionResetSpeed);
             currentCharacterAnimator.speed = currentSpeed;
             currentEnemyAnimator.speed = currentSpeed;
             VFXManager.MainInstance.SetVFXSpeed(currentSpeed);
 
             yield return null;
-
         }
+
         currentSpeed = 1;
         currentCharacterAnimator.speed = currentSpeed;
         currentEnemyAnimator.speed = currentSpeed;
         VFXManager.MainInstance.SetVFXSpeed(currentSpeed);
-
     }
+
     IEnumerator PauseFrameOnAnimation(float time)
     {
-        Debug.LogWarning("�����֡Э��"+ time);
+        Debug.LogWarning("�����֡Э��" + time);
         currentCharacterAnimator.speed = 0f;
         currentEnemyAnimator.speed = 0f;
         VFXManager.MainInstance.PauseVFX();
@@ -138,19 +154,25 @@ public class CameraHitFeel : Singleton<CameraHitFeel>
         currentCharacterAnimator.speed = 1f;
         currentEnemyAnimator.speed = 1f;
     }
-    
+
 
     private Animator GetEnemyAnimator()
     {
         Transform enemy;
         enemy = GameBlackboard.MainInstance.GetEnemy();
-        if (enemy == null) { return null; }   
+        if (enemy == null)
+        {
+            return null;
+        }
+
         if (enemiesAnimator.TryGetValue(enemy, out var A))
         {
             return A;
         }
+
         return null;
     }
+
     private Animator GetCurrentCharacterAnimator()
     {
         CharacterNameList characterName = CharacterNameList.AnBi;
@@ -158,21 +180,26 @@ public class CameraHitFeel : Singleton<CameraHitFeel>
         {
             return A;
         }
-        return null;
 
+        return null;
     }
-    
+
     #region ����
+
     public void CameraShake(float shakeForce)
     {
-        if (shakeForce == 0) { return; }
+        if (shakeForce == 0)
+        {
+            return;
+        }
+
         cinemachineImpulseSource.GenerateImpulseWithForce(shakeForce);
     }
-
 
     #endregion
 
     #region ZoomIn
+
     //float currentZoom;
     //public void ZoomIn(float distance)
     //{

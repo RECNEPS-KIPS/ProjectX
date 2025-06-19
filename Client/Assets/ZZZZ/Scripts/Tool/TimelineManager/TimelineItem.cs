@@ -11,5 +11,4 @@ public class TimelineItem : MonoBehaviour
     {
         playableDirector.Play();
     }
-   
 }

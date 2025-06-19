@@ -4,47 +4,56 @@ namespace ZZZ
 {
     public class PlayerATKIngState : PlayerComboState
     {
-        public PlayerATKIngState(PlayerComboStateMachine comboStateMachine) : base(comboStateMachine) { }
+        public PlayerATKIngState(PlayerComboStateMachine comboStateMachine) : base(comboStateMachine)
+        {
+        }
+
         public override void Enter()
         {
             base.Enter();
-           
         }
+
         public override void Update()
         {
-            base .Update();
-        
+            base.Update();
+
             characterCombo.UpdateAttackLookAtEnemy();
 
             characterCombo.CheckMoveInterrupt();
         }
-        #region �����¼�
+
+        #region
+
         public void CancelAttackColdTime()
         {
-           characterCombo.CanATK();
+            characterCombo.CanATK();
         }
+
         public void EnablePreInput()
         {
             characterCombo.CanInput();
         }
+
         public void EnableMoveInterrupt()
         {
             characterCombo.CanMoveInterrupt();
         }
+
         public void DisableLinkCombo()
         {
             characterCombo.DisConnectCombo();
         }
+
         /// <summary>
-        /// ATK���ǹ��������ĺ����¼����������˺����ܻ��������񵲹����������ߡ�����У���������֡�����ܻ���Ч���ܻ���Ч
         /// </summary>
         public void ATK()
-        { 
-           characterCombo.ATK();
+        {
+            characterCombo.ATK();
         }
+
         #endregion
+
         /// <summary>
-        /// �����¼��˳�:�ȹ��������������˳�
         /// </summary>
         public override void OnAnimationExitEvent()
         {
@@ -59,11 +68,10 @@ namespace ZZZ
                 return;
             }
         }
-        //�����˳�
+
         public override void OnAnimationTranslateEvent(IState state)
         {
             comboStateMachine.ChangeState(state);
         }
-
     }
 }

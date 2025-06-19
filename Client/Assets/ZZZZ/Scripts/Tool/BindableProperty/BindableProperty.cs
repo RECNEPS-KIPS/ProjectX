@@ -1,5 +1,3 @@
-
-
 using System;
 
 
@@ -19,8 +17,6 @@ public class BindableProperty<T>
                 mValue = value;
                 OnValueChanged?.Invoke(mValue);
             }
-            
         }
-
     }
 }

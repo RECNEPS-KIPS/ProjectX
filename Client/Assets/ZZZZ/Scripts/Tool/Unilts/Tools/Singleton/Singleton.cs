@@ -15,8 +15,8 @@ namespace HuHu
                 {
                     lock (_lock)
                     {
-                        _instance = FindObjectOfType<T>() as T; 
-                    
+                        _instance = FindObjectOfType<T>() as T;
+
                         if (_instance == null)
                         {
                             GameObject go = new GameObject(typeof(T).Name);
@@ -28,9 +28,9 @@ namespace HuHu
                 return _instance;
             }
         }
-        
 
-        protected  virtual void Awake()
+
+        protected virtual void Awake()
         {
             if (_instance == null)
             {
@@ -42,8 +42,5 @@ namespace HuHu
                 Destroy(gameObject);
             }
         }
-
-
     }
-    
 }

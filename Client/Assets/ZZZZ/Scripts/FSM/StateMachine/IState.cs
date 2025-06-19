@@ -1,10 +1,7 @@
-
 namespace ZZZ
 {
-   
-    public interface IState 
+    public interface IState
     {
-        
         public void Enter();
 
         public void Exit();

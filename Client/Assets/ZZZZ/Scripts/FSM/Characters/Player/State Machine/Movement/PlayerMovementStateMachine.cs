@@ -1,4 +1,3 @@
-
 using TPF;
 using Unity.VisualScripting;
 
@@ -6,19 +5,18 @@ namespace ZZZ
 {
     public class PlayerMovementStateMachine : StateMachine
     {
-        //缓存初始状态
-        public PlayerStateReusableDate reusableDate { get;  }
+        public PlayerStateReusableDate reusableDate { get; }
         public Player player { get; }
         public PlayerIdlingState idlingState { get; }
         public PlayerWalkingState walkingState { get; }
         public PlayerRunningState runningState { get; }
         public PlayerSprintingState sprintingState { get; }
 
-        public PlayerDashingState dashingState { get;  }
+        public PlayerDashingState dashingState { get; }
 
         public PlayerDashBackingState dashBackingState { get; }
 
-        public PlayerReturnRunState returnRunState{ get; }
+        public PlayerReturnRunState returnRunState { get; }
 
         public PlayerOnSwitchState onSwitchState { get; }
 
@@ -30,9 +28,9 @@ namespace ZZZ
         {
             player = P;
 
-            reusableDate =new PlayerStateReusableDate();
-            //给状态传入该状态机的引用
-           idlingState = new PlayerIdlingState(this);
+            reusableDate = new PlayerStateReusableDate();
+
+            idlingState = new PlayerIdlingState(this);
 
             walkingState = new PlayerWalkingState(this);
 
@@ -46,13 +44,11 @@ namespace ZZZ
 
             returnRunState = new PlayerReturnRunState(this);
 
-            onSwitchState=new PlayerOnSwitchState(this);
+            onSwitchState = new PlayerOnSwitchState(this);
 
-            onSwitchOutState=new PlayerOnSwitchOutState(this);
+            onSwitchOutState = new PlayerOnSwitchOutState(this);
 
-            playerMovementNullState=new PlayerMovementNullState(this);  
-
+            playerMovementNullState = new PlayerMovementNullState(this);
         }
-            
     }
 }
