@@ -28,6 +28,7 @@ public class SFX_PoolManager : Singleton<SFX_PoolManager>
 
     private void InitSoundPool()
     {
+        // soundPools.Clear();
         if (soundPools.Count == 0)
         {
             return;
@@ -39,6 +40,11 @@ public class SFX_PoolManager : Singleton<SFX_PoolManager>
             {
                 for (int j = 0; j < soundPools[i].soundCount; j++)
                 {
+                    if (soundPools[i] == null || soundPools[i].soundPrefab == null)
+                    {
+                        var a = soundPools[i];
+                        Debug.Log("????"+a.soundName);
+                    }
                     var go = Instantiate(soundPools[i].soundPrefab);
                     go.transform.parent = this.transform;
 

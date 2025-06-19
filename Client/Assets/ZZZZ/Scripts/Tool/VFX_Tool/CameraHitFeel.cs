@@ -7,8 +7,6 @@ using Cinemachine;
 
 public class CameraHitFeel : Singleton<CameraHitFeel>
 {
-    //*****����CharacterManager����Ч������VFXManager*****//
-
     [SerializeField] private Animator currentCharacterAnimator;
     [SerializeField] private Animator currentEnemyAnimator;
     [SerializeField] private float slowMotionResetSpeed;

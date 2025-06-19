@@ -1,3 +1,4 @@
+using System.Runtime.Remoting.Messaging;
 using UnityEngine;
 using HuHu;
 using UnityEngine.InputSystem;
@@ -25,7 +26,10 @@ public class CharacterInputSystem : Singleton<CharacterInputSystem>
 
     public Vector2 PlayerMove
     {
-        get => inputActions.Player.Movement.ReadValue<Vector2>();
+        get  {
+            var m = inputActions.Player.Movement.ReadValue<Vector2>();
+            return m;
+        }
     }
 
     public Vector2 CameraLook
