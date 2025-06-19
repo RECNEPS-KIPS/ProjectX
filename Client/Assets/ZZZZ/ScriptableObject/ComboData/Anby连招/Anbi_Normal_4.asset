@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f13413444ffc8b243bed7dc2a8fc7155, type: 3}
   m_Name: Anbi_Normal_4
   m_EditorClassIdentifier: 
-  characterName: 3
+  characterName: 0
   _attackStyle: 0
   _comboName: Anbi_Normal_4
   _comboColdTime: 0.35

@@ -65,10 +65,10 @@ public class CharacterManager : Singleton<CharacterManager>
 
     private void FindAllEnemies()
     {
-        enemies = GameObject.FindGameObjectsWithTag("Enemy");
-        for (int i = 0; i < enemies.Length; i++)
-        {
-            allEnemies.Add(enemies[i]);
-        }
+        // enemies = GameObject.FindGameObjectsWithTag("Enemy");
+        // for (int i = 0; i < enemies.Length; i++)
+        // {
+        //     allEnemies.Add(enemies[i]);
+        // }
     }
 }
